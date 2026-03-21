@@ -1,0 +1,820 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Darkbloom Industries™</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --cyan: #00f5ff;
+      --magenta: #ff00aa;
+      --green: #00ff88;
+      --orange: #ff6600;
+      --dark: #020408;
+      --darker: #010204;
+      --panel: rgba(0,245,255,0.04);
+      --border: rgba(0,245,255,0.15);
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--dark);
+      color: #c8e8f0;
+      font-family: 'Rajdhani', sans-serif;
+      overflow-x: hidden;
+      cursor: none;
+    }
+
+    /* CURSOR */
+    #cursor {
+      position: fixed; width: 12px; height: 12px;
+      background: var(--cyan); border-radius: 50%;
+      pointer-events: none; z-index: 9999;
+      transform: translate(-50%, -50%);
+      transition: transform 0.1s, background 0.2s;
+      box-shadow: 0 0 10px var(--cyan), 0 0 30px var(--cyan);
+    }
+    #cursor-ring {
+      position: fixed; width: 36px; height: 36px;
+      border: 1px solid var(--cyan); border-radius: 50%;
+      pointer-events: none; z-index: 9998;
+      transform: translate(-50%, -50%);
+      transition: width 0.2s, height 0.2s, opacity 0.2s;
+      opacity: 0.5;
+    }
+
+    /* CANVAS + OVERLAYS */
+    #bg-canvas { position: fixed; top:0; left:0; width:100%; height:100%; z-index:0; pointer-events:none; }
+    .scanlines {
+      position: fixed; top:0; left:0; width:100%; height:100%;
+      background: repeating-linear-gradient(to bottom, transparent 0px, transparent 2px, rgba(0,0,0,0.08) 2px, rgba(0,0,0,0.08) 4px);
+      pointer-events: none; z-index: 1;
+    }
+    .glitch-overlay { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:2; opacity:0; }
+
+    #app { position: relative; z-index: 3; }
+
+    /* NAV */
+    nav {
+      position: fixed; top:0; width:100%;
+      padding: 18px 48px;
+      display: flex; justify-content: space-between; align-items: center;
+      background: linear-gradient(to bottom, rgba(2,4,8,0.95), transparent);
+      backdrop-filter: blur(4px);
+      z-index: 100;
+      border-bottom: 1px solid rgba(0,245,255,0.08);
+    }
+    .nav-logo {
+      font-family: 'Orbitron', monospace; font-weight: 900; font-size: 1.1rem;
+      color: var(--cyan); letter-spacing: 0.2em;
+      text-shadow: 0 0 20px var(--cyan), 0 0 40px rgba(0,245,255,0.3);
+      text-decoration: none;
+    }
+    .nav-logo sup { font-size: 0.55rem; color: var(--magenta); }
+    .nav-links { display: flex; gap: 36px; list-style: none; }
+    .nav-links a {
+      font-family: 'Share Tech Mono', monospace; font-size: 0.75rem;
+      color: rgba(200,232,240,0.6); text-decoration: none;
+      letter-spacing: 0.15em; text-transform: uppercase;
+      transition: color 0.2s, text-shadow 0.2s; position: relative;
+    }
+    .nav-links a::after {
+      content:''; position:absolute; bottom:-4px; left:0;
+      width:0; height:1px; background:var(--cyan);
+      transition:width 0.3s; box-shadow:0 0 6px var(--cyan);
+    }
+    .nav-links a:hover { color:var(--cyan); text-shadow:0 0 10px var(--cyan); }
+    .nav-links a:hover::after { width:100%; }
+
+    /* HERO */
+    #hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column;
+      justify-content: center; align-items: center;
+      text-align: center; padding: 120px 24px 60px;
+      position: relative;
+    }
+    .hero-eyebrow {
+      font-family:'Share Tech Mono',monospace; font-size:0.7rem;
+      color:var(--magenta); letter-spacing:0.4em; text-transform:uppercase;
+      margin-bottom:24px; opacity:0; animation:fadeUp 0.8s 0.3s forwards;
+    }
+    .hero-title {
+      font-family:'Orbitron',monospace; font-weight:900;
+      font-size:clamp(2.8rem, 8vw, 7rem); line-height:1.0;
+      color:#fff; letter-spacing:0.06em;
+      text-shadow:0 0 20px rgba(0,245,255,0.6),0 0 60px rgba(0,245,255,0.2),0 0 120px rgba(0,245,255,0.1);
+      opacity:0; animation:fadeUp 0.8s 0.5s forwards; position:relative;
+    }
+    .hero-title .accent { color:var(--cyan); }
+    .hero-title sup { font-size:0.35em; color:var(--magenta); vertical-align:super; text-shadow:0 0 10px var(--magenta); }
+    .hero-industries {
+      font-family:'Orbitron',monospace; font-size:clamp(0.8rem,1.8vw,1.1rem);
+      color:rgba(200,232,240,0.35); letter-spacing:0.4em;
+      margin-top:8px; opacity:0; animation:fadeUp 0.8s 0.6s forwards;
+    }
+    .hero-sub {
+      font-size:clamp(1rem,2.5vw,1.4rem); color:rgba(200,232,240,0.5);
+      margin-top:24px; letter-spacing:0.1em; max-width:600px; line-height:1.7;
+      opacity:0; animation:fadeUp 0.8s 0.7s forwards;
+    }
+    .hero-cta-group {
+      display:flex; gap:20px; margin-top:52px; flex-wrap:wrap; justify-content:center;
+      opacity:0; animation:fadeUp 0.8s 0.9s forwards;
+    }
+
+    /* BUTTONS */
+    .btn-primary {
+      font-family:'Share Tech Mono',monospace; font-size:0.8rem;
+      letter-spacing:0.2em; text-transform:uppercase;
+      color:var(--dark); background:var(--cyan); border:none;
+      padding:16px 40px; cursor:none; position:relative; overflow:hidden;
+      clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+      transition:transform 0.2s,box-shadow 0.2s; text-decoration:none;
+      display:inline-block; font-weight:700;
+    }
+    .btn-primary::before {
+      content:''; position:absolute; top:0; left:-100%;
+      width:100%; height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);
+      transition:left 0.4s;
+    }
+    .btn-primary:hover::before { left:100%; }
+    .btn-primary:hover { transform:translateY(-2px); box-shadow:0 0 30px var(--cyan),0 0 60px rgba(0,245,255,0.3); }
+    .btn-secondary {
+      font-family:'Share Tech Mono',monospace; font-size:0.8rem;
+      letter-spacing:0.2em; text-transform:uppercase;
+      color:var(--cyan); background:transparent; border:1px solid var(--cyan);
+      padding:16px 40px; cursor:none;
+      clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+      transition:background 0.2s,box-shadow 0.2s,transform 0.2s;
+      text-decoration:none; display:inline-block;
+    }
+    .btn-secondary:hover { background:rgba(0,245,255,0.08); box-shadow:0 0 20px rgba(0,245,255,0.2),inset 0 0 20px rgba(0,245,255,0.05); transform:translateY(-2px); }
+
+    /* SCROLL INDICATOR */
+    .scroll-indicator {
+      position:absolute; bottom:40px; left:50%; transform:translateX(-50%);
+      display:flex; flex-direction:column; align-items:center; gap:8px;
+      opacity:0; animation:fadeUp 0.8s 1.4s forwards;
+    }
+    .scroll-indicator span { font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:rgba(0,245,255,0.4); letter-spacing:0.3em; }
+    .scroll-line { width:1px; height:40px; background:linear-gradient(to bottom,var(--cyan),transparent); animation:scrollPulse 2s infinite; }
+
+    /* STATS */
+    .stats-bar {
+      display:flex; justify-content:center;
+      border-top:1px solid var(--border); border-bottom:1px solid var(--border);
+      background:rgba(0,245,255,0.02);
+    }
+    .stat-item {
+      flex:1; max-width:220px; padding:32px 20px; text-align:center;
+      border-right:1px solid var(--border); position:relative;
+      transition:background 0.3s;
+    }
+    .stat-item:last-child { border-right:none; }
+    .stat-item:hover { background:rgba(0,245,255,0.05); }
+    .stat-num { font-family:'Orbitron',monospace; font-size:2rem; font-weight:700; color:var(--cyan); text-shadow:0 0 20px var(--cyan); display:block; }
+    .stat-label { font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:rgba(200,232,240,0.4); letter-spacing:0.2em; text-transform:uppercase; margin-top:4px; display:block; }
+
+    /* SECTIONS */
+    section { padding:100px 48px; max-width:1280px; margin:0 auto; }
+    .section-header { display:flex; align-items:center; gap:20px; margin-bottom:64px; }
+    .section-tag { font-family:'Share Tech Mono',monospace; font-size:0.65rem; color:var(--magenta); letter-spacing:0.3em; text-transform:uppercase; }
+    .section-line { flex:1; height:1px; background:linear-gradient(to right,var(--border),transparent); }
+    .section-title { font-family:'Orbitron',monospace; font-size:clamp(1.6rem,3vw,2.4rem); font-weight:700; color:#fff; letter-spacing:0.06em; margin-bottom:16px; }
+    .section-title .hi { color:var(--cyan); text-shadow:0 0 15px var(--cyan); }
+
+    /* SERVICES GRID */
+    .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:2px; }
+    .service-card {
+      background:var(--panel); border:1px solid var(--border);
+      padding:40px 32px; position:relative; overflow:hidden; cursor:none;
+      transition:border-color 0.3s,transform 0.3s;
+    }
+    .service-card::before {
+      content:''; position:absolute; top:0; left:0;
+      width:3px; height:0; background:linear-gradient(to bottom,var(--cyan),var(--magenta));
+      transition:height 0.4s;
+    }
+    .service-card::after {
+      content:''; position:absolute; top:0; left:0; width:100%; height:100%;
+      background:radial-gradient(ellipse at 20% 20%,rgba(0,245,255,0.05),transparent 70%);
+      opacity:0; transition:opacity 0.4s;
+    }
+    .service-card:hover { border-color:rgba(0,245,255,0.4); transform:translateY(-4px); }
+    .service-card:hover::before { height:100%; }
+    .service-card:hover::after { opacity:1; }
+    .service-icon { font-size:1.8rem; margin-bottom:20px; display:block; filter:drop-shadow(0 0 8px var(--cyan)); }
+    .service-name { font-family:'Orbitron',monospace; font-size:0.85rem; font-weight:700; color:var(--cyan); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:12px; }
+    .service-desc { font-size:0.95rem; color:rgba(200,232,240,0.55); line-height:1.7; }
+    .service-tags { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+    .tag { font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:var(--magenta); border:1px solid rgba(255,0,170,0.3); padding:3px 10px; letter-spacing:0.1em; }
+
+    /* SECURITY */
+    .security-block {
+      border:1px solid rgba(0,255,136,0.2);
+      background:linear-gradient(135deg,rgba(0,255,136,0.03),rgba(0,245,255,0.02));
+      padding:60px; position:relative; overflow:hidden;
+    }
+    .security-block::before {
+      content:'CLASSIFIED // TOP SECRET'; position:absolute; top:16px; right:24px;
+      font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:rgba(0,255,136,0.3); letter-spacing:0.2em;
+    }
+    .security-grid { display:grid; grid-template-columns:1fr 1fr; gap:48px; align-items:center; }
+    .security-title { font-family:'Orbitron',monospace; font-size:clamp(1.4rem,2.5vw,2rem); font-weight:700; color:var(--green); text-shadow:0 0 20px var(--green); margin-bottom:20px; }
+    .security-text { color:rgba(200,232,240,0.6); line-height:1.8; font-size:1rem; margin-bottom:32px; }
+    .security-list { list-style:none; display:flex; flex-direction:column; gap:14px; }
+    .security-list li { font-family:'Share Tech Mono',monospace; font-size:0.75rem; color:var(--green); letter-spacing:0.1em; display:flex; align-items:center; gap:12px; }
+    .security-list li::before { content:'▶'; font-size:0.5rem; color:var(--green); filter:drop-shadow(0 0 4px var(--green)); }
+    .threat-matrix { display:grid; grid-template-columns:1fr 1fr; gap:2px; }
+    .threat-cell {
+      background:rgba(0,255,136,0.03); border:1px solid rgba(0,255,136,0.1);
+      padding:20px; text-align:center; transition:background 0.3s,border-color 0.3s;
+    }
+    .threat-cell:hover { background:rgba(0,255,136,0.08); border-color:rgba(0,255,136,0.3); }
+    .threat-label { font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:rgba(0,255,136,0.5); letter-spacing:0.2em; display:block; margin-bottom:8px; }
+    .threat-value { font-family:'Orbitron',monospace; font-size:1.2rem; color:var(--green); font-weight:700; text-shadow:0 0 10px var(--green); }
+
+    /* PROCESS */
+    .process-steps { display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative; }
+    .process-steps::before {
+      content:''; position:absolute; top:28px; left:12.5%; right:12.5%; height:1px;
+      background:linear-gradient(to right,transparent,var(--border),var(--cyan),var(--border),transparent);
+    }
+    .process-step { padding:0 20px; text-align:center; }
+    .step-num {
+      width:56px; height:56px; border:1px solid var(--cyan); border-radius:50%;
+      display:flex; align-items:center; justify-content:center;
+      font-family:'Orbitron',monospace; font-size:0.85rem; color:var(--cyan);
+      margin:0 auto 24px; background:var(--dark);
+      text-shadow:0 0 10px var(--cyan); box-shadow:0 0 20px rgba(0,245,255,0.1);
+      transition:background 0.3s,box-shadow 0.3s; position:relative; z-index:1;
+    }
+    .process-step:hover .step-num { background:rgba(0,245,255,0.1); box-shadow:0 0 30px rgba(0,245,255,0.3); }
+    .step-title { font-family:'Orbitron',monospace; font-size:0.75rem; color:#fff; letter-spacing:0.1em; margin-bottom:12px; }
+    .step-desc { font-size:0.85rem; color:rgba(200,232,240,0.45); line-height:1.6; }
+
+    /* CONTACT */
+    #contact { background:rgba(0,245,255,0.01); border-top:1px solid var(--border); }
+    .contact-grid { display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:start; }
+    .contact-lead { font-size:1.1rem; color:rgba(200,232,240,0.55); line-height:1.8; margin-bottom:40px; }
+    .contact-info { display:flex; flex-direction:column; gap:20px; margin-top:32px; }
+    .contact-info-item { display:flex; align-items:center; gap:16px; font-family:'Share Tech Mono',monospace; font-size:0.75rem; color:rgba(200,232,240,0.5); letter-spacing:0.1em; }
+    .contact-info-item .dot { width:8px; height:8px; background:var(--cyan); border-radius:50%; box-shadow:0 0 8px var(--cyan); flex-shrink:0; }
+    .contact-form { display:flex; flex-direction:column; gap:20px; }
+    .form-group { position:relative; }
+    .form-group label { font-family:'Share Tech Mono',monospace; font-size:0.6rem; color:rgba(0,245,255,0.5); letter-spacing:0.25em; text-transform:uppercase; display:block; margin-bottom:8px; }
+    .form-group input, .form-group select, .form-group textarea {
+      width:100%; background:rgba(0,245,255,0.03); border:1px solid rgba(0,245,255,0.15);
+      color:#c8e8f0; font-family:'Rajdhani',sans-serif; font-size:1rem;
+      padding:14px 16px; outline:none;
+      transition:border-color 0.3s,box-shadow 0.3s; -webkit-appearance:none;
+      clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+    }
+    .form-group select option { background:#020408; }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      border-color:var(--cyan); box-shadow:0 0 20px rgba(0,245,255,0.1),inset 0 0 10px rgba(0,245,255,0.03);
+    }
+    .form-group textarea { resize:vertical; min-height:120px; }
+    .form-group input::placeholder, .form-group textarea::placeholder { color:rgba(200,232,240,0.2); }
+
+    /* FOOTER */
+    footer {
+      border-top:1px solid var(--border); padding:40px 48px;
+      display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:20px;
+    }
+    .footer-brand { font-family:'Orbitron',monospace; font-size:0.85rem; font-weight:700; color:var(--cyan); text-shadow:0 0 10px rgba(0,245,255,0.4); }
+    .footer-brand sup { color:var(--magenta); font-size:0.55rem; }
+    .footer-copy { font-family:'Share Tech Mono',monospace; font-size:0.62rem; color:rgba(200,232,240,0.25); letter-spacing:0.1em; }
+    .footer-links { display:flex; gap:24px; list-style:none; }
+    .footer-links a { font-family:'Share Tech Mono',monospace; font-size:0.62rem; color:rgba(200,232,240,0.3); text-decoration:none; letter-spacing:0.12em; transition:color 0.2s; }
+    .footer-links a:hover { color:var(--cyan); }
+
+    /* GLITCH */
+    .glitch { position:relative; }
+    .glitch::before, .glitch::after { content:attr(data-text); position:absolute; top:0; left:0; width:100%; height:100%; }
+    .glitch::before { color:var(--magenta); animation:glitch1 4s infinite; clip-path:polygon(0 20%,100% 20%,100% 40%,0 40%); }
+    .glitch::after  { color:var(--cyan);    animation:glitch2 4s infinite; clip-path:polygon(0 60%,100% 60%,100% 80%,0 80%); }
+
+    /* ANIMATIONS */
+    @keyframes fadeUp {
+      from { opacity:0; transform:translateY(24px); }
+      to   { opacity:1; transform:translateY(0); }
+    }
+    @keyframes scrollPulse {
+      0%,100% { opacity:0.3; } 50% { opacity:1; }
+    }
+    @keyframes glitch1 {
+      0%,90%,100% { transform:none; opacity:0; }
+      91% { transform:translateX(-3px); opacity:0.7; }
+      93% { transform:translateX(3px);  opacity:0.5; }
+      95% { transform:translateX(-2px); opacity:0.7; }
+    }
+    @keyframes glitch2 {
+      0%,93%,100% { transform:none; opacity:0; }
+      94% { transform:translateX(3px);  opacity:0.5; }
+      96% { transform:translateX(-3px); opacity:0.7; }
+      98% { transform:translateX(2px);  opacity:0.5; }
+    }
+
+    /* MOBILE */
+    @media (max-width:900px) {
+      nav { padding:16px 24px; }
+      .nav-links { display:none; }
+      section { padding:80px 24px; }
+      .security-grid { grid-template-columns:1fr; }
+      .process-steps { grid-template-columns:1fr 1fr; }
+      .process-steps::before { display:none; }
+      .contact-grid { grid-template-columns:1fr; gap:40px; }
+      footer { flex-direction:column; text-align:center; }
+    }
+    @media (max-width:560px) {
+      .stats-bar { flex-wrap:wrap; }
+      .stat-item { min-width:50%; border-bottom:1px solid var(--border); }
+      .process-steps { grid-template-columns:1fr; }
+      .threat-matrix { grid-template-columns:1fr; }
+      .security-block { padding:32px 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="scanlines"></div>
+<div class="glitch-overlay" id="glitch-overlay"></div>
+
+<div id="app">
+
+  <!-- NAV -->
+  <nav>
+    <a href="#hero" class="nav-logo">DARKBLOOM<sup>&#8482;</sup></a>
+    <ul class="nav-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#security">Security</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-eyebrow">// Next-Gen Software Solutions</p>
+    <h1 class="hero-title glitch" data-text="DARKBLOOM">
+      DARK<span class="accent">BLOOM</span><sup>&#8482;</sup>
+    </h1>
+    <p class="hero-industries">INDUSTRIES</p>
+    <p class="hero-sub">Engineered for the future. Built to dominate.<br/>From sleek web platforms to military-grade secure systems.</p>
+    <div class="hero-cta-group">
+      <a href="#services" class="btn-primary">View Services</a>
+      <a href="#contact" class="btn-secondary">Initialize Contact</a>
+    </div>
+    <div class="scroll-indicator">
+      <span>SCROLL</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num" data-target="100">0</span>
+      <span class="stat-label">% Client Satisfaction</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="256">0</span>
+      <span class="stat-label">-Bit Encryption Standard</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="99">0</span>
+      <span class="stat-label">% Uptime Guaranteed</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num" data-target="24">0</span>
+      <span class="stat-label">/7 Support Active</span>
+    </div>
+  </div>
+
+  <!-- SERVICES -->
+  <section id="services">
+    <div class="section-header">
+      <span class="section-tag">// 01 &mdash; Services</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">What We <span class="hi">Build</span></h2>
+    <p style="color:rgba(200,232,240,0.45);margin-bottom:52px;max-width:560px;line-height:1.8;">From pixel-perfect interfaces to hardened backend architectures &mdash; we engineer software that performs under any condition.</p>
+
+    <div class="services-grid">
+      <div class="service-card">
+        <span class="service-icon">&#127760;</span>
+        <div class="service-name">Website Development</div>
+        <p class="service-desc">High-performance websites engineered for speed, conversion, and visual impact. Custom-built from the ground up &mdash; no templates, no compromises.</p>
+        <div class="service-tags">
+          <span class="tag">React</span><span class="tag">Next.js</span><span class="tag">Three.js</span><span class="tag">WebGL</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">&#9881;&#65039;</span>
+        <div class="service-name">Software Development</div>
+        <p class="service-desc">End-to-end software solutions &mdash; from robust backend systems to complex desktop applications. Architected for scale, reliability, and longevity.</p>
+        <div class="service-tags">
+          <span class="tag">C++</span><span class="tag">Rust</span><span class="tag">Python</span><span class="tag">Go</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">&#127912;</span>
+        <div class="service-name">Custom Websites</div>
+        <p class="service-desc">Bespoke digital experiences tailored to your brand identity. Every pixel intentional. Every interaction crafted to leave an impression.</p>
+        <div class="service-tags">
+          <span class="tag">UI/UX</span><span class="tag">Motion</span><span class="tag">Branding</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">&#128241;</span>
+        <div class="service-name">Mobile App Development</div>
+        <p class="service-desc">Native and cross-platform mobile applications delivering smooth, intuitive experiences on any device. Engineered for performance at scale.</p>
+        <div class="service-tags">
+          <span class="tag">iOS</span><span class="tag">Android</span><span class="tag">Flutter</span><span class="tag">React Native</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">&#128260;</span>
+        <div class="service-name">Cross-Platform Apps</div>
+        <p class="service-desc">Build once, deploy everywhere. Unified codebases delivering native-quality experiences across iOS, Android, web, and desktop simultaneously.</p>
+        <div class="service-tags">
+          <span class="tag">Flutter</span><span class="tag">Electron</span><span class="tag">Tauri</span>
+        </div>
+      </div>
+      <div class="service-card">
+        <span class="service-icon">&#129302;</span>
+        <div class="service-name">Android App Development</div>
+        <p class="service-desc">Deep-native Android applications leveraging the full power of the platform &mdash; hardware APIs, background services, and system-level integrations.</p>
+        <div class="service-tags">
+          <span class="tag">Kotlin</span><span class="tag">Jetpack</span><span class="tag">NDK</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECURITY -->
+  <section id="security" style="padding-top:0;">
+    <div class="section-header">
+      <span class="section-tag">// 02 &mdash; Security</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="security-block">
+      <div class="security-grid">
+        <div>
+          <h2 class="security-title">Military-Grade<br/>Software Security</h2>
+          <p class="security-text">We don't just build software &mdash; we build fortresses. Every system we deliver is hardened against modern threat vectors using protocols trusted by government and defense contractors.</p>
+          <ul class="security-list">
+            <li>AES-256 / RSA-4096 encryption standards</li>
+            <li>Zero-trust architecture implementation</li>
+            <li>Penetration testing &amp; vulnerability audits</li>
+            <li>Secure coding practices (OWASP / NIST)</li>
+            <li>End-to-end encrypted communications</li>
+            <li>Real-time intrusion detection systems</li>
+          </ul>
+        </div>
+        <div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.4);letter-spacing:0.3em;margin-bottom:16px;">THREAT RESPONSE MATRIX</div>
+          <div class="threat-matrix">
+            <div class="threat-cell"><span class="threat-label">Encryption</span><span class="threat-value">AES-256</span></div>
+            <div class="threat-cell"><span class="threat-label">Auth Protocol</span><span class="threat-value">MFA+</span></div>
+            <div class="threat-cell"><span class="threat-label">Audit Cycle</span><span class="threat-value">72hr</span></div>
+            <div class="threat-cell"><span class="threat-label">Response SLA</span><span class="threat-value">&lt;1hr</span></div>
+          </div>
+          <div style="margin-top:24px;border:1px solid rgba(0,255,136,0.15);padding:20px;background:rgba(0,255,136,0.02);">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.5);letter-spacing:0.2em;margin-bottom:12px;">// SYSTEM STATUS</div>
+            <div id="status-feed" style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(0,255,136,0.6);line-height:2;"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section id="process">
+    <div class="section-header">
+      <span class="section-tag">// 03 &mdash; Process</span>
+      <div class="section-line"></div>
+    </div>
+    <h2 class="section-title">How We <span class="hi">Operate</span></h2>
+    <p style="color:rgba(200,232,240,0.45);margin-bottom:64px;max-width:560px;line-height:1.8;">A battle-tested development methodology &mdash; transparent, efficient, and relentlessly focused on delivery.</p>
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-num">01</div>
+        <div class="step-title">BRIEF</div>
+        <p class="step-desc">Deep-dive discovery session. We analyze your objectives, audience, and technical requirements.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">02</div>
+        <div class="step-title">ARCHITECT</div>
+        <p class="step-desc">System design and tech stack selection. Every decision backed by data, performance benchmarks, and security requirements.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">03</div>
+        <div class="step-title">BUILD</div>
+        <p class="step-desc">Agile sprints with weekly deliverables. Continuous integration, automated testing, and live previews throughout.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-num">04</div>
+        <div class="step-title">DEPLOY</div>
+        <p class="step-desc">Hardened production deployment with full security audit, performance optimization, and ongoing support.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="section-header">
+      <span class="section-tag">// 04 &mdash; Contact</span>
+      <div class="section-line"></div>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <h2 class="section-title">Initialize <span class="hi">Contact</span></h2>
+        <p class="contact-lead">Ready to build something that cuts through the noise? Let's talk about what you need &mdash; no fluff, no filler. Just solutions.</p>
+        <div class="contact-info">
+          <div class="contact-info-item">
+            <span class="dot"></span>
+            <span>contact@darkbloomindustries.com</span>
+          </div>
+          <div class="contact-info-item">
+            <span class="dot" style="background:var(--green);box-shadow:0 0 8px var(--green);"></span>
+            <span>SYSTEMS ONLINE &mdash; RESPONSE &lt;24HR</span>
+          </div>
+          <div class="contact-info-item">
+            <span class="dot" style="background:var(--magenta);box-shadow:0 0 8px var(--magenta);"></span>
+            <span>NDA AVAILABLE UPON REQUEST</span>
+          </div>
+        </div>
+      </div>
+      <div class="contact-form">
+        <div class="form-group">
+          <label>// Your Name</label>
+          <input type="text" placeholder="John Doe"/>
+        </div>
+        <div class="form-group">
+          <label>// Email Address</label>
+          <input type="email" placeholder="you@domain.com"/>
+        </div>
+        <div class="form-group">
+          <label>// Service Required</label>
+          <select>
+            <option value="">&mdash; Select Service &mdash;</option>
+            <option>Website Development</option>
+            <option>Software Development</option>
+            <option>Custom Website</option>
+            <option>Mobile App Development</option>
+            <option>Cross-Platform App</option>
+            <option>Android App Development</option>
+            <option>Military-Grade Security</option>
+            <option>Full Project (Multiple Services)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>// Project Brief</label>
+          <textarea placeholder="Describe your project, timeline, and objectives..."></textarea>
+        </div>
+        <button class="btn-primary" id="submit-btn" style="cursor:none;width:100%;padding:18px;font-size:0.85rem;" onclick="handleSubmit(event)">
+          TRANSMIT MESSAGE &#9654;
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">DARKBLOOM<sup>&#8482;</sup> INDUSTRIES</div>
+    <p class="footer-copy">&#169; 2025 Darkbloom Industries&#8482;. All rights reserved.<br/>Darkbloom&#8482; is a trademark of Darkbloom Industries&#8482;.</p>
+    <ul class="footer-links">
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Security</a></li>
+    </ul>
+  </footer>
+
+</div><!-- #app -->
+
+<script>
+  // CURSOR
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX; my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top  = my + 'px';
+  });
+
+  (function animRing() {
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top  = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+
+  document.querySelectorAll('a, button, .service-card, .threat-cell').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '60px'; ring.style.height = '60px'; ring.style.opacity = '0.8';
+      cursor.style.transform = 'translate(-50%,-50%) scale(0.5)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px'; ring.style.height = '36px'; ring.style.opacity = '0.5';
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+    });
+  });
+
+  // CANVAS BACKGROUND
+  const canvas = document.getElementById('bg-canvas');
+  const ctx    = canvas.getContext('2d');
+  let W, H;
+
+  function resize() { W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  resize();
+  window.addEventListener('resize', resize);
+
+  const PARTICLES = 100;
+  const particles = [];
+  for (let i = 0; i < PARTICLES; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.5 + 0.3,
+      color: Math.random() > 0.7 ? '#ff00aa' : '#00f5ff',
+      alpha: Math.random() * 0.5 + 0.1
+    });
+  }
+
+  let mouseX = W/2, mouseY = H/2;
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+
+  function drawBg() {
+    ctx.clearRect(0, 0, W, H);
+
+    // Grid
+    ctx.strokeStyle = 'rgba(0,245,255,0.04)';
+    ctx.lineWidth = 1;
+    const cw = W / 22, rh = H / 14;
+    for (let c = 0; c <= 22; c++) {
+      ctx.beginPath(); ctx.moveTo(c*cw, 0); ctx.lineTo(c*cw, H); ctx.stroke();
+    }
+    for (let r = 0; r <= 14; r++) {
+      ctx.beginPath(); ctx.moveTo(0, r*rh); ctx.lineTo(W, r*rh); ctx.stroke();
+    }
+
+    // Glow zones
+    let g = ctx.createRadialGradient(W/2, H, 0, W/2, H, W*0.6);
+    g.addColorStop(0, 'rgba(0,245,255,0.04)'); g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+    g = ctx.createRadialGradient(W/2, 0, 0, W/2, 0, W*0.4);
+    g.addColorStop(0, 'rgba(255,0,170,0.04)'); g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+    // Mouse ripple
+    g = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 200);
+    g.addColorStop(0, 'rgba(0,245,255,0.03)'); g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g; ctx.fillRect(0,0,W,H);
+
+    // Particles
+    particles.forEach((p, i) => {
+      p.x += p.vx; p.y += p.vy;
+      if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+      if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+
+      ctx.globalAlpha = p.alpha;
+      ctx.shadowBlur = 6; ctx.shadowColor = p.color;
+      ctx.fillStyle = p.color;
+      ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI*2); ctx.fill();
+      ctx.shadowBlur = 0; ctx.globalAlpha = 1;
+
+      for (let j = i+1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x-q.x, dy = p.y-q.y;
+        const d = Math.sqrt(dx*dx+dy*dy);
+        if (d < 120) {
+          ctx.strokeStyle = `rgba(0,245,255,${0.07*(1-d/120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath(); ctx.moveTo(p.x,p.y); ctx.lineTo(q.x,q.y); ctx.stroke();
+        }
+      }
+    });
+
+    // Random glitch line
+    if (Math.random() < 0.015) {
+      ctx.fillStyle = `rgba(0,245,255,${Math.random()*0.06})`;
+      ctx.fillRect(0, Math.random()*H, W, Math.random()*3+1);
+    }
+
+    requestAnimationFrame(drawBg);
+  }
+  drawBg();
+
+  // GLITCH OVERLAY
+  const glitchEl = document.getElementById('glitch-overlay');
+  function triggerGlitch() {
+    const delay = 3000 + Math.random() * 7000;
+    setTimeout(() => {
+      glitchEl.style.opacity = '1';
+      glitchEl.style.background = `rgba(0,245,255,0.02)`;
+      glitchEl.style.transform = `translateX(${(Math.random()-0.5)*10}px)`;
+      setTimeout(() => {
+        glitchEl.style.opacity = '0'; glitchEl.style.transform = 'none';
+        setTimeout(() => {
+          glitchEl.style.opacity = '1';
+          glitchEl.style.background = `rgba(255,0,170,0.02)`;
+          glitchEl.style.transform = `translateX(${(Math.random()-0.5)*6}px)`;
+          setTimeout(() => { glitchEl.style.opacity = '0'; glitchEl.style.transform = 'none'; triggerGlitch(); }, 60);
+        }, 30);
+      }, 80);
+    }, delay);
+  }
+  triggerGlitch();
+
+  // COUNTERS
+  function animateCounters() {
+    document.querySelectorAll('.stat-num[data-target]').forEach(el => {
+      const target = parseInt(el.dataset.target);
+      let current = 0;
+      const step = target / 60;
+      const iv = setInterval(() => {
+        current += step;
+        if (current >= target) { current = target; clearInterval(iv); }
+        el.textContent = Math.floor(current);
+      }, 16);
+    });
+  }
+  const statsObs = new IntersectionObserver(e => { if (e[0].isIntersecting) { animateCounters(); statsObs.disconnect(); } }, { threshold: 0.5 });
+  statsObs.observe(document.querySelector('.stats-bar'));
+
+  // STATUS FEED
+  const statusLines = [
+    '> FIREWALL.............. ACTIVE',
+    '> ENCRYPTION........... AES-256',
+    '> INTRUSION DETECTION.. ONLINE',
+    '> ZERO-TRUST LAYER..... ENABLED',
+    '> AUDIT LOG............ RUNNING',
+    '> THREAT LEVEL......... MINIMAL',
+  ];
+  const feedEl = document.getElementById('status-feed');
+  let si = 0;
+  function nextLine() {
+    if (si < statusLines.length) {
+      const line = document.createElement('div'); line.textContent = statusLines[si++]; feedEl.appendChild(line);
+      setTimeout(nextLine, 600);
+    } else {
+      setTimeout(() => { feedEl.innerHTML = ''; si = 0; nextLine(); }, 3000);
+    }
+  }
+  const secObs = new IntersectionObserver(e => { if (e[0].isIntersecting) { nextLine(); secObs.disconnect(); } }, { threshold: 0.3 });
+  secObs.observe(document.getElementById('security'));
+
+  // FORM SUBMIT
+  function handleSubmit(e) {
+    const btn = document.getElementById('submit-btn');
+    btn.textContent = 'TRANSMITTING...';
+    btn.style.background = 'var(--magenta)';
+    btn.style.color = '#fff';
+    setTimeout(() => {
+      btn.textContent = 'MESSAGE RECEIVED \u2713';
+      btn.style.background = 'var(--green)';
+      btn.style.color = '#020408';
+    }, 1500);
+  }
+
+  // SCROLL FADE-IN
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => {
+      if (e.isIntersecting) { e.target.style.opacity = '1'; e.target.style.transform = 'translateY(0)'; }
+    });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.service-card, .process-step, .stat-item').forEach(el => {
+    el.style.opacity = '0'; el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+
+  // HERO PARALLAX
+  const heroTitle = document.querySelector('.hero-title');
+  document.addEventListener('mousemove', e => {
+    const xr = (e.clientX/window.innerWidth  - 0.5) * 8;
+    const yr = (e.clientY/window.innerHeight - 0.5) * 8;
+    if (heroTitle) heroTitle.style.textShadow = `
+      ${xr*0.5}px ${yr*0.5}px 20px rgba(0,245,255,0.6),
+      ${xr}px ${yr}px 60px rgba(0,245,255,0.2),
+      0 0 120px rgba(0,245,255,0.1)`;
+  });
+</script>
+</body>
+</html>
