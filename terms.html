@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <title>Terms of Service &mdash; Darkbloom Industries&#8482;</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--cyan:#00f5ff;--magenta:#ff00aa;--green:#00ff88;--dark:#020408;--border:rgba(0,245,255,0.15);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--dark);color:#c8e8f0;font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;line-height:1.8;}
+    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan);}
+    .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:1;}
+    nav{position:fixed;top:0;width:100%;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,4,8,0.97);backdrop-filter:blur(4px);z-index:100;border-bottom:1px solid rgba(0,245,255,0.08);}
+    .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:0.2em;text-shadow:0 0 20px var(--cyan);text-decoration:none;}
+    .nav-logo sup{font-size:0.55rem;color:var(--magenta);}
+    .back-link{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:rgba(200,232,240,0.5);text-decoration:none;letter-spacing:0.15em;transition:color 0.2s;}
+    .back-link:hover{color:var(--cyan);}
+    .page-wrap{max-width:860px;margin:0 auto;padding:140px 48px 100px;position:relative;z-index:2;}
+    .page-tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.35em;text-transform:uppercase;margin-bottom:16px;display:block;}
+    .page-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.8rem,4vw,3rem);color:#fff;letter-spacing:0.06em;text-shadow:0 0 20px rgba(0,245,255,0.4);margin-bottom:8px;}
+    .page-date{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(200,232,240,0.3);letter-spacing:0.2em;margin-bottom:60px;display:block;}
+    .divider{height:1px;background:linear-gradient(to right,var(--cyan),transparent);margin-bottom:60px;opacity:0.2;}
+    h2{font-family:'Orbitron',monospace;font-size:1rem;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;margin:48px 0 16px;}
+    p{color:rgba(200,232,240,0.65);font-size:1.05rem;margin-bottom:16px;}
+    ul{color:rgba(200,232,240,0.65);font-size:1.05rem;margin:0 0 16px 0;padding-left:0;list-style:none;}
+    ul li{padding-left:20px;position:relative;margin-bottom:8px;}
+    ul li::before{content:'▶';position:absolute;left:0;color:var(--cyan);font-size:0.5rem;top:6px;}
+    a{color:var(--cyan);text-decoration:none;}
+    a:hover{text-decoration:underline;}
+    footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;position:relative;z-index:2;}
+    .footer-brand{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;color:var(--cyan);}
+    .footer-brand sup{color:var(--magenta);font-size:0.5rem;}
+    .footer-copy{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(200,232,240,0.2);letter-spacing:0.1em;}
+    .footer-links{display:flex;gap:20px;list-style:none;}
+    .footer-links a{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(200,232,240,0.3);text-decoration:none;transition:color 0.2s;}
+    .footer-links a:hover{color:var(--cyan);}
+    @media(max-width:700px){nav{padding:14px 20px}.page-wrap{padding:120px 24px 80px}footer{flex-direction:column;text-align:center}}
+  </style>
+</head>
+<body>
+<div id="cursor"></div>
+<div class="scanlines"></div>
+
+<nav>
+  <a href="index.html" class="nav-logo">DARKBLOOM<sup>&#8482;</sup></a>
+  <a href="index.html" class="back-link">&#8592; BACK TO SITE</a>
+</nav>
+
+<div class="page-wrap">
+  <span class="page-tag">// Legal Documentation</span>
+  <h1 class="page-title">Terms of Service</h1>
+  <span class="page-date">EFFECTIVE DATE: JANUARY 1, 2025 &nbsp;&bull;&nbsp; LAST UPDATED: 2025</span>
+  <div class="divider"></div>
+
+  <p>These Terms of Service ("Terms") govern your use of the Darkbloom Industries&#8482; website and any services provided by Darkbloom Industries&#8482; ("Company," "we," "us," or "our"). By accessing our website or engaging our services, you agree to be bound by these Terms.</p>
+
+  <h2>1. Services</h2>
+  <p>Darkbloom Industries&#8482; provides freelance and contract software development, website development, mobile application development, and security implementation services. Specific deliverables, timelines, payment terms, and scope are defined in individual project agreements or statements of work (SOW) executed between the Company and each client.</p>
+
+  <h2>2. Eligibility</h2>
+  <p>You must be at least 18 years of age and have the legal authority to enter into binding agreements to engage our services or submit inquiries through this website. By using this site, you represent that you meet these requirements.</p>
+
+  <h2>3. Intellectual Property</h2>
+  <p>Unless otherwise specified in a written project agreement:</p>
+  <ul>
+    <li>All custom code, designs, and deliverables produced for a client become the client's property upon receipt of full payment</li>
+    <li>Darkbloom Industries&#8482; retains ownership of any pre-existing tools, frameworks, libraries, or methodologies used in the creation of deliverables ("Background IP")</li>
+    <li>Darkbloom Industries&#8482; retains the right to reference completed projects in its portfolio unless the client requests confidentiality in writing prior to project commencement</li>
+    <li>All content on this website, including text, graphics, and code, is the property of Darkbloom Industries&#8482; and may not be reproduced without written permission</li>
+  </ul>
+
+  <h2>4. Confidentiality</h2>
+  <p>Both parties agree to maintain the confidentiality of any proprietary or sensitive information shared during the course of an engagement. Upon request, a formal Non-Disclosure Agreement (NDA) will be executed prior to the exchange of any sensitive project details. Client information is never shared with third parties except as required for service delivery (e.g., form routing via Formspree) or by law.</p>
+
+  <h2>5. Payment Terms</h2>
+  <p>Payment terms are established in individual project agreements. Standard terms include:</p>
+  <ul>
+    <li>A deposit (typically 50%) is required before work commences</li>
+    <li>Final payment is due upon delivery of completed deliverables</li>
+    <li>Late payments may be subject to a 1.5% monthly service charge</li>
+    <li>Work may be paused on accounts with overdue invoices exceeding 15 days</li>
+  </ul>
+
+  <h2>6. Revisions &amp; Scope</h2>
+  <p>Each project agreement defines the number of included revision rounds. Requests outside the agreed scope will be quoted as change orders and require written approval before implementation. Scope changes may affect timeline and pricing.</p>
+
+  <h2>7. Warranties &amp; Disclaimers</h2>
+  <p>Darkbloom Industries&#8482; warrants that all deliverables will be produced with professional care and in accordance with the agreed specifications. We do not warrant that deliverables will be error-free, uninterrupted, or free from all vulnerabilities after client modification or third-party integration. Security implementations are compliant with the specific standards agreed upon in the project scope; no absolute security guarantee is made or implied.</p>
+  <p>THIS WEBSITE AND ITS CONTENT ARE PROVIDED "AS IS" WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED.</p>
+
+  <h2>8. Limitation of Liability</h2>
+  <p>To the maximum extent permitted by applicable law, Darkbloom Industries&#8482; shall not be liable for any indirect, incidental, special, consequential, or punitive damages arising out of or related to your use of our services or website. Our total liability for any claim related to a specific project shall not exceed the total fees paid by the client for that project.</p>
+
+  <h2>9. Termination</h2>
+  <p>Either party may terminate a project engagement with 14 days written notice. The client is responsible for payment of all work completed up to the termination date. Deposits are non-refundable once work has commenced. Darkbloom Industries&#8482; reserves the right to refuse or terminate service for any reason, including violations of these Terms.</p>
+
+  <h2>10. Governing Law</h2>
+  <p>These Terms shall be governed by and construed in accordance with the laws of the State of Utah, United States, without regard to its conflict of law provisions. Any disputes shall be resolved through binding arbitration in Salt Lake County, Utah, unless both parties agree otherwise in writing.</p>
+
+  <h2>11. Changes to These Terms</h2>
+  <p>We reserve the right to update these Terms at any time. Changes are effective immediately upon posting to this page. Continued use of our site or services after changes are posted constitutes acceptance of the updated Terms.</p>
+
+  <h2>12. Contact</h2>
+  <p>For questions regarding these Terms of Service:</p>
+  <ul>
+    <li>Email: <a href="mailto:DarkbloomIndustries@outlook.com">DarkbloomIndustries@outlook.com</a></li>
+    <li>Subject line: "Terms Inquiry &mdash; [Your Name]"</li>
+  </ul>
+</div>
+
+<footer>
+  <div class="footer-brand">DARKBLOOM<sup>&#8482;</sup> INDUSTRIES</div>
+  <p class="footer-copy">&#169; 2025 Darkbloom Industries&#8482;. All rights reserved.</p>
+  <ul class="footer-links">
+    <li><a href="privacy.html">Privacy</a></li>
+    <li><a href="terms.html">Terms</a></li>
+    <li><a href="security-policy.html">Security</a></li>
+  </ul>
+</footer>
+
+<script>
+  const cursor=document.getElementById('cursor');
+  document.addEventListener('mousemove',e=>{ cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px'; });
+</script>
+</body>
+</html>
