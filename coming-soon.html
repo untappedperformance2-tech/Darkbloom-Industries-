@@ -1,1 +1,129 @@
-Products Coming Soon
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Coming Soon - Darkbloom Industries™</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #020408;
+      color: #c8e8f0;
+      font-family: 'Rajdhani', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .coming-soon-container {
+      text-align: center;
+      z-index: 2;
+      padding: 40px;
+    }
+    h1 {
+      font-family: 'Orbitron', monospace;
+      font-size: clamp(2rem, 5vw, 4rem);
+      color: #00f5ff;
+      text-shadow: 0 0 30px rgba(0,245,255,0.5);
+      margin-bottom: 20px;
+      letter-spacing: 0.1em;
+    }
+    .glow-text {
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 1.2rem;
+      color: rgba(0,245,255,0.7);
+      margin-bottom: 40px;
+      letter-spacing: 0.2em;
+    }
+    .back-link {
+      display: inline-block;
+      font-family: 'Share Tech Mono', monospace;
+      font-size: 0.8rem;
+      letter-spacing: 0.2em;
+      color: #00f5ff;
+      text-decoration: none;
+      border: 1px solid #00f5ff;
+      padding: 12px 32px;
+      transition: all 0.3s;
+    }
+    .back-link:hover {
+      background: rgba(0,245,255,0.1);
+      box-shadow: 0 0 20px rgba(0,245,255,0.3);
+    }
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+      pointer-events: none;
+    }
+  </style>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+</head>
+<body>
+  <canvas id="bg-canvas"></canvas>
+  <div class="coming-soon-container">
+    <h1>COMING SOON</h1>
+    <div class="glow-text">// NEW PRODUCTS IN DEVELOPMENT</div>
+    <a href="/" class="back-link">← RETURN TO HOME</a>
+  </div>
+
+  <script>
+    // Simple particle background
+    const canvas = document.getElementById('bg-canvas');
+    const ctx = canvas.getContext('2d');
+    
+    function resize() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+    
+    const particles = [];
+    for(let i = 0; i < 80; i++) {
+      particles.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        vx: (Math.random() - 0.5) * 0.5,
+        vy: (Math.random() - 0.5) * 0.5,
+        r: Math.random() * 2,
+        color: Math.random() > 0.7 ? '#ff00aa' : '#00f5ff'
+      });
+    }
+    
+    function animate() {
+      ctx.fillStyle = '#020408';
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      
+      particles.forEach(p => {
+        p.x += p.vx;
+        p.y += p.vy;
+        
+        if(p.x < 0) p.x = canvas.width;
+        if(p.x > canvas.width) p.x = 0;
+        if(p.y < 0) p.y = canvas.height;
+        if(p.y > canvas.height) p.y = 0;
+        
+        ctx.fillStyle = p.color;
+        ctx.shadowBlur = 8;
+        ctx.shadowColor = p.color;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      
+      requestAnimationFrame(animate);
+    }
+    animate();
+  </script>
+</body>
+</html>
