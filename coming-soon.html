@@ -3,127 +3,508 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Coming Soon - Darkbloom Industries™</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-    body {
-      background: #020408;
-      color: #c8e8f0;
-      font-family: 'Rajdhani', sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      position: relative;
-      overflow: hidden;
-    }
-    .coming-soon-container {
-      text-align: center;
-      z-index: 2;
-      padding: 40px;
-    }
-    h1 {
-      font-family: 'Orbitron', monospace;
-      font-size: clamp(2rem, 5vw, 4rem);
-      color: #00f5ff;
-      text-shadow: 0 0 30px rgba(0,245,255,0.5);
-      margin-bottom: 20px;
-      letter-spacing: 0.1em;
-    }
-    .glow-text {
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 1.2rem;
-      color: rgba(0,245,255,0.7);
-      margin-bottom: 40px;
-      letter-spacing: 0.2em;
-    }
-    .back-link {
-      display: inline-block;
-      font-family: 'Share Tech Mono', monospace;
-      font-size: 0.8rem;
-      letter-spacing: 0.2em;
-      color: #00f5ff;
-      text-decoration: none;
-      border: 1px solid #00f5ff;
-      padding: 12px 32px;
-      transition: all 0.3s;
-    }
-    .back-link:hover {
-      background: rgba(0,245,255,0.1);
-      box-shadow: 0 0 20px rgba(0,245,255,0.3);
-    }
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 1;
-      pointer-events: none;
-    }
-  </style>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; frame-ancestors 'none';"/>
+  <meta name="description" content="New products and solutions coming soon from Darkbloom Industries — next-generation security tools and platforms currently in development."/>
+  <title>Coming Soon &mdash; Darkbloom Industries&#8482;</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
+  <style>
+    :root{--cyan:#00f5ff;--magenta:#ff00aa;--green:#00ff88;--dark:#020408;--panel:rgba(0,245,255,0.04);--border:rgba(0,245,255,0.15);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--dark);color:#c8e8f0;font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
+
+    /* CURSOR */
+    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,background 0.2s;box-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan);}
+    #cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,opacity 0.2s;opacity:0.5;}
+
+    /* CANVAS + OVERLAYS */
+    #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+    .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:1;}
+    .glitch-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0;}
+    #app{position:relative;z-index:3;}
+
+    /* NAV */
+    nav{position:fixed;top:0;width:100%;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(2,4,8,0.95),transparent);backdrop-filter:blur(4px);z-index:100;border-bottom:1px solid rgba(0,245,255,0.08);}
+    .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:0.2em;text-shadow:0 0 20px var(--cyan),0 0 40px rgba(0,245,255,0.3);text-decoration:none;}
+    .nav-logo sup{font-size:0.55rem;color:var(--magenta);}
+    .nav-links{display:flex;gap:36px;list-style:none;}
+    .nav-links a{font-family:'Share Tech Mono',monospace;font-size:0.75rem;color:rgba(200,232,240,0.6);text-decoration:none;letter-spacing:0.15em;text-transform:uppercase;transition:color 0.2s,text-shadow 0.2s;position:relative;}
+    .nav-links a::after{content:'';position:absolute;bottom:-4px;left:0;width:0;height:1px;background:var(--cyan);transition:width 0.3s;box-shadow:0 0 6px var(--cyan);}
+    .nav-links a:hover{color:var(--cyan);text-shadow:0 0 10px var(--cyan);}
+    .nav-links a:hover::after{width:100%;}
+
+    /* HERO */
+    #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 24px 60px;position:relative;}
+    .hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--magenta);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp 0.8s 0.3s forwards;}
+    .hero-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2.8rem,8vw,7rem);line-height:1.0;color:#fff;letter-spacing:0.06em;text-shadow:0 0 20px rgba(0,245,255,0.6),0 0 60px rgba(0,245,255,0.2),0 0 120px rgba(0,245,255,0.1);opacity:0;animation:fadeUp 0.8s 0.5s forwards;position:relative;}
+    .hero-title .accent{color:var(--cyan);}
+    .hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);color:rgba(200,232,240,0.5);margin-top:24px;letter-spacing:0.1em;max-width:760px;line-height:1.7;opacity:0;animation:fadeUp 0.8s 0.7s forwards;}
+    .hero-cta-group{display:flex;gap:20px;margin-top:52px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp 0.8s 0.9s forwards;}
+
+    /* COMING SOON BADGES */
+    .coming-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px;opacity:0;animation:fadeUp 0.8s 1.1s forwards;}
+    .cbadge{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.8);border:1px solid rgba(0,245,255,0.25);padding:5px 14px;letter-spacing:0.15em;background:rgba(0,245,255,0.04);}
+
+    /* BUTTONS */
+    .btn-primary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:16px 40px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
+    .btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
+    .btn-primary:hover::before{left:100%;}
+    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px var(--cyan),0 0 60px rgba(0,245,255,0.3);}
+    .btn-secondary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);background:transparent;border:1px solid var(--cyan);padding:16px 40px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s,box-shadow 0.2s,transform 0.2s;text-decoration:none;display:inline-block;}
+    .btn-secondary:hover{background:rgba(0,245,255,0.08);box-shadow:0 0 20px rgba(0,245,255,0.2),inset 0 0 20px rgba(0,245,255,0.05);transform:translateY(-2px);}
+
+    /* SCROLL INDICATOR */
+    .scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp 0.8s 1.4s forwards;}
+    .scroll-indicator span{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.4);letter-spacing:0.3em;}
+    .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:scrollPulse 2s infinite;}
+
+    /* PRODUCT PREVIEW SECTION */
+    section{padding:100px 48px;max-width:1280px;margin:0 auto;}
+    .section-header{display:flex;align-items:center;gap:20px;margin-bottom:64px;}
+    .section-tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.3em;text-transform:uppercase;}
+    .section-line{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);}
+    .section-title{font-family:'Orbitron',monospace;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:#fff;letter-spacing:0.06em;margin-bottom:16px;}
+    .section-title .hi{color:var(--cyan);text-shadow:0 0 15px var(--cyan);}
+
+    .products-preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;}
+    .product-teaser{background:var(--panel);border:1px solid var(--border);padding:48px 36px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s;}
+    .product-teaser:hover{border-color:rgba(0,245,255,0.4);transform:translateY(-4px);}
+    .product-icon{font-size:2.5rem;margin-bottom:24px;display:block;filter:drop-shadow(0 0 12px var(--cyan));}
+    .product-name{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;}
+    .product-desc{font-size:0.95rem;color:rgba(200,232,240,0.55);line-height:1.7;margin-bottom:20px;}
+    .product-status{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--green);letter-spacing:0.15em;display:inline-block;border-top:1px solid rgba(0,255,136,0.3);padding-top:12px;margin-top:8px;}
+
+    /* COUNTDOWN TIMER */
+    .countdown-section{padding:60px 48px;max-width:1280px;margin:0 auto;text-align:center;}
+    .countdown-title{font-family:'Orbitron',monospace;font-size:1.4rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:32px;}
+    .countdown-container{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
+    .countdown-item{text-align:center;min-width:100px;}
+    .countdown-number{font-family:'Orbitron',monospace;font-size:3rem;font-weight:900;color:#fff;text-shadow:0 0 20px var(--cyan);display:block;line-height:1;}
+    .countdown-label{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:rgba(200,232,240,0.4);letter-spacing:0.2em;margin-top:8px;}
+
+    /* NOTIFICATION FORM */
+    .notify-section{padding:0 48px 100px;max-width:680px;margin:0 auto;}
+    .notify-card{border:1px solid var(--border);background:linear-gradient(135deg,rgba(0,245,255,0.03),rgba(255,0,170,0.02));padding:60px 48px;text-align:center;position:relative;}
+    .notify-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+    .notify-title{font-family:'Orbitron',monospace;font-size:1.3rem;color:#fff;margin-bottom:16px;}
+    .notify-sub{color:rgba(200,232,240,0.45);margin-bottom:32px;font-size:0.9rem;line-height:1.7;}
+    .notify-form{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
+    .notify-input{flex:1;min-width:260px;background:rgba(0,245,255,0.03);border:1px solid rgba(0,245,255,0.15);color:#c8e8f0;font-family:'Rajdhani',sans-serif;font-size:1rem;padding:14px 20px;outline:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
+    .notify-input:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,245,255,0.1);}
+    .notify-msg{font-family:'Share Tech Mono',monospace;font-size:0.7rem;margin-top:20px;padding:10px;display:none;}
+    .notify-msg.success{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.05);}
+    .notify-msg.error{color:#ff4466;border:1px solid rgba(255,68,102,0.3);background:rgba(255,68,102,0.05);}
+    .notify-msg.visible{display:block;}
+
+    /* FOOTER */
+    footer{border-top:1px solid var(--border);padding:40px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;}
+    .footer-brand{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;color:var(--cyan);text-shadow:0 0 10px rgba(0,245,255,0.4);}
+    .footer-brand sup{color:var(--magenta);font-size:0.55rem;}
+    .footer-copy{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(200,232,240,0.25);letter-spacing:0.1em;}
+    .footer-links{display:flex;gap:24px;list-style:none;}
+    .footer-links a{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(200,232,240,0.3);text-decoration:none;letter-spacing:0.12em;transition:color 0.2s;}
+    .footer-links a:hover{color:var(--cyan);}
+
+    /* ANIMATIONS */
+    @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.5}}
+
+    /* MOBILE */
+    @media(max-width:900px){nav{padding:16px 24px}.nav-links{display:none}section{padding:80px 24px}.countdown-container{gap:20px}.countdown-item{min-width:70px}.countdown-number{font-size:2rem}.notify-section{padding:0 24px 80px}.notify-card{padding:40px 28px}}
+    @media(max-width:560px){.countdown-container{gap:12px}.countdown-item{min-width:60px}.countdown-number{font-size:1.5rem}}
+  </style>
 </head>
 <body>
-  <canvas id="bg-canvas"></canvas>
-  <div class="coming-soon-container">
-    <h1>COMING SOON</h1>
-    <div class="glow-text">// NEW PRODUCTS IN DEVELOPMENT</div>
-    <a href="/" class="back-link">← RETURN TO HOME</a>
+
+<div id="cursor"></div>
+<div id="cursor-ring"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="scanlines"></div>
+<div class="glitch-overlay" id="glitch-overlay"></div>
+
+<div id="app">
+
+  <!-- NAV -->
+  <nav>
+    <a href="index.html" class="nav-logo">DARKBLOOM<sup>&#8482;</sup></a>
+    <ul class="nav-links">
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#security">Security</a></li>
+      <li><a href="index.html#process">Process</a></li>
+      <li><a href="products.html">Products</a></li>
+      <li><a href="coming-soon.html" style="color:var(--magenta);text-shadow:0 0 8px var(--magenta);">Coming Soon</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section id="hero">
+    <p class="hero-eyebrow">// Darkbloom Industries — Next Generation</p>
+    <h1 class="hero-title">COMING <span class="accent">SOON</span></h1>
+    <p class="hero-sub">New products. Expanded capabilities. Enterprise-grade solutions built to the highest security standards. We're engineering the future — and it's almost here.</p>
+    <div class="hero-cta-group">
+      <a href="#notify" class="btn-primary">Get Notified</a>
+      <a href="index.html" class="btn-secondary">Return to Home</a>
+    </div>
+    <div class="coming-badges">
+      <span class="cbadge">Q1 2026</span>
+      <span class="cbadge">NIST 800-171 ALIGNED</span>
+      <span class="cbadge">FIPS 140-3</span>
+      <span class="cbadge">ZERO-TRUST ARCHITECTURE</span>
+    </div>
+    <div class="scroll-indicator"><span>SCROLL</span><div class="scroll-line"></div></div>
+  </section>
+
+  <!-- PRODUCT PREVIEWS -->
+  <section id="preview">
+    <div class="section-header"><span class="section-tag">// Coming Products</span><div class="section-line"></div></div>
+    <h2 class="section-title">What's <span class="hi">Next</span></h2>
+    <p style="color:rgba(200,232,240,0.45);margin-bottom:52px;max-width:600px;line-height:1.8;">We're building the next generation of security-first software. These products are currently in active development and will be available soon.</p>
+    <div class="products-preview">
+      <div class="product-teaser">
+        <span class="product-icon">🔐</span>
+        <div class="product-name">QuantumShield™</div>
+        <p class="product-desc">Post-quantum cryptography implementation with hybrid key exchange protocols. Future-proof encryption for organizations preparing for the quantum computing era.</p>
+        <div class="product-status">STATUS: ACTIVE DEVELOPMENT — Q1 2026</div>
+      </div>
+      <div class="product-teaser">
+        <span class="product-icon">📊</span>
+        <div class="product-name">AuditCore™</div>
+        <p class="product-desc">Automated compliance monitoring and reporting platform. Real-time CMMC/NIST control validation with immutable audit trails and instant remediation alerts.</p>
+        <div class="product-status">STATUS: BETA — Q2 2026</div>
+      </div>
+      <div class="product-teaser">
+        <span class="product-icon">🌐</span>
+        <div class="product-name">EdgeDefend™</div>
+        <p class="product-desc">Zero-trust network access solution with micro-segmentation and continuous verification. Built for distributed workforces and hybrid cloud environments.</p>
+        <div class="product-status">STATUS: PRIVATE PREVIEW — Q1 2026</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COUNTDOWN TIMER -->
+  <div class="countdown-section">
+    <div class="countdown-title">// LAUNCH TIMER</div>
+    <div class="countdown-container">
+      <div class="countdown-item">
+        <span class="countdown-number" id="days">00</span>
+        <span class="countdown-label">DAYS</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="hours">00</span>
+        <span class="countdown-label">HOURS</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="minutes">00</span>
+        <span class="countdown-label">MINUTES</span>
+      </div>
+      <div class="countdown-item">
+        <span class="countdown-number" id="seconds">00</span>
+        <span class="countdown-label">SECONDS</span>
+      </div>
+    </div>
   </div>
 
-  <script>
-    // Simple particle background
-    const canvas = document.getElementById('bg-canvas');
-    const ctx = canvas.getContext('2d');
+  <!-- NOTIFICATION FORM -->
+  <div class="notify-section" id="notify">
+    <div class="notify-card">
+      <div class="notify-title">Be the <span style="color:var(--cyan);">First</span> to Know</div>
+      <p class="notify-sub">Subscribe for updates on product launches, early access opportunities, and exclusive pilot program invitations.</p>
+      <div class="notify-form">
+        <input type="email" id="notify-email" class="notify-input" placeholder="Enter your email address" maxlength="150"/>
+        <button class="btn-primary" id="notify-btn" style="padding:14px 32px;" onclick="handleNotify(event)">NOTIFY ME →</button>
+      </div>
+      <div class="notify-msg" id="notify-msg"></div>
+      <p style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(200,232,240,0.25);margin-top:24px;letter-spacing:0.1em;">No spam. No tracking. Just launch announcements and early access.</p>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-brand">DARKBLOOM<sup>&#8482;</sup> INDUSTRIES</div>
+    <p class="footer-copy">© 2025 Darkbloom Industries™. All rights reserved.</p>
+    <ul class="footer-links">
+      <li><a href="privacy.html">Privacy</a></li>
+      <li><a href="terms.html">Terms</a></li>
+      <li><a href="security-policy.html">Security</a></li>
+    </ul>
+  </footer>
+
+</div><!-- #app -->
+
+<script>
+  // ═══════════════════════════════════════
+  // NOTIFICATION HANDLER
+  // ═══════════════════════════════════════
+  async function handleNotify(e){
+    e.preventDefault();
+    const btn = document.getElementById('notify-btn');
+    const emailInput = document.getElementById('notify-email');
+    const msgBox = document.getElementById('notify-msg');
+    const email = emailInput.value.trim();
     
-    function resize() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
+    msgBox.className = 'notify-msg';
+    msgBox.textContent = '';
+    
+    // Simple email validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+    if(!email || !emailRegex.test(email)){
+      msgBox.textContent = '> Please enter a valid email address.';
+      msgBox.className = 'notify-msg error visible';
+      return;
     }
-    resize();
-    window.addEventListener('resize', resize);
     
-    const particles = [];
-    for(let i = 0; i < 80; i++) {
-      particles.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.5,
-        vy: (Math.random() - 0.5) * 0.5,
-        r: Math.random() * 2,
-        color: Math.random() > 0.7 ? '#ff00aa' : '#00f5ff'
+    btn.disabled = true;
+    btn.textContent = 'SENDING...';
+    
+    try{
+      const res = await fetch('https://formspree.io/f/myknagoq', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify({ email, source: 'Coming Soon Page Notification' })
       });
+      
+      if(res.ok){
+        btn.textContent = 'SUBSCRIBED ✓';
+        btn.style.background = 'var(--green)';
+        btn.style.color = '#020408';
+        emailInput.value = '';
+        msgBox.textContent = '> Notification set. You will be among the first to know when we launch.';
+        msgBox.className = 'notify-msg success visible';
+        setTimeout(() => {
+          btn.textContent = 'NOTIFY ME →';
+          btn.style.background = 'var(--cyan)';
+          btn.style.color = 'var(--dark)';
+          btn.disabled = false;
+          msgBox.className = 'notify-msg';
+        }, 4000);
+      } else {
+        throw new Error('Server error');
+      }
+    } catch(err){
+      btn.textContent = 'NOTIFY ME →';
+      btn.disabled = false;
+      msgBox.textContent = '> Transmission failed. Please try again or email us directly.';
+      msgBox.className = 'notify-msg error visible';
+      setTimeout(() => { msgBox.className = 'notify-msg'; }, 4000);
+    }
+  }
+
+  // ═══════════════════════════════════════
+  // COUNTDOWN TIMER (Target: March 1, 2026)
+  // ═══════════════════════════════════════
+  function updateCountdown() {
+    const targetDate = new Date('March 1, 2026 00:00:00').getTime();
+    const now = new Date().getTime();
+    const distance = targetDate - now;
+    
+    if(distance < 0) {
+      document.getElementById('days').textContent = '00';
+      document.getElementById('hours').textContent = '00';
+      document.getElementById('minutes').textContent = '00';
+      document.getElementById('seconds').textContent = '00';
+      return;
     }
     
-    function animate() {
-      ctx.fillStyle = '#020408';
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      
-      particles.forEach(p => {
-        p.x += p.vx;
-        p.y += p.vy;
-        
-        if(p.x < 0) p.x = canvas.width;
-        if(p.x > canvas.width) p.x = 0;
-        if(p.y < 0) p.y = canvas.height;
-        if(p.y > canvas.height) p.y = 0;
-        
-        ctx.fillStyle = p.color;
-        ctx.shadowBlur = 8;
-        ctx.shadowColor = p.color;
-        ctx.beginPath();
-        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fill();
-      });
-      
-      requestAnimationFrame(animate);
+    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    
+    document.getElementById('days').textContent = String(days).padStart(2, '0');
+    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
+    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
+    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+  }
+  
+  updateCountdown();
+  setInterval(updateCountdown, 1000);
+
+  // ═══════════════════════════════════════
+  // CURSOR
+  // ═══════════════════════════════════════
+  const cursor = document.getElementById('cursor');
+  const ring = document.getElementById('cursor-ring');
+  let mx = 0, my = 0, rx = 0, ry = 0;
+  
+  document.addEventListener('mousemove', e => {
+    mx = e.clientX;
+    my = e.clientY;
+    cursor.style.left = mx + 'px';
+    cursor.style.top = my + 'px';
+  });
+  
+  (function animRing(){
+    rx += (mx - rx) * 0.12;
+    ry += (my - ry) * 0.12;
+    ring.style.left = rx + 'px';
+    ring.style.top = ry + 'px';
+    requestAnimationFrame(animRing);
+  })();
+  
+  document.querySelectorAll('a, button, .product-teaser').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      ring.style.width = '60px';
+      ring.style.height = '60px';
+      ring.style.opacity = '0.8';
+      cursor.style.transform = 'translate(-50%,-50%) scale(0.5)';
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.style.width = '36px';
+      ring.style.height = '36px';
+      ring.style.opacity = '0.5';
+      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
+    });
+  });
+
+  // ═══════════════════════════════════════
+  // CANVAS BACKGROUND
+  // ═══════════════════════════════════════
+  const canvas = document.getElementById('bg-canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H;
+  
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+  }
+  resize();
+  window.addEventListener('resize', resize);
+  
+  const particles = [];
+  for(let i = 0; i < 100; i++) {
+    particles.push({
+      x: Math.random() * window.innerWidth,
+      y: Math.random() * window.innerHeight,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: (Math.random() - 0.5) * 0.3,
+      r: Math.random() * 1.5 + 0.3,
+      color: Math.random() > 0.7 ? '#ff00aa' : '#00f5ff',
+      alpha: Math.random() * 0.5 + 0.1
+    });
+  }
+  
+  let mouseX = 0, mouseY = 0;
+  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
+  
+  function drawBg() {
+    ctx.clearRect(0, 0, W, H);
+    ctx.strokeStyle = 'rgba(0,245,255,0.04)';
+    ctx.lineWidth = 1;
+    const cw = W / 22, rh = H / 14;
+    for(let c = 0; c <= 22; c++) {
+      ctx.beginPath();
+      ctx.moveTo(c * cw, 0);
+      ctx.lineTo(c * cw, H);
+      ctx.stroke();
     }
-    animate();
-  </script>
+    for(let r = 0; r <= 14; r++) {
+      ctx.beginPath();
+      ctx.moveTo(0, r * rh);
+      ctx.lineTo(W, r * rh);
+      ctx.stroke();
+    }
+    
+    let g = ctx.createRadialGradient(W/2, H, 0, W/2, H, W * 0.6);
+    g.addColorStop(0, 'rgba(0,245,255,0.04)');
+    g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    
+    g = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 200);
+    g.addColorStop(0, 'rgba(0,245,255,0.025)');
+    g.addColorStop(1, 'transparent');
+    ctx.fillStyle = g;
+    ctx.fillRect(0, 0, W, H);
+    
+    particles.forEach((p, i) => {
+      p.x += p.vx;
+      p.y += p.vy;
+      if(p.x < 0) p.x = W;
+      if(p.x > W) p.x = 0;
+      if(p.y < 0) p.y = H;
+      if(p.y > H) p.y = 0;
+      
+      ctx.globalAlpha = p.alpha;
+      ctx.shadowBlur = 6;
+      ctx.shadowColor = p.color;
+      ctx.fillStyle = p.color;
+      ctx.beginPath();
+      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.shadowBlur = 0;
+      ctx.globalAlpha = 1;
+      
+      for(let j = i + 1; j < particles.length; j++) {
+        const q = particles[j];
+        const dx = p.x - q.x;
+        const dy = p.y - q.y;
+        const d = Math.sqrt(dx * dx + dy * dy);
+        if(d < 120) {
+          ctx.strokeStyle = `rgba(0,245,255,${0.07 * (1 - d/120)})`;
+          ctx.lineWidth = 0.5;
+          ctx.beginPath();
+          ctx.moveTo(p.x, p.y);
+          ctx.lineTo(q.x, q.y);
+          ctx.stroke();
+        }
+      }
+    });
+    
+    if(Math.random() < 0.015) {
+      ctx.fillStyle = `rgba(0,245,255,${Math.random() * 0.06})`;
+      ctx.fillRect(0, Math.random() * H, W, Math.random() * 3 + 1);
+    }
+    
+    requestAnimationFrame(drawBg);
+  }
+  drawBg();
+
+  // GLITCH OVERLAY
+  const glitchEl = document.getElementById('glitch-overlay');
+  function triggerGlitch() {
+    setTimeout(() => {
+      glitchEl.style.opacity = '1';
+      glitchEl.style.background = 'rgba(0,245,255,0.02)';
+      glitchEl.style.transform = `translateX(${(Math.random() - 0.5) * 10}px)`;
+      setTimeout(() => {
+        glitchEl.style.opacity = '0';
+        glitchEl.style.transform = 'none';
+        setTimeout(() => {
+          glitchEl.style.opacity = '1';
+          glitchEl.style.background = 'rgba(255,0,170,0.02)';
+          glitchEl.style.transform = `translateX(${(Math.random() - 0.5) * 6}px)`;
+          setTimeout(() => {
+            glitchEl.style.opacity = '0';
+            glitchEl.style.transform = 'none';
+            triggerGlitch();
+          }, 60);
+        }, 30);
+      }, 80);
+    }, 3000 + Math.random() * 7000);
+  }
+  triggerGlitch();
+
+  // SCROLL FADE-IN
+  const observer = new IntersectionObserver(e => {
+    e.forEach(el => {
+      if(el.isIntersecting) {
+        el.target.style.opacity = '1';
+        el.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
+  
+  document.querySelectorAll('.product-teaser, .countdown-item, .notify-card').forEach(el => {
+    el.style.opacity = '0';
+    el.style.transform = 'translateY(30px)';
+    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+    observer.observe(el);
+  });
+</script>
 </body>
 </html>
