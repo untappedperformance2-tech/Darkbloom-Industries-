@@ -64,7 +64,7 @@
     .scroll-indicator span{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.4);letter-spacing:0.3em;}
     .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:scrollPulse 2s infinite;}
 
-    /* CAPABILITY STATS BAR — replaces old placeholder counters */
+    /* CAPABILITY STATS BAR */
     .stats-bar{display:flex;justify-content:center;flex-wrap:wrap;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(0,245,255,0.02);}
     .stat-item{flex:1;min-width:180px;max-width:240px;padding:28px 20px;text-align:center;border-right:1px solid var(--border);transition:background 0.3s;}
     .stat-item:last-child{border-right:none;}
@@ -113,7 +113,7 @@
     .compliance-table tr:hover td{background:rgba(0,255,136,0.03);}
     .badge-compliant{color:var(--green);font-size:0.6rem;}
 
-    /* STATUS FEED — fixed height so it doesn't push layout */
+    /* STATUS FEED */
     .status-feed-wrap{margin-top:24px;border:1px solid rgba(0,255,136,0.15);padding:20px;background:rgba(0,255,136,0.02);min-height:160px;}
     .status-feed-label{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.5);letter-spacing:0.2em;margin-bottom:12px;}
     #status-feed{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(0,255,136,0.7);line-height:2.1;min-height:120px;}
@@ -180,8 +180,23 @@
     @keyframes glitch2{0%,93%,100%{transform:none;opacity:0}94%{transform:translateX(3px);opacity:0.5}96%{transform:translateX(-3px);opacity:0.7}98%{transform:translateX(2px);opacity:0.5}}
 
     /* MOBILE */
-    @media(max-width:900px){nav{padding:16px 24px}.nav-links{display:none}section{padding:80px 24px}.security-grid{grid-template-columns:1fr}.process-steps{grid-template-columns:1fr 1fr}.process-steps::before{display:none}.contact-grid{grid-template-columns:1fr;gap:40px}footer{flex-direction:column;text-align:center}.cta-band{padding:48px 24px}}
-    @media(max-width:560px){.stats-bar{flex-wrap:wrap}.stat-item{min-width:50%;border-bottom:1px solid var(--border)}.process-steps{grid-template-columns:1fr}.security-block{padding:32px 24px}}
+    @media(max-width:900px){
+      nav{padding:16px 24px}
+      .nav-links{display:none}
+      section{padding:80px 24px}
+      .security-grid{grid-template-columns:1fr}
+      .process-steps{grid-template-columns:1fr 1fr}
+      .process-steps::before{display:none}
+      .contact-grid{grid-template-columns:1fr;gap:40px}
+      footer{flex-direction:column;text-align:center}
+      .cta-band{padding:48px 24px}
+      .security-block{padding:32px 24px}
+    }
+    @media(max-width:560px){
+      .stats-bar{flex-wrap:wrap}
+      .stat-item{min-width:50%;border-bottom:1px solid var(--border)}
+      .process-steps{grid-template-columns:1fr}
+    }
   </style>
 </head>
 <body>
@@ -227,7 +242,7 @@
     <div class="scroll-indicator"><span>SCROLL</span><div class="scroll-line"></div></div>
   </section>
 
-  <!-- CAPABILITY BAR — replaces placeholder counters -->
+  <!-- CAPABILITY BAR -->
   <div class="stats-bar">
     <div class="stat-item">
       <span class="stat-num">AES&#8209;256</span>
@@ -301,84 +316,42 @@
     <div class="section-header"><span class="section-tag">// 02 &mdash; Security</span><div class="section-line"></div></div>
     <div class="security-block">
       <div class="security-grid">
-
-        <!-- LEFT: standards + list -->
         <div>
           <h2 class="security-title">Enterprise &amp; Defense&#8209;Grade<br/>Security Implementation</h2>
           <p class="security-text">We don't just build software &mdash; we build fortresses. Every system we deliver is hardened against modern threat vectors and built to satisfy the specific compliance standards your contract or industry demands. All deliverables are audit-ready.</p>
           <ul class="security-list">
-            <li>
-              FIPS 140-3 validated cryptography (AES-256, RSA-4096)
-              <span class="std">NIST FIPS 140-3 &bull; Implementation Compliant</span>
-            </li>
-            <li>
-              NIST SP 800-207 Zero-Trust Architecture
-              <span class="std">Full perimeter removal &bull; Identity-centric access</span>
-            </li>
-            <li>
-              NIST SP 800-218 Secure Software Development (SSDF)
-              <span class="std">Secure SDLC &bull; All code deliverables</span>
-            </li>
-            <li>
-              NIST SP 800-171 CUI Protection &mdash; 110 Controls
-              <span class="std">Audit-ready System Security Plans (SSP) provided</span>
-            </li>
-            <li>
-              CMMC Level 2 Audit-Ready Deliverables
-              <span class="std">110 practices &bull; POA&amp;M documentation included</span>
-            </li>
-            <li>
-              OWASP Top 10 &amp; OWASP MASVS (Mobile)
-              <span class="std">Every codebase scanned &amp; remediated</span>
-            </li>
-            <li>
-              RBAC &bull; MFA &bull; Privileged Access Management
-              <span class="std">Least-privilege enforced at the architecture level</span>
-            </li>
-            <li>
-              Penetration Testing &amp; Vulnerability Audits
-              <span class="std">Independent third-party testing available</span>
-            </li>
-            <li>
-              Software Bill of Materials (SBOM) Generation
-              <span class="std">Full component inventory &amp; supply chain transparency</span>
-            </li>
-            <li>
-              Real-Time Intrusion Detection &amp; Immutable Audit Logs
-              <span class="std">EDR &bull; SIEM integration &bull; 365-day log retention</span>
-            </li>
+            <li>FIPS 140-3 validated cryptography (AES-256, RSA-4096)<span class="std">NIST FIPS 140-3 &bull; Implementation Compliant</span></li>
+            <li>NIST SP 800-207 Zero-Trust Architecture<span class="std">Full perimeter removal &bull; Identity-centric access</span></li>
+            <li>NIST SP 800-218 Secure Software Development (SSDF)<span class="std">Secure SDLC &bull; All code deliverables</span></li>
+            <li>NIST SP 800-171 CUI Protection &mdash; 110 Controls<span class="std">Audit-ready System Security Plans (SSP) provided</span></li>
+            <li>CMMC Level 2 Audit-Ready Deliverables<span class="std">110 practices &bull; POA&amp;M documentation included</span></li>
+            <li>OWASP Top 10 &amp; OWASP MASVS (Mobile)<span class="std">Every codebase scanned &amp; remediated</span></li>
+            <li>RBAC &bull; MFA &bull; Privileged Access Management<span class="std">Least-privilege enforced at the architecture level</span></li>
+            <li>Penetration Testing &amp; Vulnerability Audits<span class="std">Independent third-party testing available</span></li>
+            <li>Software Bill of Materials (SBOM) Generation<span class="std">Full component inventory &amp; supply chain transparency</span></li>
+            <li>Real-Time Intrusion Detection &amp; Immutable Audit Logs<span class="std">EDR &bull; SIEM integration &bull; 365-day log retention</span></li>
           </ul>
         </div>
-
-        <!-- RIGHT: compliance matrix + status feed -->
         <div>
           <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.4);letter-spacing:0.3em;margin-bottom:14px;">COMPLIANCE MATRIX</div>
           <table class="compliance-table">
-            <thead>
-              <tr>
-                <th>Standard</th>
-                <th>Level / Scope</th>
-                <th>Status</th>
-              </tr>
-            </thead>
+            <thead><tr><th>Standard</th><th>Level / Scope</th><th>Status</th></tr></thead>
             <tbody>
-              <tr><td>NIST SP 800-171</td><td>110 Controls / CUI</td><td class="badge-compliant">&#9679; ALIGNED</td></tr>
-              <tr><td>CMMC</td><td>Level 2 / DoD Supply Chain</td><td class="badge-compliant">&#9679; AUDIT-READY</td></tr>
-              <tr><td>NIST SP 800-218</td><td>SSDF / Secure Dev</td><td class="badge-compliant">&#9679; IMPLEMENTED</td></tr>
-              <tr><td>NIST SP 800-207</td><td>Zero-Trust Arch</td><td class="badge-compliant">&#9679; IMPLEMENTED</td></tr>
-              <tr><td>FIPS 140-3</td><td>Cryptographic Modules</td><td class="badge-compliant">&#9679; COMPLIANT</td></tr>
-              <tr><td>OWASP Top 10</td><td>Web / API Security</td><td class="badge-compliant">&#9679; ENFORCED</td></tr>
-              <tr><td>OWASP MASVS</td><td>Mobile App Security</td><td class="badge-compliant">&#9679; ENFORCED</td></tr>
-              <tr><td>SOC 2 Principles</td><td>Trust Service Criteria</td><td class="badge-compliant">&#9679; ALIGNED</td></tr>
+              <tr><td>NIST SP 800-171</td><td>110 Controls / CUI</td><td class="badge-compliant">● ALIGNED</td></tr>
+              <tr><td>CMMC</td><td>Level 2 / DoD Supply Chain</td><td class="badge-compliant">● AUDIT-READY</td></tr>
+              <tr><td>NIST SP 800-218</td><td>SSDF / Secure Dev</td><td class="badge-compliant">● IMPLEMENTED</td></tr>
+              <tr><td>NIST SP 800-207</td><td>Zero-Trust Arch</td><td class="badge-compliant">● IMPLEMENTED</td></tr>
+              <tr><td>FIPS 140-3</td><td>Cryptographic Modules</td><td class="badge-compliant">● COMPLIANT</td></tr>
+              <tr><td>OWASP Top 10</td><td>Web / API Security</td><td class="badge-compliant">● ENFORCED</td></tr>
+              <tr><td>OWASP MASVS</td><td>Mobile App Security</td><td class="badge-compliant">● ENFORCED</td></tr>
+              <tr><td>SOC 2 Principles</td><td>Trust Service Criteria</td><td class="badge-compliant">● ALIGNED</td></tr>
             </tbody>
           </table>
-
           <div class="status-feed-wrap">
             <div class="status-feed-label">// LIVE SYSTEM STATUS</div>
             <div id="status-feed"></div>
           </div>
         </div>
-
       </div>
     </div>
   </section>
@@ -396,17 +369,29 @@
     </div>
   </section>
 
-  <!-- PRODUCTS TEASER -->
-  <section id="products-teaser" style="padding-top:0;">
-    <div class="section-header"><span class="section-tag">// 03b &mdash; Products</span><div class="section-line"></div></div>
-    <div style="border:1px solid rgba(0,245,255,0.12);background:linear-gradient(135deg,rgba(255,140,0,0.04),rgba(58,127,255,0.04),rgba(0,245,255,0.02));padding:60px;position:relative;overflow:hidden;">
+  <!-- PRODUCTS - FULLY REWRITTEN FOR MOBILE (NO SIDE SCROLLING) -->
+  <section id="products">
+    <div class="section-header">
+      <span class="section-tag">// 04 &mdash; Flagship Products</span>
+      <div class="section-line"></div>
+    </div>
+    
+    <!-- Main Product Suite Card -->
+    <div style="border:1px solid rgba(0,245,255,0.12);background:linear-gradient(135deg,rgba(255,140,0,0.04),rgba(58,127,255,0.04),rgba(0,245,255,0.02));padding:clamp(32px,5vw,60px);position:relative;overflow:hidden;margin-bottom:48px;">
       <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(to right,#ff8c00,#00ff88,#3a7fff);"></div>
       <div style="position:absolute;top:18px;right:24px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,245,255,0.25);letter-spacing:0.2em;">// FLAGSHIP PRODUCT SUITE</div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+      
+      <div style="display:flex;flex-direction:column;gap:40px;">
+        <!-- Top: Text Content -->
         <div>
           <p style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.3em;margin-bottom:16px;">BUILT BY DARKBLOOM INDUSTRIES&#8482;</p>
-          <h2 style="font-family:'Orbitron',monospace;font-size:clamp(1.3rem,2.5vw,2rem);font-weight:900;color:#fff;margin-bottom:8px;letter-spacing:0.05em;"><span style="color:#ff8c00;text-shadow:0 0 20px rgba(255,140,0,0.4);">WrenchWare Pro&#8482;</span> &amp; <span style="color:#3a7fff;text-shadow:0 0 20px rgba(58,127,255,0.4);">ClaimSync&#8482;</span></h2>
-          <p style="color:rgba(200,232,240,0.55);line-height:1.8;font-size:1rem;margin-bottom:28px;">A complete 2-in-1 platform connecting auto repair shops and insurance companies through a built-in real-time communication bridge &mdash; with AI fraud detection and AI damage assessment built in. Pilot-ready now.</p>
+          <h2 style="font-family:'Orbitron',monospace;font-size:clamp(1.3rem,5vw,2rem);font-weight:900;color:#fff;margin-bottom:16px;letter-spacing:0.05em;line-height:1.2;">
+            <span style="color:#ff8c00;text-shadow:0 0 20px rgba(255,140,0,0.4);">WrenchWare Pro&#8482;</span> 
+            <span style="color:rgba(200,232,240,0.4);font-size:0.7em;">&amp;</span> 
+            <span style="color:#3a7fff;text-shadow:0 0 20px rgba(58,127,255,0.4);">ClaimSync&#8482;</span>
+          </h2>
+          <p style="color:rgba(200,232,240,0.55);line-height:1.8;font-size:clamp(0.9rem,2vw,1rem);margin-bottom:28px;">A complete 2-in-1 platform connecting auto repair shops and insurance companies through a built-in real-time communication bridge &mdash; with AI fraud detection and AI damage assessment built in. Pilot-ready now.</p>
+          
           <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;">
             <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#ff8c00;border:1px solid rgba(255,140,0,0.25);padding:4px 12px;background:rgba(255,140,0,0.04);">Shop Management</span>
             <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#3a7fff;border:1px solid rgba(58,127,255,0.25);padding:4px 12px;background:rgba(58,127,255,0.04);">Claims Management</span>
@@ -414,50 +399,50 @@
             <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--green);border:1px solid rgba(0,255,136,0.25);padding:4px 12px;background:rgba(0,255,136,0.04);">AI Damage Assessment</span>
             <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--cyan);border:1px solid rgba(0,245,255,0.2);padding:4px 12px;background:rgba(0,245,255,0.03);">Real-Time Bridge</span>
           </div>
+          
           <a href="products.html" class="btn-primary" style="display:inline-block;text-decoration:none;">EXPLORE THE PLATFORM &#9654;</a>
         </div>
+        
+        <!-- Bottom: Two Product Cards - STACK VERTICALLY -->
         <div style="display:flex;flex-direction:column;gap:16px;">
-          <div style="border:1px solid rgba(255,140,0,0.2);background:rgba(255,140,0,0.03);padding:24px 28px;">
-            <p style="font-family:'Orbitron',monospace;font-size:0.8rem;color:#ff8c00;font-weight:700;letter-spacing:0.1em;margin-bottom:8px;">&#128295; WrenchWare Pro&#8482;</p>
-            <p style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(255,200,120,0.7);letter-spacing:0.05em;line-height:1.7;">Complete shop management &mdash; work orders, intake, inventory, invoicing, and real-time insurer communication in one platform.</p>
+          
+          <!-- WrenchWare Pro Card -->
+          <div style="border:1px solid rgba(255,140,0,0.2);background:rgba(255,140,0,0.03);padding:28px 32px;transition:all 0.3s ease;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+              <span style="font-size:1.5rem;">🔧</span>
+              <p style="font-family:'Orbitron',monospace;font-size:0.9rem;color:#ff8c00;font-weight:700;letter-spacing:0.1em;margin:0;">WrenchWare Pro&#8482;</p>
+            </div>
+            <p style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:rgba(255,200,120,0.7);letter-spacing:0.05em;line-height:1.7;">Complete shop management &mdash; work orders, intake, inventory, invoicing, technician tracking, AI damage assessment, and real-time insurer communication in one platform.</p>
+            <div style="margin-top:16px;">
+              <a href="products.html" style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:#ff8c00;text-decoration:none;letter-spacing:0.1em;">LEARN MORE →</a>
+            </div>
           </div>
-          <div style="border:1px solid rgba(58,127,255,0.2);background:rgba(58,127,255,0.03);padding:24px 28px;">
-            <p style="font-family:'Orbitron',monospace;font-size:0.8rem;color:#3a7fff;font-weight:700;letter-spacing:0.1em;margin-bottom:8px;">&#128196; ClaimSync&#8482;</p>
-            <p style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(140,180,255,0.75);letter-spacing:0.05em;line-height:1.7;">Complete claims management &mdash; FNOL to settlement with AI fraud signals, live shop status, and automated documentation.</p>
+          
+          <!-- ClaimSync Card -->
+          <div style="border:1px solid rgba(58,127,255,0.2);background:rgba(58,127,255,0.03);padding:28px 32px;transition:all 0.3s ease;">
+            <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">
+              <span style="font-size:1.5rem;">📋</span>
+              <p style="font-family:'Orbitron',monospace;font-size:0.9rem;color:#3a7fff;font-weight:700;letter-spacing:0.1em;margin:0;">ClaimSync&#8482;</p>
+            </div>
+            <p style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:rgba(140,180,255,0.75);letter-spacing:0.05em;line-height:1.7;">Complete claims management &mdash; FNOL to settlement, AI fraud detection, adjuster workflow tools, real-time shop communication, and automated documentation.</p>
+            <div style="margin-top:16px;">
+              <a href="products.html" style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:#3a7fff;text-decoration:none;letter-spacing:0.1em;">LEARN MORE →</a>
+            </div>
           </div>
+          
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- PRODUCTS TEASER -->
-  <section id="products" style="padding-top:0;">
-    <div class="section-header"><span class="section-tag">// 04 &mdash; Our Products</span><div class="section-line"></div></div>
+    
+    <!-- Built In-House Banner -->
     <h2 class="section-title">Built In&#8209;House. <span class="hi">Ready to Deploy.</span></h2>
-    <p style="color:rgba(200,232,240,0.45);margin-bottom:52px;max-width:640px;line-height:1.8;">Beyond client services, Darkbloom Industries&#8482; builds its own enterprise software. Our flagship integrated platform is fully built, SOC II compliant, and seeking pilot partners.</p>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">
-
-      <div style="background:rgba(0,200,255,0.03);border:1px solid rgba(0,200,255,0.18);padding:40px 36px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='rgba(0,200,255,0.4)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(0,200,255,0.18)';this.style.transform='none'">
-        <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#00c8ff,transparent);"></div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,200,255,0.5);letter-spacing:0.3em;margin-bottom:14px;">SHOP MANAGEMENT SYSTEM</div>
-        <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.4rem,3vw,2.2rem);color:#00c8ff;text-shadow:0 0 20px rgba(0,200,255,0.4);margin-bottom:10px;">WrenchWare Pro&#8482;</div>
-        <p style="color:rgba(200,232,240,0.55);font-size:0.95rem;line-height:1.7;margin-bottom:24px;">A complete automotive shop management platform &mdash; work orders, technician tracking, parts inventory, AI damage assessment, and real-time insurer communication. All in one.</p>
-        <a href="products.html" style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#00c8ff;text-decoration:none;letter-spacing:0.2em;border:1px solid rgba(0,200,255,0.3);padding:10px 24px;display:inline-block;transition:background 0.2s,box-shadow 0.2s;" onmouseenter="this.style.background='rgba(0,200,255,0.08)';this.style.boxShadow='0 0 16px rgba(0,200,255,0.2)'" onmouseleave="this.style.background='transparent';this.style.boxShadow='none'">LEARN MORE &#9654;</a>
-      </div>
-
-      <div style="background:rgba(255,107,0,0.03);border:1px solid rgba(255,107,0,0.18);padding:40px 36px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='rgba(255,107,0,0.4)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(255,107,0,0.18)';this.style.transform='none'">
-        <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#ff6b00,transparent);"></div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(255,107,0,0.5);letter-spacing:0.3em;margin-bottom:14px;">INSURANCE CLAIMS SYSTEM</div>
-        <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.4rem,3vw,2.2rem);color:#ff6b00;text-shadow:0 0 20px rgba(255,107,0,0.4);margin-bottom:10px;">ClaimSync&#8482;</div>
-        <p style="color:rgba(200,232,240,0.55);font-size:0.95rem;line-height:1.7;margin-bottom:24px;">A complete auto insurance claims management platform &mdash; full claims lifecycle, AI fraud detection, adjuster workflow tools, and real-time shop communication. Built for speed and compliance.</p>
-        <a href="products.html" style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#ff6b00;text-decoration:none;letter-spacing:0.2em;border:1px solid rgba(255,107,0,0.3);padding:10px 24px;display:inline-block;transition:background 0.2s,box-shadow 0.2s;" onmouseenter="this.style.background='rgba(255,107,0,0.08)';this.style.boxShadow='0 0 16px rgba(255,107,0,0.2)'" onmouseleave="this.style.background='transparent';this.style.boxShadow='none'">LEARN MORE &#9654;</a>
-      </div>
-
-    </div>
-    <div style="margin-top:2px;border:1px solid rgba(0,245,255,0.1);background:linear-gradient(90deg,rgba(0,200,255,0.03),rgba(0,245,255,0.04),rgba(255,107,0,0.03));padding:24px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
-      <div>
-        <div style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;letter-spacing:0.08em;margin-bottom:4px;">One Platform. Real-Time Communication Bridge. AI-Powered.</div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(200,232,240,0.35);letter-spacing:0.15em;">SOC II COMPLIANT &bull; FIPS 140-3 &bull; SEEKING PILOT PARTNERS</div>
+    <p style="color:rgba(200,232,240,0.45);margin-bottom:48px;max-width:640px;line-height:1.8;">Beyond client services, Darkbloom Industries&#8482; builds its own enterprise software. Our flagship integrated platform is fully built, SOC II compliant, and seeking pilot partners.</p>
+    
+    <!-- Compliance & CTA Banner -->
+    <div style="border:1px solid rgba(0,245,255,0.1);background:linear-gradient(90deg,rgba(0,200,255,0.03),rgba(0,245,255,0.04),rgba(255,107,0,0.03));padding:clamp(24px,4vw,36px);display:flex;flex-direction:column;align-items:center;justify-content:space-between;gap:24px;">
+      <div style="text-align:center;">
+        <div style="font-family:'Orbitron',monospace;font-size:clamp(0.75rem,2vw,0.85rem);color:#fff;letter-spacing:0.08em;margin-bottom:8px;">One Platform. Real-Time Communication Bridge. AI-Powered.</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(200,232,240,0.35);letter-spacing:0.15em;">SOC II COMPLIANT &bull; FIPS 140-3 &bull; SEEKING PILOT PARTNERS</div>
       </div>
       <a href="products.html#inquiry" class="btn-primary" style="white-space:nowrap;padding:14px 32px;font-size:0.75rem;">INQUIRE FOR PRICING &amp; DEMO &#9654;</a>
     </div>
@@ -475,7 +460,7 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="section-header"><span class="section-tag">// 04 &mdash; Contact</span><div class="section-line"></div></div>
+    <div class="section-header"><span class="section-tag">// 05 &mdash; Contact</span><div class="section-line"></div></div>
     <div class="contact-grid">
       <div>
         <h2 class="section-title">Initialize <span class="hi">Contact</span></h2>
@@ -493,12 +478,12 @@
           <div class="form-group">
             <label>// Your Name</label>
             <input type="text" id="f-name" placeholder="John Doe" maxlength="100" autocomplete="name"/>
-            <div class="field-error" id="err-name">&#9650; Name is required</div>
+            <div class="field-error" id="err-name">▲ Name is required</div>
           </div>
           <div class="form-group">
             <label>// Email Address</label>
             <input type="email" id="f-email" placeholder="you@domain.com" maxlength="150" autocomplete="email"/>
-            <div class="field-error" id="err-email">&#9650; Valid email required</div>
+            <div class="field-error" id="err-email">▲ Valid email required</div>
           </div>
           <div class="form-group">
             <label>// Service Required</label>
@@ -514,14 +499,14 @@
               <option>Full Project (Multiple Services)</option>
               <option>Capabilities Consultation</option>
             </select>
-            <div class="field-error" id="err-service">&#9650; Please select a service</div>
+            <div class="field-error" id="err-service">▲ Please select a service</div>
           </div>
           <div class="form-group">
             <label>// Project Brief</label>
             <textarea id="f-message" placeholder="Describe your project, compliance requirements, timeline, and objectives..." maxlength="2000"></textarea>
-            <div class="field-error" id="err-message">&#9650; Please describe your project (min 10 characters)</div>
+            <div class="field-error" id="err-message">▲ Please describe your project (min 10 characters)</div>
           </div>
-          <div id="rate-warning">&#9888; Too many attempts. Please wait before trying again.</div>
+          <div id="rate-warning">⚠ Too many attempts. Please wait before trying again.</div>
           <div class="form-msg" id="form-msg"></div>
           <button class="btn-primary" id="submit-btn" style="cursor:none;width:100%;padding:18px;font-size:0.85rem;" onclick="handleSubmit(event)">
             TRANSMIT MESSAGE &#9654;
@@ -534,7 +519,7 @@
   <!-- FOOTER -->
   <footer>
     <div class="footer-brand">DARKBLOOM<sup>&#8482;</sup> INDUSTRIES</div>
-    <p class="footer-copy">&#169; 2025 Darkbloom Industries&#8482;. All rights reserved.<br/>Darkbloom&#8482; is a trademark of Darkbloom Industries&#8482;.</p>
+    <p class="footer-copy">© 2025 Darkbloom Industries™. All rights reserved.<br/>Darkbloom™ is a trademark of Darkbloom Industries™.</p>
     <ul class="footer-links">
       <li><a href="privacy.html">Privacy</a></li>
       <li><a href="terms.html">Terms</a></li>
@@ -546,9 +531,7 @@
 
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
-  // ═══════════════════════════════════════
   // SECURITY MODULE
-  // ═══════════════════════════════════════
   const Security = (() => {
     const RATE_LIMIT = 3, RATE_WINDOW = 10*60*1000, submitLog = [];
     function isRateLimited(){ const now=Date.now(); while(submitLog.length&&now-submitLog[0]>RATE_WINDOW)submitLog.shift(); return submitLog.length>=RATE_LIMIT; }
@@ -559,16 +542,14 @@
     return{isRateLimited,recordSubmit,sanitize,isValidEmail,isBotDetected};
   })();
 
-  // ═══════════════════════════════════════
   // FORM HANDLER
-  // ═══════════════════════════════════════
   async function handleSubmit(e){
     e.preventDefault();
     const btn=document.getElementById('submit-btn'), msgBox=document.getElementById('form-msg'), rateWarn=document.getElementById('rate-warning');
     msgBox.className='form-msg'; msgBox.textContent=''; rateWarn.style.display='none';
     ['f-name','f-email','f-service','f-message'].forEach(id=>{ document.getElementById(id).classList.remove('invalid'); });
     ['err-name','err-email','err-service','err-message'].forEach(id=>{ document.getElementById(id).classList.remove('visible'); });
-    if(Security.isBotDetected()){ btn.textContent='MESSAGE RECEIVED \u2713'; btn.style.background='var(--green)'; btn.style.color='#020408'; return; }
+    if(Security.isBotDetected()){ btn.textContent='MESSAGE RECEIVED ✓'; btn.style.background='var(--green)'; btn.style.color='#020408'; return; }
     if(Security.isRateLimited()){ rateWarn.style.display='block'; return; }
     const name=Security.sanitize(document.getElementById('f-name').value);
     const email=Security.sanitize(document.getElementById('f-email').value);
@@ -585,22 +566,20 @@
       const res=await fetch('https://formspree.io/f/myknagoq',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,email,service,message})});
       if(res.ok){
         Security.recordSubmit();
-        btn.textContent='MESSAGE RECEIVED \u2713'; btn.style.background='var(--green)'; btn.style.color='#020408'; btn.disabled=false;
+        btn.textContent='MESSAGE RECEIVED ✓'; btn.style.background='var(--green)'; btn.style.color='#020408'; btn.disabled=false;
         ['f-name','f-email','f-message'].forEach(id=>document.getElementById(id).value='');
         document.getElementById('f-service').selectedIndex=0;
         msgBox.textContent='> TRANSMISSION COMPLETE. WE WILL RESPOND WITHIN 24 HOURS.'; msgBox.className='form-msg success visible';
-        setTimeout(()=>{ btn.textContent='TRANSMIT MESSAGE \u25BA'; btn.style.background='var(--cyan)'; btn.style.color='var(--dark)'; msgBox.className='form-msg'; },5000);
+        setTimeout(()=>{ btn.textContent='TRANSMIT MESSAGE ►'; btn.style.background='var(--cyan)'; btn.style.color='var(--dark)'; msgBox.className='form-msg'; },5000);
       } else { throw new Error('Server error'); }
     }catch(err){
       btn.textContent='TRANSMISSION FAILED'; btn.style.background='#ff4466'; btn.style.color='#fff'; btn.disabled=false;
       msgBox.textContent='> ERROR: TRANSMISSION FAILED. PLEASE RETRY OR EMAIL DIRECTLY.'; msgBox.className='form-msg error visible';
-      setTimeout(()=>{ btn.textContent='TRANSMIT MESSAGE \u25BA'; btn.style.background='var(--cyan)'; btn.style.color='var(--dark)'; msgBox.className='form-msg'; },4000);
+      setTimeout(()=>{ btn.textContent='TRANSMIT MESSAGE ►'; btn.style.background='var(--cyan)'; btn.style.color='var(--dark)'; msgBox.className='form-msg'; },4000);
     }
   }
 
-  // ═══════════════════════════════════════
   // CURSOR
-  // ═══════════════════════════════════════
   const cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
   let mx=0,my=0,rx=0,ry=0;
   document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
@@ -610,9 +589,7 @@
     el.addEventListener('mouseleave',()=>{ ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='0.5'; cursor.style.transform='translate(-50%,-50%) scale(1)'; });
   });
 
-  // ═══════════════════════════════════════
   // CANVAS BACKGROUND
-  // ═══════════════════════════════════════
   const canvas=document.getElementById('bg-canvas'), ctx=canvas.getContext('2d');
   let W,H;
   function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
@@ -660,9 +637,7 @@
   }
   triggerGlitch();
 
-  // ═══════════════════════════════════════
-  // STATUS FEED — fixed height, no layout shift
-  // ═══════════════════════════════════════
+  // STATUS FEED
   const statusLines=[
     '> FIREWALL.................. ACTIVE',
     '> FIPS 140-3 CRYPTO......... ONLINE',
@@ -675,7 +650,6 @@
     '> THREAT LEVEL.............. MINIMAL',
   ];
   const feedEl=document.getElementById('status-feed');
-  // Pre-render all lines as hidden so height is stable
   statusLines.forEach(()=>{ const d=document.createElement('div'); d.textContent='\u00a0'; d.style.visibility='hidden'; feedEl.appendChild(d); });
   const feedRows=[...feedEl.children];
   let si=0;
@@ -708,3 +682,5 @@
     if(heroTitle) heroTitle.style.transform=`translate(${xr*0.2}px, ${yr*0.2}px)`;
   });
 </script>
+</body>
+</html>
