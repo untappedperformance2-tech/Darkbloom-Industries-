@@ -143,7 +143,7 @@
     .contact-form{display:flex;flex-direction:column;gap:20px;}
     .form-group{position:relative;}
     .form-group label{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.5);letter-spacing:0.25em;text-transform:uppercase;display:block;margin-bottom:8px;}
-    .form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(0,245,255,0.03);border:1px solid rgba(0,245,255,0.15);color:#c8e8f0;font-family:'Rajdhani',sans-serif;font-size:1rem;padding:14px 16px;outline:none;transition:border-color 0.3s,box-shadow 0.3s;-webkit-appearance:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
+    .form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(0,245,255,0.03);border:1px solid rgba(0,245,255,0.15);color:#c8e8f0;font-family:'Rajdhani',sans-serif;font-size:1rem;padding:14px 16px;outline:none;transition:border-color 0.3s,box-shadow 0.3s;-webkit-appearance:none;appearance:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
     .form-group select option{background:#020408;}
     .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,245,255,0.1),inset 0 0 10px rgba(0,245,255,0.03);}
     .form-group textarea{resize:vertical;min-height:120px;}
@@ -201,6 +201,8 @@
       <li><a href="#services">Services</a></li>
       <li><a href="#security">Security</a></li>
       <li><a href="#process">Process</a></li>
+      <li><a href="products.html" style="color:var(--cyan);text-shadow:0 0 8px var(--cyan);">Products</a></li>
+      <li><a href="coming-soon.html" style="color:var(--magenta);text-shadow:0 0 8px var(--magenta);">Coming Soon</a></li>
       <li><a href="#contact">Contact</a></li>
     </ul>
   </nav>
@@ -394,6 +396,73 @@
     </div>
   </section>
 
+  <!-- PRODUCTS TEASER -->
+  <section id="products-teaser" style="padding-top:0;">
+    <div class="section-header"><span class="section-tag">// 03b &mdash; Products</span><div class="section-line"></div></div>
+    <div style="border:1px solid rgba(0,245,255,0.12);background:linear-gradient(135deg,rgba(255,140,0,0.04),rgba(58,127,255,0.04),rgba(0,245,255,0.02));padding:60px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(to right,#ff8c00,#00ff88,#3a7fff);"></div>
+      <div style="position:absolute;top:18px;right:24px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,245,255,0.25);letter-spacing:0.2em;">// FLAGSHIP PRODUCT SUITE</div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center;">
+        <div>
+          <p style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.3em;margin-bottom:16px;">BUILT BY DARKBLOOM INDUSTRIES&#8482;</p>
+          <h2 style="font-family:'Orbitron',monospace;font-size:clamp(1.3rem,2.5vw,2rem);font-weight:900;color:#fff;margin-bottom:8px;letter-spacing:0.05em;"><span style="color:#ff8c00;text-shadow:0 0 20px rgba(255,140,0,0.4);">WrenchWare Pro&#8482;</span> &amp; <span style="color:#3a7fff;text-shadow:0 0 20px rgba(58,127,255,0.4);">ClaimSync&#8482;</span></h2>
+          <p style="color:rgba(200,232,240,0.55);line-height:1.8;font-size:1rem;margin-bottom:28px;">A complete 2-in-1 platform connecting auto repair shops and insurance companies through a built-in real-time communication bridge &mdash; with AI fraud detection and AI damage assessment built in. Pilot-ready now.</p>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:32px;">
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#ff8c00;border:1px solid rgba(255,140,0,0.25);padding:4px 12px;background:rgba(255,140,0,0.04);">Shop Management</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:#3a7fff;border:1px solid rgba(58,127,255,0.25);padding:4px 12px;background:rgba(58,127,255,0.04);">Claims Management</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--green);border:1px solid rgba(0,255,136,0.25);padding:4px 12px;background:rgba(0,255,136,0.04);">AI Fraud Detection</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--green);border:1px solid rgba(0,255,136,0.25);padding:4px 12px;background:rgba(0,255,136,0.04);">AI Damage Assessment</span>
+            <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--cyan);border:1px solid rgba(0,245,255,0.2);padding:4px 12px;background:rgba(0,245,255,0.03);">Real-Time Bridge</span>
+          </div>
+          <a href="products.html" class="btn-primary" style="display:inline-block;text-decoration:none;">EXPLORE THE PLATFORM &#9654;</a>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:16px;">
+          <div style="border:1px solid rgba(255,140,0,0.2);background:rgba(255,140,0,0.03);padding:24px 28px;">
+            <p style="font-family:'Orbitron',monospace;font-size:0.8rem;color:#ff8c00;font-weight:700;letter-spacing:0.1em;margin-bottom:8px;">&#128295; WrenchWare Pro&#8482;</p>
+            <p style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(255,200,120,0.7);letter-spacing:0.05em;line-height:1.7;">Complete shop management &mdash; work orders, intake, inventory, invoicing, and real-time insurer communication in one platform.</p>
+          </div>
+          <div style="border:1px solid rgba(58,127,255,0.2);background:rgba(58,127,255,0.03);padding:24px 28px;">
+            <p style="font-family:'Orbitron',monospace;font-size:0.8rem;color:#3a7fff;font-weight:700;letter-spacing:0.1em;margin-bottom:8px;">&#128196; ClaimSync&#8482;</p>
+            <p style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(140,180,255,0.75);letter-spacing:0.05em;line-height:1.7;">Complete claims management &mdash; FNOL to settlement with AI fraud signals, live shop status, and automated documentation.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRODUCTS TEASER -->
+  <section id="products" style="padding-top:0;">
+    <div class="section-header"><span class="section-tag">// 04 &mdash; Our Products</span><div class="section-line"></div></div>
+    <h2 class="section-title">Built In&#8209;House. <span class="hi">Ready to Deploy.</span></h2>
+    <p style="color:rgba(200,232,240,0.45);margin-bottom:52px;max-width:640px;line-height:1.8;">Beyond client services, Darkbloom Industries&#8482; builds its own enterprise software. Our flagship integrated platform is fully built, SOC II compliant, and seeking pilot partners.</p>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;">
+
+      <div style="background:rgba(0,200,255,0.03);border:1px solid rgba(0,200,255,0.18);padding:40px 36px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='rgba(0,200,255,0.4)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(0,200,255,0.18)';this.style.transform='none'">
+        <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#00c8ff,transparent);"></div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,200,255,0.5);letter-spacing:0.3em;margin-bottom:14px;">SHOP MANAGEMENT SYSTEM</div>
+        <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.4rem,3vw,2.2rem);color:#00c8ff;text-shadow:0 0 20px rgba(0,200,255,0.4);margin-bottom:10px;">WrenchWare Pro&#8482;</div>
+        <p style="color:rgba(200,232,240,0.55);font-size:0.95rem;line-height:1.7;margin-bottom:24px;">A complete automotive shop management platform &mdash; work orders, technician tracking, parts inventory, AI damage assessment, and real-time insurer communication. All in one.</p>
+        <a href="products.html" style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#00c8ff;text-decoration:none;letter-spacing:0.2em;border:1px solid rgba(0,200,255,0.3);padding:10px 24px;display:inline-block;transition:background 0.2s,box-shadow 0.2s;" onmouseenter="this.style.background='rgba(0,200,255,0.08)';this.style.boxShadow='0 0 16px rgba(0,200,255,0.2)'" onmouseleave="this.style.background='transparent';this.style.boxShadow='none'">LEARN MORE &#9654;</a>
+      </div>
+
+      <div style="background:rgba(255,107,0,0.03);border:1px solid rgba(255,107,0,0.18);padding:40px 36px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s;" onmouseenter="this.style.borderColor='rgba(255,107,0,0.4)';this.style.transform='translateY(-4px)'" onmouseleave="this.style.borderColor='rgba(255,107,0,0.18)';this.style.transform='none'">
+        <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,#ff6b00,transparent);"></div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(255,107,0,0.5);letter-spacing:0.3em;margin-bottom:14px;">INSURANCE CLAIMS SYSTEM</div>
+        <div style="font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.4rem,3vw,2.2rem);color:#ff6b00;text-shadow:0 0 20px rgba(255,107,0,0.4);margin-bottom:10px;">ClaimSync&#8482;</div>
+        <p style="color:rgba(200,232,240,0.55);font-size:0.95rem;line-height:1.7;margin-bottom:24px;">A complete auto insurance claims management platform &mdash; full claims lifecycle, AI fraud detection, adjuster workflow tools, and real-time shop communication. Built for speed and compliance.</p>
+        <a href="products.html" style="font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:#ff6b00;text-decoration:none;letter-spacing:0.2em;border:1px solid rgba(255,107,0,0.3);padding:10px 24px;display:inline-block;transition:background 0.2s,box-shadow 0.2s;" onmouseenter="this.style.background='rgba(255,107,0,0.08)';this.style.boxShadow='0 0 16px rgba(255,107,0,0.2)'" onmouseleave="this.style.background='transparent';this.style.boxShadow='none'">LEARN MORE &#9654;</a>
+      </div>
+
+    </div>
+    <div style="margin-top:2px;border:1px solid rgba(0,245,255,0.1);background:linear-gradient(90deg,rgba(0,200,255,0.03),rgba(0,245,255,0.04),rgba(255,107,0,0.03));padding:24px 36px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px;">
+      <div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;letter-spacing:0.08em;margin-bottom:4px;">One Platform. Real-Time Communication Bridge. AI-Powered.</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(200,232,240,0.35);letter-spacing:0.15em;">SOC II COMPLIANT &bull; FIPS 140-3 &bull; SEEKING PILOT PARTNERS</div>
+      </div>
+      <a href="products.html#inquiry" class="btn-primary" style="white-space:nowrap;padding:14px 32px;font-size:0.75rem;">INQUIRE FOR PRICING &amp; DEMO &#9654;</a>
+    </div>
+  </section>
+
   <!-- CTA BAND -->
   <div class="cta-band">
     <h2>Ready to Build Something <span style="color:var(--cyan);">Unbreakable?</span></h2>
@@ -412,7 +481,7 @@
         <h2 class="section-title">Initialize <span class="hi">Contact</span></h2>
         <p class="contact-lead">Tell us what you need &mdash; a project, a security audit, or a capabilities consultation. We respond within 24 hours. NDAs available upon request.</p>
         <div class="contact-info">
-          <div class="contact-info-item"><span class="dot"></span><span>DarkbloomIndustries@outlook.com</span></div>
+          <div class="contact-info-item"><span class="dot"></span><span><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="f7b396859c959b98989abe9993828483859e9284b79882839b98989cd994989a">[email&#160;protected]</a></span></div>
           <div class="contact-info-item"><span class="dot" style="background:var(--green);box-shadow:0 0 8px var(--green);"></span><span>SYSTEMS ONLINE &mdash; RESPONSE &lt; 24HR</span></div>
           <div class="contact-info-item"><span class="dot" style="background:var(--magenta);box-shadow:0 0 8px var(--magenta);"></span><span>NDA AVAILABLE UPON REQUEST</span></div>
           <div class="contact-info-item"><span class="dot" style="background:var(--cyan);box-shadow:0 0 8px var(--cyan);"></span><span>CAPABILITIES STATEMENT ON REQUEST</span></div>
@@ -475,6 +544,7 @@
 
 </div><!-- #app -->
 
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
 <script>
   // ═══════════════════════════════════════
   // SECURITY MODULE
@@ -535,7 +605,7 @@
   let mx=0,my=0,rx=0,ry=0;
   document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
   (function animRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
-  document.querySelectorAll('a,button,.service-card,.threat-cell,.compliance-table tr').forEach(el=>{
+  document.querySelectorAll('a,button,.service-card,.compliance-table tr').forEach(el=>{
     el.addEventListener('mouseenter',()=>{ ring.style.width='60px'; ring.style.height='60px'; ring.style.opacity='0.8'; cursor.style.transform='translate(-50%,-50%) scale(0.5)'; });
     el.addEventListener('mouseleave',()=>{ ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='0.5'; cursor.style.transform='translate(-50%,-50%) scale(1)'; });
   });
@@ -633,9 +703,8 @@
   // HERO PARALLAX
   const heroTitle=document.querySelector('.hero-title');
   document.addEventListener('mousemove',e=>{
-    const xr=(e.clientX/window.innerWidth-.5)*8, yr=(e.clientY/window.innerHeight-.5)*8;
-    if(heroTitle) heroTitle.style.textShadow=`${xr*.5}px ${yr*.5}px 20px rgba(0,245,255,0.6),${xr}px ${yr}px 60px rgba(0,245,255,0.2),0 0 120px rgba(0,245,255,0.1)`;
+    const xr=(e.clientX/window.innerWidth-.5)*20;
+    const yr=(e.clientY/window.innerHeight-.5)*20;
+    if(heroTitle) heroTitle.style.transform=`translate(${xr*0.2}px, ${yr*0.2}px)`;
   });
 </script>
-</body>
-</html>
