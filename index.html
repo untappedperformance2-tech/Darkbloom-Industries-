@@ -590,4 +590,10 @@
   // HERO PARALLAX
   const heroTitle=document.querySelector('.hero-title');
   document.addEventListener('mousemove',e=>{
-    const xr=(e.clientX/window.innerWidth-.5)
+    const xr=(e.clientX/window.innerWidth-.5)*8;
+    const yr=(e.clientY/window.innerHeight-.5)*8;
+    if(heroTitle) heroTitle.style.textShadow=`${xr*.5}px ${yr*.5}px 20px rgba(0,245,255,0.6),${xr}px ${yr}px 60px rgba(0,245,255,0.2),0 0 120px rgba(0,245,255,0.1)`;
+  });
+</script>
+</body>
+</html>
