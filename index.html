@@ -3,20 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
-  <!-- ENHANCED SECURITY HEADERS -->
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://formspree.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src https://formspree.io https://*.formspree.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;"/>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src https://formspree.io; frame-ancestors 'none';"/>
   <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
   <meta http-equiv="X-Frame-Options" content="DENY"/>
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
-  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=()"/>
-  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin"/>
-  <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp"/>
-  <meta http-equiv="Cross-Origin-Resource-Policy" content="same-origin"/>
-  <meta http-equiv="X-XSS-Protection" content="1; mode=block"/>
-  
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()"/>
   <meta name="description" content="Darkbloom Industries — Secure software development, website development, mobile apps, and NIST/CMMC-aligned military-grade security solutions."/>
-  <meta name="security" content="DarkbloomIndustries@outlook.com"/>
   <title>Darkbloom Industries&#8482;</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
@@ -34,48 +26,6 @@
     .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:1;}
     .glitch-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0;}
     #app{position:relative;z-index:3;}
-
-    /* SECURITY INDICATORS - VISUAL TRUST BADGES */
-    .security-badge-container{
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      z-index:999;
-      display:flex;
-      gap:8px;
-      pointer-events:none;
-    }
-    .security-badge{
-      background:rgba(0,0,0,0.7);
-      backdrop-filter:blur(4px);
-      padding:4px 12px;
-      border-radius:4px;
-      font-family:'Share Tech Mono',monospace;
-      font-size:0.55rem;
-      color:var(--green);
-      border-left:2px solid var(--green);
-      letter-spacing:0.1em;
-      pointer-events:none;
-    }
-    .security-badge.https{color:var(--cyan);border-left-color:var(--cyan);}
-    .secure-banner{
-      position:fixed;
-      bottom:20px;
-      left:20px;
-      background:rgba(0,255,136,0.1);
-      backdrop-filter:blur(4px);
-      padding:4px 12px;
-      border-radius:4px;
-      font-family:'Share Tech Mono',monospace;
-      font-size:0.55rem;
-      color:var(--green);
-      z-index:999;
-      pointer-events:none;
-      border:1px solid rgba(0,255,136,0.3);
-    }
-    @media(max-width:700px){
-      .security-badge-container,.secure-banner{display:none;}
-    }
 
     /* NAV */
     nav{position:fixed;top:0;width:100%;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(2,4,8,0.95),transparent);backdrop-filter:blur(4px);z-index:100;border-bottom:1px solid rgba(0,245,255,0.08);}
@@ -114,7 +64,7 @@
     .scroll-indicator span{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.4);letter-spacing:0.3em;}
     .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:scrollPulse 2s infinite;}
 
-    /* CAPABILITY STATS BAR */
+    /* CAPABILITY STATS BAR — replaces old placeholder counters */
     .stats-bar{display:flex;justify-content:center;flex-wrap:wrap;border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:rgba(0,245,255,0.02);}
     .stat-item{flex:1;min-width:180px;max-width:240px;padding:28px 20px;text-align:center;border-right:1px solid var(--border);transition:background 0.3s;}
     .stat-item:last-child{border-right:none;}
@@ -162,11 +112,6 @@
     .compliance-table td:first-child{color:var(--green);}
     .compliance-table tr:hover td{background:rgba(0,255,136,0.03);}
     .badge-compliant{color:var(--green);font-size:0.6rem;}
-
-    /* STATUS FEED */
-    .status-feed-wrap{margin-top:24px;border:1px solid rgba(0,255,136,0.15);padding:20px;background:rgba(0,255,136,0.02);min-height:160px;}
-    .status-feed-label{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.5);letter-spacing:0.2em;margin-bottom:12px;}
-    #status-feed{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(0,255,136,0.7);line-height:2.1;min-height:120px;}
 
     /* PROCESS */
     .process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;}
@@ -230,23 +175,8 @@
     @keyframes glitch2{0%,93%,100%{transform:none;opacity:0}94%{transform:translateX(3px);opacity:0.5}96%{transform:translateX(-3px);opacity:0.7}98%{transform:translateX(2px);opacity:0.5}}
 
     /* MOBILE */
-    @media(max-width:900px){
-      nav{padding:16px 24px}
-      .nav-links{display:none}
-      section{padding:80px 24px}
-      .security-grid{grid-template-columns:1fr}
-      .process-steps{grid-template-columns:1fr 1fr}
-      .process-steps::before{display:none}
-      .contact-grid{grid-template-columns:1fr;gap:40px}
-      footer{flex-direction:column;text-align:center}
-      .cta-band{padding:48px 24px}
-      .security-block{padding:32px 24px}
-    }
-    @media(max-width:560px){
-      .stats-bar{flex-wrap:wrap}
-      .stat-item{min-width:50%;border-bottom:1px solid var(--border)}
-      .process-steps{grid-template-columns:1fr}
-    }
+    @media(max-width:900px){nav{padding:16px 24px}.nav-links{display:none}section{padding:80px 24px}.process-steps{grid-template-columns:1fr 1fr}.process-steps::before{display:none}.contact-grid{grid-template-columns:1fr;gap:40px}footer{flex-direction:column;text-align:center}.cta-band{padding:48px 24px}#security .sec-inner-grid{grid-template-columns:1fr!important;}}
+    @media(max-width:560px){.stats-bar{flex-wrap:wrap}.stat-item{min-width:50%;border-bottom:1px solid var(--border)}.process-steps{grid-template-columns:1fr}.security-block{padding:32px 24px}}
   </style>
 </head>
 <body>
@@ -292,7 +222,7 @@
     <div class="scroll-indicator"><span>SCROLL</span><div class="scroll-line"></div></div>
   </section>
 
-  <!-- CAPABILITY BAR -->
+  <!-- CAPABILITY BAR — replaces placeholder counters -->
   <div class="stats-bar">
     <div class="stat-item">
       <span class="stat-num">AES&#8209;256</span>
@@ -361,47 +291,54 @@
     </div>
   </section>
 
-  <!-- SECURITY -->
+  <!-- SECURITY TEASER -->
   <section id="security" style="padding-top:0;">
     <div class="section-header"><span class="section-tag">// 02 &mdash; Security</span><div class="section-line"></div></div>
-    <div class="security-block">
-      <div class="security-grid">
+
+    <div style="border:1px solid rgba(0,255,136,0.2);background:linear-gradient(135deg,rgba(0,255,136,0.03),rgba(0,245,255,0.02));padding:60px;position:relative;overflow:hidden;">
+      <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--green),transparent);"></div>
+      <div style="position:absolute;top:16px;right:24px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,255,136,0.25);letter-spacing:0.15em;">NIST SP 800-171 // CMMC ALIGNED // OWASP SSDF</div>
+
+      <div class="sec-inner-grid" style="display:grid;grid-template-columns:1fr;gap:40px;align-items:center;max-width:800px;">
+
+        <!-- LEFT -->
         <div>
-          <h2 class="security-title">Enterprise &amp; Defense&#8209;Grade<br/>Security Implementation</h2>
-          <p class="security-text">We don't just build software &mdash; we build fortresses. Every system we deliver is hardened against modern threat vectors and built to satisfy the specific compliance standards your contract or industry demands. All deliverables are audit-ready.</p>
-          <ul class="security-list">
-            <li>FIPS 140-3 validated cryptography (AES-256, RSA-4096)<span class="std">NIST FIPS 140-3 &bull; Implementation Compliant</span></li>
-            <li>NIST SP 800-207 Zero-Trust Architecture<span class="std">Full perimeter removal &bull; Identity-centric access</span></li>
-            <li>NIST SP 800-218 Secure Software Development (SSDF)<span class="std">Secure SDLC &bull; All code deliverables</span></li>
-            <li>NIST SP 800-171 CUI Protection &mdash; 110 Controls<span class="std">Audit-ready System Security Plans (SSP) provided</span></li>
-            <li>CMMC Level 2 Audit-Ready Deliverables<span class="std">110 practices &bull; POA&amp;M documentation included</span></li>
-            <li>OWASP Top 10 &amp; OWASP MASVS (Mobile)<span class="std">Every codebase scanned &amp; remediated</span></li>
-            <li>RBAC &bull; MFA &bull; Privileged Access Management<span class="std">Least-privilege enforced at the architecture level</span></li>
-            <li>Penetration Testing &amp; Vulnerability Audits<span class="std">Independent third-party testing available</span></li>
-            <li>Software Bill of Materials (SBOM) Generation<span class="std">Full component inventory &amp; supply chain transparency</span></li>
-            <li>Real-Time Intrusion Detection &amp; Immutable Audit Logs<span class="std">EDR &bull; SIEM integration &bull; 365-day log retention</span></li>
-          </ul>
-        </div>
-        <div>
-          <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.4);letter-spacing:0.3em;margin-bottom:14px;">COMPLIANCE MATRIX</div>
-          <table class="compliance-table">
-            <thead>汽<th>Standard</th><th>Level / Scope</th><th>Status</th> </thead>
-            <tbody>
-              <tr><td>NIST SP 800-171</td><td>110 Controls / CUI</td><td class="badge-compliant">● ALIGNED</td></tr>
-              <tr><td>CMMC</td><td>Level 2 / DoD Supply Chain</td><td class="badge-compliant">● AUDIT-READY</td></tr>
-              <tr><td>NIST SP 800-218</td><td>SSDF / Secure Dev</td><td class="badge-compliant">● IMPLEMENTED</td></tr>
-              <tr><td>NIST SP 800-207</td><td>Zero-Trust Arch</td><td class="badge-compliant">● IMPLEMENTED</td></tr>
-              <tr><td>FIPS 140-3</td><td>Cryptographic Modules</td><td class="badge-compliant">● COMPLIANT</td></tr>
-              <tr><td>OWASP Top 10</td><td>Web / API Security</td><td class="badge-compliant">● ENFORCED</td></tr>
-              <tr><td>OWASP MASVS</td><td>Mobile App Security</td><td class="badge-compliant">● ENFORCED</td></tr>
-              <tr><td>SOC 2 Principles</td><td>Trust Service Criteria</td><td class="badge-compliant">● ALIGNED</td></tr>
-            </tbody>
-          </table>
-          <div class="status-feed-wrap">
-            <div class="status-feed-label">// LIVE SYSTEM STATUS</div>
-            <div id="status-feed"></div>
+          <h2 style="font-family:'Orbitron',monospace;font-size:clamp(1.4rem,2.5vw,2rem);font-weight:700;color:var(--green);text-shadow:0 0 20px var(--green);margin-bottom:20px;">Enterprise &amp; Defense&#8209;Grade<br/>Security Implementation</h2>
+          <p style="color:rgba(200,232,240,0.6);line-height:1.8;font-size:1rem;margin-bottom:32px;">We don't just build software &mdash; we build fortresses. Every system we deliver is hardened against modern threat vectors, built to the compliance standards your contract demands, and shipped with full audit documentation.</p>
+
+          <!-- 6 KEY CAPABILITY TILES -->
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:2px;margin-bottom:36px;">
+            <div style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);padding:16px 18px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.08em;margin-bottom:4px;">FIPS 140-3</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.35);letter-spacing:0.1em;">Validated Cryptography</div>
+            </div>
+            <div style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);padding:16px 18px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.08em;margin-bottom:4px;">ZERO-TRUST</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.35);letter-spacing:0.1em;">NIST SP 800-207</div>
+            </div>
+            <div style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);padding:16px 18px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.08em;margin-bottom:4px;">NIST 800-171</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.35);letter-spacing:0.1em;">CUI Protection</div>
+            </div>
+            <div style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);padding:16px 18px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.08em;margin-bottom:4px;">CMMC LVL 2</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.35);letter-spacing:0.1em;">Audit-Ready Deliverables</div>
+            </div>
+            <div style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);padding:16px 18px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.08em;margin-bottom:4px;">OWASP TOP 10</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.35);letter-spacing:0.1em;">Web &amp; Mobile Security</div>
+            </div>
+            <div style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);padding:16px 18px;">
+              <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.08em;margin-bottom:4px;">SOC 2 / SSDF</div>
+              <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.35);letter-spacing:0.1em;">Secure Dev Lifecycle</div>
+            </div>
           </div>
+
+          <a href="security-policy.html" style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--green);padding:14px 32px;text-decoration:none;display:inline-block;font-weight:700;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 24px var(--green)'" onmouseleave="this.style.transform='none';this.style.boxShadow='none'">
+            VIEW FULL SECURITY CAPABILITIES &#9654;
+          </a>
         </div>
+
       </div>
     </div>
   </section>
@@ -419,41 +356,23 @@
     </div>
   </section>
 
-  <!-- PRODUCTS TEASER - SIMPLE CLEAN VERSION -->
-  <section id="products">
-    <div class="section-header">
-      <span class="section-tag">// 04 &mdash; Our Products</span>
-      <div class="section-line"></div>
-    </div>
-    
-    <div style="border:1px solid rgba(0,245,255,0.12);background:linear-gradient(135deg,rgba(255,140,0,0.04),rgba(58,127,255,0.04),rgba(0,245,255,0.02));padding:clamp(40px,6vw,70px);text-align:center;position:relative;overflow:hidden;">
+  <!-- PRODUCTS TEASER (slim) -->
+  <section id="products" style="padding-top:0;">
+    <div class="section-header"><span class="section-tag">// 03b &mdash; Our Products</span><div class="section-line"></div></div>
+    <div style="border:1px solid rgba(0,245,255,0.12);background:linear-gradient(135deg,rgba(255,140,0,0.04),rgba(0,245,255,0.02),rgba(58,127,255,0.04));padding:52px 60px;position:relative;overflow:hidden;display:flex;align-items:center;justify-content:space-between;gap:48px;flex-wrap:wrap;">
       <div style="position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(to right,#ff8c00,#00ff88,#3a7fff);"></div>
-      
-      <p style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.3em;margin-bottom:20px;">BUILT BY DARKBLOOM INDUSTRIES™</p>
-      
-      <h2 style="font-family:'Orbitron',monospace;font-size:clamp(1.5rem,5vw,2.5rem);font-weight:900;color:#fff;margin-bottom:20px;letter-spacing:0.05em;">
-        <span style="color:#ff8c00;">WrenchWare Pro™</span> 
-        <span style="color:rgba(200,232,240,0.4);font-size:0.7em;">&</span> 
-        <span style="color:#3a7fff;">ClaimSync™</span>
-      </h2>
-      
-      <p style="color:rgba(200,232,240,0.55);line-height:1.8;font-size:clamp(0.9rem,2vw,1rem);max-width:700px;margin:0 auto 32px auto;">A complete 2-in-1 platform connecting auto repair shops and insurance companies with AI fraud detection, AI damage assessment, and a real-time communication bridge.</p>
-      
-      <div style="display:flex;flex-wrap:wrap;gap:12px;justify-content:center;margin-bottom:40px;">
-        <span style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:#ff8c00;border:1px solid rgba(255,140,0,0.25);padding:6px 14px;">Shop Management</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:#3a7fff;border:1px solid rgba(58,127,255,0.25);padding:6px 14px;">Claims Management</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--green);border:1px solid rgba(0,255,136,0.25);padding:6px 14px;">AI Fraud Detection</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--green);border:1px solid rgba(0,255,136,0.25);padding:6px 14px;">AI Damage Assessment</span>
-        <span style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--cyan);border:1px solid rgba(0,245,255,0.2);padding:6px 14px;">Real-Time Bridge</span>
+      <div style="flex:1;min-width:260px;">
+        <p style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--magenta);letter-spacing:0.3em;margin-bottom:14px;">BUILT BY DARKBLOOM INDUSTRIES&#8482;</p>
+        <h2 style="font-family:'Orbitron',monospace;font-size:clamp(1.2rem,2.5vw,1.9rem);font-weight:900;color:#fff;letter-spacing:0.05em;line-height:1.2;margin-bottom:14px;">
+          <span style="color:#ff8c00;text-shadow:0 0 16px rgba(255,140,0,0.4);">WrenchWare Pro&#8482;</span>
+          <span style="color:rgba(200,232,240,0.3);font-size:0.7em;margin:0 10px;">&amp;</span>
+          <span style="color:#3a7fff;text-shadow:0 0 16px rgba(58,127,255,0.4);">ClaimSync&#8482;</span>
+        </h2>
+        <p style="color:rgba(200,232,240,0.5);font-size:0.95rem;line-height:1.7;max-width:520px;">A fully integrated shop management &amp; insurance claims platform with a real-time communication bridge, AI fraud detection, and AI damage assessment. Fully built. Pilot-ready now.</p>
       </div>
-      
-      <div style="display:flex;gap:20px;justify-content:center;flex-wrap:wrap;">
-        <a href="products.html" class="btn-primary" style="display:inline-block;text-decoration:none;">EXPLORE THE PLATFORM →</a>
-        <a href="products.html#inquiry" class="btn-secondary" style="display:inline-block;text-decoration:none;">REQUEST PILOT INFO →</a>
-      </div>
-      
-      <div style="margin-top:40px;padding-top:24px;border-top:1px solid rgba(0,245,255,0.1);">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(200,232,240,0.35);letter-spacing:0.15em;">SOC II COMPLIANT &bull; FIPS 140-3 &bull; SEEKING PILOT PARTNERS</div>
+      <div style="display:flex;flex-direction:column;gap:12px;align-items:flex-start;flex-shrink:0;">
+        <a href="products.html" class="btn-primary" style="text-decoration:none;white-space:nowrap;padding:16px 36px;">EXPLORE THE PLATFORM &#9654;</a>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.3);letter-spacing:0.15em;padding-left:4px;">SOC II &bull; FIPS 140-3 &bull; SEEKING PILOT PARTNERS</div>
       </div>
     </div>
   </section>
@@ -470,7 +389,7 @@
 
   <!-- CONTACT -->
   <section id="contact">
-    <div class="section-header"><span class="section-tag">// 05 &mdash; Contact</span><div class="section-line"></div></div>
+    <div class="section-header"><span class="section-tag">// 04 &mdash; Contact</span><div class="section-line"></div></div>
     <div class="contact-grid">
       <div>
         <h2 class="section-title">Initialize <span class="hi">Contact</span></h2>
@@ -488,12 +407,12 @@
           <div class="form-group">
             <label>// Your Name</label>
             <input type="text" id="f-name" placeholder="John Doe" maxlength="100" autocomplete="name"/>
-            <div class="field-error" id="err-name">▲ Name is required</div>
+            <div class="field-error" id="err-name">&#9650; Name is required</div>
           </div>
           <div class="form-group">
             <label>// Email Address</label>
             <input type="email" id="f-email" placeholder="you@domain.com" maxlength="150" autocomplete="email"/>
-            <div class="field-error" id="err-email">▲ Valid email required</div>
+            <div class="field-error" id="err-email">&#9650; Valid email required</div>
           </div>
           <div class="form-group">
             <label>// Service Required</label>
@@ -509,14 +428,14 @@
               <option>Full Project (Multiple Services)</option>
               <option>Capabilities Consultation</option>
             </select>
-            <div class="field-error" id="err-service">▲ Please select a service</div>
+            <div class="field-error" id="err-service">&#9650; Please select a service</div>
           </div>
           <div class="form-group">
             <label>// Project Brief</label>
             <textarea id="f-message" placeholder="Describe your project, compliance requirements, timeline, and objectives..." maxlength="2000"></textarea>
-            <div class="field-error" id="err-message">▲ Please describe your project (min 10 characters)</div>
+            <div class="field-error" id="err-message">&#9650; Please describe your project (min 10 characters)</div>
           </div>
-          <div id="rate-warning">⚠ Too many attempts. Please wait before trying again.</div>
+          <div id="rate-warning">&#9888; Too many attempts. Please wait before trying again.</div>
           <div class="form-msg" id="form-msg"></div>
           <button class="btn-primary" id="submit-btn" style="cursor:none;width:100%;padding:18px;font-size:0.85rem;" onclick="handleSubmit(event)">
             TRANSMIT MESSAGE &#9654;
@@ -526,10 +445,20 @@
     </div>
   </section>
 
+  <!-- SECURITY STATUS BAR -->
+  <div style="border-top:1px solid rgba(0,245,255,0.08);background:rgba(0,0,0,0.3);padding:12px 48px;display:flex;flex-wrap:wrap;justify-content:center;gap:24px;align-items:center;">
+    <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,255,136,0.6);letter-spacing:0.2em;">&#128274; TLS 1.3 &mdash; HTTPS ENFORCED</span>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,255,136,0.6);letter-spacing:0.2em;">&#9989; CSP HEADER ACTIVE</span>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,255,136,0.6);letter-spacing:0.2em;">&#9989; X-FRAME-OPTIONS: DENY</span>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,255,136,0.6);letter-spacing:0.2em;">&#9989; HSTS ENABLED</span>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,255,136,0.6);letter-spacing:0.2em;">&#128274; AES-256 ENCRYPTED</span>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,255,136,0.6);letter-spacing:0.2em;">&#9989; NO TRACKING &mdash; NO COOKIES</span>
+  </div>
+
   <!-- FOOTER -->
   <footer>
     <div class="footer-brand">DARKBLOOM<sup>&#8482;</sup> INDUSTRIES</div>
-    <p class="footer-copy">© 2025 Darkbloom Industries™. All rights reserved.<br/>Darkbloom™ is a trademark of Darkbloom Industries™.</p>
+    <p class="footer-copy">&#169; 2025 Darkbloom Industries&#8482;. All rights reserved.<br/>Darkbloom&#8482; is a trademark of Darkbloom Industries&#8482;.</p>
     <ul class="footer-links">
       <li><a href="privacy.html">Privacy</a></li>
       <li><a href="terms.html">Terms</a></li>
@@ -539,20 +468,10 @@
 
 </div><!-- #app -->
 
-<!-- SECURITY TRUST INDICATORS -->
-<div class="security-badge-container">
-  <div class="security-badge https">🔒 TLS 1.3</div>
-  <div class="security-badge">⚡ CSP ACTIVE</div>
-  <div class="security-badge">🛡️ XSS PROTECTED</div>
-  <div class="security-badge">🔐 AES-256</div>
-</div>
-<div class="secure-banner">
-  🔒 SECURE CONNECTION | ENCRYPTED | NO TRACKING
-</div>
-
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script>
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+  // ═══════════════════════════════════════
   // SECURITY MODULE
+  // ═══════════════════════════════════════
   const Security = (() => {
     const RATE_LIMIT = 3, RATE_WINDOW = 10*60*1000, submitLog = [];
     function isRateLimited(){ const now=Date.now(); while(submitLog.length&&now-submitLog[0]>RATE_WINDOW)submitLog.shift(); return submitLog.length>=RATE_LIMIT; }
@@ -563,38 +482,16 @@
     return{isRateLimited,recordSubmit,sanitize,isValidEmail,isBotDetected};
   })();
 
-  // SECURITY MONITORING
-  function checkSecurityHeaders() {
-    const securityWarnings = [];
-    if (location.protocol !== 'https:') {
-      securityWarnings.push('⚠️ INSECURE CONNECTION: Not using HTTPS');
-    }
-    const cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]');
-    if (!cspMeta) {
-      securityWarnings.push('⚠️ CSP header missing');
-    }
-    if (securityWarnings.length > 0) {
-      console.warn('Security Issues Detected:', securityWarnings);
-    } else {
-      console.log('✅ SECURITY STATUS: All protections active | TLS 1.3 | CSP | XSS Protection | Rate Limiting Active');
-    }
-  }
-  
-  // Check if site is loaded in an iframe (should be blocked)
-  if (window.self !== window.top) {
-    console.warn('⚠️ Security Alert: Site loaded in iframe - should be blocked by X-Frame-Options');
-  }
-  
-  setTimeout(checkSecurityHeaders, 1000);
-
+  // ═══════════════════════════════════════
   // FORM HANDLER
+  // ═══════════════════════════════════════
   async function handleSubmit(e){
     e.preventDefault();
     const btn=document.getElementById('submit-btn'), msgBox=document.getElementById('form-msg'), rateWarn=document.getElementById('rate-warning');
     msgBox.className='form-msg'; msgBox.textContent=''; rateWarn.style.display='none';
     ['f-name','f-email','f-service','f-message'].forEach(id=>{ document.getElementById(id).classList.remove('invalid'); });
     ['err-name','err-email','err-service','err-message'].forEach(id=>{ document.getElementById(id).classList.remove('visible'); });
-    if(Security.isBotDetected()){ btn.textContent='MESSAGE RECEIVED ✓'; btn.style.background='var(--green)'; btn.style.color='#020408'; return; }
+    if(Security.isBotDetected()){ btn.textContent='MESSAGE RECEIVED \u2713'; btn.style.background='var(--green)'; btn.style.color='#020408'; return; }
     if(Security.isRateLimited()){ rateWarn.style.display='block'; return; }
     const name=Security.sanitize(document.getElementById('f-name').value);
     const email=Security.sanitize(document.getElementById('f-email').value);
@@ -611,30 +508,34 @@
       const res=await fetch('https://formspree.io/f/myknagoq',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({name,email,service,message})});
       if(res.ok){
         Security.recordSubmit();
-        btn.textContent='MESSAGE RECEIVED ✓'; btn.style.background='var(--green)'; btn.style.color='#020408'; btn.disabled=false;
+        btn.textContent='MESSAGE RECEIVED \u2713'; btn.style.background='var(--green)'; btn.style.color='#020408'; btn.disabled=false;
         ['f-name','f-email','f-message'].forEach(id=>document.getElementById(id).value='');
         document.getElementById('f-service').selectedIndex=0;
         msgBox.textContent='> TRANSMISSION COMPLETE. WE WILL RESPOND WITHIN 24 HOURS.'; msgBox.className='form-msg success visible';
-        setTimeout(()=>{ btn.textContent='TRANSMIT MESSAGE ►'; btn.style.background='var(--cyan)'; btn.style.color='var(--dark)'; msgBox.className='form-msg'; },5000);
+        setTimeout(()=>{ btn.textContent='TRANSMIT MESSAGE \u25BA'; btn.style.background='var(--cyan)'; btn.style.color='var(--dark)'; msgBox.className='form-msg'; },5000);
       } else { throw new Error('Server error'); }
     }catch(err){
       btn.textContent='TRANSMISSION FAILED'; btn.style.background='#ff4466'; btn.style.color='#fff'; btn.disabled=false;
       msgBox.textContent='> ERROR: TRANSMISSION FAILED. PLEASE RETRY OR EMAIL DIRECTLY.'; msgBox.className='form-msg error visible';
-      setTimeout(()=>{ btn.textContent='TRANSMIT MESSAGE ►'; btn.style.background='var(--cyan)'; btn.style.color='var(--dark)'; msgBox.className='form-msg'; },4000);
+      setTimeout(()=>{ btn.textContent='TRANSMIT MESSAGE \u25BA'; btn.style.background='var(--cyan)'; btn.style.color='var(--dark)'; msgBox.className='form-msg'; },4000);
     }
   }
 
+  // ═══════════════════════════════════════
   // CURSOR
+  // ═══════════════════════════════════════
   const cursor=document.getElementById('cursor'), ring=document.getElementById('cursor-ring');
   let mx=0,my=0,rx=0,ry=0;
   document.addEventListener('mousemove',e=>{ mx=e.clientX; my=e.clientY; cursor.style.left=mx+'px'; cursor.style.top=my+'px'; });
   (function animRing(){ rx+=(mx-rx)*0.12; ry+=(my-ry)*0.12; ring.style.left=rx+'px'; ring.style.top=ry+'px'; requestAnimationFrame(animRing); })();
-  document.querySelectorAll('a,button,.service-card,.compliance-table tr').forEach(el=>{
+  document.querySelectorAll('a,button,.service-card,.threat-cell,.compliance-table tr').forEach(el=>{
     el.addEventListener('mouseenter',()=>{ ring.style.width='60px'; ring.style.height='60px'; ring.style.opacity='0.8'; cursor.style.transform='translate(-50%,-50%) scale(0.5)'; });
     el.addEventListener('mouseleave',()=>{ ring.style.width='36px'; ring.style.height='36px'; ring.style.opacity='0.5'; cursor.style.transform='translate(-50%,-50%) scale(1)'; });
   });
 
+  // ═══════════════════════════════════════
   // CANVAS BACKGROUND
+  // ═══════════════════════════════════════
   const canvas=document.getElementById('bg-canvas'), ctx=canvas.getContext('2d');
   let W,H;
   function resize(){ W=canvas.width=window.innerWidth; H=canvas.height=window.innerHeight; }
@@ -682,39 +583,6 @@
   }
   triggerGlitch();
 
-  // STATUS FEED
-  const statusLines=[
-    '> FIREWALL.................. ACTIVE',
-    '> FIPS 140-3 CRYPTO......... ONLINE',
-    '> INTRUSION DETECTION....... ARMED',
-    '> ZERO-TRUST LAYER.......... ENABLED',
-    '> NIST 800-171 CONTROLS..... VERIFIED',
-    '> SBOM INTEGRITY CHECK...... PASS',
-    '> AUDIT LOG INTEGRITY....... VALID',
-    '> OWASP SCAN................ CLEAN',
-    '> THREAT LEVEL.............. MINIMAL',
-  ];
-  const feedEl=document.getElementById('status-feed');
-  statusLines.forEach(()=>{ const d=document.createElement('div'); d.textContent='\u00a0'; d.style.visibility='hidden'; feedEl.appendChild(d); });
-  const feedRows=[...feedEl.children];
-  let si=0;
-  function nextLine(){
-    if(si<feedRows.length){
-      feedRows[si].textContent=statusLines[si];
-      feedRows[si].style.visibility='visible';
-      si++;
-      setTimeout(nextLine,520);
-    } else {
-      setTimeout(()=>{
-        feedRows.forEach((r,i)=>{ r.textContent='\u00a0'; r.style.visibility='hidden'; });
-        si=0;
-        setTimeout(nextLine,400);
-      },3500);
-    }
-  }
-  const secObs=new IntersectionObserver(e=>{ if(e[0].isIntersecting){ nextLine(); secObs.disconnect(); } },{threshold:0.3});
-  secObs.observe(document.getElementById('security'));
-
   // SCROLL FADE-IN
   const observer=new IntersectionObserver(e=>{ e.forEach(el=>{ if(el.isIntersecting){ el.target.style.opacity='1'; el.target.style.transform='translateY(0)'; } }); },{threshold:0.1});
   document.querySelectorAll('.service-card,.process-step,.stat-item').forEach(el=>{ el.style.opacity='0'; el.style.transform='translateY(30px)'; el.style.transition='opacity 0.6s ease,transform 0.6s ease'; observer.observe(el); });
@@ -722,10 +590,4 @@
   // HERO PARALLAX
   const heroTitle=document.querySelector('.hero-title');
   document.addEventListener('mousemove',e=>{
-    const xr=(e.clientX/window.innerWidth-.5)*20;
-    const yr=(e.clientY/window.innerHeight-.5)*20;
-    if(heroTitle) heroTitle.style.transform=`translate(${xr*0.2}px, ${yr*0.2}px)`;
-  });
-</script>
-</body>
-</html>
+    const xr=(e.clientX/window.innerWidth-.5)
