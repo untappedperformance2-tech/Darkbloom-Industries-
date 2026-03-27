@@ -98,6 +98,7 @@
     /* COMING SOON BADGES */
     .coming-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px;opacity:0;animation:fadeUp 0.8s 1.1s forwards;}
     .cbadge{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.8);border:1px solid rgba(0,245,255,0.25);padding:5px 14px;letter-spacing:0.15em;background:rgba(0,245,255,0.04);}
+    .cbadge.live{color:var(--green);border-color:rgba(0,255,136,0.4);background:rgba(0,255,136,0.06);}
 
     /* BUTTONS */
     .btn-primary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:16px 40px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
@@ -127,6 +128,73 @@
     .product-name{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:var(--cyan);letter-spacing:0.1em;text-transform:uppercase;margin-bottom:12px;}
     .product-desc{font-size:0.95rem;color:rgba(200,232,240,0.55);line-height:1.7;margin-bottom:20px;}
     .product-status{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--magenta);letter-spacing:0.15em;display:inline-block;border-top:1px solid rgba(255,0,170,0.3);padding-top:12px;margin-top:8px;}
+
+    /* LIVE PRODUCT — AUDITCORE SPECIFIC STYLES */
+    .product-teaser.live-product{
+      border-color:rgba(0,255,136,0.35);
+      background:linear-gradient(135deg,rgba(0,255,136,0.05),rgba(0,245,255,0.03));
+    }
+    .product-teaser.live-product::before{
+      content:'';
+      position:absolute;top:0;left:0;
+      width:100%;height:3px;
+      background:linear-gradient(90deg,var(--green),var(--cyan));
+    }
+    .product-teaser.live-product::after{
+      content:'';
+      position:absolute;top:0;left:0;
+      width:3px;height:100%;
+      background:linear-gradient(to bottom,var(--green),transparent);
+    }
+    .product-teaser.live-product:hover{
+      border-color:rgba(0,255,136,0.6);
+      transform:translateY(-6px);
+      box-shadow:0 0 40px rgba(0,255,136,0.08);
+    }
+    .product-teaser.live-product .product-name{
+      color:var(--green);
+      text-shadow:0 0 14px rgba(0,255,136,0.4);
+    }
+    .product-teaser.live-product .product-icon{
+      filter:drop-shadow(0 0 14px var(--green));
+    }
+    .live-badge{
+      display:inline-flex;align-items:center;gap:8px;
+      font-family:'Share Tech Mono',monospace;font-size:0.58rem;
+      color:var(--green);letter-spacing:0.2em;
+      background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.35);
+      padding:4px 12px;margin-bottom:20px;
+    }
+    .live-dot{
+      width:6px;height:6px;background:var(--green);border-radius:50%;
+      box-shadow:0 0 6px var(--green);animation:pulseLive 1.5s infinite;
+    }
+    .product-frameworks{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 18px;}
+    .fw-pill{
+      font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;
+      padding:3px 10px;border:1px solid rgba(0,245,255,0.2);
+      color:rgba(0,245,255,0.6);background:rgba(0,245,255,0.03);
+    }
+    .btn-launch{
+      font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;
+      text-transform:uppercase;color:var(--dark);background:var(--green);
+      border:none;padding:12px 24px;cursor:none;position:relative;overflow:hidden;
+      clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+      transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;
+      display:inline-block;font-weight:700;margin-right:12px;margin-top:8px;
+    }
+    .btn-launch::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
+    .btn-launch:hover::before{left:100%;}
+    .btn-launch:hover{transform:translateY(-2px);box-shadow:0 0 24px var(--green),0 0 50px rgba(0,255,136,0.3);}
+    .btn-inquiry{
+      font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;
+      text-transform:uppercase;color:var(--green);background:transparent;
+      border:1px solid rgba(0,255,136,0.4);padding:12px 20px;cursor:none;
+      clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
+      transition:background 0.2s,box-shadow 0.2s,transform 0.2s;
+      text-decoration:none;display:inline-block;margin-top:8px;
+    }
+    .btn-inquiry:hover{background:rgba(0,255,136,0.06);box-shadow:0 0 16px rgba(0,255,136,0.2);transform:translateY(-2px);}
 
     /* COUNTDOWN TIMER */
     .countdown-section{padding:60px 48px;max-width:1280px;margin:0 auto;text-align:center;}
@@ -163,6 +231,7 @@
     /* ANIMATIONS */
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     @keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}
+    @keyframes pulseLive{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
 
     /* MOBILE */
     @media(max-width:900px){nav{padding:16px 24px}.nav-links{display:none}section{padding:80px 24px}.countdown-container{gap:20px}.countdown-item{min-width:70px}.countdown-number{font-size:2rem}.notify-section{padding:0 24px 80px}.notify-card{padding:40px 28px}}
@@ -188,6 +257,7 @@
       <li><a href="index.html#process">Process</a></li>
       <li><a href="products.html">Products</a></li>
       <li><a href="coming-soon.html" style="color:var(--magenta);text-shadow:0 0 8px var(--magenta);">Coming Soon</a></li>
+      <li><a href="auditcore.html" style="color:var(--green);text-shadow:0 0 8px var(--green);">AuditCore&#8482; &#9679;</a></li>
       <li><a href="index.html#contact">Contact</a></li>
     </ul>
   </nav>
@@ -198,11 +268,11 @@
     <h1 class="hero-title">COMING <span class="accent">SOON</span></h1>
     <p class="hero-sub">New products. Expanded capabilities. Enterprise-grade solutions built to the highest security standards. We're engineering the future — and it's almost here.</p>
     <div class="hero-cta-group">
-      <a href="#notify" class="btn-primary">Get Notified</a>
-      <a href="index.html" class="btn-secondary">Return to Home</a>
+      <a href="auditcore.html" class="btn-primary">Launch AuditCore&#8482; &#9654;</a>
+      <a href="#notify" class="btn-secondary">Get Notified</a>
     </div>
     <div class="coming-badges">
-      <span class="cbadge">Q1 2026</span>
+      <span class="cbadge live">&#9679; AUDITCORE&#8482; — LIVE NOW</span>
       <span class="cbadge">NIST 800-171 ALIGNED</span>
       <span class="cbadge">FIPS 140-3</span>
       <span class="cbadge">ZERO-TRUST ARCHITECTURE</span>
@@ -214,26 +284,42 @@
   <section id="preview">
     <div class="section-header"><span class="section-tag">// Coming Products</span><div class="section-line"></div></div>
     <h2 class="section-title">What's <span class="hi">Next</span></h2>
-    <p style="color:rgba(200,232,240,0.45);margin-bottom:52px;max-width:600px;line-height:1.8;">We're building the next generation of security-first software. These products are currently in active development and will be available soon.</p>
+    <p style="color:rgba(200,232,240,0.45);margin-bottom:52px;max-width:600px;line-height:1.8;">AuditCore&#8482; is live and accepting clients. QuantumShield&#8482; and EdgeDefend&#8482; are in active development and coming soon.</p>
     <div class="products-preview">
+
+      <!-- QUANTUMSHIELD -->
       <div class="product-teaser">
         <span class="product-icon">🔐</span>
-        <div class="product-name">QuantumShield™</div>
+        <div class="product-name">QuantumShield&#8482;</div>
         <p class="product-desc">Post-quantum cryptography implementation with hybrid key exchange protocols. Future-proof encryption for organizations preparing for the quantum computing era.</p>
         <div class="product-status">STATUS: UNDER DEVELOPMENT</div>
       </div>
-      <div class="product-teaser">
+
+      <!-- AUDITCORE — NOW LIVE -->
+      <div class="product-teaser live-product">
+        <div class="live-badge"><div class="live-dot"></div>LIVE — ACCEPTING CLIENTS</div>
         <span class="product-icon">📊</span>
-        <div class="product-name">AuditCore™</div>
-        <p class="product-desc">Automated compliance monitoring and reporting platform. Real-time CMMC/NIST control validation with immutable audit trails and instant remediation alerts.</p>
-        <div class="product-status">STATUS: UNDER DEVELOPMENT</div>
+        <div class="product-name">AuditCore&#8482;</div>
+        <p class="product-desc">Real-time compliance intelligence platform. Continuous monitoring across CMMC Level 2, NIST SP 800-171, OWASP Top 10, SOC 2 Type II, and FIPS 140-3 — with immutable audit trails and instant gap detection.</p>
+        <div class="product-frameworks">
+          <span class="fw-pill">CMMC L2</span>
+          <span class="fw-pill">NIST 800-171</span>
+          <span class="fw-pill">OWASP TOP 10</span>
+          <span class="fw-pill">SOC 2 TYPE II</span>
+          <span class="fw-pill">FIPS 140-3</span>
+        </div>
+        <a href="auditcore.html" class="btn-launch">LAUNCH PLATFORM &#9654;</a>
+        <a href="mailto:DarkbloomIndustries@outlook.com?subject=AuditCore%20Access%20Request" class="btn-inquiry">REQUEST ACCESS</a>
       </div>
+
+      <!-- EDGEDEFEND -->
       <div class="product-teaser">
         <span class="product-icon">🌐</span>
-        <div class="product-name">EdgeDefend™</div>
+        <div class="product-name">EdgeDefend&#8482;</div>
         <p class="product-desc">Zero-trust network access solution with micro-segmentation and continuous verification. Built for distributed workforces and hybrid cloud environments.</p>
         <div class="product-status">STATUS: UNDER DEVELOPMENT</div>
       </div>
+
     </div>
   </section>
 
@@ -404,9 +490,9 @@
     }
   }
 
-  // COUNTDOWN TIMER (Target: March 1, 2026)
+  // COUNTDOWN TIMER (Target: September 1, 2026 — next product launch)
   function updateCountdown() {
-    const targetDate = new Date('March 1, 2026 00:00:00').getTime();
+    const targetDate = new Date('September 1, 2026 00:00:00').getTime();
     const now = new Date().getTime();
     const distance = targetDate - now;
     
