@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
+  <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()"/>
+  <meta name="description" content="AuditCore™ — Real-time compliance intelligence. CMMC, NIST 800-171, OWASP, SOC 2, FIPS 140-3. A product of Darkbloom Industries™."/>
+  <title>AuditCore&#8482; — Compliance Intelligence Platform</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg:#04060a;--cyan:#00f0ff;--green:#00ff88;--magenta:#ff00aa;
+      --red:#ff3355;--amber:#ffb800;--blue:#3a7fff;
+      --border:rgba(0,240,255,0.12);--dim:rgba(200,228,240,0.35);
+      --text:rgba(200,228,240,0.85);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html{scroll-behavior:smooth;}
+    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;
+      min-height:100vh;display:flex;flex-direction:column;overflow-x:hidden;cursor:none;}
+    #cur{position:fixed;width:10px;height:10px;background:var(--cyan);border-radius:50%;
+      pointer-events:none;z-index:9999;transform:translate(-50%,-50%);
+      box-shadow:0 0 8px var(--cyan),0 0 20px rgba(0,240,255,0.3);}
+    #cur-r{position:fixed;width:32px;height:32px;border:1px solid rgba(0,240,255,0.5);
+      border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);
+      transition:width .15s,height .15s,opacity .15s;}
+    #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
+    .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;
+      background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px);
+      pointer-events:none;z-index:1;}
+    .wrap{position:relative;z-index:2;flex:1;display:flex;flex-direction:column;}
+    header{padding:20px 48px;display:flex;justify-content:space-between;align-items:center;
+      border-bottom:1px solid var(--border);background:rgba(4,6,10,0.9);backdrop-filter:blur(8px);}
+    .logo{display:flex;align-items:center;gap:12px;}
+    .logo-hex svg{width:34px;height:34px;}
+    .logo-name{font-family:'Orbitron',monospace;font-weight:900;font-size:1rem;
+      color:var(--cyan);letter-spacing:0.15em;text-shadow:0 0 16px rgba(0,240,255,0.5);}
+    .logo-name sup{font-size:0.38em;color:var(--magenta);}
+    .logo-sub{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);
+      letter-spacing:0.2em;margin-top:2px;}
+    .hdr-r{display:flex;align-items:center;gap:14px;}
+    .powered{font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+      color:rgba(200,228,240,0.22);letter-spacing:0.12em;}
+    .powered a{color:rgba(0,240,255,0.35);text-decoration:none;transition:color .2s;}
+    .powered a:hover{color:var(--cyan);}
+    .sys-status{display:flex;align-items:center;gap:6px;
+      font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--green);letter-spacing:0.15em;}
+    .pulse{width:6px;height:6px;background:var(--green);border-radius:50%;
+      box-shadow:0 0 6px var(--green);animation:pulse-g 2s infinite;}
+    .hero{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;
+      text-align:center;padding:60px 24px;}
+    .hero-tag{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--magenta);
+      letter-spacing:0.4em;text-transform:uppercase;margin-bottom:18px;
+      opacity:0;animation:fadeUp .6s .15s forwards;}
+    .hero-h1{font-family:'Orbitron',monospace;font-weight:900;
+      font-size:clamp(2.8rem,7vw,6rem);color:#fff;letter-spacing:0.04em;line-height:1;
+      text-shadow:0 0 30px rgba(0,240,255,0.5),0 0 80px rgba(0,240,255,0.12);
+      opacity:0;animation:fadeUp .6s .28s forwards;}
+    .hero-h1 .ac{color:var(--cyan);}
+    .hero-h1 sup{font-size:0.28em;color:var(--magenta);vertical-align:super;}
+    .hero-sub{font-size:clamp(.9rem,1.8vw,1.15rem);color:var(--dim);
+      max-width:540px;line-height:1.7;margin-top:14px;
+      opacity:0;animation:fadeUp .6s .42s forwards;}
+    .pills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:22px;
+      opacity:0;animation:fadeUp .6s .56s forwards;}
+    .pill{font-family:'Share Tech Mono',monospace;font-size:0.56rem;letter-spacing:0.12em;
+      padding:4px 12px;border:1px solid;}
+    .pill.g{color:var(--green);border-color:rgba(0,255,136,.25);background:rgba(0,255,136,.04);}
+    .pill.c{color:var(--cyan);border-color:rgba(0,240,255,.2);background:rgba(0,240,255,.03);}
+    .pill.a{color:var(--amber);border-color:rgba(255,184,0,.25);background:rgba(255,184,0,.04);}
+    .pill.m{color:var(--magenta);border-color:rgba(255,0,170,.2);background:rgba(255,0,170,.03);}
+    .pill.b{color:var(--blue);border-color:rgba(58,127,255,.25);background:rgba(58,127,255,.04);}
+    .card-wrap{opacity:0;animation:fadeUp .6s .7s forwards;margin-top:40px;width:100%;max-width:440px;}
+    .card{background:rgba(7,12,20,0.97);border:1px solid var(--border);padding:44px 48px;
+      position:relative;overflow:hidden;}
+    .card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;
+      background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+    .card::after{content:'';position:absolute;top:0;left:0;width:100%;height:100%;
+      background:radial-gradient(ellipse at 50% 0%,rgba(0,240,255,0.035),transparent 60%);
+      pointer-events:none;}
+    .card-label{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--dim);
+      letter-spacing:0.3em;margin-bottom:28px;text-align:center;display:flex;
+      align-items:center;gap:10px;}
+    .card-label::before,.card-label::after{content:'';flex:1;height:1px;background:var(--border);}
+    .field{margin-bottom:18px;}
+    .field label{font-family:'Share Tech Mono',monospace;font-size:0.55rem;
+      color:rgba(0,240,255,0.5);letter-spacing:0.25em;text-transform:uppercase;
+      display:block;margin-bottom:7px;}
+    .field input{width:100%;background:rgba(0,240,255,0.03);
+      border:1px solid rgba(0,240,255,0.15);color:#c8e8f0;
+      font-family:'Rajdhani',sans-serif;font-size:1rem;padding:12px 14px;
+      outline:none;transition:border-color .25s,box-shadow .25s;
+      clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);
+      -webkit-appearance:none;appearance:none;}
+    .field input:focus{border-color:var(--cyan);box-shadow:0 0 14px rgba(0,240,255,0.1),inset 0 0 6px rgba(0,240,255,0.03);}
+    .field input.err{border-color:rgba(255,51,85,0.6);}
+    .field input::placeholder{color:rgba(200,228,240,0.18);}
+    .field-err{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--red);
+      letter-spacing:0.08em;margin-top:5px;display:none;}
+    .field-err.show{display:block;}
+    .form-alert{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;
+      padding:10px 14px;margin-bottom:14px;display:none;border:1px solid;}
+    .form-alert.error{color:var(--red);border-color:rgba(255,51,85,.3);background:rgba(255,51,85,.05);}
+    .form-alert.show{display:block;}
+    .btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.78rem;
+      letter-spacing:0.2em;text-transform:uppercase;color:var(--bg);background:var(--cyan);
+      border:none;padding:15px;cursor:none;position:relative;overflow:hidden;
+      clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);
+      transition:transform .18s,box-shadow .18s,background .18s;font-weight:700;margin-top:4px;}
+    .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;
+      background:linear-gradient(90deg,transparent,rgba(255,255,255,0.22),transparent);
+      transition:left .38s;}
+    .btn:hover::before{left:100%;}
+    .btn:hover{transform:translateY(-1px);box-shadow:0 0 22px rgba(0,240,255,0.4);}
+    .btn:disabled{opacity:.55;cursor:not-allowed;}
+    .card-foot{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--dim);
+      letter-spacing:0.1em;text-align:center;margin-top:20px;}
+    .card-foot a{color:rgba(0,240,255,0.45);text-decoration:none;transition:color .2s;}
+    .card-foot a:hover{color:var(--cyan);}
+    .sec-note{display:flex;align-items:center;justify-content:center;gap:8px;margin-top:14px;
+      font-family:'Share Tech Mono',monospace;font-size:0.5rem;
+      color:rgba(200,228,240,0.18);letter-spacing:0.1em;}
+    footer{padding:18px 48px;border-top:1px solid var(--border);display:flex;
+      justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+      background:rgba(4,6,10,0.9);position:relative;z-index:2;}
+    .ft{font-family:'Share Tech Mono',monospace;font-size:0.54rem;
+      color:rgba(200,228,240,0.18);letter-spacing:0.08em;}
+    @keyframes fadeUp{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    @keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.4}}
+  </style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+<canvas id="bg-canvas"></canvas>
+<div class="scanlines"></div>
+<div class="wrap">
+  <header>
+    <div class="logo">
+      <div class="logo-hex">
+        <svg viewBox="0 0 34 34" fill="none" stroke="#00f0ff" stroke-width="1.4">
+          <polygon points="17,2 31,10 31,24 17,32 3,24 3,10"/>
+          <line x1="17" y1="2" x2="17" y2="32"/>
+          <line x1="3" y1="10" x2="31" y2="10"/>
+          <line x1="3" y1="24" x2="31" y2="24"/>
+        </svg>
+      </div>
+      <div>
+        <div class="logo-name">AuditCore<sup>&#8482;</sup></div>
+        <div class="logo-sub">COMPLIANCE INTELLIGENCE PLATFORM</div>
+      </div>
+    </div>
+    <div class="hdr-r">
+      <div class="sys-status"><div class="pulse"></div>SYSTEMS OPERATIONAL</div>
+      <div class="powered">A PRODUCT OF <a href="https://untappedperformance2-tech.github.io/Darkbloom-Industries-/" target="_blank">DARKBLOOM INDUSTRIES&#8482;</a></div>
+    </div>
+  </header>
+
+  <main class="hero">
+    <p class="hero-tag">// Real-Time Compliance Intelligence — Powered by Darkbloom Industries&#8482;</p>
+    <h1 class="hero-h1">AUDIT<span class="ac">CORE</span><sup>&#8482;</sup></h1>
+    <p class="hero-sub">Continuous compliance monitoring across CMMC Level 2, NIST SP 800-171, OWASP Top 10, SOC 2 Type II, and FIPS 140-3 — all in one hardened platform.</p>
+    <div class="pills">
+      <span class="pill g">CMMC LEVEL 2</span>
+      <span class="pill g">NIST SP 800-171</span>
+      <span class="pill c">NIST SP 800-218 SSDF</span>
+      <span class="pill a">OWASP TOP 10</span>
+      <span class="pill m">SOC 2 TYPE II</span>
+      <span class="pill b">FIPS 140-3</span>
+    </div>
+
+    <div class="card-wrap">
+      <div class="card">
+        <div class="card-label">SECURE ACCESS</div>
+        <div class="form-alert error" id="form-alert"></div>
+        <div class="field">
+          <label>// Organization ID</label>
+          <input type="text" id="f-org" placeholder="your-org-slug" maxlength="50"
+            autocomplete="organization" spellcheck="false" autocorrect="off" autocapitalize="off"/>
+          <div class="field-err" id="e-org">&#9650; Organization ID required</div>
+        </div>
+        <div class="field">
+          <label>// Email Address</label>
+          <input type="email" id="f-email" placeholder="you@organization.com" maxlength="150"
+            autocomplete="email"/>
+          <div class="field-err" id="e-email">&#9650; Valid email required</div>
+        </div>
+        <div class="field">
+          <label>// Password</label>
+          <input type="password" id="f-pass" placeholder="••••••••••••" maxlength="128"
+            autocomplete="current-password"/>
+          <div class="field-err" id="e-pass">&#9650; Password required (min 8 characters)</div>
+        </div>
+        <button class="btn" id="login-btn" onclick="handleLogin()">INITIALIZE SESSION &#9654;</button>
+        <div class="card-foot">
+          No account? <a href="https://untappedperformance2-tech.github.io/Darkbloom-Industries-/products.html" target="_blank">Request pilot access &#8599;</a>
+          &nbsp;&bull;&nbsp; <a href="mailto:DarkbloomIndustries@outlook.com">Contact support</a>
+        </div>
+        <div class="sec-note">
+          <span style="color:var(--green);">&#9679;</span>
+          AES-256 encrypted &bull; Zero-log session &bull; TLS 1.3 &bull; JWT auth
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer>
+    <span class="ft">&#169; 2025 DARKBLOOM INDUSTRIES&#8482; — ALL RIGHTS RESERVED</span>
+    <span class="ft">AUDITCORE&#8482; IS A TRADEMARK OF DARKBLOOM INDUSTRIES&#8482;</span>
+    <span class="ft">v1.0.0 &bull; NIST SP 800-171 &bull; CMMC LEVEL 2 READY</span>
+  </footer>
+</div>
+
+<script>
+  // ── REAL API URL — connected to Railway ──────────────────
+  const API_URL = 'https://auditcore-api-production.up.railway.app';
+
+  // ── Cursor ───────────────────────────────────────────────
+  const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+  document.querySelectorAll('a,button,input').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{curR.style.width='46px';curR.style.height='46px';});
+    el.addEventListener('mouseleave',()=>{curR.style.width='32px';curR.style.height='32px';});
+  });
+
+  // ── Canvas background ────────────────────────────────────
+  const canvas=document.getElementById('bg-canvas'),ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){W=canvas.width=innerWidth;H=canvas.height=innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  const pts=[];
+  for(let i=0;i<85;i++) pts.push({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.2,vy:(Math.random()-.5)*.2,r:Math.random()*1.1+.2,c:Math.random()>.75?'#ff00aa':'#00f0ff',a:Math.random()*.32+.07});
+  let mx2=0,my2=0;
+  document.addEventListener('mousemove',e=>{mx2=e.clientX;my2=e.clientY;});
+  function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(0,240,255,0.028)';ctx.lineWidth=1;
+    const cw=W/24,rh=H/16;
+    for(let c=0;c<=24;c++){ctx.beginPath();ctx.moveTo(c*cw,0);ctx.lineTo(c*cw,H);ctx.stroke();}
+    for(let r=0;r<=16;r++){ctx.beginPath();ctx.moveTo(0,r*rh);ctx.lineTo(W,r*rh);ctx.stroke();}
+    let g=ctx.createRadialGradient(W/2,H*.55,0,W/2,H*.55,W*.45);
+    g.addColorStop(0,'rgba(0,240,255,0.035)');g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    g=ctx.createRadialGradient(mx2,my2,0,mx2,my2,150);
+    g.addColorStop(0,'rgba(0,240,255,0.018)');g.addColorStop(1,'transparent');
+    ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    pts.forEach((p,i)=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.globalAlpha=p.a;ctx.shadowBlur=4;ctx.shadowColor=p.c;ctx.fillStyle=p.c;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;ctx.globalAlpha=1;
+      for(let j=i+1;j<pts.length;j++){
+        const q=pts[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<95){ctx.strokeStyle=`rgba(0,240,255,${.048*(1-d/95)})`;ctx.lineWidth=.35;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
+      }
+    });
+    requestAnimationFrame(draw);
+  }
+  draw();
+
+  // ── Sanitization ─────────────────────────────────────────
+  function sanitize(str,max=200){return String(str||'').replace(/[<>]/g,'').trim().slice(0,max);}
+  function isValidEmail(e){return/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e);}
+
+  // ── Login ─────────────────────────────────────────────────
+  async function handleLogin(){
+    const btn=document.getElementById('login-btn');
+    const alert=document.getElementById('form-alert');
+    ['f-org','f-email','f-pass'].forEach(id=>document.getElementById(id).classList.remove('err'));
+    ['e-org','e-email','e-pass'].forEach(id=>document.getElementById(id).classList.remove('show'));
+    alert.classList.remove('show');
+    const org=sanitize(document.getElementById('f-org').value);
+    const email=sanitize(document.getElementById('f-email').value,150).toLowerCase();
+    const pass=document.getElementById('f-pass').value;
+    let ok=true;
+    if(!org){document.getElementById('f-org').classList.add('err');document.getElementById('e-org').classList.add('show');ok=false;}
+    if(!isValidEmail(email)){document.getElementById('f-email').classList.add('err');document.getElementById('e-email').classList.add('show');ok=false;}
+    if(!pass||pass.length<8){document.getElementById('f-pass').classList.add('err');document.getElementById('e-pass').classList.add('show');ok=false;}
+    if(!ok) return;
+    btn.disabled=true;btn.textContent='AUTHENTICATING...';
+    try {
+      const res = await fetch(`${API_URL}/auth/login`, {
+        method: 'POST',
+        headers: {'Content-Type':'application/json'},
+        body: JSON.stringify({org_id:org, email, password:pass}),
+        signal: AbortSignal.timeout(15000),
+      });
+      const data = await res.json();
+      if(!res.ok){
+        alert.textContent=`> ${data.error||'Authentication failed. Check your credentials.'}`;
+        alert.classList.add('show');
+        btn.disabled=false;btn.textContent='INITIALIZE SESSION ▶';
+        return;
+      }
+      sessionStorage.setItem('ac_token', data.token);
+      sessionStorage.setItem('ac_user', JSON.stringify(data.user));
+      sessionStorage.setItem('ac_org', JSON.stringify(data.org));
+      btn.textContent='ACCESS GRANTED ✓';
+      btn.style.background='var(--green)';
+      btn.style.color='#04060a';
+      setTimeout(()=>{ window.location.href='auditcore-dashboard.html'; }, 600);
+    } catch(err){
+      if(err.name==='TimeoutError'){
+        alert.textContent='> Connection timeout. Check your network and try again.';
+      } else {
+        alert.textContent='> Connection failed. The API may be unavailable.';
+      }
+      alert.classList.add('show');
+      btn.disabled=false;btn.textContent='INITIALIZE SESSION ▶';
+    }
+  }
+  document.addEventListener('keydown',e=>{if(e.key==='Enter') handleLogin();});
+  setTimeout(()=>document.getElementById('f-org').focus(), 800);
+</script>
+</body>
+</html>
