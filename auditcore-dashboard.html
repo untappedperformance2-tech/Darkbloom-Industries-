@@ -152,7 +152,6 @@
     .scan-result-summary{font-family:'Orbitron',monospace;font-size:1rem;color:var(--green);margin-top:20px;letter-spacing:0.1em;}
     .loading{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);letter-spacing:0.15em;text-align:center;padding:40px;animation:pulse-g 1.5s infinite;}
     @keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.3}}
-    /* M365 */
     .int-card{background:var(--surface);border:1px solid var(--border);padding:28px 32px;margin-bottom:16px;position:relative;}
     .int-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,#00f0ff,#3a7fff);}
     .int-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
@@ -279,6 +278,11 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00f0ff" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
       <span class="nav-label">MICROSOFT 365</span>
       <span class="nav-badge" id="badge-m365" style="background:rgba(0,240,255,.08);color:var(--dim);border:1px solid rgba(0,240,255,.15);">&#9675;</span>
+    </div>
+    <div class="nav-item" onclick="showPage('aws')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ffb800" stroke-width="1.5"><path d="M2 11c0-1 .5-2 1.5-2.5S6 8 8 8s3 .5 4.5 1S14 10 14 11"/><path d="M5 8V5a3 3 0 0 1 6 0v3"/><rect x="1" y="11" width="14" height="4" rx="1"/></svg>
+      <span class="nav-label">AMAZON AWS</span>
+      <span class="nav-badge" id="badge-aws" style="background:rgba(255,184,0,.08);color:var(--dim);border:1px solid rgba(255,184,0,.15);">&#9675;</span>
     </div>
     <div class="nav-item" onclick="signOut()">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2H3v12h7M11 5l3 3-3 3M6 8h8"/></svg>
@@ -444,7 +448,7 @@ async function loadFindings(){
 }
 
 function loadActivity(log){
-  var colors={login:'var(--cyan)',control_updated:'var(--green)',finding_created:'var(--red)',scan_completed:'var(--green)',AUTO_SCAN_COMPLETED:'var(--green)',M365_SCAN_COMPLETED:'var(--blue)'};
+  var colors={login:'var(--cyan)',control_updated:'var(--green)',finding_created:'var(--red)',scan_completed:'var(--green)',AUTO_SCAN_COMPLETED:'var(--green)',M365_SCAN_COMPLETED:'var(--blue)',AWS_SCAN_COMPLETED:'var(--amber)'};
   var feed=document.getElementById('activity-feed');
   if(!log||!log.length){feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px">No activity yet \u2014 run a scan to get started</div>';return;}
   feed.innerHTML=log.map(function(a){return '<div class="activity-item"><div class="act-dot" style="background:'+(colors[a.action]||'var(--dim)')+'"></div><div class="act-content"><div class="act-title">'+a.action.replace(/_/g,' ')+'</div><div class="act-time">'+new Date(a.created_at).toLocaleString()+'</div></div></div>';}).join('');
@@ -563,89 +567,59 @@ async function runM365Scan(){
   loadDashboard();
 }
 
-// ── Navigation ─────────────────────────────────────────────────
-var pages=['overview','controls','findings','reports','m365','aws','cmmc','nist','owasp','soc','fips'];
-var titles={overview:'COMPLIANCE OVERVIEW',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',reports:'GENERATE REPORTS',m365:'MICROSOFT 365',aws:'AMAZON AWS',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
-
-async function showPage(name){
-  pages.forEach(function(p){var el=document.getElementById('page-'+p);if(el)el.style.display='none';});
-  var t=document.getElementById('page-'+name);if(t)t.style.display='';
-  document.querySelectorAll('.nav-item').forEach(function(el){el.classList.remove('active');});
-  document.getElementById('page-title').textContent=titles[name]||name.toUpperCase();
-  document.getElementById('breadcrumb').textContent='AuditCore\u2122 // Dashboard // '+(titles[name]||name);
-  if(name==='controls')await loadControls();
-  if(name==='findings')await loadFindings();
-  if(name==='m365')await loadM365Page();
-  if(name==='cmmc'){document.getElementById('page-cmmc').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('cmmc','CMMC');}
-  if(name==='nist'){document.getElementById('page-nist').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('nist','NIST');}
-  if(name==='owasp'){document.getElementById('page-owasp').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('owasp','OWASP');}
-  if(name==='soc'){document.getElementById('page-soc').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('soc','SOC2');}
-  if(name==='fips'){document.getElementById('page-fips').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('fips','FIPS');}
-}
-
-async function loadFwControls(pageId,fw){
-  var data=await api('/orgs/'+org.id+'/controls');
-  var el=document.getElementById('page-'+pageId);
-  if(!data||!data.controls){el.innerHTML='<div style="color:var(--red);font-family:Share Tech Mono,monospace;padding:20px">Failed to load</div>';return;}
-  var ctrls=data.controls.filter(function(c){return c.control_definitions&&c.control_definitions.framework===fw;});
-  if(!ctrls.length){el.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px">No '+fw+' controls found.</div>';return;}
-  var sm={pass:'<span class="ctrl-status pass">&#9679; PASS</span>',fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',partial:'<span class="ctrl-status partial">&#9650; PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
-  el.innerHTML='<div class="section-title">'+fw+' CONTROLS</div><table class="controls-table"><thead><tr><th>CONTROL ID</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th></tr></thead><tbody>'+ctrls.map(function(c){var d=c.control_definitions||{};return '<tr><td><span class="ctrl-id">'+(d.id||c.control_id||'\u2014')+'</span></td><td style="color:var(--dim)">'+(d.family||'\u2014')+'</td><td style="max-width:340px;line-height:1.4">'+(d.title||'\u2014')+'</td><td>'+(sm[c.status]||sm.not_assessed)+'</td></tr>';}).join('')+'</tbody></table>';
-}
-
-// ── AWS INTEGRATION ───────────────────────────────────────────
+// ── AWS Integration ───────────────────────────────────────────
 async function loadAWSPage(){
   var el=document.getElementById('page-aws');
   el.innerHTML='<div class="loading">// LOADING AWS INTEGRATION STATUS...</div>';
   var data=await api('/orgs/'+org.id+'/integrations');
   var existing=data&&data.integrations?data.integrations.find(function(i){return i.provider==='aws';}):null;
+  var badge=document.getElementById('badge-aws');
+  if(badge){badge.textContent=existing?'\u25cf':'\u25cb';badge.style.color=existing?'var(--amber)':'var(--dim)';}
   renderAWSPage(existing);
 }
 
 function renderAWSPage(existing){
   var el=document.getElementById('page-aws');
   var isConnected=!!existing;
-  var badge=document.getElementById('badge-aws');
-  if(badge){badge.textContent=isConnected?'●':'○';badge.style.color=isConnected?'var(--amber)':'var(--dim)';}
   var regions=['us-east-1','us-east-2','us-west-1','us-west-2','eu-west-1','eu-west-2','eu-central-1','ap-northeast-1','ap-southeast-1','ap-southeast-2','ca-central-1'];
   var regionOpts=regions.map(function(r){return '<option value="'+r+'"'+(r==='us-east-1'?' selected':'')+'>'+r+'</option>';}).join('');
-  var setup='<div style="margin-top:24px;"><div class="section-title" style="font-size:0.65rem;">SETUP INSTRUCTIONS</div><div class="setup-steps">'
-    +'<div class="setup-step"><div class="step-num">1</div><div class="step-text">Go to <a href="https://console.aws.amazon.com/iam" target="_blank">AWS IAM Console</a> \u2192 Users \u2192 Create user. Name it <code>auditcore-scanner</code>.</div></div>'
-    +'<div class="setup-step"><div class="step-num">2</div><div class="step-text">Attach managed policies: <code>SecurityAudit</code> and <code>ReadOnlyAccess</code>. These are read-only \u2014 AuditCore cannot modify anything in your account.</div></div>'
-    +'<div class="setup-step"><div class="step-num">3</div><div class="step-text">Go to the user \u2192 Security credentials \u2192 Create access key. Select "Third-party service". Copy both the <strong style="color:var(--amber);">Access Key ID</strong> and <strong style="color:var(--amber);">Secret Access Key</strong>.</div></div>'
-    +'<div class="setup-step"><div class="step-num">4</div><div class="step-text">Select your primary AWS region, paste your credentials below, and click <strong style="color:var(--amber);">TEST CONNECTION</strong>.</div></div>'
+  var setup='<div style="margin-top:24px;"><div class="section-title" style="font-size:0.65rem;">SETUP INSTRUCTIONS</div><div class="setup-list">'
+    +'<div class="setup-item"><div class="setup-num">1</div><div class="setup-txt">Go to <a href="https://console.aws.amazon.com/iam" target="_blank">AWS IAM Console</a> \u2192 Users \u2192 Create user. Name it <code>auditcore-scanner</code>.</div></div>'
+    +'<div class="setup-item"><div class="setup-num">2</div><div class="setup-txt">Attach managed policies: <code>SecurityAudit</code> and <code>ReadOnlyAccess</code>. These are read-only \u2014 AuditCore cannot modify anything in your account.</div></div>'
+    +'<div class="setup-item"><div class="setup-num">3</div><div class="setup-txt">Go to the user \u2192 Security credentials \u2192 Create access key. Select "Third-party service". Copy both the <strong style="color:var(--amber);">Access Key ID</strong> and <strong style="color:var(--amber);">Secret Access Key</strong>.</div></div>'
+    +'<div class="setup-item"><div class="setup-num">4</div><div class="setup-txt">Select your primary AWS region, paste your credentials below, and click <strong style="color:var(--amber);">TEST CONNECTION</strong>.</div></div>'
     +'</div></div>';
-  var connHtml='<div style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);margin-bottom:16px;">'
+  var connectedHtml='<div style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);margin-bottom:16px;">'
     +'<span style="color:var(--text);">Access Key:</span> '+existing.client_id.slice(0,8)+'... &nbsp;\u2022&nbsp;'
     +'<span style="color:var(--text);">Region:</span> '+(existing.tenant_id||'us-east-1')+' &nbsp;\u2022&nbsp;'
     +'<span style="color:var(--text);">Last Scan:</span> '+(existing.last_scan_at?new Date(existing.last_scan_at).toLocaleString():'Never')
     +'</div>'
     +'<div class="int-actions">'
-    +'<button class="btn-int" style="color:var(--bg);background:var(--amber);" onclick="runAWSScan()" id="aws-scan-btn">RUN AWS SCAN \u25b6</button>'
-    +'<button class="btn-int cyan" onclick="showAWSForm()">UPDATE CREDENTIALS</button>'
-    +'<button class="btn-int red" onclick="disconnectAWS()">DISCONNECT</button>'
+    +'<button class="ibtn ibtn-a" onclick="runAWSScan()" id="aws-scan-btn">RUN AWS SCAN &#9654;</button>'
+    +'<button class="ibtn ibtn-c" onclick="showAWSForm()">UPDATE CREDENTIALS</button>'
+    +'<button class="ibtn ibtn-r" onclick="disconnectAWS()">DISCONNECT</button>'
     +'</div>';
   var formHtml='<p style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);line-height:1.8;margin-bottom:20px;">Connect your AWS account to automatically scan IAM, S3, CloudTrail, GuardDuty, EC2 security groups, RDS, and EBS encryption \u2014 closing 20+ NIST controls automatically.</p>'
-    +'<div class="cred-form">'
+    +'<div class="cred-grid">'
     +'<div class="cred-field"><label>// AWS Access Key ID</label><input type="text" id="aws-key-id" placeholder="AKIAIOSFODNN7EXAMPLE" autocomplete="off"/></div>'
     +'<div class="cred-field"><label>// AWS Region</label><select id="aws-region" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:#c8e8f0;font-family:Share Tech Mono,monospace;font-size:0.65rem;padding:9px 12px;outline:none;-webkit-appearance:none;appearance:none;">'+regionOpts+'</select></div>'
-    +'<div class="cred-field full"><label>// AWS Secret Access Key</label><input type="password" id="aws-secret-key" placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" autocomplete="off"/></div>'
+    +'<div class="cred-field cred-full"><label>// AWS Secret Access Key</label><input type="password" id="aws-secret-key" placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" autocomplete="off"/></div>'
     +'</div>'
     +'<div class="int-actions">'
-    +'<button class="btn-int cyan" onclick="testAWSConnection()" id="aws-test-btn">TEST CONNECTION</button>'
-    +'<button class="btn-int" style="color:var(--bg);background:var(--amber);display:none;" onclick="saveAWSCredentials()" id="aws-save-btn">SAVE &amp; CONNECT \u25b6</button>'
+    +'<button class="ibtn ibtn-c" onclick="testAWSConnection()" id="aws-test-btn">TEST CONNECTION</button>'
+    +'<button class="ibtn ibtn-a" style="display:none;" onclick="saveAWSCredentials()" id="aws-save-btn">SAVE &amp; CONNECT &#9654;</button>'
     +'</div>'
     +'<div class="int-msg" id="aws-msg"></div>'
     +setup;
   el.innerHTML='<div class="section-title">AMAZON AWS INTEGRATION</div>'
-    +'<div class="integration-card" style="border-color:rgba(255,184,0,0.2);">'
+    +'<div class="int-card" style="border-color:rgba(255,184,0,0.2);">'
     +'<div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,#ffb800,#ff8c00);"></div>'
-    +'<div class="integration-header">'
-    +'<div class="integration-logo" style="background:linear-gradient(135deg,#ff9900,#ffb800);">\u2615</div>'
-    +'<div><div class="integration-name">Amazon Web Services</div><div style="font-family:Share Tech Mono,monospace;font-size:0.52rem;color:var(--dim);margin-top:3px;">IAM \u2022 S3 \u2022 EC2 \u2022 RDS \u2022 CloudTrail \u2022 GuardDuty</div></div>'
-    +'<div style="margin-left:auto;"><span class="int-status '+(isConnected?'connected':'disconnected')+'">'+(isConnected?'\u25cf CONNECTED':'\u25cb NOT CONNECTED')+'</span></div>'
+    +'<div class="int-header">'
+    +'<div class="int-logo" style="background:linear-gradient(135deg,#ff9900,#ffb800);">&#9729;</div>'
+    +'<div><div class="int-name">Amazon Web Services</div><div style="font-family:Share Tech Mono,monospace;font-size:0.52rem;color:var(--dim);margin-top:3px;">IAM \u2022 S3 \u2022 EC2 \u2022 RDS \u2022 CloudTrail \u2022 GuardDuty</div></div>'
+    +'<div style="margin-left:auto;"><span class="int-badge '+(isConnected?'on':'off')+'">'+(isConnected?'\u25cf CONNECTED':'\u25cb NOT CONNECTED')+'</span></div>'
     +'</div>'
-    +(isConnected?connHtml:formHtml)
+    +(isConnected?connectedHtml:formHtml)
     +'</div>'
     +'<div id="aws-results"></div>';
 }
@@ -658,18 +632,18 @@ async function testAWSConnection(){
   var region=document.getElementById('aws-region').value;
   var msg=document.getElementById('aws-msg');
   var btn=document.getElementById('aws-test-btn');
-  if(!keyId||!secret){msg.textContent='> Access Key ID and Secret Access Key are required.';msg.className='int-msg show error';return;}
+  if(!keyId||!secret){msg.textContent='> Access Key ID and Secret Access Key are required.';msg.className='int-msg show err';return;}
   btn.disabled=true;btn.textContent='TESTING...';
-  msg.textContent='> Connecting to AWS STS...';msg.className='int-msg show info';
+  msg.textContent='> Connecting to AWS STS...';msg.className='int-msg show inf';
   var result=await api('/orgs/'+org.id+'/integrations/aws/test',{method:'POST',body:JSON.stringify({access_key_id:keyId,secret_access_key:secret,region:region})});
   btn.disabled=false;btn.textContent='TEST CONNECTION';
   if(result&&result.success){
     msg.textContent='> \u2713 Connected to AWS Account: '+result.account_id+' ('+result.region+'). Click SAVE & CONNECT to store credentials.';
-    msg.className='int-msg show success';
+    msg.className='int-msg show ok';
     document.getElementById('aws-save-btn').style.display='inline-block';
   } else {
     msg.textContent='> \u2717 '+(result&&result.error?result.error:'Connection failed. Check your credentials.');
-    msg.className='int-msg show error';
+    msg.className='int-msg show err';
   }
 }
 
@@ -682,11 +656,11 @@ async function saveAWSCredentials(){
   btn.disabled=true;btn.textContent='SAVING...';
   var result=await api('/orgs/'+org.id+'/integrations/aws',{method:'POST',body:JSON.stringify({access_key_id:keyId,secret_access_key:secret,region:region})});
   if(result&&(result.integration_id||result.message)){
-    msg.textContent='> \u2713 AWS integration saved. Ready to scan.';msg.className='int-msg show success';
+    msg.textContent='> \u2713 AWS integration saved. Ready to scan.';msg.className='int-msg show ok';
     setTimeout(function(){loadAWSPage();},1000);
   } else {
     btn.disabled=false;btn.textContent='SAVE & CONNECT \u25b6';
-    msg.textContent='> Failed: '+(result&&result.error?result.error:'Unknown error');msg.className='int-msg show error';
+    msg.textContent='> Failed: '+(result&&result.error?result.error:'Unknown error');msg.className='int-msg show err';
   }
 }
 
@@ -721,10 +695,10 @@ async function runAWSScan(){
     var sc=ch.status==='pass'?'pass':ch.status==='fail'?'fail':ch.status==='partial'?'partial':'not_assessed';
     var st=ch.status==='pass'?'\u25cf PASS':ch.status==='fail'?'\u25b2 FAIL':ch.status==='partial'?'\u25b2 PARTIAL':'\u2014 N/A';
     var det=ch.details&&ch.details.public_buckets!==undefined?ch.details.public_buckets+' public, '+ch.details.unencrypted_buckets+' unencrypted':ch.details&&ch.details.stale_access_keys!==undefined?ch.details.stale_access_keys+' stale keys':ch.details&&ch.details.wide_open_rules!==undefined?ch.details.wide_open_rules+' open rules':ch.details&&ch.details.message?ch.details.message.slice(0,35):'Score: '+ch.score+'/100';
-    return '<div class="m365-tile"><div class="m365-tile-name">'+c.name.toUpperCase()+'</div><div class="m365-tile-status '+sc+'">'+st+'</div><div class="m365-tile-detail">'+det+'</div></div>';
+    return '<div class="m365-tile"><div class="m365-tile-name">'+c.name.toUpperCase()+'</div><div class="m365-tile-val '+sc+'">'+st+'</div><div class="m365-tile-detail">'+det+'</div></div>';
   }).join('');
   var sc=result.score>=80?'var(--green)':result.score>=60?'var(--amber)':'var(--red)';
-  resultsEl.innerHTML='<div class="integration-card" style="border-color:rgba(255,184,0,0.2);">'
+  resultsEl.innerHTML='<div class="int-card" style="border-color:rgba(255,184,0,0.2);">'
     +'<div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,#ffb800,#ff8c00);"></div>'
     +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">'
     +'<div class="section-title" style="margin-bottom:0;">AWS SCAN RESULTS</div>'
@@ -735,6 +709,37 @@ async function runAWSScan(){
     +(result.findingsCreated||0)+' finding(s) created \u2022 '+(result.checksRun||0)+' checks run \u2022 '+new Date(result.scannedAt).toLocaleString()
     +'</div></div>';
   loadDashboard();
+}
+
+// ── Navigation ─────────────────────────────────────────────────
+var pages=['overview','controls','findings','reports','m365','aws','cmmc','nist','owasp','soc','fips'];
+var titles={overview:'COMPLIANCE OVERVIEW',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',reports:'GENERATE REPORTS',m365:'MICROSOFT 365',aws:'AMAZON AWS',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
+
+async function showPage(name){
+  pages.forEach(function(p){var el=document.getElementById('page-'+p);if(el)el.style.display='none';});
+  var t=document.getElementById('page-'+name);if(t)t.style.display='';
+  document.querySelectorAll('.nav-item').forEach(function(el){el.classList.remove('active');});
+  document.getElementById('page-title').textContent=titles[name]||name.toUpperCase();
+  document.getElementById('breadcrumb').textContent='AuditCore\u2122 // Dashboard // '+(titles[name]||name);
+  if(name==='controls')await loadControls();
+  if(name==='findings')await loadFindings();
+  if(name==='m365')await loadM365Page();
+  if(name==='aws')await loadAWSPage();
+  if(name==='cmmc'){document.getElementById('page-cmmc').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('cmmc','CMMC');}
+  if(name==='nist'){document.getElementById('page-nist').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('nist','NIST');}
+  if(name==='owasp'){document.getElementById('page-owasp').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('owasp','OWASP');}
+  if(name==='soc'){document.getElementById('page-soc').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('soc','SOC2');}
+  if(name==='fips'){document.getElementById('page-fips').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('fips','FIPS');}
+}
+
+async function loadFwControls(pageId,fw){
+  var data=await api('/orgs/'+org.id+'/controls');
+  var el=document.getElementById('page-'+pageId);
+  if(!data||!data.controls){el.innerHTML='<div style="color:var(--red);font-family:Share Tech Mono,monospace;padding:20px">Failed to load</div>';return;}
+  var ctrls=data.controls.filter(function(c){return c.control_definitions&&c.control_definitions.framework===fw;});
+  if(!ctrls.length){el.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px">No '+fw+' controls found.</div>';return;}
+  var sm={pass:'<span class="ctrl-status pass">&#9679; PASS</span>',fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',partial:'<span class="ctrl-status partial">&#9650; PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
+  el.innerHTML='<div class="section-title">'+fw+' CONTROLS</div><table class="controls-table"><thead><tr><th>CONTROL ID</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th></tr></thead><tbody>'+ctrls.map(function(c){var d=c.control_definitions||{};return '<tr><td><span class="ctrl-id">'+(d.id||c.control_id||'\u2014')+'</span></td><td style="color:var(--dim)">'+(d.family||'\u2014')+'</td><td style="max-width:340px;line-height:1.4">'+(d.title||'\u2014')+'</td><td>'+(sm[c.status]||sm.not_assessed)+'</td></tr>';}).join('')+'</tbody></table>';
 }
 
 function signOut(){sessionStorage.clear();window.location.href='auditcore.html';}
