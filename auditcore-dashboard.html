@@ -204,6 +204,52 @@
     .alert-box{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;padding:10px 16px;border:1px solid;margin-bottom:16px;}
     .alert-box.error{color:var(--red);border-color:rgba(255,51,85,.3);background:rgba(255,51,85,.05);}
     .alert-box.success{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.05);}
+
+    /* M365 INTEGRATION */
+    .integration-card{background:var(--surface);border:1px solid var(--border);padding:28px 32px;margin-bottom:16px;position:relative;}
+    .integration-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,#00f0ff,#3a7fff);}
+    .integration-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+    .integration-logo{width:40px;height:40px;background:linear-gradient(135deg,#0078d4,#00a4ef);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;}
+    .integration-name{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;color:#fff;letter-spacing:0.1em;}
+    .integration-status{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.15em;padding:3px 10px;border:1px solid;}
+    .integration-status.connected{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.06);}
+    .integration-status.disconnected{color:var(--dim);border-color:rgba(200,228,240,.1);}
+    .integration-status.testing{color:var(--amber);border-color:rgba(255,184,0,.3);background:rgba(255,184,0,.06);}
+    .cred-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+    .cred-field{display:flex;flex-direction:column;gap:6px;}
+    .cred-field label{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,240,255,0.5);letter-spacing:0.2em;}
+    .cred-field input{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:#c8e8f0;font-family:'Share Tech Mono',monospace;font-size:0.65rem;padding:9px 12px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
+    .cred-field input:focus{border-color:var(--cyan);box-shadow:0 0 10px rgba(0,240,255,0.08);}
+    .cred-field.full{grid-column:1/-1;}
+    .btn-integration{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;border:none;padding:9px 20px;cursor:none;font-weight:700;transition:box-shadow .2s,opacity .2s;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
+    .btn-integration:disabled{opacity:0.5;}
+    .btn-integration.primary{color:var(--bg);background:var(--cyan);}
+    .btn-integration.primary:hover{box-shadow:0 0 16px rgba(0,240,255,0.4);}
+    .btn-integration.success{color:var(--bg);background:var(--green);}
+    .btn-integration.danger{color:#fff;background:var(--red);}
+    .btn-integration.warning{color:var(--bg);background:var(--amber);}
+    .integration-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .integration-msg{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;padding:8px 14px;border:1px solid;margin-top:12px;display:none;}
+    .integration-msg.show{display:block;}
+    .integration-msg.success{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.05);}
+    .integration-msg.error{color:var(--red);border-color:rgba(255,51,85,.3);background:rgba(255,51,85,.05);}
+    .integration-msg.info{color:var(--cyan);border-color:rgba(0,240,255,.2);background:rgba(0,240,255,.03);}
+    .m365-results{margin-top:20px;}
+    .m365-check-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
+    .m365-check{background:var(--surface2);border:1px solid var(--border);padding:14px;}
+    .m365-check-name{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.08em;margin-bottom:6px;}
+    .m365-check-status{font-family:'Orbitron',monospace;font-size:0.65rem;font-weight:700;}
+    .m365-check-status.pass{color:var(--green);}
+    .m365-check-status.fail{color:var(--red);}
+    .m365-check-status.partial{color:var(--amber);}
+    .m365-check-status.not_assessed{color:var(--dim);}
+    .m365-check-detail{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);margin-top:4px;line-height:1.5;}
+    .setup-steps{display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+    .setup-step{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:rgba(0,240,255,0.02);border:1px solid var(--border);}
+    .step-num{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--cyan);font-weight:700;flex-shrink:0;width:20px;}
+    .step-text{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);letter-spacing:0.05em;line-height:1.7;}
+    .step-text a{color:var(--cyan);text-decoration:none;}
+    .step-text code{background:rgba(0,240,255,0.08);padding:1px 6px;color:var(--cyan);font-size:0.9em;}
   </style>
 </head>
 <body>
@@ -281,6 +327,12 @@
     <div class="nav-item" onclick="showPage('reports')">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg>
       <span class="nav-label">REPORTS</span>
+    </div>
+    <div class="sb-section">// Integrations</div>
+    <div class="nav-item" onclick="showPage('m365')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00f0ff" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
+      <span class="nav-label">MICROSOFT 365</span>
+      <span class="nav-badge" id="badge-m365" style="background:rgba(0,240,255,.1);color:var(--dim);border:1px solid rgba(0,240,255,.2);">—</span>
     </div>
     <div class="nav-item" onclick="signOut()">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2H3v12h7M11 5l3 3-3 3M6 8h8"/></svg>
@@ -379,6 +431,7 @@
     <div id="page-owasp" style="display:none;"></div>
     <div id="page-soc" style="display:none;"></div>
     <div id="page-fips" style="display:none;"></div>
+    <div id="page-m365" style="display:none;"></div>
   </div>
 </div>
 
@@ -692,8 +745,8 @@
   }
 
   // ── Navigation ────────────────────────────────────────────
-  const pages=['overview','controls','findings','reports','cmmc','nist','owasp','soc','fips'];
-  const titles={overview:'COMPLIANCE OVERVIEW',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',reports:'GENERATE REPORTS',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
+  const pages=['overview','controls','findings','reports','cmmc','nist','owasp','soc','fips','m365'];
+  const titles={overview:'COMPLIANCE OVERVIEW',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',reports:'GENERATE REPORTS',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3',m365:'MICROSOFT 365'};
 
   async function showPage(name){
     pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});
@@ -709,6 +762,7 @@
     if(name==='owasp'){ document.getElementById('page-owasp').innerHTML='<div class="loading">// LOADING OWASP CONTROLS</div>'; await loadControlsInto('owasp','OWASP'); }
     if(name==='soc'){ document.getElementById('page-soc').innerHTML='<div class="loading">// LOADING SOC2 CONTROLS</div>'; await loadControlsInto('soc','SOC2'); }
     if(name==='fips'){ document.getElementById('page-fips').innerHTML='<div class="loading">// LOADING FIPS CONTROLS</div>'; await loadControlsInto('fips','FIPS'); }
+    if(name==='m365') loadM365Page();
   }
 
   async function loadControlsInto(pageId, framework){
@@ -733,6 +787,225 @@
         </tr>`;
       }).join('')}</tbody>
     </table>`;
+  }
+
+
+  // ── M365 Integration ──────────────────────────────────────
+  let m365Status = null;
+
+  async function loadM365Page() {
+    const el = document.getElementById('page-m365');
+    // Check existing integration
+    const data = await api(`/orgs/${org.id}/integrations`);
+    const existing = data?.integrations?.find(i => i.provider === 'microsoft365');
+    m365Status = existing || null;
+    renderM365Page(existing);
+  }
+
+  function renderM365Page(existing) {
+    const el = document.getElementById('page-m365');
+    const isConnected = !!existing;
+    document.getElementById('badge-m365').textContent = isConnected ? '●' : '○';
+    document.getElementById('badge-m365').style.color = isConnected ? 'var(--green)' : 'var(--dim)';
+
+    el.innerHTML = `
+      <div class="section-title">MICROSOFT 365 INTEGRATION</div>
+
+      <div class="integration-card">
+        <div class="integration-header">
+          <div class="integration-logo">⊞</div>
+          <div>
+            <div class="integration-name">Microsoft 365</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);margin-top:3px;">Azure Active Directory • Microsoft Graph API</div>
+          </div>
+          <div style="margin-left:auto;">
+            <span class="integration-status ${isConnected ? 'connected' : 'disconnected'}">${isConnected ? '● CONNECTED' : '○ NOT CONNECTED'}</span>
+          </div>
+        </div>
+
+        ${isConnected ? `
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);margin-bottom:16px;">
+            <span style="color:var(--text);">Tenant ID:</span> ${existing.tenant_id} &nbsp;•&nbsp;
+            <span style="color:var(--text);">Client ID:</span> ${existing.client_id.slice(0,8)}...&nbsp;•&nbsp;
+            <span style="color:var(--text);">Last Scan:</span> ${existing.last_scan_at ? new Date(existing.last_scan_at).toLocaleString() : 'Never'}
+          </div>
+          <div class="integration-actions">
+            <button class="btn-integration success" onclick="runM365Scan()" id="m365-scan-btn">RUN M365 SCAN ▶</button>
+            <button class="btn-integration warning" onclick="showM365Form()">UPDATE CREDENTIALS</button>
+            <button class="btn-integration danger" onclick="disconnectM365()">DISCONNECT</button>
+          </div>
+        ` : `
+          <p style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);line-height:1.8;margin-bottom:20px;">
+            Connect your Microsoft 365 tenant to automatically scan MFA status, Conditional Access policies,
+            privileged accounts, inactive users, audit logging, and more — closing 15+ NIST controls automatically.
+          </p>
+          <div id="m365-form">
+            <div class="cred-form">
+              <div class="cred-field">
+                <label>// Tenant ID</label>
+                <input type="text" id="m365-tenant" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off"/>
+              </div>
+              <div class="cred-field">
+                <label>// Client ID (Application ID)</label>
+                <input type="text" id="m365-client" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off"/>
+              </div>
+              <div class="cred-field full">
+                <label>// Client Secret</label>
+                <input type="password" id="m365-secret" placeholder="Your app registration client secret" autocomplete="off"/>
+              </div>
+            </div>
+            <div class="integration-actions">
+              <button class="btn-integration primary" onclick="testM365Connection()" id="m365-test-btn">TEST CONNECTION</button>
+              <button class="btn-integration success" onclick="saveM365Credentials()" id="m365-save-btn" style="display:none;">SAVE & CONNECT ▶</button>
+            </div>
+            <div class="integration-msg" id="m365-msg"></div>
+          </div>
+        `}
+
+        ${!isConnected ? `
+        <div style="margin-top:24px;">
+          <div class="section-title" style="font-size:0.65rem;">SETUP INSTRUCTIONS</div>
+          <div class="setup-steps">
+            <div class="setup-step"><div class="step-num">1</div><div class="step-text">Go to <a href="https://portal.azure.com" target="_blank">portal.azure.com</a> and search for <strong style="color:var(--cyan);">App registrations</strong> → click <strong style="color:var(--cyan);">New registration</strong>. Name it <code>AuditCore Scanner</code> and click Register.</div></div>
+            <div class="setup-step"><div class="step-num">2</div><div class="step-text">On the app overview page, copy your <strong style="color:var(--cyan);">Directory (tenant) ID</strong> and <strong style="color:var(--cyan);">Application (client) ID</strong>.</div></div>
+            <div class="setup-step"><div class="step-num">3</div><div class="step-text">Go to <strong style="color:var(--cyan);">Certificates & secrets</strong> → New client secret → copy the <strong style="color:var(--cyan);">Value</strong> immediately (it disappears after you leave).</div></div>
+            <div class="setup-step"><div class="step-num">4</div><div class="step-text">Go to <strong style="color:var(--cyan);">API permissions</strong> → Add permission → Microsoft Graph → Application permissions. Add: <code>User.Read.All</code> <code>UserAuthenticationMethod.Read.All</code> <code>AuditLog.Read.All</code> <code>Directory.Read.All</code> <code>Policy.Read.All</code></div></div>
+            <div class="setup-step"><div class="step-num">5</div><div class="step-text">Click <strong style="color:var(--cyan);">Grant admin consent</strong> for your organization, then paste your credentials above and click <strong style="color:var(--cyan);">TEST CONNECTION</strong>.</div></div>
+          </div>
+        </div>
+        ` : ''}
+      </div>
+
+      <div id="m365-results"></div>
+    `;
+  }
+
+  function showM365Form() {
+    m365Status = null;
+    renderM365Page(null);
+  }
+
+  async function testM365Connection() {
+    const tenant = document.getElementById('m365-tenant')?.value?.trim();
+    const client = document.getElementById('m365-client')?.value?.trim();
+    const secret = document.getElementById('m365-secret')?.value?.trim();
+    const msg = document.getElementById('m365-msg');
+    const btn = document.getElementById('m365-test-btn');
+
+    if (!tenant || !client || !secret) {
+      msg.textContent = '> All three fields are required.';
+      msg.className = 'integration-msg show error'; return;
+    }
+
+    btn.disabled = true; btn.textContent = 'TESTING...';
+    msg.textContent = '> Testing connection to Microsoft Graph API...';
+    msg.className = 'integration-msg show info';
+
+    const result = await api(`/orgs/${org.id}/integrations/m365/test`, {
+      method: 'POST',
+      body: JSON.stringify({ tenant_id: tenant, client_id: client, client_secret: secret }),
+    });
+
+    btn.disabled = false; btn.textContent = 'TEST CONNECTION';
+
+    if (result?.success) {
+      msg.textContent = `> ✓ Connected to: ${result.tenant_name}. Click SAVE & CONNECT to store credentials.`;
+      msg.className = 'integration-msg show success';
+      document.getElementById('m365-save-btn').style.display = 'inline-block';
+    } else {
+      msg.textContent = `> ✗ ${result?.error || 'Connection failed. Check your credentials.'}`;
+      msg.className = 'integration-msg show error';
+    }
+  }
+
+  async function saveM365Credentials() {
+    const tenant = document.getElementById('m365-tenant')?.value?.trim();
+    const client = document.getElementById('m365-client')?.value?.trim();
+    const secret = document.getElementById('m365-secret')?.value?.trim();
+    const btn = document.getElementById('m365-save-btn');
+    const msg = document.getElementById('m365-msg');
+
+    btn.disabled = true; btn.textContent = 'SAVING...';
+
+    const result = await api(`/orgs/${org.id}/integrations/m365`, {
+      method: 'POST',
+      body: JSON.stringify({ tenant_id: tenant, client_id: client, client_secret: secret }),
+    });
+
+    if (result?.integration_id || result?.message) {
+      msg.textContent = '> ✓ Microsoft 365 integration saved. Ready to scan.';
+      msg.className = 'integration-msg show success';
+      setTimeout(() => loadM365Page(), 1000);
+    } else {
+      btn.disabled = false; btn.textContent = 'SAVE & CONNECT ▶';
+      msg.textContent = `> Failed to save: ${result?.error || 'Unknown error'}`;
+      msg.className = 'integration-msg show error';
+    }
+  }
+
+  async function disconnectM365() {
+    if (!confirm('Remove Microsoft 365 integration? This will not delete any scan results.')) return;
+    const result = await api(`/orgs/${org.id}/integrations/microsoft365`, { method: 'DELETE' });
+    if (result) loadM365Page();
+  }
+
+  async function runM365Scan() {
+    const btn = document.getElementById('m365-scan-btn');
+    const resultsEl = document.getElementById('m365-results');
+    btn.disabled = true; btn.textContent = 'SCANNING...';
+    resultsEl.innerHTML = '<div class="loading">// RUNNING MICROSOFT 365 SECURITY SCAN...</div>';
+
+    const result = await api(`/orgs/${org.id}/scan/m365`, { method: 'POST', body: JSON.stringify({}) });
+
+    btn.disabled = false; btn.textContent = 'RUN M365 SCAN ▶';
+
+    if (!result) {
+      resultsEl.innerHTML = '<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--red);padding:20px;">Scan failed. Check Railway logs.</div>';
+      return;
+    }
+
+    const r = result.results || {};
+    const checks = [
+      { key: 'mfa', name: 'MFA Status' },
+      { key: 'inactive_accounts', name: 'Inactive Accounts' },
+      { key: 'privileged_roles', name: 'Privileged Roles' },
+      { key: 'conditional_access', name: 'Conditional Access' },
+      { key: 'legacy_auth', name: 'Legacy Auth' },
+      { key: 'secure_score', name: 'Secure Score' },
+      { key: 'password_policy', name: 'Password Policy' },
+      { key: 'audit_logging', name: 'Audit Logging' },
+      { key: 'guest_accounts', name: 'Guest Accounts' },
+      { key: 'sspr', name: 'Password Reset' },
+    ];
+
+    resultsEl.innerHTML = `
+      <div class="integration-card">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">
+          <div class="section-title" style="margin-bottom:0;">SCAN RESULTS</div>
+          <div style="font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:${result.score>=80?'var(--green)':result.score>=60?'var(--amber)':'var(--red)'};">${result.score}/100</div>
+        </div>
+        <div class="m365-check-grid">
+          ${checks.map(c => {
+            const check = r[c.key];
+            if (!check) return '';
+            const statusColor = check.status === 'pass' ? 'pass' : check.status === 'fail' ? 'fail' : check.status === 'partial' ? 'partial' : 'not_assessed';
+            const statusText = check.status === 'pass' ? '● PASS' : check.status === 'fail' ? '▲ FAIL' : check.status === 'partial' ? '▲ PARTIAL' : '— N/A';
+            const detail = check.details?.mfa_adoption_rate || check.details?.inactive_90_days !== undefined ? `${check.details.inactive_90_days} inactive` : check.details?.percentage || check.details?.total_privileged_users !== undefined ? `${check.details.total_privileged_users} privileged` : check.details?.enabled_policies !== undefined ? `${check.details.enabled_policies} policies` : check.details?.message || '';
+            return \`<div class="m365-check">
+              <div class="m365-check-name">${c.name.toUpperCase()}</div>
+              <div class="m365-check-status ${statusColor}">${statusText}</div>
+              <div class="m365-check-detail">${detail}</div>
+            </div>\`;
+          }).join('')}
+        </div>
+        <div style="margin-top:14px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--dim);">
+          ${result.findingsCreated} finding(s) created • ${result.checksRun} checks run • ${new Date(result.scannedAt).toLocaleString()}
+        </div>
+      </div>
+    `;
+
+    // Reload dashboard to show updated scores
+    loadDashboard();
   }
 
   function signOut(){
