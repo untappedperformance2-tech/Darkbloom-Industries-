@@ -12,7 +12,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
     body{background:var(--dark);color:#c8e8f0;font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;line-height:1.8;}
-    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan);}
+    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--cyan);}
     .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:1;}
     nav{position:fixed;top:0;width:100%;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,4,8,0.97);backdrop-filter:blur(4px);z-index:100;border-bottom:1px solid rgba(0,245,255,0.08);}
     .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:0.2em;text-shadow:0 0 20px var(--cyan);text-decoration:none;}
@@ -29,8 +29,8 @@
     ul{color:rgba(200,232,240,0.65);font-size:1.05rem;margin:0 0 16px 0;padding-left:0;list-style:none;}
     ul li{padding-left:20px;position:relative;margin-bottom:8px;}
     ul li::before{content:'▶';position:absolute;left:0;color:var(--cyan);font-size:0.5rem;top:6px;}
-    a{color:var(--cyan);text-decoration:none;}
-    a:hover{text-decoration:underline;}
+    .contact-btn{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;color:var(--dark);background:var(--cyan);padding:12px 28px;text-decoration:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:box-shadow 0.2s,transform 0.2s;margin-top:8px;font-weight:700;}
+    .contact-btn:hover{box-shadow:0 0 22px rgba(0,245,255,0.4);transform:translateY(-1px);}
     footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;position:relative;z-index:2;}
     .footer-brand{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;color:var(--cyan);}
     .footer-brand sup{color:var(--magenta);font-size:0.5rem;}
@@ -38,26 +38,27 @@
     .footer-links{display:flex;gap:20px;list-style:none;}
     .footer-links a{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(200,232,240,0.3);text-decoration:none;transition:color 0.2s;}
     .footer-links a:hover{color:var(--cyan);}
-    @media(max-width:700px){nav{padding:14px 20px}.page-wrap{padding:120px 24px 80px}footer{flex-direction:column;text-align:center}}
+    @media(max-width:700px){
+      nav{padding:14px 20px;}
+      .page-wrap{padding:100px 20px 60px;}
+      footer{flex-direction:column;text-align:center;padding:24px 20px;}
+      .footer-links{justify-content:center;}
+    }
   </style>
 </head>
 <body>
 <div id="cursor"></div>
 <div class="scanlines"></div>
-
 <nav>
   <a href="index.html" class="nav-logo">DARKBLOOM<sup>&#8482;</sup></a>
   <a href="index.html" class="back-link">&#8592; BACK TO SITE</a>
 </nav>
-
 <div class="page-wrap">
   <span class="page-tag">// Legal Documentation</span>
   <h1 class="page-title">Privacy Policy</h1>
   <span class="page-date">EFFECTIVE DATE: JANUARY 1, 2025 &nbsp;&bull;&nbsp; LAST UPDATED: 2025</span>
   <div class="divider"></div>
-
   <p>Darkbloom Industries&#8482; ("Company," "we," "us," or "our") is committed to protecting your personal information and your right to privacy. This Privacy Policy explains how we collect, use, disclose, and safeguard your information when you visit our website or engage our services.</p>
-
   <h2>1. Information We Collect</h2>
   <p>We may collect information that you voluntarily provide to us when you submit our contact form or communicate with us directly, including:</p>
   <ul>
@@ -67,7 +68,6 @@
     <li>Any other information you choose to provide</li>
   </ul>
   <p>We also automatically collect certain non-personally identifiable technical information when you visit our site, such as browser type, referring URLs, and pages viewed, solely for site performance analysis.</p>
-
   <h2>2. How We Use Your Information</h2>
   <p>We use the information we collect for the following purposes:</p>
   <ul>
@@ -78,10 +78,8 @@
     <li>To improve our website and service offerings</li>
   </ul>
   <p>We do not sell, trade, rent, or otherwise transfer your personal information to third parties for marketing purposes.</p>
-
   <h2>3. Data Retention</h2>
   <p>We retain your personal information only for as long as is necessary to fulfill the purposes described in this policy, or as required by applicable law. Contact form submissions are retained for a maximum of 24 months unless a client engagement requires extended retention. Upon written request, we will delete your data within 30 days.</p>
-
   <h2>4. Data Security</h2>
   <p>We implement administrative, technical, and physical security measures aligned with NIST SP 800-171 and OWASP best practices to protect your personal information, including:</p>
   <ul>
@@ -91,14 +89,11 @@
     <li>Immutable audit logging of all data access events</li>
   </ul>
   <p>No method of transmission over the internet is 100% secure. While we use commercially reasonable means to protect your data, we cannot guarantee absolute security.</p>
-
   <h2>5. Third-Party Services</h2>
   <p>Our contact form uses Formspree (formspree.io) to process and route submissions to our secure inbox. Formspree's handling of data is governed by their own Privacy Policy. We do not share your data with any other third-party services except as required by law.</p>
   <p>Our website uses Google Fonts for typography. Google may collect limited technical data per their own privacy policy.</p>
-
   <h2>6. Cookies</h2>
   <p>This website does not use tracking cookies, advertising cookies, or analytics cookies. We do not use any third-party tracking services such as Google Analytics.</p>
-
   <h2>7. Your Rights</h2>
   <p>Depending on your jurisdiction, you may have the right to:</p>
   <ul>
@@ -108,22 +103,15 @@
     <li>Object to or restrict the processing of your data</li>
     <li>Lodge a complaint with a supervisory authority</li>
   </ul>
-  <p>To exercise any of these rights, contact us at <a href="mailto:DarkbloomIndustries@outlook.com">DarkbloomIndustries@outlook.com</a>.</p>
-
+  <p>To exercise any of these rights, please use our secure contact form.</p>
   <h2>8. Children's Privacy</h2>
   <p>Our services are not directed to individuals under the age of 18. We do not knowingly collect personal information from minors. If you believe we have inadvertently collected such information, please contact us immediately.</p>
-
   <h2>9. Changes to This Policy</h2>
   <p>We reserve the right to update this Privacy Policy at any time. Changes will be posted to this page with an updated effective date. Your continued use of the site after changes are posted constitutes acceptance of the revised policy.</p>
-
   <h2>10. Contact Us</h2>
-  <p>For questions, concerns, or data requests regarding this Privacy Policy:</p>
-  <ul>
-    <li>Email: <a href="mailto:DarkbloomIndustries@outlook.com">DarkbloomIndustries@outlook.com</a></li>
-    <li>Subject line: "Privacy Request &mdash; [Your Name]"</li>
-  </ul>
+  <p>For questions, concerns, or data requests regarding this Privacy Policy, please use our secure contact form:</p>
+  <a href="index.html#contact" class="contact-btn">CONTACT US &#9654;</a>
 </div>
-
 <footer>
   <div class="footer-brand">DARKBLOOM<sup>&#8482;</sup> INDUSTRIES</div>
   <p class="footer-copy">&#169; 2025 Darkbloom Industries&#8482;. All rights reserved.</p>
@@ -133,10 +121,9 @@
     <li><a href="security-policy.html">Security</a></li>
   </ul>
 </footer>
-
 <script>
   const cursor=document.getElementById('cursor');
-  document.addEventListener('mousemove',e=>{ cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px'; });
+  document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
 </script>
 </body>
 </html>
