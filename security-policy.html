@@ -12,7 +12,7 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
     body{background:var(--dark);color:#c8e8f0;font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;line-height:1.8;}
-    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan);}
+    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 10px var(--cyan);}
     .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:1;}
     nav{position:fixed;top:0;width:100%;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:rgba(2,4,8,0.97);backdrop-filter:blur(4px);z-index:100;border-bottom:1px solid rgba(0,245,255,0.08);}
     .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:0.2em;text-shadow:0 0 20px var(--cyan);text-decoration:none;}
@@ -30,14 +30,38 @@
     ul li{padding-left:20px;position:relative;margin-bottom:8px;}
     ul li::before{content:'▶';position:absolute;left:0;color:var(--green);font-size:0.5rem;top:6px;filter:drop-shadow(0 0 3px var(--green));}
     .highlight-box{background:rgba(0,255,136,0.05);border-left:3px solid var(--green);padding:24px 28px;margin:24px 0;}
-    a{color:var(--cyan);text-decoration:none;}
-    a:hover{text-decoration:underline;}
-    .matrix-block{border:1px solid rgba(0,255,136,0.15);background:rgba(0,255,136,0.02);padding:28px;margin:24px 0;}
-    .matrix-block table{width:100%;border-collapse:collapse;}
-    .matrix-block th{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.5);letter-spacing:0.2em;text-transform:uppercase;padding:10px 12px;border-bottom:1px solid rgba(0,255,136,0.1);text-align:left;}
-    .matrix-block td{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:rgba(200,232,240,0.6);padding:10px 12px;border-bottom:1px solid rgba(0,255,136,0.05);}
+
+    /* ── Compliance Matrix ── */
+    .matrix-block{border:1px solid rgba(0,255,136,0.15);background:rgba(0,255,136,0.02);padding:28px;margin:24px 0;overflow:hidden;}
+    .matrix-block table{width:100%;border-collapse:collapse;table-layout:fixed;}
+    .matrix-block th{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.5);letter-spacing:0.2em;text-transform:uppercase;padding:10px 12px;border-bottom:1px solid rgba(0,255,136,0.1);text-align:left;word-break:break-word;}
+    .matrix-block td{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:rgba(200,232,240,0.6);padding:10px 12px;border-bottom:1px solid rgba(0,255,136,0.05);word-break:break-word;vertical-align:top;}
     .matrix-block td:first-child{color:var(--green);}
+    .matrix-block tr:hover td{background:rgba(0,255,136,0.03);}
     .badge{color:var(--green);font-size:0.65rem;}
+
+    /* Mobile: stack the table rows as cards */
+    @media(max-width:700px){
+      nav{padding:14px 20px;}
+      .page-wrap{padding:100px 20px 60px;}
+      footer{flex-direction:column;text-align:center;padding:24px 20px;}
+      .footer-links{justify-content:center;}
+      .matrix-block{padding:16px 12px;}
+      .matrix-block table,
+      .matrix-block thead,
+      .matrix-block tbody,
+      .matrix-block th,
+      .matrix-block td,
+      .matrix-block tr{display:block;width:100%;}
+      .matrix-block thead tr{display:none;}
+      .matrix-block tr{border:1px solid rgba(0,255,136,0.12);margin-bottom:12px;padding:12px;background:rgba(0,255,136,0.02);}
+      .matrix-block td{padding:4px 0;border:none;font-size:0.65rem;}
+      .matrix-block td::before{content:attr(data-label);display:block;font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,255,136,0.4);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:3px;}
+      .matrix-block td:first-child{font-size:0.72rem;font-weight:700;margin-bottom:4px;}
+    }
+
+    .contact-btn{display:inline-block;font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;color:var(--dark);background:var(--green);padding:12px 28px;text-decoration:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:box-shadow 0.2s,transform 0.2s;margin-top:8px;font-weight:700;}
+    .contact-btn:hover{box-shadow:0 0 22px rgba(0,255,136,0.4);transform:translateY(-1px);}
     footer{border-top:1px solid var(--border);padding:32px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;position:relative;z-index:2;}
     .footer-brand{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;color:var(--cyan);}
     .footer-brand sup{color:var(--magenta);font-size:0.5rem;}
@@ -45,18 +69,15 @@
     .footer-links{display:flex;gap:20px;list-style:none;}
     .footer-links a{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(200,232,240,0.3);text-decoration:none;transition:color 0.2s;}
     .footer-links a:hover{color:var(--cyan);}
-    @media(max-width:700px){nav{padding:14px 20px}.page-wrap{padding:120px 24px 80px}footer{flex-direction:column;text-align:center}}
   </style>
 </head>
 <body>
 <div id="cursor"></div>
 <div class="scanlines"></div>
-
 <nav>
   <a href="index.html" class="nav-logo">DARKBLOOM<sup>&#8482;</sup></a>
   <a href="index.html" class="back-link">&#8592; BACK TO SITE</a>
 </nav>
-
 <div class="page-wrap">
   <span class="page-tag">// Security Documentation</span>
   <h1 class="page-title">Security Policy</h1>
@@ -64,31 +85,71 @@
   <div class="divider"></div>
 
   <div class="highlight-box">
-    <p style="margin-bottom:0;color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;">⚠️ IMPORTANT NOTE</p>
-    <p style="margin-top:12px;margin-bottom:0;"><strong>Security implementations are customized based on each client's specific requirements, project scope, and budget.</strong> The security controls and compliance frameworks listed below represent our capabilities and the standards we can align with — not a guarantee that every project includes all listed controls. Each engagement is scoped individually, and security measures are priced according to the level of implementation required. We work with clients to determine the appropriate security posture for their unique needs, threat model, and compliance obligations.</p>
+    <p style="margin-bottom:0;color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.1em;">&#9888; IMPORTANT NOTE</p>
+    <p style="margin-top:12px;margin-bottom:0;"><strong>Security implementations are customized based on each client's specific requirements, project scope, and budget.</strong> The security controls and compliance frameworks listed below represent our capabilities and the standards we can align with — not a guarantee that every project includes all listed controls. Each engagement is scoped individually, and security measures are priced according to the level of implementation required.</p>
   </div>
 
   <p>Darkbloom Industries&#8482; is committed to delivering software and systems built to the highest security standards available in the commercial and defense sectors. This Security Policy describes the frameworks, standards, and practices we are capable of implementing across client engagements, as well as the security posture of our own infrastructure.</p>
-  <p><strong style="color:#c8e8f0;">Note:</strong> Darkbloom Industries&#8482; delivers audit-ready, standard-aligned implementations. We are not a certified CMMC assessment organization (C3PAO) and do not perform official third-party certification assessments. Our deliverables are designed to satisfy the requirements of each listed standard, enabling your organization to pass certification audits when those standards are scoped into your project.</p>
+  <p><strong style="color:#c8e8f0;">Note:</strong> Darkbloom Industries&#8482; delivers audit-ready, standard-aligned implementations. We are not a certified CMMC assessment organization (C3PAO) and do not perform official third-party certification assessments.</p>
 
   <h2>1. Compliance Framework Alignment (Capabilities)</h2>
-  <p>The following frameworks represent the standards we can align with. The specific controls implemented for any given project are determined by client requirements, project scope, and budget. Not all projects require or include every framework listed below.</p>
+  <p>The following frameworks represent the standards we can align with. The specific controls implemented for any given project are determined by client requirements, project scope, and budget.</p>
 
   <div class="matrix-block">
     <table>
       <thead>
-        <tr><th>Standard / Framework</th><th>Scope</th><th>Availability</th></tr>
+        <tr>
+          <th>Standard / Framework</th>
+          <th>Scope</th>
+          <th>Availability</th>
+        </tr>
       </thead>
       <tbody>
-        <tr><td>NIST SP 800-171</td><td>CUI Protection / 110 Controls</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
-        <tr><td>CMMC Level 2</td><td>DoD Supply Chain / 110 Practices</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
-        <tr><td>NIST SP 800-218 (SSDF)</td><td>Secure Software Development</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
-        <tr><td>NIST SP 800-207</td><td>Zero-Trust Architecture</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
-        <tr><td>FIPS 140-3</td><td>Cryptographic Module Validation</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
-        <tr><td>OWASP Top 10</td><td>Web Application Security</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
-        <tr><td>OWASP MASVS</td><td>Mobile Application Security</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
-        <tr><td>SOC 2 Trust Principles</td><td>Availability, Confidentiality, Security</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
-        <tr><td>DISA STIGs</td><td>System Hardening Baselines</td><td class="badge">● AVAILABLE UPON SCOPE</td></tr>
+        <tr>
+          <td data-label="Standard / Framework">NIST SP 800-171</td>
+          <td data-label="Scope">CUI Protection / 110 Controls</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
+        <tr>
+          <td data-label="Standard / Framework">CMMC Level 2</td>
+          <td data-label="Scope">DoD Supply Chain / 110 Practices</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
+        <tr>
+          <td data-label="Standard / Framework">NIST SP 800-218 (SSDF)</td>
+          <td data-label="Scope">Secure Software Development</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
+        <tr>
+          <td data-label="Standard / Framework">NIST SP 800-207</td>
+          <td data-label="Scope">Zero-Trust Architecture</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
+        <tr>
+          <td data-label="Standard / Framework">FIPS 140-3</td>
+          <td data-label="Scope">Cryptographic Module Validation</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
+        <tr>
+          <td data-label="Standard / Framework">OWASP Top 10</td>
+          <td data-label="Scope">Web Application Security</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
+        <tr>
+          <td data-label="Standard / Framework">OWASP MASVS</td>
+          <td data-label="Scope">Mobile Application Security</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
+        <tr>
+          <td data-label="Standard / Framework">SOC 2 Trust Principles</td>
+          <td data-label="Scope">Availability, Confidentiality, Security</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
+        <tr>
+          <td data-label="Standard / Framework">DISA STIGs</td>
+          <td data-label="Scope">System Hardening Baselines</td>
+          <td data-label="Availability" class="badge">&#9679; AVAILABLE UPON SCOPE</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -102,10 +163,8 @@
     <li>Argon2id / bcrypt for password hashing &mdash; no plaintext storage under any circumstance</li>
     <li>Hardware Security Module (HSM) or cloud KMS for key storage and rotation (where scoped)</li>
   </ul>
-  <p><em>Note: The level of cryptographic implementation is determined by project requirements and budget. Not all projects require FIPS-validated cryptography.</em></p>
 
   <h2>3. Access Control &amp; Identity (Configurable)</h2>
-  <p>All systems and applications can be designed with a least-privilege, identity-centric access model. The specific controls implemented are based on client needs:</p>
   <ul>
     <li>Role-Based Access Control (RBAC) enforced at the architecture level (available upon scope)</li>
     <li>Multi-Factor Authentication (MFA) required for all administrative and remote access (available upon scope)</li>
@@ -115,7 +174,7 @@
   </ul>
 
   <h2>4. Secure Development Lifecycle (SDLC)</h2>
-  <p>We follow NIST SP 800-218 (SSDF) practices across all development engagements. The depth of implementation varies based on project scale and security requirements:</p>
+  <p>We follow NIST SP 800-218 (SSDF) practices across all development engagements:</p>
   <ul>
     <li>Threat modeling performed at the architecture phase before code is written (available upon scope)</li>
     <li>Static Application Security Testing (SAST) integrated into every build pipeline (available upon scope)</li>
@@ -126,7 +185,6 @@
   </ul>
 
   <h2>5. Monitoring &amp; Incident Response (Optional)</h2>
-  <p>The following monitoring and response capabilities can be implemented based on project requirements and budget:</p>
   <ul>
     <li>Immutable audit logs retained for a minimum of 365 days (available upon scope)</li>
     <li>Real-time intrusion detection system (IDS) deployment available (available upon scope)</li>
@@ -145,7 +203,6 @@
   </ul>
 
   <h2>7. Website Security (This Site)</h2>
-  <p>The Darkbloom Industries&#8482; website itself is secured with:</p>
   <ul>
     <li>Content Security Policy (CSP) &mdash; blocking unauthorized scripts and resources</li>
     <li>X-Frame-Options: DENY &mdash; preventing clickjacking via iframe embedding</li>
@@ -158,35 +215,24 @@
   </ul>
 
   <h2>8. Vulnerability Disclosure</h2>
-  <p>If you discover a security vulnerability in our website or any Darkbloom Industries&#8482; deliverable, we encourage responsible disclosure:</p>
-  <ul>
-    <li>Email: <a href="mailto:DarkbloomIndustries@outlook.com">DarkbloomIndustries@outlook.com</a></li>
-    <li>Subject line: "Security Disclosure &mdash; [Brief Description]"</li>
-    <li>We will acknowledge receipt within 48 hours and respond with a remediation timeline</li>
-    <li>We request that you do not publicly disclose the vulnerability until a fix has been deployed</li>
-  </ul>
+  <p>If you discover a security vulnerability in our website or any Darkbloom Industries&#8482; deliverable, we encourage responsible disclosure. Please use our contact form with the subject "Security Disclosure" and a brief description. We will acknowledge receipt within 48 hours and respond with a remediation timeline. We request that you do not publicly disclose the vulnerability until a fix has been deployed.</p>
 
   <h2>9. Scope &amp; Pricing Considerations</h2>
   <p>Security is not a one-size-fits-all solution. Each project is unique, and security controls are implemented based on:</p>
   <ul>
-    <li><strong>Project Scale:</strong> Larger, enterprise-level projects require more comprehensive security controls than smaller engagements</li>
-    <li><strong>Compliance Requirements:</strong> Specific regulatory frameworks (NIST, CMMC, SOC 2, etc.) dictate required controls</li>
+    <li><strong>Project Scale:</strong> Larger, enterprise-level projects require more comprehensive security controls</li>
+    <li><strong>Compliance Requirements:</strong> Specific regulatory frameworks dictate required controls</li>
     <li><strong>Budget:</strong> Security implementation costs scale with the complexity and depth of controls required</li>
-    <li><strong>Threat Model:</strong> Projects handling sensitive data or operating in high-risk environments require enhanced protections</li>
-    <li><strong>Client Preferences:</strong> We work with each client to determine the appropriate security posture for their specific needs</li>
+    <li><strong>Threat Model:</strong> Projects handling sensitive data require enhanced protections</li>
+    <li><strong>Client Preferences:</strong> We work with each client to determine the appropriate security posture</li>
   </ul>
-  <p>We provide transparent, itemized security options during the scoping phase so clients can select the level of security that aligns with their requirements and budget. No security features are implemented without client approval and clear scope definition.</p>
 
   <h2>10. Limitations</h2>
-  <p>Darkbloom Industries&#8482; does not currently hold a Facility Clearance (FCL) or operate a SCIF. We do not accept classified work under SAP/SAR programs at this time. For CUI-level (Controlled Unclassified Information) work under NIST 800-171 / CMMC Level 2, we can operate as a compliant subcontractor under a cleared prime contractor's security umbrella when that scope is contracted.</p>
-  <p>We will always be transparent about our current capabilities and will never overstate our credentials or compliance status.</p>
+  <p>Darkbloom Industries&#8482; does not currently hold a Facility Clearance (FCL) or operate a SCIF. We do not accept classified work under SAP/SAR programs at this time. We will always be transparent about our current capabilities and will never overstate our credentials or compliance status.</p>
 
   <h2>11. Contact</h2>
-  <p>For security inquiries, compliance consultations, or to request a Capabilities Statement:</p>
-  <ul>
-    <li>Email: <a href="mailto:DarkbloomIndustries@outlook.com">DarkbloomIndustries@outlook.com</a></li>
-    <li>Subject: "Security Inquiry &mdash; [Your Organization]"</li>
-  </ul>
+  <p>For security inquiries, compliance consultations, vulnerability disclosures, or to request a Capabilities Statement, please use our secure contact form:</p>
+  <a href="index.html#contact" class="contact-btn">CONTACT US &#9654;</a>
 </div>
 
 <footer>
@@ -198,10 +244,9 @@
     <li><a href="security-policy.html">Security</a></li>
   </ul>
 </footer>
-
 <script>
   const cursor=document.getElementById('cursor');
-  document.addEventListener('mousemove',e=>{ cursor.style.left=e.clientX+'px'; cursor.style.top=e.clientY+'px'; });
+  document.addEventListener('mousemove',e=>{cursor.style.left=e.clientX+'px';cursor.style.top=e.clientY+'px';});
 </script>
 </body>
 </html>
