@@ -3,20 +3,12 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  
-  <!-- ENHANCED SECURITY HEADERS -->
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://formspree.io; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data:; connect-src https://formspree.io https://*.formspree.io; frame-ancestors 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests; block-all-mixed-content;"/>
   <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
   <meta http-equiv="X-Frame-Options" content="DENY"/>
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=()"/>
-  <meta http-equiv="Cross-Origin-Opener-Policy" content="same-origin"/>
-  <meta http-equiv="Cross-Origin-Embedder-Policy" content="require-corp"/>
-  <meta http-equiv="Cross-Origin-Resource-Policy" content="same-origin"/>
-  <meta http-equiv="X-XSS-Protection" content="1; mode=block"/>
-  
-  <meta name="description" content="New products and solutions coming soon from Darkbloom Industries — next-generation security tools and platforms currently in development."/>
-  <meta name="security" content="DarkbloomIndustries@outlook.com"/>
+  <meta name="description" content="New products coming soon from Darkbloom Industries — QuantumShield™ and EdgeDefend™ are in active development."/>
   <title>Coming Soon &mdash; Darkbloom Industries&#8482;</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600&display=swap" rel="stylesheet"/>
   <style>
@@ -24,54 +16,8 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
     body{background:var(--dark);color:#c8e8f0;font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
-
-    /* CURSOR */
-    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,background 0.2s;box-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan);}
+    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s;box-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan);}
     #cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,opacity 0.2s;opacity:0.5;}
-
-    /* SECURITY INDICATORS - VISUAL TRUST BADGES */
-    .security-badge-container{
-      position:fixed;
-      bottom:20px;
-      right:20px;
-      z-index:999;
-      display:flex;
-      gap:8px;
-      pointer-events:none;
-    }
-    .security-badge{
-      background:rgba(0,0,0,0.7);
-      backdrop-filter:blur(4px);
-      padding:4px 12px;
-      border-radius:4px;
-      font-family:'Share Tech Mono',monospace;
-      font-size:0.55rem;
-      color:var(--green);
-      border-left:2px solid var(--green);
-      letter-spacing:0.1em;
-      pointer-events:none;
-    }
-    .security-badge.https{color:var(--cyan);border-left-color:var(--cyan);}
-    .secure-banner{
-      position:fixed;
-      bottom:20px;
-      left:20px;
-      background:rgba(0,255,136,0.1);
-      backdrop-filter:blur(4px);
-      padding:4px 12px;
-      border-radius:4px;
-      font-family:'Share Tech Mono',monospace;
-      font-size:0.55rem;
-      color:var(--green);
-      z-index:999;
-      pointer-events:none;
-      border:1px solid rgba(0,255,136,0.3);
-    }
-    @media(max-width:700px){
-      .security-badge-container,.secure-banner{display:none;}
-    }
-
-    /* CANVAS + OVERLAYS */
     #bg-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;}
     .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.08) 2px,rgba(0,0,0,0.08) 4px);pointer-events:none;z-index:1;}
     .glitch-overlay{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:2;opacity:0;}
@@ -87,18 +33,29 @@
     .nav-links a:hover{color:var(--cyan);text-shadow:0 0 10px var(--cyan);}
     .nav-links a:hover::after{width:100%;}
 
+    /* HAMBURGER */
+    .hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px;}
+    .hamburger span{display:block;width:24px;height:2px;background:var(--cyan);transition:all 0.3s;box-shadow:0 0 6px var(--cyan);}
+    .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+    .hamburger.open span:nth-child(2){opacity:0;}
+    .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+    .mobile-menu{display:none;position:fixed;top:0;left:0;width:100%;height:100vh;background:rgba(2,4,8,0.98);z-index:150;flex-direction:column;align-items:center;justify-content:center;gap:32px;}
+    .mobile-menu.open{display:flex;}
+    .mobile-menu a{font-family:'Share Tech Mono',monospace;font-size:1rem;color:rgba(200,232,240,0.7);text-decoration:none;letter-spacing:0.2em;text-transform:uppercase;transition:color 0.2s;}
+    .mobile-menu a:hover{color:var(--cyan);}
+
     /* HERO */
     #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:120px 24px 60px;position:relative;}
     .hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:var(--magenta);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:24px;opacity:0;animation:fadeUp 0.8s 0.3s forwards;}
-    .hero-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2.8rem,8vw,7rem);line-height:1.0;color:#fff;letter-spacing:0.06em;text-shadow:0 0 20px rgba(0,245,255,0.6),0 0 60px rgba(0,245,255,0.2),0 0 120px rgba(0,245,255,0.1);opacity:0;animation:fadeUp 0.8s 0.5s forwards;position:relative;}
+    .hero-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2.8rem,8vw,7rem);line-height:1.0;color:#fff;letter-spacing:0.06em;text-shadow:0 0 20px rgba(0,245,255,0.6),0 0 60px rgba(0,245,255,0.2);opacity:0;animation:fadeUp 0.8s 0.5s forwards;position:relative;}
     .hero-title .accent{color:var(--cyan);}
     .hero-sub{font-size:clamp(1rem,2.5vw,1.4rem);color:rgba(200,232,240,0.5);margin-top:24px;letter-spacing:0.1em;max-width:760px;line-height:1.7;opacity:0;animation:fadeUp 0.8s 0.7s forwards;}
     .hero-cta-group{display:flex;gap:20px;margin-top:52px;flex-wrap:wrap;justify-content:center;opacity:0;animation:fadeUp 0.8s 0.9s forwards;}
-
-    /* COMING SOON BADGES */
     .coming-badges{display:flex;flex-wrap:wrap;justify-content:center;gap:12px;margin-top:36px;opacity:0;animation:fadeUp 0.8s 1.1s forwards;}
     .cbadge{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.8);border:1px solid rgba(0,245,255,0.25);padding:5px 14px;letter-spacing:0.15em;background:rgba(0,245,255,0.04);}
-    .cbadge.live{color:var(--green);border-color:rgba(0,255,136,0.4);background:rgba(0,255,136,0.06);}
+    .scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp 0.8s 1.4s forwards;}
+    .scroll-indicator span{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.4);letter-spacing:0.3em;}
+    .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:scrollPulse 2s infinite;}
 
     /* BUTTONS */
     .btn-primary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:16px 40px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
@@ -106,22 +63,16 @@
     .btn-primary:hover::before{left:100%;}
     .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px var(--cyan),0 0 60px rgba(0,245,255,0.3);}
     .btn-secondary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cyan);background:transparent;border:1px solid var(--cyan);padding:16px 40px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s,box-shadow 0.2s,transform 0.2s;text-decoration:none;display:inline-block;}
-    .btn-secondary:hover{background:rgba(0,245,255,0.08);box-shadow:0 0 20px rgba(0,245,255,0.2),inset 0 0 20px rgba(0,245,255,0.05);transform:translateY(-2px);}
+    .btn-secondary:hover{background:rgba(0,245,255,0.08);box-shadow:0 0 20px rgba(0,245,255,0.2);transform:translateY(-2px);}
 
-    /* SCROLL INDICATOR */
-    .scroll-indicator{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:8px;opacity:0;animation:fadeUp 0.8s 1.4s forwards;}
-    .scroll-indicator span{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,245,255,0.4);letter-spacing:0.3em;}
-    .scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--cyan),transparent);animation:scrollPulse 2s infinite;}
-
-    /* PRODUCT PREVIEW SECTION */
+    /* PRODUCT PREVIEWS */
     section{padding:100px 48px;max-width:1280px;margin:0 auto;}
     .section-header{display:flex;align-items:center;gap:20px;margin-bottom:64px;}
     .section-tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.3em;text-transform:uppercase;}
     .section-line{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);}
     .section-title{font-family:'Orbitron',monospace;font-size:clamp(1.6rem,3vw,2.4rem);font-weight:700;color:#fff;letter-spacing:0.06em;margin-bottom:16px;}
     .section-title .hi{color:var(--cyan);text-shadow:0 0 15px var(--cyan);}
-
-    .products-preview{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:2px;}
+    .products-preview{display:grid;grid-template-columns:repeat(2,1fr);gap:2px;}
     .product-teaser{background:var(--panel);border:1px solid var(--border);padding:48px 36px;position:relative;overflow:hidden;transition:border-color 0.3s,transform 0.3s;}
     .product-teaser:hover{border-color:rgba(0,245,255,0.4);transform:translateY(-4px);}
     .product-icon{font-size:2.5rem;margin-bottom:24px;display:block;filter:drop-shadow(0 0 12px var(--cyan));}
@@ -129,74 +80,7 @@
     .product-desc{font-size:0.95rem;color:rgba(200,232,240,0.55);line-height:1.7;margin-bottom:20px;}
     .product-status{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--magenta);letter-spacing:0.15em;display:inline-block;border-top:1px solid rgba(255,0,170,0.3);padding-top:12px;margin-top:8px;}
 
-    /* LIVE PRODUCT — AUDITCORE SPECIFIC STYLES */
-    .product-teaser.live-product{
-      border-color:rgba(0,255,136,0.35);
-      background:linear-gradient(135deg,rgba(0,255,136,0.05),rgba(0,245,255,0.03));
-    }
-    .product-teaser.live-product::before{
-      content:'';
-      position:absolute;top:0;left:0;
-      width:100%;height:3px;
-      background:linear-gradient(90deg,var(--green),var(--cyan));
-    }
-    .product-teaser.live-product::after{
-      content:'';
-      position:absolute;top:0;left:0;
-      width:3px;height:100%;
-      background:linear-gradient(to bottom,var(--green),transparent);
-    }
-    .product-teaser.live-product:hover{
-      border-color:rgba(0,255,136,0.6);
-      transform:translateY(-6px);
-      box-shadow:0 0 40px rgba(0,255,136,0.08);
-    }
-    .product-teaser.live-product .product-name{
-      color:var(--green);
-      text-shadow:0 0 14px rgba(0,255,136,0.4);
-    }
-    .product-teaser.live-product .product-icon{
-      filter:drop-shadow(0 0 14px var(--green));
-    }
-    .live-badge{
-      display:inline-flex;align-items:center;gap:8px;
-      font-family:'Share Tech Mono',monospace;font-size:0.58rem;
-      color:var(--green);letter-spacing:0.2em;
-      background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.35);
-      padding:4px 12px;margin-bottom:20px;
-    }
-    .live-dot{
-      width:6px;height:6px;background:var(--green);border-radius:50%;
-      box-shadow:0 0 6px var(--green);animation:pulseLive 1.5s infinite;
-    }
-    .product-frameworks{display:flex;flex-wrap:wrap;gap:6px;margin:14px 0 18px;}
-    .fw-pill{
-      font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;
-      padding:3px 10px;border:1px solid rgba(0,245,255,0.2);
-      color:rgba(0,245,255,0.6);background:rgba(0,245,255,0.03);
-    }
-    .btn-launch{
-      font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.18em;
-      text-transform:uppercase;color:var(--dark);background:var(--green);
-      border:none;padding:12px 24px;cursor:none;position:relative;overflow:hidden;
-      clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
-      transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;
-      display:inline-block;font-weight:700;margin-right:12px;margin-top:8px;
-    }
-    .btn-launch::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
-    .btn-launch:hover::before{left:100%;}
-    .btn-launch:hover{transform:translateY(-2px);box-shadow:0 0 24px var(--green),0 0 50px rgba(0,255,136,0.3);}
-    .btn-inquiry{
-      font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;
-      text-transform:uppercase;color:var(--green);background:transparent;
-      border:1px solid rgba(0,255,136,0.4);padding:12px 20px;cursor:none;
-      clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);
-      transition:background 0.2s,box-shadow 0.2s,transform 0.2s;
-      text-decoration:none;display:inline-block;margin-top:8px;
-    }
-    .btn-inquiry:hover{background:rgba(0,255,136,0.06);box-shadow:0 0 16px rgba(0,255,136,0.2);transform:translateY(-2px);}
-
-    /* COUNTDOWN TIMER */
+    /* COUNTDOWN */
     .countdown-section{padding:60px 48px;max-width:1280px;margin:0 auto;text-align:center;}
     .countdown-title{font-family:'Orbitron',monospace;font-size:1.4rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:32px;}
     .countdown-container{display:flex;justify-content:center;gap:40px;flex-wrap:wrap;}
@@ -204,7 +88,7 @@
     .countdown-number{font-family:'Orbitron',monospace;font-size:3rem;font-weight:900;color:#fff;text-shadow:0 0 20px var(--cyan);display:block;line-height:1;}
     .countdown-label{font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:rgba(200,232,240,0.4);letter-spacing:0.2em;margin-top:8px;}
 
-    /* NOTIFICATION FORM */
+    /* NOTIFY */
     .notify-section{padding:0 48px 100px;max-width:680px;margin:0 auto;}
     .notify-card{border:1px solid var(--border);background:linear-gradient(135deg,rgba(0,245,255,0.03),rgba(255,0,170,0.02));padding:60px 48px;text-align:center;position:relative;}
     .notify-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
@@ -212,7 +96,7 @@
     .notify-sub{color:rgba(200,232,240,0.45);margin-bottom:32px;font-size:0.9rem;line-height:1.7;}
     .notify-form{display:flex;gap:16px;flex-wrap:wrap;justify-content:center;}
     .notify-input{flex:1;min-width:260px;background:rgba(0,245,255,0.03);border:1px solid rgba(0,245,255,0.15);color:#c8e8f0;font-family:'Rajdhani',sans-serif;font-size:1rem;padding:14px 20px;outline:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
-    .notify-input:focus{border-color:var(--cyan);box-shadow:0 0 20px rgba(0,245,255,0.1);}
+    .notify-input:focus{border-color:var(--cyan);}
     .hp-field{opacity:0;position:absolute;top:0;left:0;height:0;width:0;z-index:-1;pointer-events:none;}
     .notify-msg{font-family:'Share Tech Mono',monospace;font-size:0.7rem;margin-top:20px;padding:10px;display:none;}
     .notify-msg.success{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.05);}
@@ -228,38 +112,57 @@
     .footer-links a{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:rgba(200,232,240,0.3);text-decoration:none;letter-spacing:0.12em;transition:color 0.2s;}
     .footer-links a:hover{color:var(--cyan);}
 
-    /* ANIMATIONS */
     @keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
     @keyframes scrollPulse{0%,100%{opacity:0.3}50%{opacity:1}}
-    @keyframes pulseLive{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.4;transform:scale(0.7)}}
 
-    /* MOBILE */
-    @media(max-width:900px){nav{padding:16px 24px}.nav-links{display:none}section{padding:80px 24px}.countdown-container{gap:20px}.countdown-item{min-width:70px}.countdown-number{font-size:2rem}.notify-section{padding:0 24px 80px}.notify-card{padding:40px 28px}}
-    @media(max-width:560px){.countdown-container{gap:12px}.countdown-item{min-width:60px}.countdown-number{font-size:1.5rem}}
+    @media(max-width:900px){
+      nav{padding:16px 24px;}
+      .nav-links{display:none;}
+      .hamburger{display:flex;}
+      section{padding:80px 24px;}
+      .countdown-container{gap:20px;}
+      .countdown-item{min-width:70px;}
+      .countdown-number{font-size:2rem;}
+      .notify-section{padding:0 24px 80px;}
+      .notify-card{padding:40px 28px;}
+      .products-preview{grid-template-columns:1fr;}
+      footer{flex-direction:column;text-align:center;padding:32px 24px;}
+      .footer-links{justify-content:center;}
+    }
   </style>
 </head>
 <body>
-
 <div id="cursor"></div>
 <div id="cursor-ring"></div>
 <canvas id="bg-canvas"></canvas>
 <div class="scanlines"></div>
 <div class="glitch-overlay" id="glitch-overlay"></div>
 
-<div id="app">
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html" onclick="closeMobileMenu()">Home</a>
+  <a href="index.html#services" onclick="closeMobileMenu()">Services</a>
+  <a href="products.html">Products</a>
+  <a href="coming-soon.html" style="color:var(--magenta);">Coming Soon</a>
+  <a href="index.html#contact" onclick="closeMobileMenu()">Contact</a>
+  <a href="auditcore.html" style="color:var(--green);">AuditCore&#8482; Login</a>
+</div>
 
-  <!-- NAV -->
+<div id="app">
   <nav>
     <a href="index.html" class="nav-logo">DARKBLOOM<sup>&#8482;</sup></a>
     <ul class="nav-links">
       <li><a href="index.html#services">Services</a></li>
       <li><a href="index.html#security">Security</a></li>
       <li><a href="index.html#process">Process</a></li>
-      <li><a href="products.html">Products</a></li>
+      <li><a href="products.html" style="color:var(--cyan);text-shadow:0 0 8px var(--cyan);">Products</a></li>
       <li><a href="coming-soon.html" style="color:var(--magenta);text-shadow:0 0 8px var(--magenta);">Coming Soon</a></li>
       <li><a href="auditcore.html" style="color:var(--green);text-shadow:0 0 8px var(--green);">AuditCore&#8482; &#9679;</a></li>
       <li><a href="index.html#contact">Contact</a></li>
     </ul>
+    <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+      <span></span><span></span><span></span>
+    </div>
   </nav>
 
   <!-- HERO -->
@@ -268,85 +171,51 @@
     <h1 class="hero-title">COMING <span class="accent">SOON</span></h1>
     <p class="hero-sub">New products. Expanded capabilities. Enterprise-grade solutions built to the highest security standards. We're engineering the future — and it's almost here.</p>
     <div class="hero-cta-group">
-      <a href="auditcore.html" class="btn-primary">Launch AuditCore&#8482; &#9654;</a>
+      <a href="products.html" class="btn-primary">View Live Products &#9654;</a>
       <a href="#notify" class="btn-secondary">Get Notified</a>
     </div>
     <div class="coming-badges">
-      <span class="cbadge live">&#9679; AUDITCORE&#8482; — LIVE NOW</span>
       <span class="cbadge">NIST 800-171 ALIGNED</span>
       <span class="cbadge">FIPS 140-3</span>
       <span class="cbadge">ZERO-TRUST ARCHITECTURE</span>
+      <span class="cbadge">POST-QUANTUM READY</span>
     </div>
     <div class="scroll-indicator"><span>SCROLL</span><div class="scroll-line"></div></div>
   </section>
 
   <!-- PRODUCT PREVIEWS -->
   <section id="preview">
-    <div class="section-header"><span class="section-tag">// Coming Products</span><div class="section-line"></div></div>
+    <div class="section-header"><span class="section-tag">// In Development</span><div class="section-line"></div></div>
     <h2 class="section-title">What's <span class="hi">Next</span></h2>
-    <p style="color:rgba(200,232,240,0.45);margin-bottom:52px;max-width:600px;line-height:1.8;">AuditCore&#8482; is live and accepting clients. QuantumShield&#8482; and EdgeDefend&#8482; are in active development and coming soon.</p>
+    <p style="color:rgba(200,232,240,0.45);margin-bottom:52px;max-width:600px;line-height:1.8;">QuantumShield&#8482; and EdgeDefend&#8482; are in active development. These products will expand the Darkbloom Industries&#8482; platform into post-quantum cryptography and zero-trust network access.</p>
     <div class="products-preview">
-
-      <!-- QUANTUMSHIELD -->
       <div class="product-teaser">
-        <span class="product-icon">🔐</span>
+        <span class="product-icon">&#128272;</span>
         <div class="product-name">QuantumShield&#8482;</div>
-        <p class="product-desc">Post-quantum cryptography implementation with hybrid key exchange protocols. Future-proof encryption for organizations preparing for the quantum computing era.</p>
+        <p class="product-desc">Post-quantum cryptography implementation with hybrid key exchange protocols. Future-proof encryption for organizations preparing for the quantum computing era. FIPS 140-3 aligned, NIST PQC standards compliant.</p>
         <div class="product-status">STATUS: UNDER DEVELOPMENT</div>
       </div>
-
-      <!-- AUDITCORE — NOW LIVE -->
-      <div class="product-teaser live-product">
-        <div class="live-badge"><div class="live-dot"></div>LIVE — ACCEPTING CLIENTS</div>
-        <span class="product-icon">📊</span>
-        <div class="product-name">AuditCore&#8482;</div>
-        <p class="product-desc">Real-time compliance intelligence platform. Continuous monitoring across CMMC Level 2, NIST SP 800-171, OWASP Top 10, SOC 2 Type II, and FIPS 140-3 — with immutable audit trails and instant gap detection.</p>
-        <div class="product-frameworks">
-          <span class="fw-pill">CMMC L2</span>
-          <span class="fw-pill">NIST 800-171</span>
-          <span class="fw-pill">OWASP TOP 10</span>
-          <span class="fw-pill">SOC 2 TYPE II</span>
-          <span class="fw-pill">FIPS 140-3</span>
-        </div>
-        <a href="auditcore.html" class="btn-launch">LAUNCH PLATFORM &#9654;</a>
-        <a href="mailto:DarkbloomIndustries@outlook.com?subject=AuditCore%20Access%20Request" class="btn-inquiry">REQUEST ACCESS</a>
-      </div>
-
-      <!-- EDGEDEFEND -->
       <div class="product-teaser">
-        <span class="product-icon">🌐</span>
+        <span class="product-icon">&#127760;</span>
         <div class="product-name">EdgeDefend&#8482;</div>
-        <p class="product-desc">Zero-trust network access solution with micro-segmentation and continuous verification. Built for distributed workforces and hybrid cloud environments.</p>
+        <p class="product-desc">Zero-trust network access solution with micro-segmentation and continuous verification. Built for distributed workforces and hybrid cloud environments. NIST SP 800-207 architecture compliant.</p>
         <div class="product-status">STATUS: UNDER DEVELOPMENT</div>
       </div>
-
     </div>
   </section>
 
-  <!-- COUNTDOWN TIMER -->
+  <!-- COUNTDOWN -->
   <div class="countdown-section">
-    <div class="countdown-title">// LAUNCH TIMER</div>
+    <div class="countdown-title">// NEXT LAUNCH TARGET</div>
     <div class="countdown-container">
-      <div class="countdown-item">
-        <span class="countdown-number" id="days">00</span>
-        <span class="countdown-label">DAYS</span>
-      </div>
-      <div class="countdown-item">
-        <span class="countdown-number" id="hours">00</span>
-        <span class="countdown-label">HOURS</span>
-      </div>
-      <div class="countdown-item">
-        <span class="countdown-number" id="minutes">00</span>
-        <span class="countdown-label">MINUTES</span>
-      </div>
-      <div class="countdown-item">
-        <span class="countdown-number" id="seconds">00</span>
-        <span class="countdown-label">SECONDS</span>
-      </div>
+      <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">DAYS</span></div>
+      <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label">HOURS</span></div>
+      <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label">MINUTES</span></div>
+      <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label">SECONDS</span></div>
     </div>
   </div>
 
-  <!-- NOTIFICATION FORM -->
+  <!-- NOTIFY -->
   <div class="notify-section" id="notify">
     <div class="notify-card">
       <div class="notify-title">Be the <span style="color:var(--cyan);">First</span> to Know</div>
@@ -354,347 +223,110 @@
       <div class="notify-form">
         <input class="hp-field" type="text" name="_honey" tabindex="-1" autocomplete="off"/>
         <input type="email" id="notify-email" class="notify-input" placeholder="Enter your email address" maxlength="150"/>
-        <button class="btn-primary" id="notify-btn" style="padding:14px 32px;" onclick="handleNotify(event)">NOTIFY ME →</button>
+        <button class="btn-primary" id="notify-btn" style="padding:14px 32px;width:auto;" onclick="handleNotify(event)">NOTIFY ME &#9654;</button>
       </div>
       <div class="notify-msg" id="notify-msg"></div>
       <p style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(200,232,240,0.25);margin-top:24px;letter-spacing:0.1em;">No spam. No tracking. Just launch announcements and early access.</p>
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-brand">DARKBLOOM<sup>&#8482;</sup> INDUSTRIES</div>
-    <p class="footer-copy">© 2025 Darkbloom Industries™. All rights reserved.</p>
+    <p class="footer-copy">&#169; 2025 Darkbloom Industries&#8482;. All rights reserved.</p>
     <ul class="footer-links">
       <li><a href="privacy.html">Privacy</a></li>
       <li><a href="terms.html">Terms</a></li>
       <li><a href="security-policy.html">Security</a></li>
     </ul>
   </footer>
-
-</div><!-- #app -->
-
-<!-- SECURITY TRUST INDICATORS -->
-<div class="security-badge-container">
-  <div class="security-badge https">🔒 TLS 1.3</div>
-  <div class="security-badge">⚡ CSP ACTIVE</div>
-  <div class="security-badge">🛡️ XSS PROTECTED</div>
-  <div class="security-badge">🔐 AES-256</div>
-</div>
-<div class="secure-banner">
-  🔒 SECURE CONNECTION | ENCRYPTED | NO TRACKING
 </div>
 
 <script>
-  // SECURITY MODULE
-  const Security = (() => {
-    const RATE_LIMIT = 3, RATE_WINDOW = 10*60*1000, submitLog = [];
-    function isRateLimited(){ const now=Date.now(); while(submitLog.length&&now-submitLog[0]>RATE_WINDOW)submitLog.shift(); return submitLog.length>=RATE_LIMIT; }
-    function recordSubmit(){ submitLog.push(Date.now()); }
-    function sanitize(str){ return String(str).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#x27;').replace(/\//g,'&#x2F;').trim(); }
-    function isValidEmail(e){ return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(e); }
-    function isBotDetected(){ const hp=document.querySelector('.hp-field'); return hp&&hp.value.length>0; }
-    return{isRateLimited,recordSubmit,sanitize,isValidEmail,isBotDetected};
-  })();
+  function toggleMobileMenu(){document.getElementById('mobile-menu').classList.toggle('open');document.getElementById('hamburger').classList.toggle('open');}
+  function closeMobileMenu(){document.getElementById('mobile-menu').classList.remove('open');document.getElementById('hamburger').classList.remove('open');}
 
-  // SECURITY MONITORING
-  function checkSecurityHeaders() {
-    const securityWarnings = [];
-    if (location.protocol !== 'https:') {
-      securityWarnings.push('⚠️ INSECURE CONNECTION: Not using HTTPS');
-    }
-    const cspMeta = document.querySelector('meta[http-equiv="Content-Security-Policy"]');
-    if (!cspMeta) {
-      securityWarnings.push('⚠️ CSP header missing');
-    }
-    if (securityWarnings.length > 0) {
-      console.warn('Security Issues Detected:', securityWarnings);
-    } else {
-      console.log('✅ SECURITY STATUS: All protections active | TLS 1.3 | CSP | XSS Protection | Rate Limiting Active');
-    }
-  }
-  
-  if (window.self !== window.top) {
-    console.warn('⚠️ Security Alert: Site loaded in iframe - should be blocked by X-Frame-Options');
-  }
-  
-  setTimeout(checkSecurityHeaders, 1000);
-
-  // NOTIFICATION HANDLER
   async function handleNotify(e){
     e.preventDefault();
-    const btn = document.getElementById('notify-btn');
-    const emailInput = document.getElementById('notify-email');
-    const msgBox = document.getElementById('notify-msg');
-    const honeypot = document.querySelector('.hp-field');
-    const email = emailInput.value.trim();
-    
-    msgBox.className = 'notify-msg';
-    msgBox.textContent = '';
-    
-    // Honeypot bot detection
-    if(honeypot && honeypot.value.length > 0){
-      btn.textContent = 'SUBSCRIBED ✓';
-      btn.style.background = 'var(--green)';
-      btn.style.color = '#020408';
-      emailInput.value = '';
-      return;
-    }
-    
-    // Email validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-    if(!email || !emailRegex.test(email)){
-      msgBox.textContent = '> Please enter a valid email address.';
-      msgBox.className = 'notify-msg error visible';
-      return;
-    }
-    
-    btn.disabled = true;
-    btn.textContent = 'SENDING...';
-    btn.style.background = 'var(--magenta)';
-    btn.style.color = '#fff';
-    
+    const btn=document.getElementById('notify-btn'),emailInput=document.getElementById('notify-email'),msgBox=document.getElementById('notify-msg');
+    const honeypot=document.querySelector('.hp-field');
+    const email=emailInput.value.trim();
+    msgBox.className='notify-msg';msgBox.textContent='';
+    if(honeypot&&honeypot.value.length>0){btn.textContent='SUBSCRIBED \u2713';btn.style.background='var(--green)';btn.style.color='#020408';emailInput.value='';return;}
+    if(!email||!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)){msgBox.textContent='> Please enter a valid email address.';msgBox.className='notify-msg error visible';return;}
+    btn.disabled=true;btn.textContent='SENDING...';btn.style.background='var(--magenta)';btn.style.color='#fff';
     try{
-      const res = await fetch('https://formspree.io/f/myknagoq', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-        body: JSON.stringify({ email, message: 'Coming Soon Page Notification Request', source: 'Coming Soon Page' })
-      });
-      
+      const res=await fetch('https://formspree.io/f/myknagoq',{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify({email,message:'Coming Soon Notification Request',source:'Coming Soon Page'})});
       if(res.ok){
-        Security.recordSubmit();
-        btn.textContent = 'SUBSCRIBED ✓';
-        btn.style.background = 'var(--green)';
-        btn.style.color = '#020408';
-        emailInput.value = '';
-        msgBox.textContent = '> Notification set. You will be among the first to know when we launch.';
-        msgBox.className = 'notify-msg success visible';
-        setTimeout(() => {
-          btn.textContent = 'NOTIFY ME →';
-          btn.style.background = 'var(--cyan)';
-          btn.style.color = 'var(--dark)';
-          btn.disabled = false;
-          msgBox.className = 'notify-msg';
-        }, 4000);
-      } else {
-        throw new Error('Server error');
-      }
-    } catch(err){
-      btn.textContent = 'NOTIFY ME →';
-      btn.style.background = 'var(--cyan)';
-      btn.style.color = 'var(--dark)';
-      btn.disabled = false;
-      msgBox.textContent = '> Transmission failed. Please try again or email us directly.';
-      msgBox.className = 'notify-msg error visible';
-      setTimeout(() => { msgBox.className = 'notify-msg'; }, 4000);
+        btn.textContent='SUBSCRIBED \u2713';btn.style.background='var(--green)';btn.style.color='#020408';emailInput.value='';
+        msgBox.textContent='> Notification set. You will be among the first to know.';msgBox.className='notify-msg success visible';
+        setTimeout(()=>{btn.textContent='NOTIFY ME \u25BA';btn.style.background='var(--cyan)';btn.style.color='var(--dark)';btn.disabled=false;msgBox.className='notify-msg';},4000);
+      }else{throw new Error();}
+    }catch{
+      btn.textContent='NOTIFY ME \u25BA';btn.style.background='var(--cyan)';btn.style.color='var(--dark)';btn.disabled=false;
+      msgBox.textContent='> Transmission failed. Please try again.';msgBox.className='notify-msg error visible';
+      setTimeout(()=>{msgBox.className='notify-msg';},4000);
     }
   }
 
-  // COUNTDOWN TIMER (Target: September 1, 2026 — next product launch)
-  function updateCountdown() {
-    const targetDate = new Date('September 1, 2026 00:00:00').getTime();
-    const now = new Date().getTime();
-    const distance = targetDate - now;
-    
-    if(distance < 0) {
-      document.getElementById('days').textContent = '00';
-      document.getElementById('hours').textContent = '00';
-      document.getElementById('minutes').textContent = '00';
-      document.getElementById('seconds').textContent = '00';
-      return;
-    }
-    
-    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    
-    document.getElementById('days').textContent = String(days).padStart(2, '0');
-    document.getElementById('hours').textContent = String(hours).padStart(2, '0');
-    document.getElementById('minutes').textContent = String(minutes).padStart(2, '0');
-    document.getElementById('seconds').textContent = String(seconds).padStart(2, '0');
+  function updateCountdown(){
+    const target=new Date('September 1, 2026 00:00:00').getTime();
+    const now=new Date().getTime();
+    const d=target-now;
+    if(d<0){['days','hours','minutes','seconds'].forEach(id=>document.getElementById(id).textContent='00');return;}
+    document.getElementById('days').textContent=String(Math.floor(d/(1000*60*60*24))).padStart(2,'0');
+    document.getElementById('hours').textContent=String(Math.floor((d%(1000*60*60*24))/(1000*60*60))).padStart(2,'0');
+    document.getElementById('minutes').textContent=String(Math.floor((d%(1000*60*60))/(1000*60))).padStart(2,'0');
+    document.getElementById('seconds').textContent=String(Math.floor((d%(1000*60))/1000)).padStart(2,'0');
   }
-  
-  updateCountdown();
-  setInterval(updateCountdown, 1000);
+  updateCountdown();setInterval(updateCountdown,1000);
 
-  // CURSOR
-  const cursor = document.getElementById('cursor');
-  const ring = document.getElementById('cursor-ring');
-  let mx = 0, my = 0, rx = 0, ry = 0;
-  
-  document.addEventListener('mousemove', e => {
-    mx = e.clientX;
-    my = e.clientY;
-    cursor.style.left = mx + 'px';
-    cursor.style.top = my + 'px';
-  });
-  
-  (function animRing(){
-    rx += (mx - rx) * 0.12;
-    ry += (my - ry) * 0.12;
-    ring.style.left = rx + 'px';
-    ring.style.top = ry + 'px';
-    requestAnimationFrame(animRing);
-  })();
-  
-  document.querySelectorAll('a, button, .product-teaser').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      ring.style.width = '60px';
-      ring.style.height = '60px';
-      ring.style.opacity = '0.8';
-      cursor.style.transform = 'translate(-50%,-50%) scale(0.5)';
-    });
-    el.addEventListener('mouseleave', () => {
-      ring.style.width = '36px';
-      ring.style.height = '36px';
-      ring.style.opacity = '0.5';
-      cursor.style.transform = 'translate(-50%,-50%) scale(1)';
-    });
+  const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  (function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
+  document.querySelectorAll('a,button,.product-teaser').forEach(el=>{
+    el.addEventListener('mouseenter',()=>{ring.style.width='60px';ring.style.height='60px';ring.style.opacity='0.8';cursor.style.transform='translate(-50%,-50%) scale(0.5)';});
+    el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.opacity='0.5';cursor.style.transform='translate(-50%,-50%) scale(1)';});
   });
 
-  // CANVAS BACKGROUND
-  const canvas = document.getElementById('bg-canvas');
-  const ctx = canvas.getContext('2d');
-  let W, H;
-  
-  function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
-  }
-  resize();
-  window.addEventListener('resize', resize);
-  
-  const particles = [];
-  for(let i = 0; i < 100; i++) {
-    particles.push({
-      x: Math.random() * window.innerWidth,
-      y: Math.random() * window.innerHeight,
-      vx: (Math.random() - 0.5) * 0.3,
-      vy: (Math.random() - 0.5) * 0.3,
-      r: Math.random() * 1.5 + 0.3,
-      color: Math.random() > 0.7 ? '#ff00aa' : '#00f5ff',
-      alpha: Math.random() * 0.5 + 0.1
-    });
-  }
-  
-  let mouseX = 0, mouseY = 0;
-  document.addEventListener('mousemove', e => { mouseX = e.clientX; mouseY = e.clientY; });
-  
-  function drawBg() {
-    ctx.clearRect(0, 0, W, H);
-    ctx.strokeStyle = 'rgba(0,245,255,0.04)';
-    ctx.lineWidth = 1;
-    const cw = W / 22, rh = H / 14;
-    for(let c = 0; c <= 22; c++) {
-      ctx.beginPath();
-      ctx.moveTo(c * cw, 0);
-      ctx.lineTo(c * cw, H);
-      ctx.stroke();
-    }
-    for(let r = 0; r <= 14; r++) {
-      ctx.beginPath();
-      ctx.moveTo(0, r * rh);
-      ctx.lineTo(W, r * rh);
-      ctx.stroke();
-    }
-    
-    let g = ctx.createRadialGradient(W/2, H, 0, W/2, H, W * 0.6);
-    g.addColorStop(0, 'rgba(0,245,255,0.04)');
-    g.addColorStop(1, 'transparent');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, W, H);
-    
-    g = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, 200);
-    g.addColorStop(0, 'rgba(0,245,255,0.025)');
-    g.addColorStop(1, 'transparent');
-    ctx.fillStyle = g;
-    ctx.fillRect(0, 0, W, H);
-    
-    particles.forEach((p, i) => {
-      p.x += p.vx;
-      p.y += p.vy;
-      if(p.x < 0) p.x = W;
-      if(p.x > W) p.x = 0;
-      if(p.y < 0) p.y = H;
-      if(p.y > H) p.y = 0;
-      
-      ctx.globalAlpha = p.alpha;
-      ctx.shadowBlur = 6;
-      ctx.shadowColor = p.color;
-      ctx.fillStyle = p.color;
-      ctx.beginPath();
-      ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-      ctx.fill();
-      ctx.shadowBlur = 0;
-      ctx.globalAlpha = 1;
-      
-      for(let j = i + 1; j < particles.length; j++) {
-        const q = particles[j];
-        const dx = p.x - q.x;
-        const dy = p.y - q.y;
-        const d = Math.sqrt(dx * dx + dy * dy);
-        if(d < 120) {
-          ctx.strokeStyle = `rgba(0,245,255,${0.07 * (1 - d/120)})`;
-          ctx.lineWidth = 0.5;
-          ctx.beginPath();
-          ctx.moveTo(p.x, p.y);
-          ctx.lineTo(q.x, q.y);
-          ctx.stroke();
-        }
+  const canvas=document.getElementById('bg-canvas'),ctx=canvas.getContext('2d');
+  let W,H;
+  function resize(){W=canvas.width=window.innerWidth;H=canvas.height=window.innerHeight;}
+  resize();window.addEventListener('resize',resize);
+  const particles=[];
+  for(let i=0;i<100;i++)particles.push({x:Math.random()*window.innerWidth,y:Math.random()*window.innerHeight,vx:(Math.random()-.5)*.3,vy:(Math.random()-.5)*.3,r:Math.random()*1.5+.3,color:Math.random()>.7?'#ff00aa':'#00f5ff',alpha:Math.random()*.5+.1});
+  let mouseX=0,mouseY=0;
+  document.addEventListener('mousemove',e=>{mouseX=e.clientX;mouseY=e.clientY;});
+  function drawBg(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(0,245,255,0.04)';ctx.lineWidth=1;
+    const cw=W/22,rh=H/14;
+    for(let c=0;c<=22;c++){ctx.beginPath();ctx.moveTo(c*cw,0);ctx.lineTo(c*cw,H);ctx.stroke();}
+    for(let r=0;r<=14;r++){ctx.beginPath();ctx.moveTo(0,r*rh);ctx.lineTo(W,r*rh);ctx.stroke();}
+    let g=ctx.createRadialGradient(W/2,H*.55,0,W/2,H*.55,W*.45);g.addColorStop(0,'rgba(0,245,255,0.035)');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    g=ctx.createRadialGradient(mouseX,mouseY,0,mouseX,mouseY,150);g.addColorStop(0,'rgba(0,245,255,0.018)');g.addColorStop(1,'transparent');ctx.fillStyle=g;ctx.fillRect(0,0,W,H);
+    particles.forEach((p,i)=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.globalAlpha=p.alpha;ctx.shadowBlur=6;ctx.shadowColor=p.color;ctx.fillStyle=p.color;
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();
+      ctx.shadowBlur=0;ctx.globalAlpha=1;
+      for(let j=i+1;j<particles.length;j++){
+        const q=particles[j],dx=p.x-q.x,dy=p.y-q.y,d=Math.sqrt(dx*dx+dy*dy);
+        if(d<120){ctx.strokeStyle=`rgba(0,245,255,${.07*(1-d/120)})`;ctx.lineWidth=.5;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(q.x,q.y);ctx.stroke();}
       }
     });
-    
-    if(Math.random() < 0.015) {
-      ctx.fillStyle = `rgba(0,245,255,${Math.random() * 0.06})`;
-      ctx.fillRect(0, Math.random() * H, W, Math.random() * 3 + 1);
-    }
-    
+    if(Math.random()<.015){ctx.fillStyle=`rgba(0,245,255,${Math.random()*.06})`;ctx.fillRect(0,Math.random()*H,W,Math.random()*3+1);}
     requestAnimationFrame(drawBg);
   }
   drawBg();
 
-  // GLITCH OVERLAY
-  const glitchEl = document.getElementById('glitch-overlay');
-  function triggerGlitch() {
-    setTimeout(() => {
-      glitchEl.style.opacity = '1';
-      glitchEl.style.background = 'rgba(0,245,255,0.02)';
-      glitchEl.style.transform = `translateX(${(Math.random() - 0.5) * 10}px)`;
-      setTimeout(() => {
-        glitchEl.style.opacity = '0';
-        glitchEl.style.transform = 'none';
-        setTimeout(() => {
-          glitchEl.style.opacity = '1';
-          glitchEl.style.background = 'rgba(255,0,170,0.02)';
-          glitchEl.style.transform = `translateX(${(Math.random() - 0.5) * 6}px)`;
-          setTimeout(() => {
-            glitchEl.style.opacity = '0';
-            glitchEl.style.transform = 'none';
-            triggerGlitch();
-          }, 60);
-        }, 30);
-      }, 80);
-    }, 3000 + Math.random() * 7000);
-  }
+  const glitchEl=document.getElementById('glitch-overlay');
+  function triggerGlitch(){setTimeout(()=>{glitchEl.style.opacity='1';glitchEl.style.background='rgba(0,245,255,0.02)';glitchEl.style.transform=`translateX(${(Math.random()-.5)*10}px)`;setTimeout(()=>{glitchEl.style.opacity='0';glitchEl.style.transform='none';setTimeout(()=>{glitchEl.style.opacity='1';glitchEl.style.background='rgba(255,0,170,0.02)';glitchEl.style.transform=`translateX(${(Math.random()-.5)*6}px)`;setTimeout(()=>{glitchEl.style.opacity='0';glitchEl.style.transform='none';triggerGlitch();},60);},30);},80);},3000+Math.random()*7000);}
   triggerGlitch();
 
-  // SCROLL FADE-IN
-  const observer = new IntersectionObserver(e => {
-    e.forEach(el => {
-      if(el.isIntersecting) {
-        el.target.style.opacity = '1';
-        el.target.style.transform = 'translateY(0)';
-      }
-    });
-  }, { threshold: 0.1 });
-  
-  document.querySelectorAll('.product-teaser, .countdown-item, .notify-card').forEach(el => {
-    el.style.opacity = '0';
-    el.style.transform = 'translateY(30px)';
-    el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(el);
-  });
+  const observer=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.style.opacity='1';el.target.style.transform='translateY(0)';}});},{threshold:0.1});
+  document.querySelectorAll('.product-teaser,.countdown-item,.notify-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(30px)';el.style.transition='opacity 0.6s ease,transform 0.6s ease';observer.observe(el);});
 </script>
 </body>
 </html>
