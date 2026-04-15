@@ -22,8 +22,6 @@ header{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify
 .logo-icon svg{width:100%;height:100%;filter:drop-shadow(var(--glow-cyan))}
 .logo-text{font-family:'Orbitron',monospace;font-weight:900;font-size:1rem;letter-spacing:.1em;background:linear-gradient(135deg,var(--cyan),var(--magenta));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .header-right{display:flex;align-items:center;gap:8px}
-.header-tag{font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;border:1px solid var(--border);padding:3px 6px;display:none}
-@media(min-width:480px){.header-tag{display:block}}
 .sec-badge{display:flex;align-items:center;gap:4px;font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--green);letter-spacing:.06em;border:1px solid rgba(0,255,136,.2);padding:3px 7px;background:rgba(0,255,136,.04);white-space:nowrap}
 .sec-badge::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--green);box-shadow:var(--glow-green);flex-shrink:0;animation:pulse 2s ease-in-out infinite}
 .status-dot{display:flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:.56rem;color:var(--green);white-space:nowrap}
@@ -34,14 +32,15 @@ header{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify
 .hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:.56rem;letter-spacing:.14em;color:var(--cyan);text-transform:uppercase;margin-bottom:12px;text-align:center;opacity:0;animation:fadeUp .5s ease .2s forwards}
 .hero-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.8rem,11vw,5.5rem);line-height:.9;text-align:center;margin-bottom:10px;opacity:0;animation:fadeUp .5s ease .35s forwards}
 .hero-title .line1{display:block;background:linear-gradient(135deg,var(--cyan),#0088ee);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 18px rgba(0,245,255,.35))}
-.hero-title .line2{display:block;background:linear-gradient(135deg,var(--magenta),#8800ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 18px rgba(255,0,255,.35));position:relative}
+.hero-title .line2{display:block;position:relative;background:linear-gradient(135deg,var(--magenta),#8800ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;filter:drop-shadow(0 0 18px rgba(255,0,255,.35))}
 .hero-title .line2::before,.hero-title .line2::after{content:'SEARCH';position:absolute;top:0;left:0;right:0;background:linear-gradient(135deg,var(--magenta),#8800ff);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-title .line2::before{animation:glitch1 4s infinite;clip-path:polygon(0 30%,100% 30%,100% 50%,0 50%)}
 .hero-title .line2::after{animation:glitch2 4s infinite;clip-path:polygon(0 62%,100% 62%,100% 80%,0 80%)}
 @keyframes glitch1{0%,90%,100%{transform:translateX(0);opacity:0}92%{transform:translateX(-3px);opacity:.8}94%{transform:translateX(3px);opacity:.8}96%{transform:translateX(0);opacity:0}}
 @keyframes glitch2{0%,90%,100%{transform:translateX(0);opacity:0}93%{transform:translateX(3px);opacity:.6}95%{transform:translateX(-3px);opacity:.6}97%{transform:translateX(0);opacity:0}}
 .hero-sub{font-family:'Rajdhani',sans-serif;font-size:.8rem;font-weight:300;color:var(--muted);letter-spacing:.16em;text-transform:uppercase;margin-bottom:22px;text-align:center;opacity:0;animation:fadeUp .5s ease .5s forwards}
-.hero-sub span{color:var(--cyan)}@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
+.hero-sub span{color:var(--cyan)}
+@keyframes fadeUp{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:translateY(0)}}
 .trust-row{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-bottom:22px;opacity:0;animation:fadeUp .5s ease .55s forwards}
 .trust-pill{display:flex;align-items:center;gap:5px;font-family:'Share Tech Mono',monospace;font-size:.5rem;color:var(--text2);letter-spacing:.05em;border:1px solid var(--border);padding:4px 9px;background:rgba(255,255,255,.02);white-space:nowrap}
 .search-container{width:100%;max-width:700px;opacity:0;animation:fadeUp .5s ease .62s forwards}
@@ -57,13 +56,6 @@ header{position:sticky;top:0;z-index:200;display:flex;align-items:center;justify
 .filter-label{font-family:'Share Tech Mono',monospace;font-size:.56rem;color:var(--muted);letter-spacing:.08em;flex-shrink:0}
 .filter-chip{font-family:'Share Tech Mono',monospace;font-size:.56rem;padding:3px 8px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s;background:transparent;white-space:nowrap}
 .filter-chip:hover,.filter-chip.active{border-color:var(--cyan);color:var(--cyan)}.filter-chip.active{background:rgba(0,245,255,.06)}
-.backend-status{margin-top:11px;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
-.backend-url-input{background:var(--deep);border:1px solid var(--border);color:var(--text);font-family:'Share Tech Mono',monospace;font-size:.66rem;padding:7px 10px;outline:none;flex:1;min-width:160px;max-width:300px;transition:border-color .2s}
-.backend-url-input:focus{border-color:var(--cyan)}
-.backend-btn{background:rgba(0,245,255,.08);border:1px solid var(--cyan);color:var(--cyan);font-family:'Share Tech Mono',monospace;font-size:.58rem;padding:7px 12px;cursor:pointer;transition:all .2s;white-space:nowrap}
-.backend-btn:hover{background:rgba(0,245,255,.18)}
-.backend-indicator{font-family:'Share Tech Mono',monospace;font-size:.58rem;display:flex;align-items:center;gap:4px}
-.backend-indicator.ok{color:var(--green)}.backend-indicator.err{color:#ff4444}.backend-indicator.checking{color:var(--orange)}
 .suggestions{display:flex;flex-wrap:wrap;gap:6px;margin-top:20px;justify-content:center;width:100%;opacity:0;animation:fadeUp .5s ease .85s forwards}
 .suggestion-pill{font-family:'Share Tech Mono',monospace;font-size:.56rem;padding:4px 10px;border:1px solid var(--border);color:var(--muted);cursor:pointer;transition:all .2s;background:transparent;white-space:nowrap}
 .suggestion-pill:hover{border-color:var(--cyan);color:var(--cyan)}
@@ -175,11 +167,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:14
 .footer-links a{font-family:'Share Tech Mono',monospace;font-size:.52rem;color:var(--muted);text-decoration:none;letter-spacing:.07em;transition:color .2s}
 .footer-links a:hover{color:var(--cyan)}.footer-security{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
 .footer-sec-item{display:flex;align-items:center;gap:4px;font-family:'Share Tech Mono',monospace;font-size:.46rem;color:rgba(0,255,136,.38);letter-spacing:.05em}
-.notice{position:fixed;bottom:14px;left:14px;right:14px;background:var(--panel);border:1px solid var(--orange);box-shadow:0 0 18px rgba(255,102,0,.2);padding:12px 34px 12px 12px;z-index:1000;display:none}
-@media(min-width:480px){.notice{left:auto;max-width:290px}}.notice.show{display:block}
-.notice-title{font-family:'Orbitron',monospace;font-size:.56rem;color:var(--orange);letter-spacing:.1em;margin-bottom:5px}
-.notice-body{font-family:'Share Tech Mono',monospace;font-size:.58rem;color:var(--muted);line-height:1.55}.notice-body a{color:var(--cyan)}
-.notice-close{position:absolute;top:7px;right:9px;background:none;border:none;color:var(--muted);cursor:pointer;font-size:.82rem;padding:3px}
 .corner-deco{position:fixed;width:42px;height:42px;pointer-events:none;z-index:2;opacity:.15;display:none}
 @media(min-width:600px){.corner-deco{display:block}}
 .corner-deco.tl{top:60px;left:0;border-top:1px solid var(--cyan);border-left:1px solid var(--cyan)}
@@ -196,7 +183,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:14
     <div class="logo-icon"><svg viewBox="0 0 36 36" fill="none"><circle cx="18" cy="18" r="16" stroke="#00f5ff" stroke-width="1.5"/><circle cx="18" cy="18" r="8" stroke="#ff00ff" stroke-width="1"/><circle cx="18" cy="18" r="2" fill="#00f5ff"/><line x1="2" y1="18" x2="10" y2="18" stroke="#00f5ff" stroke-width="1.5"/><line x1="26" y1="18" x2="34" y2="18" stroke="#00f5ff" stroke-width="1.5"/><line x1="18" y1="2" x2="18" y2="10" stroke="#00f5ff" stroke-width="1.5"/><line x1="18" y1="26" x2="18" y2="34" stroke="#00f5ff" stroke-width="1.5"/></svg></div>
     <span class="logo-text">DARKBLOOM SEARCH</span>
   </a>
-  <div class="header-right"><div class="header-tag">GLOBAL INDEX</div><div class="sec-badge">&#128274; ZERO LOGS</div><div class="status-dot">ONLINE</div></div>
+  <div class="header-right"><div class="sec-badge">&#128274; ZERO LOGS</div><div class="status-dot">ONLINE</div></div>
 </header>
 <div id="home-view">
   <div class="hero-eyebrow">// DARKBLOOM INDUSTRIES&#8482; &mdash; SEARCH DIVISION</div>
@@ -208,7 +195,7 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:14
     <div class="trust-pill">&#128683; Zero Logs</div>
     <div class="trust-pill">&#128065; No Tracking</div>
     <div class="trust-pill">&#127963; No Gov. Backdoors</div>
-    <div class="trust-pill">&#128286; Safe Search Enforced</div>
+    <div class="trust-pill">&#128286; Safe Search</div>
   </div>
   <div class="search-container">
     <div class="search-wrapper">
@@ -224,12 +211,6 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:14
       <button class="filter-chip" data-region="JP">ASIA-PAC</button>
       <button class="filter-chip" data-region="AE">MIDDLE EAST</button>
       <button class="filter-chip" data-region="NG">AFRICA</button>
-    </div>
-    <div class="backend-status">
-      <span class="filter-label">BACKEND:</span>
-      <input class="backend-url-input" type="text" id="backend-url" placeholder="https://your-app.railway.app"/>
-      <button class="backend-btn" onclick="saveBackend()">CONNECT</button>
-      <span class="backend-indicator" id="backend-indicator">NOT SET</span>
     </div>
   </div>
   <div class="suggestions">
@@ -306,33 +287,34 @@ footer{position:relative;z-index:1;border-top:1px solid var(--border);padding:14
     <div class="footer-sec-item">&#128286; SAFE SEARCH ENFORCED</div>
   </div>
 </footer>
-<div class="notice" id="notice">
-  <button class="notice-close" onclick="document.getElementById('notice').classList.remove('show')">&#10005;</button>
-  <div class="notice-title">// BACKEND NOT CONNECTED</div>
-  <div class="notice-body">Enter your Railway backend URL above to activate live search. Demo mode active.</div>
-</div>
 <script>
-let backendUrl=localStorage.getItem('darkbloom_search_backend')||'';
+// ── HARDCODED BACKEND — no user configuration needed ──
+const BACKEND = 'https://darkbloom-search-backend-production.up.railway.app';
+
 let currentQuery='',currentTab='all',currentRegion='ALL',currentSource='all';
-if(backendUrl){document.getElementById('backend-url').value=backendUrl;checkBackendHealth();}
-async function checkBackendHealth(){const ind=document.getElementById('backend-indicator');ind.textContent='CHECKING...';ind.className='backend-indicator checking';try{const r=await fetch(backendUrl+'/health',{signal:AbortSignal.timeout(5000)});if(r.ok){ind.textContent='&#10003; CONNECTED';ind.className='backend-indicator ok';}else throw new Error(r.status);}catch(e){ind.textContent='&#10007; UNREACHABLE';ind.className='backend-indicator err';}}
-function saveBackend(){const v=document.getElementById('backend-url').value.trim().replace(//$/,'');if(!v)return;backendUrl=v;localStorage.setItem('darkbloom_search_backend',v);checkBackendHealth();}
-document.querySelectorAll('.filter-chip').forEach(c=>{c.addEventListener('click',()=>{document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));c.classList.add('active');currentRegion=c.dataset.region;});});
+
+document.querySelectorAll('.filter-chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('active'));
+    c.classList.add('active');
+    currentRegion=c.dataset.region;
+  });
+});
 document.getElementById('search-input').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch();});
 document.getElementById('results-search-input').addEventListener('keydown',e=>{if(e.key==='Enter')doSearch(true);});
-document.getElementById('backend-url').addEventListener('keydown',e=>{if(e.key==='Enter')saveBackend();});
 function fillSearch(t){document.getElementById('search-input').value=t;doSearch();}
 function showHome(){document.getElementById('home-view').classList.remove('hidden');document.getElementById('results-view').classList.remove('visible');}
 function switchTab(tab){if(tab===currentTab)return;currentTab=tab;currentSource='all';document.querySelectorAll('.tab-btn').forEach(b=>b.classList.toggle('active',b.dataset.tab===tab));const bar=document.getElementById('source-bar');if(tab==='images'||tab==='videos'){bar.classList.add('visible');document.querySelectorAll('.video-src').forEach(c=>c.style.display=tab==='videos'?'':'none');document.querySelectorAll('.img-src').forEach(c=>c.style.display=tab==='images'?'':'none');document.querySelectorAll('.source-chip').forEach(c=>c.classList.toggle('active',c.dataset.source==='all'));}else{bar.classList.remove('visible');}if(currentQuery)fetchResults(currentQuery);}
 function setSource(src){currentSource=src;document.querySelectorAll('.source-chip').forEach(c=>c.classList.toggle('active',c.dataset.source===src));if(currentQuery)fetchResults(currentQuery);}
 async function doSearch(fromResults=false){const q=fromResults?document.getElementById('results-search-input').value.trim():document.getElementById('search-input').value.trim();if(!q)return;currentQuery=q;document.getElementById('home-view').classList.add('hidden');document.getElementById('results-view').classList.add('visible');document.getElementById('results-search-input').value=q;fetchResults(q);}
-async function fetchResults(query){showLoading();document.getElementById('results-meta').innerHTML='';const safeQ=query.replace(/[<>'";`\\]/g,'').trim().slice(0,200);if(!backendUrl){document.getElementById('notice').classList.add('show');setTimeout(()=>showDemoResults(safeQ,currentTab),500);return;}const params=new URLSearchParams({q:safeQ,type:currentTab==='all'?'web':currentTab,region:currentRegion,count:currentTab==='images'?20:currentTab==='videos'?12:10});if(currentSource!=='all')params.set('source',currentSource);const t0=performance.now();try{const res=await fetch(backendUrl+'/search?'+params,{signal:AbortSignal.timeout(10000),headers:{'Accept':'application/json'}});if(!res.ok)throw new Error(res.status);const data=await res.json();const elapsed=((performance.now()-t0)/1000).toFixed(2);renderResults(data,safeQ,currentTab,elapsed);}catch(err){showDemoResults(safeQ,currentTab,err.message);}}
+async function fetchResults(query){showLoading();document.getElementById('results-meta').innerHTML='';const safeQ=query.replace(/[<>'";`\\]/g,'').trim().slice(0,200);const params=new URLSearchParams({q:safeQ,type:currentTab==='all'?'web':currentTab,region:currentRegion,count:currentTab==='images'?20:currentTab==='videos'?12:10});if(currentSource!=='all')params.set('source',currentSource);const t0=performance.now();try{const res=await fetch(BACKEND+'/search?'+params,{signal:AbortSignal.timeout(10000),headers:{'Accept':'application/json'}});if(!res.ok)throw new Error(res.status);const data=await res.json();const elapsed=((performance.now()-t0)/1000).toFixed(2);renderResults(data,safeQ,currentTab,elapsed);}catch(err){console.error('[Darkbloom Search]',err.message);showError();}}
 function showLoading(){document.getElementById('results-container').innerHTML='<div class="loading-container"><div class="loading-bar"></div><div class="loading-text">SCANNING GLOBAL '+currentTab.toUpperCase()+' INDEX...</div></div>';}
+function showError(){document.getElementById('results-container').innerHTML='<div class="no-results"><span class="no-results-code">ERR</span><div class="no-results-msg">COULD NOT REACH SEARCH BACKEND — TRY AGAIN</div></div>';}
 function hl(t,q){if(!t)return'';q.toLowerCase().split(' ').filter(w=>w.length>2).forEach(w=>{t=t.replace(new RegExp('('+w+')','gi'),'<mark>$1</mark>');});return t;}
 function dom(url){try{return new URL(url).hostname.replace('www.','');}catch(e){return'';}}
 const commercialKw=['buy','price','cheap','best','review','deals','shop','discount','order','purchase','compare'];
 function isCommercial(q){const l=q.toLowerCase();return commercialKw.some(k=>l.includes(k));}
-function adSlot(pos,q){const ads=[{title:'Advertise on Darkbloom Search — Global Reach, Zero User Tracking',desc:'Your brand in front of worldwide searchers. Privacy-first advertising. No user profiles built.',url:'mailto:DarkbloomIndustries@outlook.com',domain:'ads.darkbloom.search',cta:'CONTACT US &#8594;'},{title:'List Your Business on Darkbloom Search',desc:'Sponsored placement on the world's most privacy-focused search engine. Transparent pricing.',url:'mailto:DarkbloomIndustries@outlook.com',domain:'ads.darkbloom.search',cta:'GET LISTED &#8594;'}];const ad=ads[pos%2];return '<div class="ad-slot" style="animation-delay:'+pos*.05+'s"><div class="ad-domain">'+ad.domain+'</div><a class="ad-title" href="'+ad.url+'">'+ad.title+'</a><div class="ad-desc">'+ad.desc+'</div><a class="ad-cta" href="'+ad.url+'">'+ad.cta+'</a></div>';}
+function adSlot(pos){const ads=[{title:'Advertise on Darkbloom Search &mdash; Global Reach, Zero User Tracking',desc:'Your brand in front of worldwide searchers. Privacy-first advertising. No user profiles.',url:'mailto:DarkbloomIndustries@outlook.com',domain:'ads.darkbloom.search',cta:'CONTACT US &#8594;'},{title:'List Your Business on Darkbloom Search',desc:'Sponsored placement on the world's most privacy-focused search engine.',url:'mailto:DarkbloomIndustries@outlook.com',domain:'ads.darkbloom.search',cta:'GET LISTED &#8594;'}];const ad=ads[pos%2];return '<div class="ad-slot" style="animation-delay:'+pos*.05+'s"><div class="ad-domain">'+ad.domain+'</div><a class="ad-title" href="'+ad.url+'">'+ad.title+'</a><div class="ad-desc">'+ad.desc+'</div><a class="ad-cta" href="'+ad.url+'">'+ad.cta+'</a></div>';}
 function affRow(q){const shops=[{t:q+' on Amazon',p:'From $19.99',s:'amazon.com',i:'&#128230;',u:'https://www.amazon.com/s?k='+encodeURIComponent(q)},{t:q+' on eBay',p:'Best Prices',s:'ebay.com',i:'&#128722;',u:'https://www.ebay.com/sch/i.html?_nkw='+encodeURIComponent(q)},{t:q+' on Etsy',p:'Handmade',s:'etsy.com',i:'&#127912;',u:'https://www.etsy.com/search?q='+encodeURIComponent(q)},{t:q+' on AliExpress',p:'Wholesale',s:'aliexpress.com',i:'&#127758;',u:'https://www.aliexpress.com/wholesale?SearchText='+encodeURIComponent(q)}];return '<div class="aff-section-label">SHOPPING RESULTS</div><div class="affiliate-row">'+shops.map((s,i)=>'<a class="aff-card" href="'+s.u+'" target="_blank" rel="noopener sponsored" style="animation-delay:'+i*.04+'s"><div class="aff-label">AFFILIATE</div><div class="aff-img-placeholder">'+s.i+'</div><div class="aff-title">'+s.t+'</div><div class="aff-price">'+s.p+'</div><div class="aff-source">'+s.s+'</div></a>').join('')+'</div>';}
 function resultCard(w,i,q){return '<div class="result-card" style="animation-delay:'+i*.04+'s"><div class="result-url-row"><img class="result-favicon" src="https://www.google.com/s2/favicons?domain='+dom(w.url)+'&sz=14" alt="" onerror="this.style.display='none'"/><span class="result-domain">'+dom(w.url)+'</span></div><a class="result-title" href="'+w.url+'" target="_blank" rel="noopener noreferrer">'+w.title+'</a><div class="result-snippet">'+hl(w.description||'',q)+'</div><div class="result-tags">'+(w.language?'<span class="result-tag">'+w.language.toUpperCase()+'</span>':'')+(w.age?'<span class="result-tag">'+w.age+'</span>':'')+'</div></div>';}
 function renderResults(data,q,tab,elapsed){const c=document.getElementById('results-container');const m=document.getElementById('results-meta');
@@ -340,20 +322,8 @@ if(tab==='images'){const r=data.results||[];if(!r.length){showEmpty();return;}m.
 if(tab==='videos'){const r=data.results||[];if(!r.length){showEmpty();return;}m.innerHTML='<span>'+r.length+'</span> videos &mdash; <span>'+elapsed+'s</span>';c.innerHTML='<div class="video-grid">'+r.map((v,i)=>'<a class="video-card" href="'+v.url+'" target="_blank" rel="noopener noreferrer" style="animation-delay:'+i*.04+'s"><div class="video-thumb"><img src="'+(v.thumbnail&&v.thumbnail.src||'')+'" alt="" loading="lazy" onerror="this.style.display='none'"/><div class="play-btn">&#9654;</div>'+(v.video&&v.video.duration?'<div class="video-duration">'+v.video.duration+'</div>':'')+'</div><div class="video-info"><div class="video-title">'+v.title+'</div><div class="video-meta">'+(v.age||'')+'</div></div></a>').join('')+'</div>';return;}
 if(tab==='news'){const r=data.news&&data.news.results||data.web&&data.web.results||[];if(!r.length){showEmpty();return;}m.innerHTML='<span>'+r.length+'</span> news &mdash; <span>'+elapsed+'s</span>';c.innerHTML=r.map((n,i)=>'<div class="news-card" style="animation-delay:'+i*.04+'s">'+(n.thumbnail&&n.thumbnail.src?'<div class="news-thumb"><img src="'+n.thumbnail.src+'" loading="lazy" onerror="this.parentElement.style.display='none'"/></div>':'')+'<div class="news-content"><div class="news-source">'+dom(n.url)+'</div><a class="news-title" href="'+n.url+'" target="_blank" rel="noopener noreferrer">'+n.title+'</a><div class="news-desc">'+hl(n.description||'',q)+'</div>'+(n.age?'<div class="news-age">'+n.age+'</div>':'')+'</div></div>').join('');return;}
 if(tab==='docs'){const r=data.web&&data.web.results||[];if(!r.length){showEmpty();return;}m.innerHTML='<span>'+r.length+'</span> documents &mdash; <span>'+elapsed+'s</span>';c.innerHTML=r.map((d,i)=>{const ext=(d.url.match(/\.(pdf|doc|docx|ppt|pptx)$/i)||['','WEB'])[1].toLowerCase();const cls=ext==='pdf'?'pdf':['doc','docx'].includes(ext)?'doc':['ppt','pptx'].includes(ext)?'ppt':'other';return'<div class="doc-card" style="animation-delay:'+i*.04+'s"><div class="doc-icon"><div class="doc-icon-type '+cls+'">'+(ext||'WEB').toUpperCase()+'</div><div class="doc-icon-lines"><span></span><span></span><span></span></div></div><div class="doc-content"><a class="doc-title" href="'+d.url+'" target="_blank" rel="noopener noreferrer">'+d.title+'</a><div class="doc-snippet">'+hl(d.description||'',q)+'</div><div class="doc-meta"><span class="doc-tag">'+dom(d.url)+'</span>'+(d.age?'<span class="doc-tag">'+d.age+'</span>':'')+'</div></div></div>';}).join('');return;}
-const r=data.web&&data.web.results||[];if(!r.length){showEmpty();return;}m.innerHTML='<span>'+r.length+'</span> results &mdash; <span>'+elapsed+'s</span>';let html=adSlot(0,q);if(isCommercial(q))html+=affRow(q);html+=r.slice(0,3).map((w,i)=>resultCard(w,i,q)).join('');html+=adSlot(1,q);html+=r.slice(3).map((w,i)=>resultCard(w,i+3,q)).join('');c.innerHTML=html;}
-function showEmpty(){document.getElementById('results-container').innerHTML='<div class="no-results"><span class="no-results-code">404</span><div class="no-results-msg">NOTHING FOUND IN THE VOID</div></div>';}
-function showDemoResults(q,tab){const elapsed=(Math.random()*.4+.18).toFixed(2);const m=document.getElementById('results-meta');const c=document.getElementById('results-container');const badge='<span class="demo-badge">DEMO</span>';
-if(tab==='images'){m.innerHTML='<span>12</span> images &mdash; <span>'+elapsed+'s</span>'+badge;const cols=['#0a0a1f','#0f0a1a','#0a1a0f','#1a0a0f','#1a1a00','#0a0f1a','#0f1a0a','#1a0a1a','#0a1a1a','#1a0f0a','#050514','#0a0510'];c.innerHTML='<div class="image-grid">'+Array.from({length:12},(_,i)=>'<a class="image-card" href="#" style="animation-delay:'+i*.03+'s;background:'+cols[i]+'"><div class="img-ph"><div style="font-family:Orbitron,monospace;font-size:.44rem;color:var(--cyan)">IMG_'+String(i+1).padStart(3,'0')+'</div></div><div class="img-overlay" style="opacity:1"><div class="img-source">darkbloom.global.index</div></div></a>').join('')+'</div>';return;}
-if(tab==='videos'){const pl=['YouTube','Vimeo','Dailymotion','Rumble','Odysee','Bilibili'];m.innerHTML='<span>6</span> videos &mdash; <span>'+elapsed+'s</span>'+badge;c.innerHTML='<div class="video-grid">'+pl.map((p,i)=>'<a class="video-card" href="#" style="animation-delay:'+i*.05+'s"><div class="video-thumb" style="background:linear-gradient(135deg,#0a0a1f,#1a0a1a)"><div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center"><span style="font-family:Share Tech Mono,monospace;font-size:.5rem;color:var(--muted)">'+p+'</span></div><div class="play-btn">&#9654;</div><div class="video-duration">'+Math.floor(Math.random()*9+1)+':'+String(Math.floor(Math.random()*60)).padStart(2,'0')+'</div></div><div class="video-info"><div class="video-title">'+q+' on '+p+'</div><div class="video-meta">'+Math.floor(Math.random()*90+1)+'d ago</div></div></a>').join('')+'</div>';return;}
-if(tab==='news'){const src=[{n:'Reuters',u:'reuters.com'},{n:'BBC',u:'bbc.com'},{n:'Al Jazeera',u:'aljazeera.com'},{n:'DW',u:'dw.com'},{n:'AP News',u:'apnews.com'},{n:'France 24',u:'france24.com'},{n:'NHK',u:'nhk.or.jp'}];m.innerHTML='<span>7</span> news &mdash; <span>'+elapsed+'s</span>'+badge;c.innerHTML=src.map((s,i)=>'<div class="news-card" style="animation-delay:'+i*.04+'s"><div class="news-content"><div class="news-source">'+s.u+'</div><a class="news-title" href="https://'+s.u+'" target="_blank">'+q+' &mdash; from '+s.n+'</a><div class="news-desc">Global coverage of '+q+' from '+s.n+' correspondents worldwide.</div><div class="news-age">'+Math.floor(Math.random()*23+1)+'h ago</div></div></div>').join('');return;}
-if(tab==='docs'){const docs=[{t:q+' Research Paper',d:'arxiv.org',e:'pdf',y:'2024'},{t:q+' Technical Spec',d:'ietf.org',e:'pdf',y:'2023'},{t:q+' Academic Study',d:'academia.edu',e:'pdf',y:'2024'},{t:'Intro to '+q,d:'slideshare.net',e:'ppt',y:'2023'},{t:q+' ISO Standards',d:'iso.org',e:'pdf',y:'2022'},{t:q+' Whitepaper',d:'github.com',e:'doc',y:'2024'}];m.innerHTML='<span>6</span> documents &mdash; <span>'+elapsed+'s</span>'+badge;c.innerHTML=docs.map((d,i)=>'<div class="doc-card" style="animation-delay:'+i*.04+'s"><div class="doc-icon"><div class="doc-icon-type '+(d.e==='pdf'?'pdf':d.e==='ppt'?'ppt':'doc')+'">'+d.e.toUpperCase()+'</div><div class="doc-icon-lines"><span></span><span></span><span></span></div></div><div class="doc-content"><a class="doc-title" href="https://'+d.d+'" target="_blank">'+d.t+'</a><div class="doc-snippet">Academic document on '+q+'.</div><div class="doc-meta"><span class="doc-tag">'+d.d+'</span><span class="doc-tag">'+d.y+'</span></div></div></div>').join('');return;}
-m.innerHTML='<span>7</span> results &mdash; <span>'+elapsed+'s</span>'+badge;
-const web=[{t:q+' &mdash; Wikipedia',u:'https://en.wikipedia.org',d:'Wikipedia covers '+q+' with global context.',l:'EN'},{t:q+' &mdash; Reuters',u:'https://reuters.com',d:'Reuters international news on '+q+'.',l:'EN'},{t:q+' &mdash; BBC News',u:'https://bbc.com',d:'BBC World Service coverage of '+q+'.',l:'EN'},{t:q+' &mdash; Al Jazeera',u:'https://aljazeera.com',d:'Al Jazeera covers '+q+' beyond Western media.',l:'EN'},{t:q+' &mdash; Scholar',u:'https://scholar.google.com',d:'Academic papers on '+q+'.',l:'EN'},{t:q+' &mdash; DW',u:'https://dw.com',d:'DW covers '+q+' in 30 languages.',l:'DE'},{t:q+' &mdash; Reddit',u:'https://reddit.com',d:'Community discussions on '+q+'.',l:'EN'}];
-let html=adSlot(0,q);if(isCommercial(q))html+=affRow(q);
-html+=web.slice(0,3).map((r,i)=>'<div class="result-card" style="animation-delay:'+i*.04+'s"><div class="result-url-row"><img class="result-favicon" src="https://www.google.com/s2/favicons?domain='+dom(r.u)+'&sz=14" alt="" onerror="this.style.display='none'"/><span class="result-domain">'+dom(r.u)+'</span></div><a class="result-title" href="'+r.u+'" target="_blank" rel="noopener noreferrer">'+r.t+'</a><div class="result-snippet">'+hl(r.d,q)+'</div><div class="result-tags"><span class="result-tag">'+r.l+'</span><span class="result-tag">DEMO</span></div></div>').join('');
-html+=adSlot(1,q);
-html+=web.slice(3).map((r,i)=>'<div class="result-card" style="animation-delay:'+(i+3)*.04+'s"><div class="result-url-row"><img class="result-favicon" src="https://www.google.com/s2/favicons?domain='+dom(r.u)+'&sz=14" alt="" onerror="this.style.display='none'"/><span class="result-domain">'+dom(r.u)+'</span></div><a class="result-title" href="'+r.u+'" target="_blank" rel="noopener noreferrer">'+r.t+'</a><div class="result-snippet">'+hl(r.d,q)+'</div><div class="result-tags"><span class="result-tag">'+r.l+'</span><span class="result-tag">DEMO</span></div></div>').join('');
-c.innerHTML=html;}
+const r=data.web&&data.web.results||[];if(!r.length){showEmpty();return;}m.innerHTML='<span>'+r.length+'</span> results &mdash; <span>'+elapsed+'s</span>';let html=adSlot(0);if(isCommercial(q))html+=affRow(q);html+=r.slice(0,3).map((w,i)=>resultCard(w,i,q)).join('');html+=adSlot(1);html+=r.slice(3).map((w,i)=>resultCard(w,i+3,q)).join('');c.innerHTML=html;}
+function showEmpty(){document.getElementById('results-container').innerHTML='<div class="no-results"><span class="no-results-code">404</span><div class="no-results-msg">NOTHING FOUND</div></div>';}
 </script>
 </body>
-        </html>
+                                                    </html>
