@@ -18,7 +18,7 @@
     body{background:var(--dark);color:#c8e8f0;font-family:'Rajdhani',sans-serif;overflow-x:hidden;cursor:none;}
 
     /* CURSOR */
-    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);transition:transform 0.1s,background 0.2s;box-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan);}
+    #cursor{position:fixed;width:12px;height:12px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);will-change: transform;box-shadow:0 0 10px var(--cyan),0 0 30px var(--cyan);}
     #cursor-ring{position:fixed;width:36px;height:36px;border:1px solid var(--cyan);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width 0.2s,height 0.2s,opacity 0.2s;opacity:0.5;}
 
     /* CANVAS + OVERLAYS */
@@ -61,7 +61,7 @@
     .cbadge{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,255,136,0.8);border:1px solid rgba(0,255,136,0.25);padding:5px 14px;letter-spacing:0.15em;background:rgba(0,255,136,0.04);}
 
     /* BUTTONS */
-    .btn-primary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:16px 40px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
+    .btn-primary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:16px 40px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);will-change: transform;text-decoration:none;display:inline-block;font-weight:700;}
     .btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
     .btn-primary:hover::before{left:100%;}
     .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px var(--cyan),0 0 60px rgba(0,245,255,0.3);}
@@ -329,7 +329,7 @@
           <div style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);padding:16px 18px;"><div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.08em;margin-bottom:4px;">OWASP TOP 10</div><div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.35);letter-spacing:0.1em;">Web &amp; Mobile Security</div></div>
           <div style="background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);padding:16px 18px;"><div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.08em;margin-bottom:4px;">SOC 2 / SSDF</div><div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.35);letter-spacing:0.1em;">Secure Dev Lifecycle</div></div>
         </div>
-        <a href="security-policy.html" style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--green);padding:14px 32px;text-decoration:none;display:inline-block;font-weight:700;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 24px var(--green)'" onmouseleave="this.style.transform='none';this.style.boxShadow='none'">VIEW FULL SECURITY CAPABILITIES &#9654;</a>
+        <a href="security-policy.html" style="font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--green);padding:14px 32px;text-decoration:none;display:inline-block;font-weight:700;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);will-change: transform;" onmouseenter="this.style.transform='translateY(-2px)';this.style.boxShadow='0 0 24px var(--green)'" onmouseleave="this.style.transform='none';this.style.boxShadow='none'">VIEW FULL SECURITY CAPABILITIES &#9654;</a>
       </div>
     </div>
   </section>
@@ -517,7 +517,7 @@
   // CURSOR
   const cursor=document.getElementById('cursor'),ring=document.getElementById('cursor-ring');
   let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.transform = 'translate(' + (mx+'px') + 'px, ' + (my+'px') + 'px)';});
   (function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
   document.querySelectorAll('a,button,.service-card').forEach(el=>{
     el.addEventListener('mouseenter',()=>{ring.style.width='60px';ring.style.height='60px';ring.style.opacity='0.8';cursor.style.transform='translate(-50%,-50%) scale(0.5)';});
