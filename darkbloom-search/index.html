@@ -397,7 +397,7 @@ function doSearch(fromResults) {
 function fetchResults(query) {
   showLoading();
   document.getElementById('results-meta').innerHTML = '';
-  var safeQ = query.replace(/[<>'";`\\]/g,'').trim().slice(0,200);
+  var safeQ=query.split('').filter(function(c){var bad='<>"';return bad.indexOf(c)<0;}).join('').trim().slice(0,200);
   var params = new URLSearchParams({
     q: safeQ,
     type: currentTab==='all'?'web':currentTab,
