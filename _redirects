@@ -1,6 +1,0 @@
-# Cloudflare Pages redirects
-# When someone visits search.darkbloomindustries.com, serve darkbloom-search/index.html directly
-https://search.darkbloomindustries.com/* /darkbloom-search/:splat 200
-
-# Convenience redirect: /search -> /darkbloom-search/
-/search /darkbloom-search/ 301
