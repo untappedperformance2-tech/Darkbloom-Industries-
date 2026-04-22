@@ -197,7 +197,37 @@
         <button class="btn" id="login-btn" onclick="handleLogin()">INITIALIZE SESSION &#9654;</button>
         <div class="card-foot">
           No account? <a href="https://untappedperformance2-tech.github.io/Darkbloom-Industries-/products.html" target="_blank">Request pilot access &#8599;</a>
-          &nbsp;&bull;&nbsp; <a href="mailto:DarkbloomIndustries@outlook.com">Contact support</a>
+
+  <div style="margin-top:18px;padding-top:14px;border-top:1px solid rgba(139,92,246,0.2);">
+    <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(139,92,246,0.6);letter-spacing:0.22em;margin-bottom:8px;">// C3PAO ASSESSOR ACCESS</div>
+    <div style="display:flex;gap:8px;align-items:center;">
+      <input id="assessor-token-input" type="text" placeholder="Enter your Bridge™ access token"
+        style="flex:1;background:rgba(139,92,246,0.04);border:1px solid rgba(139,92,246,0.2);color:rgba(200,228,240,0.85);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:9px 12px;outline:none;"
+        onkeydown="if(event.key==='Enter')connectAsAssessor()"/>
+      <button onclick="connectAsAssessor()"
+        style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.14em;color:#04060a;background:#8b5cf6;border:none;padding:10px 14px;cursor:pointer;font-weight:700;white-space:nowrap;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);">
+        CONNECT ▶
+      </button>
+    </div>
+    <div id="assessor-error" style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:#ff3355;letter-spacing:0.1em;margin-top:6px;display:none;"></div>
+    <div style="font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:rgba(200,228,240,0.25);letter-spacing:0.08em;margin-top:6px;">Token provided by the organization you are assessing</div>
+  </div>
+
+  <script>
+  function connectAsAssessor() {
+    const token = document.getElementById('assessor-token-input')?.value?.trim();
+    const err = document.getElementById('assessor-error');
+    if (!token) { err.style.display='block'; err.textContent='> Enter your access token'; return; }
+    err.style.display='none';
+    window.location.href = 'auditcore-assessor.html?bridge_token=' + encodeURIComponent(token);
+  }
+  // Auto-redirect if token in URL
+  (function(){
+    const p = new URLSearchParams(window.location.search);
+    const t = p.get('bridge_token') || p.get('token') || p.get('assessor');
+    if (t) window.location.href = 'auditcore-assessor.html?bridge_token=' + encodeURIComponent(t);
+  })();
+  </script>          &nbsp;&bull;&nbsp; <a href="mailto:DarkbloomIndustries@outlook.com">Contact support</a>
         </div>
         <div class="sec-note">
           <span style="color:var(--green);">&#9679;</span>
