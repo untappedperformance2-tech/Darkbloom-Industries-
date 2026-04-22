@@ -41,7 +41,7 @@
     .sb-org-meta{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);margin-top:1px;}
     .sb-nav{flex:1;padding:12px 0;overflow-y:auto;}
     .sb-section{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.22em;padding:9px 16px 4px;}
-    .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:none;transition:background .2s;border-left:2px solid transparent;}
+    .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;transition:background .2s;border-left:2px solid transparent;}
     .nav-item:hover,.nav-item.active{background:rgba(0,240,255,0.05);border-left-color:var(--cyan);}
     .nav-item.active .nav-label{color:var(--cyan);}
     .nav-icon{width:14px;height:14px;opacity:.5;flex-shrink:0;}
@@ -67,7 +67,7 @@
     .tb-stat-val{font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;}
     .tb-stat-label{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);letter-spacing:0.08em;}
     .tb-divider{width:1px;height:26px;background:var(--border);}
-    .btn-scan{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:7px 16px;cursor:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
+    .btn-scan{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:7px 16px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
     .btn-scan:hover{box-shadow:0 0 16px rgba(0,240,255,0.4);}
     .content{flex:1;overflow-y:auto;padding:22px 26px;}
     .content::-webkit-scrollbar{width:3px;}
@@ -200,7 +200,7 @@
     .rem-affects{margin-top:14px;padding:10px 14px;background:rgba(0,240,255,.03);border:1px solid var(--border2);}
     .rem-affects-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:7px;}
     .rem-ctrl-pill{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--cyan);border:1px solid rgba(0,240,255,.25);padding:2px 8px;display:inline-block;margin:2px;}
-    .rem-execute-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;color:var(--bg);background:var(--green);border:none;padding:13px;cursor:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;margin-top:16px;transition:box-shadow .2s;}
+    .rem-execute-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;color:var(--bg);background:var(--green);border:none;padding:13px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;margin-top:16px;transition:box-shadow .2s;}
     .rem-execute-btn:hover{box-shadow:0 0 18px var(--green);}
     .rem-execute-btn:disabled{opacity:.5;}
     .rem-docs{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,.4);text-align:center;margin-top:10px;}
@@ -227,7 +227,7 @@
 
     /* REPORTS */
     .report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px;}
-    .report-card{background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;cursor:none;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
+    .report-card{background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
     .report-card:hover{border-color:rgba(0,240,255,.28);background:rgba(0,240,255,.025);}
     .report-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;opacity:0;transition:opacity .2s;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
     .report-card:hover::before{opacity:1;}
@@ -248,7 +248,7 @@
 
     .loading{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);letter-spacing:0.12em;text-align:center;padding:36px;animation:pulse-g 1.5s infinite;}
     @keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.3}}
-    .btn-action{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:8px 18px;cursor:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
+    .btn-action{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:8px 18px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
     .btn-action:hover{box-shadow:0 0 14px rgba(0,240,255,.4);}
     .btn-action.green{background:var(--green);}
     .btn-action.green:hover{box-shadow:0 0 14px var(--green);}
@@ -996,12 +996,116 @@
   async function generateReport(type){
     const data = await api(`/orgs/${org.id}/reports/${type}`);
     if(!data) return;
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href=url; a.download=`auditcore-${type}-${new Date().toISOString().slice(0,10)}.json`;
-    a.click(); URL.revokeObjectURL(url);
+
+    // Build a readable HTML report
+    const reportHTML = buildReportHTML(type, data);
+    const blob = new Blob([reportHTML], {type:'text/html'});
+    const url = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(()=>URL.revokeObjectURL(url), 15000);
     addBridgeMessage('control.updated', `Report generated: ${type.toUpperCase()}`, 'REPORTS');
+  }
+
+  function buildReportHTML(type, data) {
+    const org = data.org || {};
+    const controls = data.controls || [];
+    const findings = data.open_findings || [];
+    const poam = data.poam_entries || [];
+    const now = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+
+    const titleMap = {
+      'ssp':'System Security Plan (SSP)',
+      'poam':'Plan of Action & Milestones (POA&M)',
+      'executive':'Executive Summary',
+      'fips-audit':'FIPS 140-3 Cryptographic Audit',
+      'owasp':'OWASP Top 10 Vulnerability Report',
+      'soc2-readiness':'SOC 2 Type II Readiness Assessment',
+    };
+    const title = titleMap[type] || type.toUpperCase();
+
+    const fwFilter = {
+      'ssp':['NIST','CMMC'],'poam':['NIST','CMMC'],
+      'fips-audit':['FIPS'],'owasp':['OWASP'],'soc2-readiness':['SOC2']
+    }[type] || null;
+
+    const fc = fwFilter ? controls.filter(c=>(c.control_definitions?.framework||c.framework||'') && fwFilter.includes(c.control_definitions?.framework||c.framework)) : controls;
+    const pass = fc.filter(c=>c.status==='pass').length;
+    const fail = fc.filter(c=>c.status==='fail').length;
+    const pct = fc.length ? Math.round(pass/fc.length*100) : 0;
+    const pctColor = pct>=80?'#00873d':pct>=50?'#c96a00':'#c0392b';
+
+    const sb = s=>{const m={pass:['#00873d','PASS'],fail:['#c0392b','FAIL'],partial:['#c96a00','PARTIAL'],not_assessed:['#666','NOT ASSESSED'],not_applicable:['#999','N/A']};const[c,l]=m[s]||['#666',s?.toUpperCase()||''];return `<span style="background:${c};color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">${l}</span>`;};
+    const rb = s=>{const m={critical:'#c0392b',warning:'#c96a00',info:'#1a6bbd'};return `<span style="background:${m[s]||'#666'};color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">${(s||'').toUpperCase()}</span>`;};
+
+    const ctrlRows = fc.map(c=>{const d=c.control_definitions||{};return `<tr><td style="font-weight:600;white-space:nowrap;font-size:12px;">${d.id||c.control_id||''}</td><td style="font-size:12px;">${d.family||''}</td><td>${d.title||d.description||''}</td><td style="text-align:center;">${sb(c.status||'not_assessed')}</td><td style="font-size:12px;color:#555;">${c.notes?.slice(0,80)||''}</td></tr>`;}).join('');
+
+    const findRows = findings.map(f=>`<tr><td>${rb(f.severity)}</td><td style="font-weight:600;">${f.title||''}</td><td style="font-size:12px;">${f.control_id||''}</td><td style="font-size:12px;">${(f.description||'').slice(0,120)}</td><td style="font-size:12px;">${(f.remediation||'').slice(0,100)}</td></tr>`).join('');
+
+    const poamRows = poam.map(p=>{const rc=p.risk_rating==='high'?'#c0392b':p.risk_rating==='moderate'?'#c96a00':'#00873d';const sc=p.status==='open'?'#c0392b':'#00873d';return `<tr><td style="font-weight:600;font-size:12px;">${p.control_id||''}</td><td style="font-size:12px;">${(p.weakness||'').slice(0,100)}</td><td><span style="background:${rc};color:#fff;padding:2px 7px;border-radius:3px;font-size:11px;">${(p.risk_rating||'').toUpperCase()}</span></td><td style="font-size:12px;">${p.scheduled_completion?new Date(p.scheduled_completion).toLocaleDateString():''}</td><td><span style="background:${sc};color:#fff;padding:2px 7px;border-radius:3px;font-size:11px;">${(p.status||'').toUpperCase()}</span></td></tr>`;}).join('');
+
+    return `<!DOCTYPE html>
+<html lang="en"><head><meta charset="UTF-8"/>
+<title>AuditCore™ — ${title}</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;}
+body{font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f0f2f5;}
+@media print{body{background:#fff;}.no-print{display:none;}}
+.page{max-width:1100px;margin:24px auto;background:#fff;padding:44px;box-shadow:0 2px 16px rgba(0,0,0,.12);border-radius:4px;}
+.hdr{border-bottom:3px solid #0d1b2a;padding-bottom:20px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:flex-start;}
+.hdr h1{font-size:22px;color:#0d1b2a;font-weight:700;}
+.hdr h2{font-size:15px;color:#444;font-weight:400;margin-top:5px;}
+.meta{text-align:right;font-size:12px;color:#555;line-height:1.9;}
+.meta strong{color:#0d1b2a;}
+.wm{font-size:10px;color:#bbb;margin-top:5px;letter-spacing:.1em;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:28px;}
+.card{background:#f8f9fa;border-radius:6px;padding:18px;text-align:center;border-top:4px solid #0d1b2a;}
+.card.g{border-top-color:#00873d;}.card.r{border-top-color:#c0392b;}.card.a{border-top-color:#c96a00;}
+.card .n{font-size:34px;font-weight:700;line-height:1;}
+.card .l{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.08em;margin-top:5px;}
+.sec{margin-bottom:32px;}
+.sec-hdr{font-size:16px;font-weight:700;color:#0d1b2a;padding:8px 0;border-bottom:2px solid #e0e0e0;margin-bottom:14px;}
+table{width:100%;border-collapse:collapse;}
+th{background:#0d1b2a;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:600;letter-spacing:.04em;}
+td{padding:9px 12px;border-bottom:1px solid #e8e8e8;vertical-align:top;line-height:1.4;}
+tr:nth-child(even) td{background:#fafafa;}
+.ftr{margin-top:40px;padding-top:14px;border-top:1px solid #e0e0e0;text-align:center;font-size:11px;color:#aaa;}
+.pbtn{position:fixed;bottom:24px;right:24px;background:#0d1b2a;color:#fff;border:none;padding:13px 22px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.3);}
+.pbtn:hover{background:#1a3a5c;}
+.exec-summary{background:#f8f9fa;border-left:4px solid #0d1b2a;padding:18px 20px;margin-bottom:24px;line-height:1.8;border-radius:0 6px 6px 0;}
+</style></head><body>
+<div class="page">
+<div class="hdr">
+  <div><h1>AuditCore™</h1><h2>${title}</h2></div>
+  <div class="meta">
+    <div><strong>Organization:</strong> ${org.name||'—'}</div>
+    <div><strong>Report Date:</strong> ${now}</div>
+    <div><strong>Prepared By:</strong> AuditCore™ v2.0</div>
+    ${org.sprs_score!=null?'<div><strong>SPRS Score:</strong> '+org.sprs_score+' / 110</div>':''}
+    <div class="wm">AUDITCORE™ • DARKBLOOM INDUSTRIES™ • CONFIDENTIAL</div>
+  </div>
+</div>
+
+<div class="cards">
+  <div class="card ${pct>=80?'g':pct>=50?'a':'r'}"><div class="n" style="color:${pctColor}">${pct}%</div><div class="l">Compliance Score</div></div>
+  <div class="card g"><div class="n" style="color:#00873d">${pass}</div><div class="l">Controls Passing</div></div>
+  <div class="card r"><div class="n" style="color:#c0392b">${fail}</div><div class="l">Controls Failing</div></div>
+  <div class="card a"><div class="n" style="color:#c96a00">${findings.length}</div><div class="l">Open Findings</div></div>
+  <div class="card"><div class="n">${fc.length}</div><div class="l">Total Controls</div></div>
+  ${poam.length>0?'<div class="card"><div class="n">'+poam.length+'</div><div class="l">POA&amp;M Entries</div></div>':''}
+</div>
+
+${type==='executive'?'<div class="exec-summary"><strong>Summary:</strong> '+( org.name||'Your organization' )+' has completed a compliance assessment via AuditCore™. Overall posture: <strong>'+pct+'%</strong> across '+fc.length+' controls. '+(fail>0?'<strong style=\"color:#c0392b\">'+fail+' gap'+(fail===1?'':'s')+'</strong> require remediation. ':'')+( findings.length>0?'<strong style=\"color:#c96a00\">'+findings.length+' open finding'+(findings.length===1?'':'s')+'</strong> need attention.':'All findings resolved.')+'</div>':''}
+
+${fc.length>0?'<div class="sec"><div class="sec-hdr">✅ Control Assessments ('+fc.length+' controls)</div><table><thead><tr><th>Control ID</th><th>Family</th><th>Description</th><th style=\"text-align:center\">Status</th><th>Notes</th></tr></thead><tbody>'+ctrlRows+'</tbody></table></div>':''}
+
+${findings.length>0?'<div class="sec"><div class="sec-hdr">⚠️ Open Findings ('+findings.length+')</div><table><thead><tr><th>Severity</th><th>Title</th><th>Control</th><th>Description</th><th>Remediation</th></tr></thead><tbody>'+findRows+'</tbody></table></div>':''}
+
+${poam.length>0&&(type==='poam'||type==='ssp')?'<div class="sec"><div class="sec-hdr">📋 Plan of Action &amp; Milestones</div><table><thead><tr><th>Control</th><th>Weakness</th><th>Risk</th><th>Target Date</th><th>Status</th></tr></thead><tbody>'+poamRows+'</tbody></table></div>':''}
+
+<div class="ftr">Generated by AuditCore™ v2.0 &bull; Darkbloom Industries™ &bull; ${now} &bull; CONFIDENTIAL &mdash; DO NOT DISTRIBUTE WITHOUT AUTHORIZATION</div>
+</div>
+<button class="pbtn no-print" onclick="window.print()">🖨 Print / Save PDF</button>
+</body></html>`;
   }
 
   // ── Scan ──────────────────────────────────────────────────
