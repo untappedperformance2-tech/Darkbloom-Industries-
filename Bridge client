@@ -1,0 +1,342 @@
+// ============================================================
+// Darkbloom Bridge™ — Client SDK
+// bridge-client.js — Include in any HTML dashboard
+// A Product of Darkbloom Industries™
+//
+// This is the REAL client-side bridge.
+// Uses Supabase Realtime WebSocket — not polling.
+// Both parties subscribe to the same channel.
+// When either party sends a message it appears INSTANTLY
+// for the other party with zero polling delay.
+//
+// Usage (AuditCore org dashboard):
+//   const bridge = new DarkbloomBridge(SUPABASE_URL, SUPABASE_ANON_KEY);
+//   await bridge.connect(authToken, orgId, 'org');
+//   const channel = await bridge.openChannel('compliance', orgId);
+//   bridge.on('finding_created', (msg) => updateUI(msg));
+//   bridge.send(channel.id, 'message', { text: 'Ready for assessment' });
+//
+// Usage (C3PAO assessor portal - no login required):
+//   const bridge = new DarkbloomBridge(SUPABASE_URL, SUPABASE_ANON_KEY);
+//   await bridge.connectAsExternal(inviteToken, 'assessor', 'John Smith CPA');
+//   bridge.on('control_updated', (msg) => refreshControls(msg));
+//   bridge.send(channel.id, 'assessor_comment', { control_id: '3.5.3', note: 'Evidence verified' });
+// ============================================================
+
+class DarkbloomBridge {
+  constructor(supabaseUrl, supabaseAnonKey) {
+    this.supabaseUrl = supabaseUrl;
+    this.supabaseAnonKey = supabaseAnonKey;
+    this.supabase = null;
+    this.realtimeChannel = null;
+    this.activeChannels = new Map(); // channelId → channel data
+    this.listeners = new Map();       // eventType → [callbacks]
+    this.presenceHeartbeat = null;
+    this.userId = null;
+    this.userRole = null;
+    this.userName = null;
+    this.connected = false;
+    this.apiUrl = null;
+    this._log('Darkbloom Bridge™ client initialized');
+  }
+
+  _log(...args) {
+    console.log('[Darkbloom Bridge™]', ...args);
+  }
+
+  // ── Connect as authenticated org user ─────────────────────
+  async connect(apiUrl, authToken, userId, userRole, userName) {
+    this.apiUrl = apiUrl;
+    this.authToken = authToken;
+    this.userId = userId;
+    this.userRole = userRole;
+    this.userName = userName;
+
+    // Initialize Supabase client with user's JWT
+    this.supabase = this._createSupabaseClient(authToken);
+    this.connected = true;
+    this._log(`Connected as ${userRole}: ${userName}`);
+    return this;
+  }
+
+  // ── Connect as external party (C3PAO, customer, etc.) ─────
+  // No login required — uses invite token
+  async connectAsExternal(apiUrl, inviteToken, partyRole, partyName) {
+    this.apiUrl = apiUrl;
+    this.inviteToken = inviteToken;
+    this.userRole = partyRole;
+    this.userName = partyName;
+    this.isExternal = true;
+
+    // Join the channel via API
+    const res = await fetch(`${apiUrl}/bridge/join`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ token: inviteToken, party_name: partyName, party_role: partyRole }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to join channel');
+
+    this.supabase = this._createSupabaseClient(data.bridge_token || this.supabaseAnonKey);
+    this.activeChannels.set(data.channel.id, data.channel);
+    this.connected = true;
+
+    // Subscribe to realtime immediately
+    await this._subscribeToChannel(data.channel.id);
+    this._log(`External party connected: ${partyRole} — ${partyName}`);
+
+    // Emit joined event
+    this._emit('bridge_connected', { channel: data.channel, role: partyRole });
+    return data.channel;
+  }
+
+  // ── Open or get channel for an org ───────────────────────
+  async openChannel(orgId, channelType = 'compliance') {
+    const res = await fetch(`${this.apiUrl}/bridge/channels`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${this.authToken}`,
+      },
+      body: JSON.stringify({ ref_id: orgId, channel_type: channelType }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to open channel');
+
+    this.activeChannels.set(data.channel.id, data.channel);
+    await this._subscribeToChannel(data.channel.id);
+    this._log(`Channel opened: ${data.channel.id}`);
+    return { channel: data.channel, inviteToken: data.invite_token, portalUrl: data.portal_url };
+  }
+
+  // ── Get existing channels ─────────────────────────────────
+  async getChannels(orgId) {
+    const res = await fetch(`${this.apiUrl}/bridge/channels?ref_id=${orgId}`, {
+      headers: { 'Authorization': `Bearer ${this.authToken}` },
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+
+    // Subscribe to all existing channels
+    for (const ch of data.channels || []) {
+      this.activeChannels.set(ch.id, ch);
+      await this._subscribeToChannel(ch.id);
+    }
+    return data.channels || [];
+  }
+
+  // ── Send a message ────────────────────────────────────────
+  async send(channelId, eventType, payload = {}) {
+    const res = await fetch(`${this.apiUrl}/bridge/channels/${channelId}/messages`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(this.authToken ? { 'Authorization': `Bearer ${this.authToken}` } : {}),
+        ...(this.inviteToken ? { 'X-Bridge-Token': this.inviteToken } : {}),
+      },
+      body: JSON.stringify({
+        event_type: eventType,
+        payload,
+        sender_role: this.userRole,
+        sender_name: this.userName,
+      }),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to send message');
+    return data.message;
+  }
+
+  // ── Get message history ───────────────────────────────────
+  async getHistory(channelId, limit = 50) {
+    const res = await fetch(
+      `${this.apiUrl}/bridge/channels/${channelId}/messages?limit=${limit}`,
+      {
+        headers: {
+          ...(this.authToken ? { 'Authorization': `Bearer ${this.authToken}` } : {}),
+          ...(this.inviteToken ? { 'X-Bridge-Token': this.inviteToken } : {}),
+        },
+      }
+    );
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error);
+    return data.messages || [];
+  }
+
+  // ── Get presence (who's online) ───────────────────────────
+  async getPresence(channelId) {
+    const res = await fetch(
+      `${this.apiUrl}/bridge/channels/${channelId}/presence`,
+      {
+        headers: {
+          ...(this.authToken ? { 'Authorization': `Bearer ${this.authToken}` } : {}),
+          ...(this.inviteToken ? { 'X-Bridge-Token': this.inviteToken } : {}),
+        },
+      }
+    );
+    const data = await res.json();
+    return data.presence || [];
+  }
+
+  // ── Subscribe to events ───────────────────────────────────
+  on(eventType, callback) {
+    if (!this.listeners.has(eventType)) {
+      this.listeners.set(eventType, []);
+    }
+    this.listeners.get(eventType).push(callback);
+    return this; // chainable
+  }
+
+  off(eventType, callback) {
+    const cbs = this.listeners.get(eventType) || [];
+    this.listeners.set(eventType, cbs.filter(cb => cb !== callback));
+    return this;
+  }
+
+  // ── Subscribe to ALL events ───────────────────────────────
+  onAny(callback) {
+    return this.on('*', callback);
+  }
+
+  _emit(eventType, data) {
+    // Call specific listeners
+    const specific = this.listeners.get(eventType) || [];
+    specific.forEach(cb => { try { cb(data); } catch(e) { console.error('Bridge listener error:', e); } });
+
+    // Call wildcard listeners
+    const wildcard = this.listeners.get('*') || [];
+    wildcard.forEach(cb => { try { cb({ event_type: eventType, ...data }); } catch(e) {} });
+  }
+
+  // ── THE KEY PART: Subscribe to Supabase Realtime ─────────
+  // This is what makes it a true WebSocket, not polling
+  async _subscribeToChannel(channelId) {
+    if (!this.supabase) return;
+
+    const realtimeChannel = this.supabase
+      .channel(`bridge:${channelId}`)  // unique channel name
+
+      // Listen for new messages (INSERT events on bridge_messages)
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'bridge_messages',
+        filter: `channel_id=eq.${channelId}`,
+      }, (payload) => {
+        const msg = payload.new;
+        this._log(`Message received: ${msg.event_type}`, msg.payload);
+        this._emit(msg.event_type, msg);
+        this._emit('message', msg); // always also emit generic 'message'
+      })
+
+      // Listen for presence changes
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'bridge_presence',
+        filter: `channel_id=eq.${channelId}`,
+      }, (payload) => {
+        this._emit('presence_changed', payload.new || payload.old);
+      })
+
+      // Listen for channel status changes (closed, expired, etc.)
+      .on('postgres_changes', {
+        event: 'UPDATE',
+        schema: 'public',
+        table: 'bridge_channels',
+        filter: `id=eq.${channelId}`,
+      }, (payload) => {
+        this._emit('channel_updated', payload.new);
+        if (payload.new.status === 'closed') {
+          this._emit('channel_closed', payload.new);
+        }
+      })
+
+      .subscribe((status) => {
+        this._log(`Realtime subscription status for channel ${channelId}: ${status}`);
+        if (status === 'SUBSCRIBED') {
+          this._emit('realtime_connected', { channelId });
+          // Start presence heartbeat
+          this._startPresenceHeartbeat(channelId);
+        }
+        if (status === 'CHANNEL_ERROR') {
+          this._emit('realtime_error', { channelId });
+        }
+      });
+
+    this._realtimeChannels = this._realtimeChannels || new Map();
+    this._realtimeChannels.set(channelId, realtimeChannel);
+  }
+
+  // ── Presence heartbeat ────────────────────────────────────
+  // Sends presence update every 30 seconds so others know you're still online
+  _startPresenceHeartbeat(channelId) {
+    if (this.presenceHeartbeat) clearInterval(this.presenceHeartbeat);
+    const sendPresence = () => {
+      fetch(`${this.apiUrl}/bridge/channels/${channelId}/presence`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          ...(this.authToken ? { 'Authorization': `Bearer ${this.authToken}` } : {}),
+          ...(this.inviteToken ? { 'X-Bridge-Token': this.inviteToken } : {}),
+        },
+        body: JSON.stringify({
+          user_role: this.userRole,
+          user_name: this.userName,
+          status: 'online',
+        }),
+      }).catch(() => {}); // ignore errors on heartbeat
+    };
+    sendPresence(); // immediate
+    this.presenceHeartbeat = setInterval(sendPresence, 30000);
+  }
+
+  // ── Disconnect ────────────────────────────────────────────
+  async disconnect() {
+    if (this.presenceHeartbeat) clearInterval(this.presenceHeartbeat);
+
+    // Mark presence as offline
+    if (this._realtimeChannels) {
+      for (const [channelId] of this._realtimeChannels) {
+        fetch(`${this.apiUrl}/bridge/channels/${channelId}/presence`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            ...(this.authToken ? { 'Authorization': `Bearer ${this.authToken}` } : {}),
+          },
+          body: JSON.stringify({ user_role: this.userRole, user_name: this.userName, status: 'offline' }),
+        }).catch(() => {});
+      }
+    }
+
+    // Unsubscribe from realtime
+    if (this.supabase && this._realtimeChannels) {
+      for (const [, ch] of this._realtimeChannels) {
+        await this.supabase.removeChannel(ch);
+      }
+    }
+
+    this.connected = false;
+    this._log('Disconnected');
+  }
+
+  // ── Create Supabase client ────────────────────────────────
+  _createSupabaseClient(token) {
+    // Dynamically load supabase-js from CDN if not already loaded
+    if (typeof window !== 'undefined' && window.supabase) {
+      return window.supabase.createClient(this.supabaseUrl, this.supabaseAnonKey, {
+        global: { headers: { Authorization: `Bearer ${token}` } },
+        auth: { autoRefreshToken: false, persistSession: false },
+        realtime: { params: { eventsPerSecond: 10 } },
+      });
+    }
+    // Server-side (Node.js) — supabase is imported at module level
+    return null;
+  }
+}
+
+// ── Export for both browser and Node.js ──────────────────────
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = { DarkbloomBridge };
+} else if (typeof window !== 'undefined') {
+  window.DarkbloomBridge = DarkbloomBridge;
+}
