@@ -1,0 +1,571 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <title>AuditCore&#8482; — C3PAO Assessor Portal</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <!-- Supabase JS for real-time WebSocket -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
+  <style>
+    :root{--bg:#04060a;--surface:#070c12;--cyan:#00f0ff;--green:#00ff88;--amber:#ffb800;--red:#ff3355;--magenta:#ff00aa;--purple:#8b5cf6;--border:rgba(0,240,255,0.1);--dim:rgba(200,228,240,0.35);--text:rgba(200,228,240,0.85);}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;cursor:none;}
+    #cur{position:fixed;width:8px;height:8px;background:var(--purple);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 8px var(--purple);}
+    #cur-r{position:fixed;width:26px;height:26px;border:1px solid rgba(139,92,246,0.5);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s;}
+    .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0,transparent 2px,rgba(0,0,0,0.05) 2px,rgba(0,0,0,0.05) 4px);pointer-events:none;z-index:1;}
+
+    /* LOGIN */
+    #login-screen{position:fixed;top:0;left:0;width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:100;background:var(--bg);}
+    .login-card{background:rgba(7,12,18,0.97);border:1px solid rgba(139,92,246,0.3);padding:48px 52px;width:440px;position:relative;overflow:hidden;}
+    .login-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent);}
+    .login-tag{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--purple);letter-spacing:0.3em;margin-bottom:8px;}
+    .login-title{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:900;color:#fff;letter-spacing:0.1em;margin-bottom:4px;}
+    .login-sub{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--dim);letter-spacing:0.1em;margin-bottom:28px;line-height:1.7;}
+    .field label{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(139,92,246,0.6);letter-spacing:0.2em;display:block;margin-bottom:6px;}
+    .field input{width:100%;background:rgba(139,92,246,0.04);border:1px solid rgba(139,92,246,0.2);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:1rem;padding:11px 14px;outline:none;margin-bottom:14px;transition:border-color .2s;}
+    .field input:focus{border-color:var(--purple);}
+    .btn-join{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;color:var(--bg);background:var(--purple);border:none;padding:14px;cursor:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;margin-top:4px;}
+    .btn-join:hover{box-shadow:0 0 20px var(--purple);}
+    .btn-join:disabled{opacity:.5;}
+    .login-error{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--red);letter-spacing:0.1em;margin-top:10px;display:none;}
+    .login-error.show{display:block;}
+
+    /* MAIN LAYOUT */
+    #main-screen{display:none;height:100vh;flex-direction:column;}
+    #main-screen.active{display:flex;}
+
+    /* HEADER */
+    .portal-header{padding:14px 28px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(4,6,10,0.95);backdrop-filter:blur(6px);flex-shrink:0;}
+    .ph-logo{display:flex;align-items:center;gap:10px;}
+    .ph-logo-name{font-family:'Orbitron',monospace;font-size:0.88rem;font-weight:900;color:var(--cyan);letter-spacing:0.12em;}
+    .ph-logo-name sup{font-size:0.38em;color:var(--magenta);}
+    .ph-badge{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--purple);border:1px solid rgba(139,92,246,.4);padding:3px 10px;letter-spacing:0.15em;background:rgba(139,92,246,.06);}
+    .ph-right{display:flex;align-items:center;gap:14px;}
+    .ph-org{font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--text);letter-spacing:0.08em;}
+    .ph-assessor{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.1em;}
+    .bridge-indicator{display:flex;align-items:center;gap:6px;font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.12em;}
+    .bridge-dot{width:6px;height:6px;border-radius:50%;box-shadow:0 0 5px currentColor;}
+    .bridge-dot.connected{color:var(--green);background:var(--green);}
+    .bridge-dot.connecting{color:var(--amber);background:var(--amber);animation:pulse-g 1s infinite;}
+    .bridge-dot.disconnected{color:var(--red);background:var(--red);}
+    .bridge-txt{color:var(--dim);}
+
+    /* BODY */
+    .portal-body{flex:1;display:grid;grid-template-columns:1fr 360px;overflow:hidden;}
+
+    /* COMPLIANCE PANEL */
+    .compliance-panel{overflow-y:auto;padding:20px 24px;border-right:1px solid var(--border);}
+    .compliance-panel::-webkit-scrollbar{width:3px;}
+    .compliance-panel::-webkit-scrollbar-thumb{background:rgba(0,240,255,0.2);}
+
+    /* SCORE ROW */
+    .score-row{display:grid;grid-template-columns:repeat(6,1fr);gap:10px;margin-bottom:18px;}
+    .score-tile{background:var(--surface);border:1px solid var(--border);padding:14px 10px;text-align:center;}
+    .score-tile-val{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:#fff;line-height:1;}
+    .score-tile-label{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.1em;margin-top:3px;}
+
+    /* CONTROLS TABLE */
+    .section-title{font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.1em;margin-bottom:12px;display:flex;align-items:center;gap:8px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+    .ctrl-table{width:100%;border-collapse:collapse;margin-bottom:16px;}
+    .ctrl-table th{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.14em;padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;background:rgba(0,240,255,0.02);}
+    .ctrl-table td{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--text);padding:8px 10px;border-bottom:1px solid rgba(0,240,255,0.06);vertical-align:middle;}
+    .ctrl-table tr:hover td{background:rgba(0,240,255,0.02);}
+    .ctrl-id{font-family:'Orbitron',monospace;font-size:0.54rem;color:var(--cyan);font-weight:700;}
+    .ctrl-status{display:inline-flex;align-items:center;gap:3px;font-size:0.48rem;padding:2px 7px;border:1px solid;}
+    .ctrl-status.pass{color:var(--green);border-color:rgba(0,255,136,.25);background:rgba(0,255,136,.05);}
+    .ctrl-status.fail{color:var(--red);border-color:rgba(255,51,85,.25);background:rgba(255,51,85,.05);}
+    .ctrl-status.partial{color:var(--amber);border-color:rgba(255,184,0,.25);background:rgba(255,184,0,.05);}
+    .ctrl-status.na{color:var(--dim);border-color:var(--border);}
+    .btn-comment{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--purple);border:1px solid rgba(139,92,246,.3);padding:2px 8px;cursor:none;background:transparent;transition:background .2s;}
+    .btn-comment:hover{background:rgba(139,92,246,.08);}
+    .fw-filter{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
+    .fw-btn{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;padding:4px 12px;border:1px solid var(--border);color:var(--dim);background:transparent;cursor:none;transition:all .2s;}
+    .fw-btn.active,.fw-btn:hover{color:var(--cyan);border-color:rgba(0,240,255,.4);background:rgba(0,240,255,.04);}
+
+    /* BRIDGE PANEL */
+    .bridge-panel{display:flex;flex-direction:column;background:rgba(7,12,18,0.95);}
+    .bridge-panel-header{padding:14px 16px;border-bottom:1px solid var(--border);flex-shrink:0;}
+    .bridge-panel-title{font-family:'Orbitron',monospace;font-size:0.68rem;color:var(--purple);letter-spacing:0.1em;display:flex;align-items:center;gap:7px;}
+    .bridge-panel-title-dot{width:5px;height:5px;background:var(--purple);border-radius:50%;box-shadow:0 0 5px var(--purple);animation:pulse-g 2s infinite;}
+    .presence-bar{display:flex;align-items:center;gap:8px;margin-top:8px;flex-wrap:wrap;}
+    .presence-chip{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.1em;padding:3px 9px;border-radius:0;display:flex;align-items:center;gap:5px;}
+    .presence-chip.org{color:var(--cyan);border:1px solid rgba(0,240,255,.25);background:rgba(0,240,255,.04);}
+    .presence-chip.assessor{color:var(--purple);border:1px solid rgba(139,92,246,.25);background:rgba(139,92,246,.04);}
+    .presence-chip-dot{width:4px;height:4px;border-radius:50%;background:currentColor;box-shadow:0 0 4px currentColor;}
+    .bridge-messages{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:4px;}
+    .bridge-messages::-webkit-scrollbar{width:2px;}
+    .bridge-messages::-webkit-scrollbar-thumb{background:rgba(139,92,246,0.3);}
+    .bridge-msg{padding:8px 10px;border-radius:0;max-width:92%;word-break:break-word;}
+    .bridge-msg.from-org{align-self:flex-start;background:rgba(0,240,255,0.06);border:1px solid rgba(0,240,255,.15);border-left:2px solid var(--cyan);}
+    .bridge-msg.from-assessor{align-self:flex-end;background:rgba(139,92,246,0.06);border:1px solid rgba(139,92,246,.15);border-right:2px solid var(--purple);}
+    .bridge-msg.system{align-self:center;background:rgba(255,255,255,0.03);border:1px solid var(--border);max-width:100%;text-align:center;}
+    .bridge-msg-sender{font-family:'Share Tech Mono',monospace;font-size:0.46rem;letter-spacing:0.1em;margin-bottom:3px;}
+    .from-org .bridge-msg-sender{color:var(--cyan);}
+    .from-assessor .bridge-msg-sender{color:var(--purple);}
+    .system .bridge-msg-sender{color:var(--dim);}
+    .bridge-msg-text{font-family:'Rajdhani',sans-serif;font-size:0.85rem;color:var(--text);line-height:1.4;}
+    .bridge-msg-time{font-family:'Share Tech Mono',monospace;font-size:0.42rem;color:var(--dim);margin-top:3px;}
+    .bridge-event-pill{font-family:'Share Tech Mono',monospace;font-size:0.48rem;padding:3px 8px;border:1px solid rgba(0,240,255,.2);color:var(--cyan);margin-top:3px;display:inline-block;}
+
+    /* MESSAGE INPUT */
+    .bridge-input-area{padding:12px 14px;border-top:1px solid var(--border);flex-shrink:0;}
+    .bridge-input-row{display:flex;gap:8px;}
+    .bridge-input{flex:1;background:rgba(139,92,246,0.04);border:1px solid rgba(139,92,246,.2);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:9px 12px;outline:none;resize:none;transition:border-color .2s;}
+    .bridge-input:focus{border-color:var(--purple);}
+    .btn-send{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;color:var(--bg);background:var(--purple);border:none;padding:9px 16px;cursor:none;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);font-weight:700;}
+    .btn-send:hover{box-shadow:0 0 12px var(--purple);}
+    .input-hint{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.08em;margin-top:6px;}
+
+    /* WATERMARK */
+    .watermark{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(200,228,240,0.12);letter-spacing:0.12em;text-align:center;padding:8px;border-top:1px solid var(--border);}
+
+    @keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.3}}
+  </style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+<div class="scanlines"></div>
+
+<!-- LOGIN SCREEN -->
+<div id="login-screen">
+  <div class="login-card">
+    <div class="login-tag">// DARKBLOOM BRIDGE&#8482; — ASSESSOR ACCESS</div>
+    <div class="login-title">C3PAO Assessor Portal</div>
+    <div class="login-sub">Enter your name and organization to connect to the compliance channel. Your access is time-limited and read-only with two-way messaging.</div>
+    <div class="field">
+      <label>// YOUR NAME</label>
+      <input type="text" id="assessor-name" placeholder="John Smith, CPA-CMMC" maxlength="100"/>
+    </div>
+    <div class="field">
+      <label>// YOUR ORGANIZATION</label>
+      <input type="text" id="assessor-org-name" placeholder="Acme C3PAO LLC" maxlength="100"/>
+    </div>
+    <button class="btn-join" onclick="joinChannel()">CONNECT TO CHANNEL &#9654;</button>
+    <div class="login-error" id="login-error"></div>
+  </div>
+</div>
+
+<!-- MAIN PORTAL -->
+<div id="main-screen">
+  <div class="portal-header">
+    <div class="ph-logo">
+      <svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="#00f0ff" stroke-width="1.4">
+        <polygon points="10,2 18,7 18,13 10,18 2,13 2,7"/>
+        <line x1="10" y1="2" x2="10" y2="18"/>
+        <line x1="2" y1="7" x2="18" y2="7"/>
+        <line x1="2" y1="13" x2="18" y2="13"/>
+      </svg>
+      <div>
+        <div class="ph-logo-name">AuditCore<sup>&#8482;</sup></div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);letter-spacing:0.16em;">DARKBLOOM INDUSTRIES&#8482;</div>
+      </div>
+      <div class="ph-badge">C3PAO ASSESSOR PORTAL</div>
+    </div>
+    <div class="ph-right">
+      <div>
+        <div class="ph-org" id="ph-org-name">Loading...</div>
+        <div class="ph-assessor" id="ph-assessor-name">Connecting...</div>
+      </div>
+      <div class="bridge-indicator">
+        <div class="bridge-dot connecting" id="bridge-status-dot"></div>
+        <div class="bridge-txt" id="bridge-status-txt">CONNECTING...</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="portal-body">
+    <!-- COMPLIANCE DATA -->
+    <div class="compliance-panel">
+      <div class="score-row" id="score-row">
+        <div class="score-tile"><div class="score-tile-val" id="composite-score">—</div><div class="score-tile-label">OVERALL</div></div>
+        <div class="score-tile"><div class="score-tile-val" id="nist-score" style="color:var(--cyan);">—</div><div class="score-tile-label">NIST</div></div>
+        <div class="score-tile"><div class="score-tile-val" id="cmmc-score" style="color:var(--green);">—</div><div class="score-tile-label">CMMC L2</div></div>
+        <div class="score-tile"><div class="score-tile-val" id="owasp-score" style="color:var(--amber);">—</div><div class="score-tile-label">OWASP</div></div>
+        <div class="score-tile"><div class="score-tile-val" id="soc2-score" style="color:var(--magenta);">—</div><div class="score-tile-label">SOC 2</div></div>
+        <div class="score-tile"><div class="score-tile-val" id="fips-score" style="color:var(--blue,#3a7fff);">—</div><div class="score-tile-label">FIPS</div></div>
+      </div>
+
+      <div class="fw-filter" id="fw-filter">
+        <button class="fw-btn active" onclick="filterFW(this,'')">ALL</button>
+        <button class="fw-btn" onclick="filterFW(this,'NIST')">NIST</button>
+        <button class="fw-btn" onclick="filterFW(this,'CMMC')">CMMC</button>
+        <button class="fw-btn" onclick="filterFW(this,'OWASP')">OWASP</button>
+        <button class="fw-btn" onclick="filterFW(this,'SOC2')">SOC 2</button>
+        <button class="fw-btn" onclick="filterFW(this,'FIPS')">FIPS</button>
+      </div>
+
+      <div class="section-title">CONTROL ASSESSMENTS</div>
+      <table class="ctrl-table">
+        <thead><tr><th>CONTROL ID</th><th>FW</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>LAST ASSESSED</th><th>COMMENT</th></tr></thead>
+        <tbody id="controls-tbody">
+          <tr><td colspan="7" style="text-align:center;padding:24px;color:var(--dim);font-family:Share Tech Mono,monospace;font-size:.58rem;">// LOADING COMPLIANCE DATA...</td></tr>
+        </tbody>
+      </table>
+
+      <div class="section-title">OPEN FINDINGS</div>
+      <div id="findings-list" style="margin-bottom:16px;">
+        <div style="color:var(--dim);font-family:Share Tech Mono,monospace;font-size:.58rem;padding:12px 0;">// LOADING FINDINGS...</div>
+      </div>
+    </div>
+
+    <!-- BRIDGE PANEL -->
+    <div class="bridge-panel">
+      <div class="bridge-panel-header">
+        <div class="bridge-panel-title">
+          <div class="bridge-panel-title-dot"></div>
+          DARKBLOOM BRIDGE&#8482;
+        </div>
+        <div class="presence-bar" id="presence-bar">
+          <span style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.1em;">PRESENCE:</span>
+        </div>
+      </div>
+      <div class="bridge-messages" id="bridge-messages"></div>
+      <div class="bridge-input-area">
+        <div class="bridge-input-row">
+          <textarea class="bridge-input" id="msg-input" rows="2" placeholder="Type a message or question for the organization..." maxlength="1000" onkeydown="handleKey(event)"></textarea>
+          <button class="btn-send" onclick="sendMessage()">SEND &#9654;</button>
+        </div>
+        <div class="input-hint">Enter to send &bull; Shift+Enter for new line &bull; All messages logged</div>
+      </div>
+      <div class="watermark">READ-ONLY COMPLIANCE DATA &bull; MESSAGES LOGGED &bull; DARKBLOOM BRIDGE&#8482; &bull; AUDITCORE&#8482;</div>
+    </div>
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://auditcore-api-production.up.railway.app';
+
+  // ── Get token from URL ─────────────────────────────────────
+  const urlParams = new URLSearchParams(window.location.search);
+  const bridgeToken = urlParams.get('bridge_token') || urlParams.get('token');
+  if (!bridgeToken) {
+    document.getElementById('login-error').textContent = '> No invite token found in URL. Request a new portal link from the organization.';
+    document.getElementById('login-error').classList.add('show');
+  }
+
+  // ── State ──────────────────────────────────────────────────
+  let channelId = null;
+  let assessorName = null;
+  let supabaseClient = null;
+  let allControls = [];
+  let activeFilter = '';
+
+  // ── Cursor ─────────────────────────────────────────────────
+  const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+  // ── Join channel ───────────────────────────────────────────
+  async function joinChannel() {
+    const name = document.getElementById('assessor-name').value.trim();
+    const orgName = document.getElementById('assessor-org-name').value.trim();
+    const btn = document.querySelector('.btn-join');
+    const err = document.getElementById('login-error');
+
+    if (!name) { err.textContent='> Enter your name'; err.classList.add('show'); return; }
+    if (!bridgeToken) { err.textContent='> No invite token in URL'; err.classList.add('show'); return; }
+
+    btn.disabled = true; btn.textContent = 'CONNECTING...';
+    err.classList.remove('show');
+
+    try {
+      const res = await fetch(`${API_URL}/bridge/join`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: bridgeToken, party_name: name + (orgName ? ` — ${orgName}` : ''), party_role: 'assessor' }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Connection failed');
+
+      assessorName = name + (orgName ? ` — ${orgName}` : '');
+      channelId = data.channel.id;
+
+      // Update header
+      document.getElementById('ph-org-name').textContent = data.org?.name || 'Organization';
+      document.getElementById('ph-assessor-name').textContent = `Assessor: ${assessorName}`;
+
+      // Show main screen
+      document.getElementById('login-screen').style.display = 'none';
+      document.getElementById('main-screen').classList.add('active');
+
+      // Initialize Supabase Realtime
+      await initRealtime(data.supabase_url, data.bridge_token, channelId);
+
+      // Load compliance data
+      await loadComplianceData();
+
+      // Load message history
+      await loadHistory();
+
+      // Start presence heartbeat
+      startPresenceHeartbeat();
+
+    } catch (e) {
+      err.textContent = `> ${e.message}`;
+      err.classList.add('show');
+      btn.disabled = false; btn.textContent = 'CONNECT TO CHANNEL ▶';
+    }
+  }
+
+  // ── Initialize Supabase Realtime WebSocket ─────────────────
+  // THIS IS THE REAL BRIDGE — true WebSocket subscription
+  async function initRealtime(supabaseUrl, anonKey, chId) {
+    supabaseClient = supabase.createClient(supabaseUrl, anonKey);
+
+    updateBridgeStatus('connecting');
+
+    const channel = supabaseClient
+      .channel(`bridge:${chId}`)
+
+      // Subscribe to new messages — fires INSTANTLY when org sends anything
+      .on('postgres_changes', {
+        event: 'INSERT',
+        schema: 'public',
+        table: 'bridge_messages',
+        filter: `channel_id=eq.${chId}`,
+      }, (payload) => {
+        const msg = payload.new;
+        renderMessage(msg);
+        // If it's a control update, refresh
+        if (['control_updated','scan_completed','finding_created','finding_resolved','remediation_success'].includes(msg.event_type)) {
+          loadComplianceData();
+        }
+      })
+
+      // Subscribe to presence changes
+      .on('postgres_changes', {
+        event: '*',
+        schema: 'public',
+        table: 'bridge_presence',
+        filter: `channel_id=eq.${chId}`,
+      }, () => {
+        updatePresenceBar();
+      })
+
+      .subscribe((status) => {
+        if (status === 'SUBSCRIBED') {
+          updateBridgeStatus('connected');
+          addSystemMessage('Darkbloom Bridge™ — Real-time connection established. Both parties are live.');
+        } else if (status === 'CHANNEL_ERROR') {
+          updateBridgeStatus('disconnected');
+          addSystemMessage('Bridge connection lost. Attempting to reconnect...');
+        } else if (status === 'CLOSED') {
+          updateBridgeStatus('disconnected');
+        }
+      });
+  }
+
+  function updateBridgeStatus(status) {
+    const dot = document.getElementById('bridge-status-dot');
+    const txt = document.getElementById('bridge-status-txt');
+    dot.className = `bridge-dot ${status}`;
+    txt.textContent = status === 'connected' ? 'BRIDGE™ LIVE' : status === 'connecting' ? 'CONNECTING...' : 'DISCONNECTED';
+    txt.style.color = status === 'connected' ? 'var(--green)' : status === 'connecting' ? 'var(--amber)' : 'var(--red)';
+  }
+
+  // ── Load compliance data ────────────────────────────────────
+  async function loadComplianceData() {
+    const res = await fetch(`${API_URL}/bridge/assessor/${bridgeToken}`, {
+      headers: { 'X-Bridge-Token': bridgeToken },
+    });
+    const data = await res.json();
+    if (!res.ok) return;
+
+    // Update scores
+    const fw = data.framework_scores || {};
+    const all = Object.values(fw).filter(v=>v!==null);
+    const composite = all.length ? Math.round(all.reduce((a,b)=>a+b,0)/all.length) : 0;
+    document.getElementById('composite-score').textContent = composite + '%';
+    document.getElementById('composite-score').style.color = composite>=90?'var(--green)':composite>=70?'var(--cyan)':composite>=50?'var(--amber)':'var(--red)';
+    document.getElementById('nist-score').textContent = (fw.NIST??'—') + (fw.NIST!=null?'%':'');
+    document.getElementById('cmmc-score').textContent = (fw.CMMC??'—') + (fw.CMMC!=null?'%':'');
+    document.getElementById('owasp-score').textContent = (fw.OWASP??'—') + (fw.OWASP!=null?'%':'');
+    document.getElementById('soc2-score').textContent = (fw.SOC2??'—') + (fw.SOC2!=null?'%':'');
+    document.getElementById('fips-score').textContent = (fw.FIPS??'—') + (fw.FIPS!=null?'%':'');
+
+    // Store controls
+    allControls = data.assessments || [];
+    renderControls(allControls);
+
+    // Render findings
+    const fl = document.getElementById('findings-list');
+    const findings = data.open_findings || [];
+    if (!findings.length) {
+      fl.innerHTML = '<div style="color:var(--green);font-family:Share Tech Mono,monospace;font-size:.58rem;padding:8px;">&#9679; No open findings</div>';
+    } else {
+      fl.innerHTML = findings.map(f=>`
+        <div style="background:var(--surface);border:1px solid var(--border);border-left:3px solid ${f.severity==='critical'?'var(--red)':f.severity==='warning'?'var(--amber)':'var(--cyan)'};padding:10px 14px;margin-bottom:8px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:${f.severity==='critical'?'var(--red)':f.severity==='warning'?'var(--amber)':'var(--cyan)'};letter-spacing:0.14em;margin-bottom:4px;">&#9650; ${f.severity.toUpperCase()}</div>
+          <div style="font-family:'Rajdhani',sans-serif;font-size:0.88rem;color:#fff;font-weight:600;margin-bottom:3px;">${f.title}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);">${f.description?.slice(0,120)}${f.description?.length>120?'...':''}</div>
+        </div>`).join('');
+    }
+  }
+
+  function renderControls(controls) {
+    const filtered = activeFilter ? controls.filter(c=>c.control_definitions?.framework===activeFilter) : controls;
+    const sm = {pass:'<span class="ctrl-status pass">&#9679; PASS</span>',fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',partial:'<span class="ctrl-status partial">&#9650; PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
+    const tbody = document.getElementById('controls-tbody');
+    tbody.innerHTML = filtered.map(c=>`<tr>
+      <td><span class="ctrl-id">${c.control_definitions?.id||'—'}</span></td>
+      <td style="color:var(--dim)">${c.control_definitions?.framework||'—'}</td>
+      <td>${c.control_definitions?.family||'—'}</td>
+      <td style="max-width:200px;line-height:1.4;">${c.control_definitions?.title||'—'}</td>
+      <td>${sm[c.status||'not_assessed']||sm.not_assessed}</td>
+      <td style="color:var(--dim)">${c.assessed_at?new Date(c.assessed_at).toLocaleDateString():'—'}</td>
+      <td><button class="btn-comment" onclick="commentOnControl('${c.control_definitions?.id}','${c.control_definitions?.title?.replace(/'/g,'')}')">COMMENT</button></td>
+    </tr>`).join('');
+  }
+
+  function filterFW(btn, fw) {
+    document.querySelectorAll('.fw-btn').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    activeFilter = fw;
+    renderControls(allControls);
+  }
+
+  // ── Load message history ────────────────────────────────────
+  async function loadHistory() {
+    const res = await fetch(`${API_URL}/bridge/channels/${channelId}/messages?limit=50`, {
+      headers: { 'X-Bridge-Token': bridgeToken },
+    });
+    const data = await res.json();
+    if (!res.ok) return;
+    const feed = document.getElementById('bridge-messages');
+    feed.innerHTML = '';
+    for (const msg of data.messages || []) {
+      renderMessage(msg);
+    }
+  }
+
+  // ── Render a bridge message ─────────────────────────────────
+  function renderMessage(msg) {
+    const feed = document.getElementById('bridge-messages');
+    const isMe = msg.sender_role === 'assessor';
+    const isSystem = msg.is_system || msg.sender_role === 'system';
+    const cls = isSystem ? 'system' : isMe ? 'from-assessor' : 'from-org';
+
+    const payload = msg.payload || {};
+    let text = payload.text || '';
+    let eventPill = '';
+
+    if (!isSystem) {
+      // Format based on event type
+      switch(msg.event_type) {
+        case 'scan_completed': text = `Scan completed. Score: ${payload.score}%`; eventPill = 'SCAN'; break;
+        case 'finding_created': text = `New finding: ${payload.title} (${payload.severity?.toUpperCase()})`; eventPill = 'FINDING'; break;
+        case 'finding_resolved': text = `Finding resolved: ${payload.finding_id}`; eventPill = 'RESOLVED'; break;
+        case 'control_updated': text = `Control ${payload.control_id} → ${payload.status?.toUpperCase()}`; eventPill = 'CONTROL'; break;
+        case 'remediation_success': text = `Auto-fixed: ${payload.title}`; eventPill = 'REMEDIATION'; break;
+        case 'score_changed': text = `Score changed: ${payload.old_score}% → ${payload.new_score}%`; eventPill = 'SCORE'; break;
+        case 'assessor_comment': text = payload.note || payload.text || 'Comment added'; eventPill = payload.control_id; break;
+        case 'message': text = payload.text || ''; break;
+        default: text = payload.text || JSON.stringify(payload).slice(0,80); break;
+      }
+    }
+
+    const el = document.createElement('div');
+    el.className = `bridge-msg ${cls}`;
+    el.innerHTML = `
+      <div class="bridge-msg-sender">${isSystem ? 'DARKBLOOM BRIDGE™' : (msg.sender_name || msg.sender_role?.toUpperCase())}</div>
+      <div class="bridge-msg-text">${text}</div>
+      ${eventPill ? `<div class="bridge-event-pill">${eventPill}</div>` : ''}
+      <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleTimeString()}</div>`;
+    feed.appendChild(el);
+    feed.scrollTop = feed.scrollHeight;
+  }
+
+  function addSystemMessage(text) {
+    const feed = document.getElementById('bridge-messages');
+    const el = document.createElement('div');
+    el.className = 'bridge-msg system';
+    el.innerHTML = `<div class="bridge-msg-sender">DARKBLOOM BRIDGE™</div><div class="bridge-msg-text">${text}</div><div class="bridge-msg-time">${new Date().toLocaleTimeString()}</div>`;
+    feed.appendChild(el);
+    feed.scrollTop = feed.scrollHeight;
+  }
+
+  // ── Send message ────────────────────────────────────────────
+  async function sendMessage() {
+    const input = document.getElementById('msg-input');
+    const text = input.value.trim();
+    if (!text || !channelId) return;
+
+    input.value = '';
+    await fetch(`${API_URL}/bridge/channels/${channelId}/messages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Bridge-Token': bridgeToken },
+      body: JSON.stringify({
+        event_type: 'message',
+        payload: { text },
+        sender_role: 'assessor',
+        sender_name: assessorName,
+      }),
+    });
+  }
+
+  function handleKey(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(); }
+  }
+
+  // ── Comment on a control ────────────────────────────────────
+  async function commentOnControl(controlId, controlTitle) {
+    const note = prompt(`Comment on ${controlId} — ${controlTitle}:\n\n(Your comment will appear in the organization's Bridge feed)`);
+    if (!note?.trim()) return;
+
+    await fetch(`${API_URL}/bridge/channels/${channelId}/messages`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'X-Bridge-Token': bridgeToken },
+      body: JSON.stringify({
+        event_type: 'assessor_comment',
+        payload: { control_id: controlId, control_title: controlTitle, note: note.trim() },
+        sender_role: 'assessor',
+        sender_name: assessorName,
+      }),
+    });
+  }
+
+  // ── Presence ────────────────────────────────────────────────
+  async function updatePresenceBar() {
+    if (!channelId) return;
+    const res = await fetch(`${API_URL}/bridge/channels/${channelId}/presence`, {
+      headers: { 'X-Bridge-Token': bridgeToken },
+    });
+    const data = await res.json();
+    const bar = document.getElementById('presence-bar');
+    const chips = (data.presence || []).map(p=>`
+      <span class="presence-chip ${p.user_role}">
+        <span class="presence-chip-dot"></span>
+        ${p.user_name || p.user_role?.toUpperCase()}
+      </span>`).join('');
+    bar.innerHTML = `<span style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.1em;">ONLINE:</span>${chips||'<span style="font-family:Share Tech Mono,monospace;font-size:.46rem;color:var(--dim)">Waiting...</span>'}`;
+  }
+
+  function startPresenceHeartbeat() {
+    const sendPresence = () => {
+      fetch(`${API_URL}/bridge/channels/${channelId}/presence`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Bridge-Token': bridgeToken },
+        body: JSON.stringify({ user_role: 'assessor', user_name: assessorName, status: 'online' }),
+      }).then(() => updatePresenceBar()).catch(() => {});
+    };
+    sendPresence();
+    setInterval(sendPresence, 30000);
+  }
+
+  // Auto-refresh data every 2 minutes
+  setInterval(() => { if (channelId) loadComplianceData(); }, 120000);
+
+  // If token in URL, pre-fill and auto-focus
+  if (!bridgeToken) {
+    document.getElementById('login-error').textContent = '> Missing invite token. Ask the organization to send you a new portal link.';
+    document.getElementById('login-error').classList.add('show');
+    document.querySelector('.btn-join').disabled = true;
+  }
+</script>
+</body>
+</html>
