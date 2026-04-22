@@ -5,73 +5,94 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-Frame-Options" content="DENY"/>
   <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
-  <title>AuditCore&#8482; Dashboard — Darkbloom Industries&#8482;</title>
+  <title>AuditCore&#8482; v2.0 — Darkbloom Industries&#8482;</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <style>
-    :root{--bg:#04060a;--surface:#070c12;--surface2:#0a1018;--cyan:#00f0ff;--green:#00ff88;--amber:#ffb800;--red:#ff3355;--magenta:#ff00aa;--blue:#3a7fff;--border:rgba(0,240,255,0.1);--border2:rgba(0,240,255,0.06);--text:rgba(200,228,240,0.85);--dim:rgba(200,228,240,0.35);--sidebar:224px;}
+    :root{
+      --bg:#04060a;--surface:#070c12;--surface2:#0a1018;
+      --cyan:#00f0ff;--green:#00ff88;--amber:#ffb800;--red:#ff3355;
+      --magenta:#ff00aa;--blue:#3a7fff;--purple:#8b5cf6;
+      --border:rgba(0,240,255,0.1);--border2:rgba(0,240,255,0.06);
+      --text:rgba(200,228,240,0.85);--dim:rgba(200,228,240,0.35);
+      --sidebar:228px;
+    }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;overflow:hidden;}
     body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;cursor:none;display:flex;}
+
+    /* CURSOR */
     #cur{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 6px var(--cyan);}
     #cur-r{position:fixed;width:28px;height:28px;border:1px solid rgba(0,240,255,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s;}
+
+    /* SIDEBAR */
     .sidebar{width:var(--sidebar);min-width:var(--sidebar);height:100vh;background:rgba(7,12,18,0.98);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;}
-    .sb-logo{padding:22px 18px;border-bottom:1px solid var(--border2);}
-    .sb-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:3px;}
-    .sb-logo-row svg{width:22px;height:22px;}
-    .sb-logo-name{font-family:'Orbitron',monospace;font-weight:900;font-size:0.9rem;color:var(--cyan);letter-spacing:0.12em;text-shadow:0 0 14px rgba(0,240,255,0.4);}
+    .sb-logo{padding:20px 16px;border-bottom:1px solid var(--border2);}
+    .sb-logo-row{display:flex;align-items:center;gap:9px;margin-bottom:2px;}
+    .sb-logo-row svg{width:20px;height:20px;}
+    .sb-logo-name{font-family:'Orbitron',monospace;font-weight:900;font-size:0.85rem;color:var(--cyan);letter-spacing:0.12em;text-shadow:0 0 12px rgba(0,240,255,0.4);}
     .sb-logo-name sup{font-size:0.38em;color:var(--magenta);}
-    .sb-logo-sub{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.18em;margin-top:1px;}
-    .sb-org{padding:12px 18px;border-bottom:1px solid var(--border2);background:rgba(0,240,255,0.02);}
-    .sb-org-label{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.2em;margin-bottom:3px;}
-    .sb-org-name{font-family:'Orbitron',monospace;font-size:0.68rem;color:var(--text);letter-spacing:0.08em;}
-    .sb-org-id{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);margin-top:2px;}
-    .sb-nav{flex:1;padding:14px 0;overflow-y:auto;}
-    .sb-section{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.25em;padding:10px 18px 5px;}
-    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:none;transition:background .2s;border-left:2px solid transparent;}
+    .sb-logo-sub{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.16em;}
+    .sb-bridge{padding:8px 16px;border-bottom:1px solid var(--border2);background:rgba(0,255,136,0.03);display:flex;align-items:center;gap:7px;}
+    .sb-bridge-dot{width:5px;height:5px;background:var(--green);border-radius:50%;box-shadow:0 0 5px var(--green);animation:pulse-g 2s infinite;flex-shrink:0;}
+    .sb-bridge-txt{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--green);letter-spacing:0.12em;}
+    .sb-org{padding:10px 16px;border-bottom:1px solid var(--border2);background:rgba(0,240,255,0.02);}
+    .sb-org-label{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:2px;}
+    .sb-org-name{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--text);letter-spacing:0.07em;}
+    .sb-org-meta{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);margin-top:1px;}
+    .sb-nav{flex:1;padding:12px 0;overflow-y:auto;}
+    .sb-section{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.22em;padding:9px 16px 4px;}
+    .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:none;transition:background .2s;border-left:2px solid transparent;}
     .nav-item:hover,.nav-item.active{background:rgba(0,240,255,0.05);border-left-color:var(--cyan);}
     .nav-item.active .nav-label{color:var(--cyan);}
-    .nav-icon{width:15px;height:15px;opacity:.5;flex-shrink:0;}
+    .nav-icon{width:14px;height:14px;opacity:.5;flex-shrink:0;}
     .nav-item.active .nav-icon,.nav-item:hover .nav-icon{opacity:1;}
-    .nav-label{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);letter-spacing:0.1em;transition:color .2s;}
+    .nav-label{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);letter-spacing:0.08em;transition:color .2s;flex:1;}
     .nav-item:hover .nav-label{color:var(--text);}
-    .nav-badge{margin-left:auto;font-family:'Share Tech Mono',monospace;font-size:0.48rem;padding:2px 6px;border-radius:2px;}
+    .nav-badge{font-family:'Share Tech Mono',monospace;font-size:0.46rem;padding:2px 6px;border-radius:2px;}
     .badge-red{background:rgba(255,51,85,.15);color:var(--red);border:1px solid rgba(255,51,85,.3);}
     .badge-amber{background:rgba(255,184,0,.12);color:var(--amber);border:1px solid rgba(255,184,0,.25);}
-    .sb-footer{padding:14px 18px;border-top:1px solid var(--border2);}
-    .sb-footer-txt{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:rgba(200,228,240,0.18);letter-spacing:0.1em;line-height:1.8;}
+    .badge-green{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.2);}
+    .badge-purple{background:rgba(139,92,246,.15);color:var(--purple);border:1px solid rgba(139,92,246,.3);}
+    .sb-footer{padding:12px 16px;border-top:1px solid var(--border2);}
+    .sb-footer-txt{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(200,228,240,0.18);letter-spacing:0.08em;line-height:1.8;}
     .sb-footer-txt a{color:rgba(0,240,255,0.3);text-decoration:none;}
+
+    /* MAIN */
     .main{flex:1;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
-    .topbar{padding:13px 28px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(4,6,10,0.9);backdrop-filter:blur(6px);flex-shrink:0;}
-    .page-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.85rem;color:#fff;letter-spacing:0.1em;}
-    .breadcrumb{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--dim);letter-spacing:0.1em;margin-top:2px;}
-    .topbar-right{display:flex;align-items:center;gap:16px;}
+    .topbar{padding:12px 26px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(4,6,10,0.9);backdrop-filter:blur(6px);flex-shrink:0;}
+    .page-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.82rem;color:#fff;letter-spacing:0.1em;}
+    .breadcrumb{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.08em;margin-top:1px;}
+    .topbar-right{display:flex;align-items:center;gap:14px;}
     .tb-stat{text-align:center;}
-    .tb-stat-val{font-family:'Orbitron',monospace;font-size:0.8rem;font-weight:700;}
-    .tb-stat-label{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.1em;}
-    .tb-divider{width:1px;height:28px;background:var(--border);}
-    .btn-scan{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;color:var(--bg);background:var(--cyan);border:none;padding:8px 18px;cursor:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
-    .btn-scan:hover{box-shadow:0 0 18px rgba(0,240,255,0.4);}
-    .btn-scan:disabled{opacity:0.5;}
-    .content{flex:1;overflow-y:auto;padding:24px 28px;}
+    .tb-stat-val{font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;}
+    .tb-stat-label{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);letter-spacing:0.08em;}
+    .tb-divider{width:1px;height:26px;background:var(--border);}
+    .btn-scan{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:7px 16px;cursor:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
+    .btn-scan:hover{box-shadow:0 0 16px rgba(0,240,255,0.4);}
+    .content{flex:1;overflow-y:auto;padding:22px 26px;}
     .content::-webkit-scrollbar{width:3px;}
     .content::-webkit-scrollbar-thumb{background:rgba(0,240,255,0.2);}
-    .score-section{display:grid;grid-template-columns:260px 1fr;gap:16px;margin-bottom:16px;}
-    .score-card{background:var(--surface);border:1px solid var(--border);padding:24px;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;}
+
+    /* SCORE SECTION */
+    .score-section{display:grid;grid-template-columns:240px 1fr;gap:14px;margin-bottom:14px;}
+    .score-card{background:var(--surface);border:1px solid var(--border);padding:20px;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;}
     .score-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
-    .score-ring-wrap{position:relative;width:150px;height:150px;margin:6px 0 14px;}
+    .score-ring-wrap{position:relative;width:140px;height:140px;margin:4px 0 12px;}
     .score-ring-wrap canvas{position:absolute;top:0;left:0;}
     .score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
-    .score-num{font-family:'Orbitron',monospace;font-size:2.4rem;font-weight:900;color:#fff;line-height:1;}
-    .score-pct{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--dim);letter-spacing:0.2em;}
-    .score-label{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--cyan);letter-spacing:0.12em;margin-bottom:3px;}
-    .score-sublabel{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;}
-    .score-breakdown{display:flex;flex-direction:column;gap:7px;width:100%;margin-top:14px;}
-    .sb-row{display:flex;align-items:center;gap:8px;}
-    .sb-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-    .sb-name{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);flex:1;}
-    .sb-val{font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;}
-    .fw-grid{display:grid;grid-template-columns:1fr;gap:10px;}
-    .fw-card{background:var(--surface);border:1px solid var(--border);padding:16px 20px;position:relative;overflow:hidden;transition:border-color .25s;}
+    .score-num{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;color:#fff;line-height:1;}
+    .score-pct{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.18em;}
+    .sprs-score{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--amber);letter-spacing:0.1em;margin-top:4px;}
+    .sprs-label{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.12em;}
+    .score-label{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:0.1em;margin-bottom:2px;}
+    .score-sublabel{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.1em;}
+    .score-breakdown{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:12px;}
+    .sb-row{display:flex;align-items:center;gap:7px;}
+    .sb-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+    .sb-name{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);flex:1;}
+    .sb-val{font-family:'Orbitron',monospace;font-size:0.6rem;font-weight:700;}
+    .fw-grid{display:grid;grid-template-columns:1fr;gap:9px;}
+    .fw-card{background:var(--surface);border:1px solid var(--border);padding:14px 18px;position:relative;overflow:hidden;transition:border-color .25s;}
     .fw-card:hover{border-color:rgba(0,240,255,0.22);}
     .fw-card::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;}
     .fw-card.cmmc::before{background:var(--green);}
@@ -79,134 +100,182 @@
     .fw-card.owasp::before{background:var(--amber);}
     .fw-card.soc::before{background:var(--magenta);}
     .fw-card.fips::before{background:var(--blue);}
-    .fw-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;}
-    .fw-name{font-family:'Orbitron',monospace;font-size:0.68rem;font-weight:700;letter-spacing:0.1em;}
+    .fw-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+    .fw-name{font-family:'Orbitron',monospace;font-size:0.64rem;font-weight:700;letter-spacing:0.08em;}
     .fw-card.cmmc .fw-name{color:var(--green);}
     .fw-card.nist .fw-name{color:var(--cyan);}
     .fw-card.owasp .fw-name{color:var(--amber);}
     .fw-card.soc .fw-name{color:var(--magenta);}
     .fw-card.fips .fw-name{color:var(--blue);}
-    .fw-scope{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.08em;}
-    .fw-status{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;padding:2px 9px;border:1px solid;}
+    .fw-scope{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.07em;}
+    .fw-status{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:2px 8px;border:1px solid;}
     .fw-status.pass{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.06);}
     .fw-status.warn{color:var(--amber);border-color:rgba(255,184,0,.3);background:rgba(255,184,0,.06);}
-    .fw-bar-wrap{display:flex;align-items:center;gap:10px;}
+    .fw-bar-wrap{display:flex;align-items:center;gap:9px;}
     .fw-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.06);overflow:hidden;}
     .fw-bar-fill{height:100%;transition:width 1s ease;}
-    .fw-pct{font-family:'Orbitron',monospace;font-size:0.62rem;font-weight:700;min-width:34px;text-align:right;}
-    .section-title{font-family:'Orbitron',monospace;font-size:0.75rem;font-weight:700;color:#fff;letter-spacing:0.1em;margin-bottom:14px;display:flex;align-items:center;gap:10px;}
+    .fw-pct{font-family:'Orbitron',monospace;font-size:0.6rem;font-weight:700;min-width:32px;text-align:right;}
+    .fw-stats{display:flex;gap:14px;margin-top:7px;}
+    .fw-stat{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);}
+    .fw-stat span{color:var(--text);font-size:0.58rem;}
+
+    /* SECTION TITLE */
+    .section-title{font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.1em;margin-bottom:12px;display:flex;align-items:center;gap:9px;}
     .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
-    .controls-table{width:100%;border-collapse:collapse;margin-bottom:20px;}
-    .controls-table th{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;padding:7px 12px;border-bottom:1px solid var(--border);text-align:left;background:rgba(0,240,255,0.02);}
-    .controls-table td{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--text);padding:9px 12px;border-bottom:1px solid var(--border2);vertical-align:middle;}
+
+    /* CONTROLS TABLE */
+    .controls-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
+    .controls-table th{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.14em;padding:6px 11px;border-bottom:1px solid var(--border);text-align:left;background:rgba(0,240,255,0.02);}
+    .controls-table td{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--text);padding:8px 11px;border-bottom:1px solid var(--border2);vertical-align:middle;}
     .controls-table tr:hover td{background:rgba(0,240,255,0.02);}
-    .ctrl-id{font-family:'Orbitron',monospace;font-size:0.58rem;color:var(--cyan);font-weight:700;}
-    .ctrl-status{display:inline-flex;align-items:center;gap:4px;font-size:0.52rem;letter-spacing:0.08em;padding:2px 8px;border:1px solid;}
+    .ctrl-id{font-family:'Orbitron',monospace;font-size:0.56rem;color:var(--cyan);font-weight:700;}
+    .ctrl-status{display:inline-flex;align-items:center;gap:4px;font-size:0.5rem;letter-spacing:0.07em;padding:2px 7px;border:1px solid;}
     .ctrl-status.pass{color:var(--green);border-color:rgba(0,255,136,.25);background:rgba(0,255,136,.05);}
     .ctrl-status.fail{color:var(--red);border-color:rgba(255,51,85,.25);background:rgba(255,51,85,.05);}
-    .ctrl-status.partial{color:var(--amber);border-color:rgba(255,184,0,.25);background:rgba(255,184,0,.05);}
+    .ctrl-status.warn{color:var(--amber);border-color:rgba(255,184,0,.25);background:rgba(255,184,0,.05);}
     .ctrl-status.na{color:var(--dim);border-color:rgba(200,228,240,.1);}
-    .priority{font-size:0.5rem;padding:2px 7px;border:1px solid;}
+    .priority{font-size:0.48rem;padding:2px 6px;border:1px solid;}
+    .pri-crit{color:var(--magenta);border-color:rgba(255,0,170,.3);}
     .pri-high{color:var(--red);border-color:rgba(255,51,85,.3);}
     .pri-med{color:var(--amber);border-color:rgba(255,184,0,.3);}
     .pri-low{color:var(--dim);border-color:rgba(200,228,240,.15);}
-    .pri-crit{color:var(--magenta);border-color:rgba(255,0,170,.3);}
-    .findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
-    .finding-card{background:var(--surface);border:1px solid var(--border);padding:16px 18px;position:relative;}
-    .finding-card.critical,.finding-card.high{border-left:3px solid var(--red);}
-    .finding-card.warning,.finding-card.medium{border-left:3px solid var(--amber);}
-    .finding-card.low{border-left:3px solid var(--dim);}
+    .btn-fix{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.1em;padding:3px 9px;border:none;cursor:none;font-weight:700;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:box-shadow .2s;}
+    .btn-fix.auto{color:var(--bg);background:var(--green);}
+    .btn-fix.auto:hover{box-shadow:0 0 10px var(--green);}
+    .btn-fix.guide{color:var(--amber);background:transparent;border:1px solid rgba(255,184,0,.4);}
+    .btn-fix.guide:hover{background:rgba(255,184,0,.08);}
+
+    /* FINDINGS */
+    .findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;}
+    .finding-card{background:var(--surface);border:1px solid var(--border);padding:14px 16px;position:relative;}
+    .finding-card.critical{border-left:3px solid var(--red);}
+    .finding-card.warning{border-left:3px solid var(--amber);}
     .finding-card.info{border-left:3px solid var(--cyan);}
-    .finding-type{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.15em;margin-bottom:7px;}
-    .finding-card.critical .finding-type,.finding-card.high .finding-type{color:var(--red);}
-    .finding-card.warning .finding-type,.finding-card.medium .finding-type{color:var(--amber);}
+    .finding-type{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.14em;margin-bottom:6px;}
+    .finding-card.critical .finding-type{color:var(--red);}
+    .finding-card.warning .finding-type{color:var(--amber);}
     .finding-card.info .finding-type{color:var(--cyan);}
-    .finding-title{font-family:'Rajdhani',sans-serif;font-size:0.88rem;font-weight:600;color:#fff;margin-bottom:5px;}
-    .finding-desc{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.05em;line-height:1.7;}
-    .finding-meta{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
-    .finding-tag{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.08em;padding:2px 7px;border:1px solid var(--border);}
-    .activity-feed{display:flex;flex-direction:column;margin-bottom:20px;}
-    .activity-item{display:flex;align-items:flex-start;gap:12px;padding:10px 0;border-bottom:1px solid var(--border2);}
-    .activity-item:last-child{border-bottom:none;}
-    .act-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;margin-top:4px;}
-    .act-content{flex:1;}
-    .act-title{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--text);letter-spacing:0.05em;margin-bottom:2px;}
-    .act-time{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.08em;}
-    .report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px;}
-    .report-card{background:var(--surface);border:1px solid var(--border);padding:18px;text-align:center;cursor:none;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
+    .finding-title{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:4px;}
+    .finding-desc{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.04em;line-height:1.6;}
+    .finding-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;}
+    .finding-tag{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.07em;padding:2px 6px;border:1px solid var(--border);}
+    .auto-fix-badge{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--green);border:1px solid rgba(0,255,136,.3);padding:2px 7px;background:rgba(0,255,136,.05);}
+
+    /* DARKBLOOM BRIDGE™ */
+    .bridge-panel{background:var(--surface);border:1px solid rgba(0,255,136,0.2);margin-bottom:18px;position:relative;overflow:hidden;}
+    .bridge-panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);}
+    .bridge-header{padding:12px 16px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
+    .bridge-title{font-family:'Orbitron',monospace;font-size:0.68rem;color:var(--green);letter-spacing:0.1em;display:flex;align-items:center;gap:8px;}
+    .bridge-title-dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulse-g 1.5s infinite;}
+    .bridge-status{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.1em;}
+    .bridge-feed{padding:12px 16px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;}
+    .bridge-msg{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid var(--border2);}
+    .bridge-msg:last-child{border-bottom:none;}
+    .bridge-msg-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+    .bridge-msg-content{flex:1;}
+    .bridge-msg-event{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--text);letter-spacing:0.05em;}
+    .bridge-msg-time{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);margin-top:1px;}
+
+    /* REMEDIATION MODAL */
+    #rem-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(4,6,10,0.95);z-index:600;display:none;align-items:center;justify-content:center;}
+    #rem-modal.active{display:flex;}
+    .rem-box{background:var(--surface);border:1px solid var(--border);width:680px;max-height:85vh;overflow-y:auto;position:relative;}
+    .rem-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+    .rem-header{padding:20px 24px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;}
+    .rem-title{font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;letter-spacing:0.08em;}
+    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:none;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
+    .rem-close:hover{color:var(--red);}
+    .rem-body{padding:20px 24px;}
+    .rem-mode{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;padding:4px 12px;border:1px solid;display:inline-block;margin-bottom:14px;}
+    .rem-mode.auto{color:var(--green);border-color:rgba(0,255,136,.35);background:rgba(0,255,136,.06);}
+    .rem-mode.guided{color:var(--amber);border-color:rgba(255,184,0,.35);background:rgba(255,184,0,.06);}
+    .rem-summary{font-family:'Rajdhani',sans-serif;font-size:0.9rem;color:var(--text);line-height:1.6;margin-bottom:16px;}
+    .rem-step{display:flex;gap:12px;margin-bottom:14px;padding:12px 14px;background:rgba(0,240,255,0.03);border:1px solid var(--border2);}
+    .rem-step-num{font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--cyan);font-weight:700;min-width:24px;}
+    .rem-step-content{flex:1;}
+    .rem-step-action{font-family:'Rajdhani',sans-serif;font-size:0.9rem;color:#fff;font-weight:600;margin-bottom:4px;}
+    .rem-step-detail{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--dim);letter-spacing:0.05em;line-height:1.6;margin-bottom:6px;}
+    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;border-radius:0;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:none;}
+    .rem-command:hover{background:rgba(0,255,136,.1);}
+    .rem-affects{margin-top:14px;padding:10px 14px;background:rgba(0,240,255,.03);border:1px solid var(--border2);}
+    .rem-affects-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:7px;}
+    .rem-ctrl-pill{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--cyan);border:1px solid rgba(0,240,255,.25);padding:2px 8px;display:inline-block;margin:2px;}
+    .rem-execute-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;color:var(--bg);background:var(--green);border:none;padding:13px;cursor:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;margin-top:16px;transition:box-shadow .2s;}
+    .rem-execute-btn:hover{box-shadow:0 0 18px var(--green);}
+    .rem-execute-btn:disabled{opacity:.5;}
+    .rem-docs{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,.4);text-align:center;margin-top:10px;}
+    .rem-docs a{color:var(--cyan);text-decoration:none;}
+
+    /* POAM TABLE */
+    .poam-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
+    .poam-table th{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.14em;padding:6px 11px;border-bottom:1px solid var(--border);text-align:left;background:rgba(0,240,255,0.02);}
+    .poam-table td{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--text);padding:8px 11px;border-bottom:1px solid var(--border2);vertical-align:middle;}
+    .risk-badge{font-size:0.48rem;padding:2px 7px;border:1px solid;}
+    .risk-high{color:var(--red);border-color:rgba(255,51,85,.3);}
+    .risk-mod{color:var(--amber);border-color:rgba(255,184,0,.3);}
+    .risk-low{color:var(--green);border-color:rgba(0,255,136,.25);}
+
+    /* ASSESSOR PORTAL */
+    .assessor-card{background:var(--surface);border:1px solid rgba(139,92,246,.3);padding:22px;margin-bottom:18px;position:relative;overflow:hidden;}
+    .assessor-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent);}
+    .assessor-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+    .form-field{display:flex;flex-direction:column;gap:5px;}
+    .form-field label{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,0.5);letter-spacing:0.2em;}
+    .form-field input,.form-field select{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:9px 12px;outline:none;transition:border-color .25s;width:100%;}
+    .form-field input:focus,.form-field select:focus{border-color:var(--cyan);}
+    .portal-link{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--cyan);background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.25);padding:10px 14px;margin-top:12px;word-break:break-all;line-height:1.6;}
+
+    /* REPORTS */
+    .report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px;}
+    .report-card{background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;cursor:none;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
     .report-card:hover{border-color:rgba(0,240,255,.28);background:rgba(0,240,255,.025);}
     .report-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;opacity:0;transition:opacity .2s;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
     .report-card:hover::before{opacity:1;}
-    .report-icon{font-size:1.4rem;margin-bottom:8px;display:block;}
-    .report-name{font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--text);letter-spacing:0.08em;margin-bottom:5px;}
-    .report-desc{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.05em;line-height:1.6;}
-    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.12em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:5px 14px;cursor:none;margin-top:10px;display:inline-block;transition:background .2s;}
+    .report-icon{font-size:1.3rem;margin-bottom:7px;display:block;}
+    .report-name{font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--text);letter-spacing:0.07em;margin-bottom:4px;}
+    .report-desc{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.04em;line-height:1.5;}
+    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:none;margin-top:9px;display:inline-block;transition:background .2s;}
     .btn-dl:hover{background:rgba(0,240,255,.06);}
+
+    /* SCAN OVERLAY */
     #scan-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(4,6,10,0.97);z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
     #scan-overlay.active{display:flex;}
-    .scan-title{font-family:'Orbitron',monospace;font-size:1.3rem;font-weight:900;color:var(--cyan);text-shadow:0 0 20px rgba(0,240,255,0.5);margin-bottom:6px;letter-spacing:0.1em;}
-    .scan-sub{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:36px;}
-    .scan-bar-wrap{width:380px;height:2px;background:rgba(0,240,255,0.1);margin-bottom:20px;overflow:hidden;}
-    .scan-bar{height:100%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:0;transition:width .3s;}
-    .scan-log{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(0,240,255,0.6);letter-spacing:0.08em;height:150px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;width:420px;text-align:left;}
-    .scan-result-summary{font-family:'Orbitron',monospace;font-size:1rem;color:var(--green);margin-top:20px;letter-spacing:0.1em;}
-    .loading{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);letter-spacing:0.15em;text-align:center;padding:40px;animation:pulse-g 1.5s infinite;}
+    .scan-title{font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--cyan);text-shadow:0 0 18px rgba(0,240,255,0.5);margin-bottom:5px;letter-spacing:0.1em;}
+    .scan-sub{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);letter-spacing:0.16em;margin-bottom:32px;}
+    .scan-bar-wrap{width:360px;height:2px;background:rgba(0,240,255,0.1);margin-bottom:18px;overflow:hidden;}
+    .scan-bar{height:100%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:0;transition:width .1s;}
+    .scan-log{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,240,255,0.6);letter-spacing:0.07em;height:140px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;width:400px;text-align:left;}
+
+    .loading{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);letter-spacing:0.12em;text-align:center;padding:36px;animation:pulse-g 1.5s infinite;}
     @keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.3}}
-    .int-card{background:var(--surface);border:1px solid var(--border);padding:28px 32px;margin-bottom:16px;position:relative;}
-    .int-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,#00f0ff,#3a7fff);}
-    .int-header{display:flex;align-items:center;gap:14px;margin-bottom:20px;}
-    .int-logo{width:40px;height:40px;background:linear-gradient(135deg,#0078d4,#00a4ef);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1.3rem;flex-shrink:0;}
-    .int-name{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;color:#fff;letter-spacing:0.1em;}
-    .int-badge{font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.15em;padding:3px 10px;border:1px solid;}
-    .int-badge.on{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.06);}
-    .int-badge.off{color:var(--dim);border-color:rgba(200,228,240,.1);}
-    .cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
-    .cred-field{display:flex;flex-direction:column;gap:6px;}
-    .cred-field label{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,240,255,0.5);letter-spacing:0.2em;}
-    .cred-field input{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:#c8e8f0;font-family:'Share Tech Mono',monospace;font-size:0.65rem;padding:9px 12px;outline:none;transition:border-color .2s;-webkit-appearance:none;appearance:none;}
-    .cred-field input:focus{border-color:var(--cyan);}
-    .cred-full{grid-column:1/-1;}
-    .int-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-    .ibtn{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;border:none;padding:9px 20px;cursor:none;font-weight:700;transition:box-shadow .2s,opacity .2s;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
-    .ibtn:disabled{opacity:0.5;}
-    .ibtn-c{color:var(--bg);background:var(--cyan);}
-    .ibtn-c:hover{box-shadow:0 0 16px rgba(0,240,255,0.4);}
-    .ibtn-g{color:var(--bg);background:var(--green);}
-    .ibtn-g:hover{box-shadow:0 0 16px rgba(0,255,136,0.4);}
-    .ibtn-r{color:#fff;background:var(--red);}
-    .ibtn-a{color:var(--bg);background:var(--amber);}
-    .int-msg{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.08em;padding:8px 14px;border:1px solid;margin-top:12px;display:none;}
-    .int-msg.show{display:block;}
-    .int-msg.ok{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.05);}
-    .int-msg.err{color:var(--red);border-color:rgba(255,51,85,.3);background:rgba(255,51,85,.05);}
-    .int-msg.inf{color:var(--cyan);border-color:rgba(0,240,255,.2);background:rgba(0,240,255,.03);}
-    .m365-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:14px;}
-    .m365-tile{background:var(--surface2);border:1px solid var(--border);padding:14px;}
-    .m365-tile-name{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.08em;margin-bottom:6px;}
-    .m365-tile-val{font-family:'Orbitron',monospace;font-size:0.65rem;font-weight:700;}
-    .m365-tile-val.pass{color:var(--green);}
-    .m365-tile-val.fail{color:var(--red);}
-    .m365-tile-val.partial{color:var(--amber);}
-    .m365-tile-val.not_assessed{color:var(--dim);}
-    .m365-tile-detail{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);margin-top:4px;line-height:1.5;}
-    .setup-list{display:flex;flex-direction:column;gap:8px;margin-top:16px;}
-    .setup-item{display:flex;align-items:flex-start;gap:12px;padding:12px 16px;background:rgba(0,240,255,0.02);border:1px solid var(--border);}
-    .setup-num{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--cyan);font-weight:700;flex-shrink:0;width:18px;}
-    .setup-txt{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--dim);letter-spacing:0.04em;line-height:1.8;}
-    .setup-txt a{color:var(--cyan);text-decoration:none;}
-    .setup-txt code{background:rgba(0,240,255,0.08);padding:1px 6px;color:var(--cyan);font-size:0.9em;}
+    .btn-action{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:8px 18px;cursor:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
+    .btn-action:hover{box-shadow:0 0 14px rgba(0,240,255,.4);}
+    .btn-action.green{background:var(--green);}
+    .btn-action.green:hover{box-shadow:0 0 14px var(--green);}
+    .btn-action.purple{background:var(--purple);}
   </style>
 </head>
 <body>
 <div id="cur"></div>
 <div id="cur-r"></div>
 
+<!-- REMEDIATION MODAL -->
+<div id="rem-modal">
+  <div class="rem-box">
+    <div class="rem-header">
+      <div class="rem-title" id="rem-title">REMEDIATION GUIDE</div>
+      <div class="rem-close" onclick="closeRemediation()">✕ CLOSE</div>
+    </div>
+    <div class="rem-body" id="rem-body"></div>
+  </div>
+</div>
+
+<!-- SCAN OVERLAY -->
 <div id="scan-overlay">
-  <div class="scan-title">INITIATING COMPLIANCE SCAN</div>
-  <div class="scan-sub">// SCANNING ALL FRAMEWORKS — DO NOT INTERRUPT</div>
+  <div class="scan-title">SCANNING — DARKBLOOM BRIDGE™ ACTIVE</div>
+  <div class="scan-sub">// REAL-TIME COMPLIANCE SCAN IN PROGRESS</div>
   <div class="scan-bar-wrap"><div class="scan-bar" id="scan-bar"></div></div>
   <div class="scan-log" id="scan-log"></div>
-  <div class="scan-result-summary" id="scan-result-summary"></div>
 </div>
 
 <nav class="sidebar">
@@ -220,18 +289,27 @@
       </svg>
       <div class="sb-logo-name">AuditCore<sup>&#8482;</sup></div>
     </div>
-    <div class="sb-logo-sub">DARKBLOOM INDUSTRIES&#8482;</div>
+    <div class="sb-logo-sub">DARKBLOOM INDUSTRIES&#8482; v2.0</div>
+  </div>
+  <div class="sb-bridge">
+    <div class="sb-bridge-dot"></div>
+    <div class="sb-bridge-txt">DARKBLOOM BRIDGE&#8482; ACTIVE</div>
   </div>
   <div class="sb-org">
     <div class="sb-org-label">LICENSED ORGANIZATION</div>
     <div class="sb-org-name" id="sb-org-name">Loading...</div>
-    <div class="sb-org-id" id="sb-org-id">Authenticating...</div>
+    <div class="sb-org-meta" id="sb-org-meta">Authenticating...</div>
   </div>
   <div class="sb-nav">
     <div class="sb-section">// Overview</div>
     <div class="nav-item active" onclick="showPage('overview')">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6"/><rect x="9" y="1" width="6" height="6"/><rect x="1" y="9" width="6" height="6"/><rect x="9" y="9" width="6" height="6"/></svg>
       <span class="nav-label">DASHBOARD</span>
+    </div>
+    <div class="nav-item" onclick="showPage('bridge')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00ff88" stroke-width="1.5"><path d="M1 8h4M11 8h4M5 4l-2 4 2 4M11 4l2 4-2 4"/></svg>
+      <span class="nav-label">BRIDGE&#8482;</span>
+      <span class="nav-badge badge-green" id="badge-bridge">LIVE</span>
     </div>
     <div class="nav-item" onclick="showPage('controls')">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
@@ -242,6 +320,10 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
       <span class="nav-label">FINDINGS</span>
       <span class="nav-badge badge-amber" id="badge-findings">—</span>
+    </div>
+    <div class="nav-item" onclick="showPage('poam')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="9" y2="8"/></svg>
+      <span class="nav-label">POA&amp;M</span>
     </div>
     <div class="sb-section">// Frameworks</div>
     <div class="nav-item" onclick="showPage('cmmc')">
@@ -269,20 +351,14 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
       <span class="nav-label">RUN SCAN</span>
     </div>
+    <div class="nav-item" onclick="showPage('assessor')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#8b5cf6" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3 2.7-5 6-5s6 2 6 5"/></svg>
+      <span class="nav-label">C3PAO PORTAL</span>
+      <span class="nav-badge badge-purple">NEW</span>
+    </div>
     <div class="nav-item" onclick="showPage('reports')">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg>
       <span class="nav-label">REPORTS</span>
-    </div>
-    <div class="sb-section">// Integrations</div>
-    <div class="nav-item" onclick="showPage('m365')">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00f0ff" stroke-width="1.5"><rect x="1" y="1" width="6" height="6" rx="1"/><rect x="9" y="1" width="6" height="6" rx="1"/><rect x="1" y="9" width="6" height="6" rx="1"/><rect x="9" y="9" width="6" height="6" rx="1"/></svg>
-      <span class="nav-label">MICROSOFT 365</span>
-      <span class="nav-badge" id="badge-m365" style="background:rgba(0,240,255,.08);color:var(--dim);border:1px solid rgba(0,240,255,.15);">&#9675;</span>
-    </div>
-    <div class="nav-item" onclick="showPage('aws')">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ffb800" stroke-width="1.5"><path d="M2 11c0-1 .5-2 1.5-2.5S6 8 8 8s3 .5 4.5 1S14 10 14 11"/><path d="M5 8V5a3 3 0 0 1 6 0v3"/><rect x="1" y="11" width="14" height="4" rx="1"/></svg>
-      <span class="nav-label">AMAZON AWS</span>
-      <span class="nav-badge" id="badge-aws" style="background:rgba(255,184,0,.08);color:var(--dim);border:1px solid rgba(255,184,0,.15);">&#9675;</span>
     </div>
     <div class="nav-item" onclick="signOut()">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2H3v12h7M11 5l3 3-3 3M6 8h8"/></svg>
@@ -290,7 +366,7 @@
     </div>
   </div>
   <div class="sb-footer">
-    <div class="sb-footer-txt">AuditCore&#8482; v2.0.0<br/>&#169; 2025 <a href="https://darkbloom-industries.pages.dev">Darkbloom Industries&#8482;</a></div>
+    <div class="sb-footer-txt">AuditCore&#8482; v2.0 — Darkbloom Bridge&#8482;<br/>&#169; 2025 <a href="https://untappedperformance2-tech.github.io/Darkbloom-Industries-/">Darkbloom Industries&#8482;</a><br/><span id="sb-license-info">Loading license...</span></div>
   </div>
 </nav>
 
@@ -298,7 +374,7 @@
   <div class="topbar">
     <div>
       <div class="page-title" id="page-title">COMPLIANCE OVERVIEW</div>
-      <div class="breadcrumb" id="breadcrumb">AuditCore&#8482; // Dashboard // Overview</div>
+      <div class="breadcrumb" id="breadcrumb">AuditCore&#8482; v2.0 // Dashboard // Overview</div>
     </div>
     <div class="topbar-right">
       <div class="tb-stat">
@@ -307,444 +383,699 @@
       </div>
       <div class="tb-divider"></div>
       <div class="tb-stat">
-        <div class="tb-stat-val" id="tb-gaps" style="color:var(--red);">—</div>
-        <div class="tb-stat-label">OPEN FINDINGS</div>
+        <div class="tb-stat-val" id="tb-sprs" style="color:var(--amber);">—</div>
+        <div class="tb-stat-label">SPRS SCORE</div>
       </div>
       <div class="tb-divider"></div>
-      <button class="btn-scan" id="scan-btn" onclick="startScan()">RUN SCAN &#9654;</button>
+      <div class="tb-stat">
+        <div class="tb-stat-val" id="tb-gaps" style="color:var(--red);">—</div>
+        <div class="tb-stat-label">OPEN GAPS</div>
+      </div>
+      <div class="tb-divider"></div>
+      <button class="btn-scan" onclick="startScan()">RUN SCAN &#9654;</button>
     </div>
   </div>
 
   <div class="content" id="main-content">
+
+    <!-- OVERVIEW -->
     <div id="page-overview">
       <div class="score-section">
         <div class="score-card">
-          <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:3px;">COMPOSITE POSTURE</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.16em;margin-bottom:2px;">COMPOSITE POSTURE</div>
           <div class="score-ring-wrap">
-            <canvas id="ring-canvas" width="150" height="150"></canvas>
+            <canvas id="ring-canvas" width="140" height="140"></canvas>
             <div class="score-center">
               <div class="score-num" id="score-display">—</div>
               <div class="score-pct">/ 100</div>
             </div>
           </div>
-          <div class="score-label" id="score-label">LOADING...</div>
-          <div class="score-sublabel" id="score-sublabel">FETCHING DATA</div>
-          <div class="score-breakdown" id="score-breakdown"><div class="loading">// LOADING</div></div>
+          <div class="score-label" id="score-label" style="color:var(--cyan);">LOADING...</div>
+          <div class="score-sublabel" id="score-sublabel">CONNECTING TO API</div>
+          <div style="margin-top:8px;text-align:center;">
+            <div class="sprs-score" id="sprs-display">— pts</div>
+            <div class="sprs-label">DoD SPRS SCORE</div>
+          </div>
+          <div class="score-breakdown" id="score-breakdown">
+            <div class="loading">// LOADING</div>
+          </div>
         </div>
-        <div class="fw-grid" id="fw-grid"><div class="loading">// CONNECTING TO AUDITCORE&#8482; API</div></div>
+        <div class="fw-grid" id="fw-grid">
+          <div class="loading">// CONNECTING TO AUDITCORE&#8482; API</div>
+        </div>
       </div>
-      <div class="section-title">RECENT ACTIVITY</div>
-      <div class="activity-feed" id="activity-feed"><div class="loading">// LOADING AUDIT LOG</div></div>
+      <div class="section-title">DARKBLOOM BRIDGE&#8482; — LIVE EVENTS</div>
+      <div class="bridge-panel">
+        <div class="bridge-header">
+          <div class="bridge-title"><div class="bridge-title-dot"></div>DARKBLOOM BRIDGE&#8482;</div>
+          <div class="bridge-status" id="bridge-status">POLLING...</div>
+        </div>
+        <div class="bridge-feed" id="bridge-feed">
+          <div class="loading">// CONNECTING TO BRIDGE</div>
+        </div>
+      </div>
     </div>
+
+    <!-- BRIDGE PAGE -->
+    <div id="page-bridge" style="display:none;">
+      <div class="section-title">DARKBLOOM BRIDGE&#8482; — FULL EVENT LOG</div>
+      <div class="bridge-panel">
+        <div class="bridge-header">
+          <div class="bridge-title"><div class="bridge-title-dot"></div>REAL-TIME EVENT STREAM</div>
+          <div class="bridge-status" id="bridge-status-full">LIVE</div>
+        </div>
+        <div class="bridge-feed" id="bridge-feed-full" style="max-height:500px;">
+          <div class="loading">// LOADING BRIDGE EVENTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
     <div id="page-controls" style="display:none;">
-      <div class="section-title">ALL CONTROLS</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:0;">ALL CONTROLS</div>
+        <div style="display:flex;gap:8px;">
+          <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:none;">
+            <option value="">ALL STATUSES</option>
+            <option value="fail">FAIL ONLY</option>
+            <option value="partial">PARTIAL ONLY</option>
+            <option value="not_assessed">NOT ASSESSED</option>
+            <option value="pass">PASS ONLY</option>
+          </select>
+        </div>
+      </div>
       <table class="controls-table">
-        <thead><tr><th>CONTROL ID</th><th>FRAMEWORK</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>PRIORITY</th></tr></thead>
-        <tbody id="controls-body"><tr><td colspan="6" class="loading">// LOADING CONTROLS</td></tr></tbody>
+        <thead><tr><th>CONTROL ID</th><th>FW</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>PRIORITY</th><th>REMEDIATE</th></tr></thead>
+        <tbody id="controls-body"><tr><td colspan="7" class="loading">// LOADING CONTROLS</td></tr></tbody>
       </table>
     </div>
+
+    <!-- FINDINGS -->
     <div id="page-findings" style="display:none;">
-      <div class="section-title">OPEN FINDINGS &amp; GAPS</div>
-      <div class="findings-grid" id="findings-grid"><div class="loading">// LOADING FINDINGS</div></div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:0;">OPEN FINDINGS &amp; GAPS</div>
+        <button class="btn-action" onclick="generatePOAM()">AUTO-GENERATE POA&amp;M &#9654;</button>
+      </div>
+      <div class="findings-grid" id="findings-grid">
+        <div class="loading">// LOADING FINDINGS</div>
+      </div>
     </div>
+
+    <!-- POA&M -->
+    <div id="page-poam" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:0;">PLAN OF ACTION &amp; MILESTONES</div>
+        <button class="btn-action green" onclick="generatePOAM()">GENERATE FROM FINDINGS &#9654;</button>
+      </div>
+      <table class="poam-table">
+        <thead><tr><th>CONTROL</th><th>WEAKNESS</th><th>RISK</th><th>DUE DATE</th><th>STATUS</th><th>AUTO?</th></tr></thead>
+        <tbody id="poam-body"><tr><td colspan="6" class="loading">// LOADING POA&M</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- ASSESSOR PORTAL -->
+    <div id="page-assessor" style="display:none;">
+      <div class="section-title">C3PAO ASSESSOR PORTAL — DARKBLOOM BRIDGE&#8482;</div>
+      <div class="assessor-card">
+        <div style="font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--purple);letter-spacing:0.1em;margin-bottom:8px;">CREATE ASSESSOR SESSION</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--dim);letter-spacing:0.07em;line-height:1.7;margin-bottom:14px;">
+          Generate a time-limited read-only portal link for your C3PAO assessor. They can view all controls, evidence, and compliance status without a login account. Every access is logged in the Darkbloom Bridge&#8482; audit trail.
+        </div>
+        <div class="assessor-form">
+          <div class="form-field">
+            <label>// ASSESSOR EMAIL</label>
+            <input type="email" id="assessor-email" placeholder="assessor@c3pao.com"/>
+          </div>
+          <div class="form-field">
+            <label>// ASSESSOR ORGANIZATION</label>
+            <input type="text" id="assessor-org" placeholder="CMMC C3PAO Name"/>
+          </div>
+          <div class="form-field">
+            <label>// FRAMEWORKS TO EXPOSE</label>
+            <select id="assessor-framework">
+              <option value="">ALL FRAMEWORKS</option>
+              <option value="CMMC">CMMC ONLY</option>
+              <option value="NIST">NIST 800-171 ONLY</option>
+              <option value="SOC2">SOC 2 ONLY</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>// SESSION DURATION</label>
+            <select id="assessor-expires">
+              <option value="24">24 HOURS</option>
+              <option value="48">48 HOURS</option>
+              <option value="72">72 HOURS</option>
+              <option value="168">7 DAYS</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-action purple" onclick="createAssessorSession()" style="margin-top:14px;">GENERATE PORTAL LINK &#9654;</button>
+        <div id="portal-link-result" style="display:none;" class="portal-link"></div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
     <div id="page-reports" style="display:none;">
       <div class="section-title">GENERATE REPORTS</div>
       <div class="report-grid">
-        <div class="report-card" onclick="generateReport('ssp')"><span class="report-icon">&#128196;</span><div class="report-name">CMMC Level 2 SSP</div><div class="report-desc">System Security Plan aligned to CMMC Level 2 with all 110 practices mapped.</div><div class="btn-dl">GENERATE &#9654;</div></div>
-        <div class="report-card" onclick="generateReport('poam')"><span class="report-icon">&#128203;</span><div class="report-name">NIST 800-171 POA&amp;M</div><div class="report-desc">Plan of Action &amp; Milestones — open gaps with remediation timelines.</div><div class="btn-dl">GENERATE &#9654;</div></div>
-        <div class="report-card" onclick="generateReport('executive')"><span class="report-icon">&#128202;</span><div class="report-name">Executive Summary</div><div class="report-desc">One-page posture overview with composite score and top risks for leadership.</div><div class="btn-dl">GENERATE &#9654;</div></div>
-        <div class="report-card" onclick="generateReport('fips')"><span class="report-icon">&#128274;</span><div class="report-name">FIPS Crypto Audit</div><div class="report-desc">Cryptographic module inventory with FIPS 140-3 validation status.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('ssp')"><span class="report-icon">&#128196;</span><div class="report-name">CMMC Level 2 SSP</div><div class="report-desc">System Security Plan with all 110 practices mapped and evidence referenced.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('poam')"><span class="report-icon">&#128203;</span><div class="report-name">NIST 800-171 POA&amp;M</div><div class="report-desc">Plan of Action &amp; Milestones with remediation timelines and milestones.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('executive')"><span class="report-icon">&#128202;</span><div class="report-name">Executive Summary</div><div class="report-desc">One-page posture overview with SPRS score and top risks for leadership.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fips-audit')"><span class="report-icon">&#128274;</span><div class="report-name">FIPS Crypto Audit</div><div class="report-desc">Cryptographic module inventory with FIPS 140-3 validation status.</div><div class="btn-dl">GENERATE &#9654;</div></div>
         <div class="report-card" onclick="generateReport('owasp')"><span class="report-icon">&#128270;</span><div class="report-name">OWASP Vulnerability</div><div class="report-desc">Web application findings mapped to OWASP Top 10 with remediation guidance.</div><div class="btn-dl">GENERATE &#9654;</div></div>
-        <div class="report-card" onclick="generateReport('soc2')"><span class="report-icon">&#9989;</span><div class="report-name">SOC 2 Readiness</div><div class="report-desc">Trust service criteria gap analysis and evidence checklist.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('soc2-readiness')"><span class="report-icon">&#9989;</span><div class="report-name">SOC 2 Readiness</div><div class="report-desc">Trust service criteria gap analysis and C3PAO evidence checklist.</div><div class="btn-dl">GENERATE &#9654;</div></div>
       </div>
     </div>
-    <div id="page-m365" style="display:none;"></div>
-    <div id="page-aws" style="display:none;"></div>
+
+    <!-- FW DETAIL PAGES -->
     <div id="page-cmmc" style="display:none;"></div>
     <div id="page-nist" style="display:none;"></div>
     <div id="page-owasp" style="display:none;"></div>
     <div id="page-soc" style="display:none;"></div>
     <div id="page-fips" style="display:none;"></div>
+
   </div>
 </div>
 
 <script>
-var API_URL = 'https://auditcore-api-production.up.railway.app';
-var token = sessionStorage.getItem('ac_token');
-var user  = JSON.parse(sessionStorage.getItem('ac_user') || 'null');
-var org   = JSON.parse(sessionStorage.getItem('ac_org')  || 'null');
-if(!token || !user || !org){ window.location.href = 'auditcore.html'; }
-if(org){
-  document.getElementById('sb-org-name').textContent = org.name || 'Unknown Org';
-  document.getElementById('sb-org-id').textContent = (org.slug||'') + ' \u2022 ' + (org.tier||'').toUpperCase();
-}
-var cur=document.getElementById('cur'), curR=document.getElementById('cur-r');
-var mx=0,my=0,rx=0,ry=0;
-document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-(function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+  const API_URL = 'https://auditcore-api-production.up.railway.app';
 
-async function api(path, opts) {
-  opts = opts || {};
-  try {
-    var res = await fetch(API_URL + path, Object.assign({}, opts, {
-      headers: Object.assign({'Authorization':'Bearer '+token,'Content-Type':'application/json'}, opts.headers||{}),
-      signal: AbortSignal.timeout(35000)
-    }));
-    if(res.status===401){signOut();return null;}
-    var data = await res.json();
-    if(!res.ok){console.error('API '+res.status,data);return null;}
-    return data;
-  } catch(e){console.error('API fail:',path,e.message);return null;}
-}
+  // ── Auth check ────────────────────────────────────────────
+  const token = sessionStorage.getItem('ac_token');
+  const user  = JSON.parse(sessionStorage.getItem('ac_user') || 'null');
+  const org   = JSON.parse(sessionStorage.getItem('ac_org')  || 'null');
+  if(!token || !user || !org){ window.location.href='auditcore.html'; }
 
-function drawRing(score){
-  var c=document.getElementById('ring-canvas');if(!c)return;
-  var x=c.getContext('2d'),cx=75,cy=75,r=64,lw=7;
-  x.clearRect(0,0,150,150);
-  x.beginPath();x.arc(cx,cy,r,-Math.PI/2,Math.PI*1.5);x.strokeStyle='rgba(0,240,255,0.1)';x.lineWidth=lw;x.stroke();
-  var col=score>=90?'#00ff88':score>=70?'#00f0ff':score>=50?'#ffb800':'#ff3355';
-  x.beginPath();x.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+(Math.PI*2*(score/100)));x.strokeStyle=col;x.lineWidth=lw;x.shadowBlur=10;x.shadowColor=col;x.stroke();x.shadowBlur=0;
-}
-
-async function loadDashboard(){
-  if(!org)return;
-  var data=await api('/orgs/'+org.id+'/dashboard');
-  if(!data){document.getElementById('score-label').textContent='API ERROR';document.getElementById('score-sublabel').textContent='Could not reach API';return;}
-  var score=data.compositeScore||0;
-  var col=score>=90?'var(--green)':score>=70?'var(--cyan)':score>=50?'var(--amber)':'var(--red)';
-  var lbl=score>=90?'AUDIT-READY':score>=70?'IN PROGRESS':score>=50?'NEEDS WORK':'AT RISK';
-  var curr=0,iv=setInterval(function(){curr=Math.min(curr+2,score);document.getElementById('score-display').textContent=curr;document.getElementById('score-display').style.color=col;drawRing(curr);if(curr>=score)clearInterval(iv);},18);
-  document.getElementById('score-label').textContent=lbl;document.getElementById('score-label').style.color=col;
-  document.getElementById('score-sublabel').textContent=data.lastScan?'LAST SCAN: '+new Date(data.lastScan.completed_at).toLocaleString():'NO SCAN RUN YET \u2014 CLICK RUN SCAN';
-  document.getElementById('tb-score').textContent=score+'%';document.getElementById('tb-score').style.color=col;
-  var of=data.findings?data.findings.length:0;document.getElementById('tb-gaps').textContent=of;document.getElementById('badge-findings').textContent=of;
-  var fw=data.frameworkScores||{};
-  var fwC={NIST:'var(--cyan)',CMMC:'var(--green)',OWASP:'var(--amber)',SOC2:'var(--magenta)',FIPS:'var(--blue)'};
-  var fwL={NIST:'NIST 800-171',CMMC:'CMMC LVL 2',OWASP:'OWASP TOP 10',SOC2:'SOC 2 TYPE II',FIPS:'FIPS 140-3'};
-  var fwe=Object.entries(fw);
-  document.getElementById('score-breakdown').innerHTML=fwe.length?fwe.map(function(e){return '<div class="sb-row"><div class="sb-dot" style="background:'+(fwC[e[0]]||'var(--dim)')+'"></div><div class="sb-name">'+(fwL[e[0]]||e[0])+'</div><div class="sb-val" style="color:'+(fwC[e[0]]||'var(--text)')+'">'+e[1]+'%</div></div>';}).join(''):'<div style="font-family:Share Tech Mono,monospace;font-size:0.55rem;color:var(--dim)">Run a scan to populate scores</div>';
-  var fwD=[{cls:'cmmc',key:'CMMC',name:'CMMC LEVEL 2',scope:'Cybersecurity Maturity Model \u2014 110 Practices'},{cls:'nist',key:'NIST',name:'NIST SP 800-171',scope:'CUI Protection \u2014 110 Controls, 14 Families'},{cls:'owasp',key:'OWASP',name:'OWASP TOP 10',scope:'Web Application Security \u2014 2021 Edition'},{cls:'soc',key:'SOC2',name:'SOC 2 TYPE II',scope:'Trust Service Criteria \u2014 Security, Availability'},{cls:'fips',key:'FIPS',name:'FIPS 140-3',scope:'Cryptographic Module Validation'}];
-  document.getElementById('fw-grid').innerHTML=fwD.map(function(f){var p=fw[f.key]||0;var c=fwC[f.key]||'var(--cyan)';var s=p>=90?'<span class="fw-status pass">&#9679; COMPLIANT</span>':p>=70?'<span class="fw-status warn">&#9650; IN PROGRESS</span>':'<span class="fw-status warn">&#9650; NEEDS WORK</span>';return '<div class="fw-card '+f.cls+'"><div class="fw-header"><div><div class="fw-name">'+f.name+'</div><div class="fw-scope">'+f.scope+'</div></div>'+s+'</div><div class="fw-bar-wrap"><div class="fw-bar-bg"><div class="fw-bar-fill" style="width:'+p+'%;background:'+c+'"></div></div><div class="fw-pct" style="color:'+c+'">'+p+'%</div></div></div>';}).join('');
-  loadActivity(data.recentActivity);
-  if(data.findings&&data.findings.length>0)document.getElementById('badge-gaps').textContent=data.findings.filter(function(f){return f.severity==='critical'||f.severity==='high';}).length;
-}
-
-async function loadControls(fw){
-  var url=fw?'/orgs/'+org.id+'/controls?framework='+fw:'/orgs/'+org.id+'/controls';
-  var data=await api(url);if(!data){document.getElementById('controls-body').innerHTML='<tr><td colspan="6" style="color:var(--red);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px;text-align:center">Failed to load</td></tr>';return;}
-  var sm={pass:'<span class="ctrl-status pass">&#9679; PASS</span>',fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',partial:'<span class="ctrl-status partial">&#9650; PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
-  var pm={critical:'<span class="priority pri-crit">CRITICAL</span>',high:'<span class="priority pri-high">HIGH</span>',medium:'<span class="priority pri-med">MED</span>',low:'<span class="priority pri-low">LOW</span>'};
-  var ctrls=data.controls||[];
-  if(!ctrls.length){document.getElementById('controls-body').innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--dim);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px">No controls found</td></tr>';return;}
-  document.getElementById('controls-body').innerHTML=ctrls.map(function(c){var d=c.control_definitions||{};return '<tr><td><span class="ctrl-id">'+(d.id||c.control_id||'\u2014')+'</span></td><td style="color:var(--dim)">'+(d.framework||'\u2014')+'</td><td>'+(d.family||'\u2014')+'</td><td style="max-width:280px;line-height:1.4">'+(d.title||'\u2014')+'</td><td>'+(sm[c.status]||sm.not_assessed)+'</td><td>'+(pm[d.priority]||pm.medium)+'</td></tr>';}).join('');
-}
-
-async function loadFindings(){
-  var data=await api('/orgs/'+org.id+'/findings');if(!data){document.getElementById('findings-grid').innerHTML='<div style="color:var(--red);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px">Failed to load</div>';return;}
-  var f=data.findings||[];document.getElementById('badge-findings').textContent=f.length;
-  var g=document.getElementById('findings-grid');
-  if(!f.length){g.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--green);padding:30px;text-align:center;border:1px solid var(--border)">&#9679; NO OPEN FINDINGS \u2014 EXCELLENT POSTURE</div>';return;}
-  g.innerHTML=f.map(function(i){return '<div class="finding-card '+(i.severity||'info')+'"><div class="finding-type">&#9650; '+(i.severity||'info').toUpperCase()+'</div><div class="finding-title">'+(i.title||'Untitled')+'</div><div class="finding-desc">'+(i.description||'')+'</div><div class="finding-meta">'+(i.control_id?'<span class="finding-tag">'+i.control_id+'</span>':'')+'<span class="finding-tag">'+(i.severity||'info').toUpperCase()+' RISK</span><span class="finding-tag">'+(i.framework||'GENERAL')+'</span></div></div>';}).join('');
-}
-
-function loadActivity(log){
-  var colors={login:'var(--cyan)',control_updated:'var(--green)',finding_created:'var(--red)',scan_completed:'var(--green)',AUTO_SCAN_COMPLETED:'var(--green)',M365_SCAN_COMPLETED:'var(--blue)',AWS_SCAN_COMPLETED:'var(--amber)'};
-  var feed=document.getElementById('activity-feed');
-  if(!log||!log.length){feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px">No activity yet \u2014 run a scan to get started</div>';return;}
-  feed.innerHTML=log.map(function(a){return '<div class="activity-item"><div class="act-dot" style="background:'+(colors[a.action]||'var(--dim)')+'"></div><div class="act-content"><div class="act-title">'+a.action.replace(/_/g,' ')+'</div><div class="act-time">'+new Date(a.created_at).toLocaleString()+'</div></div></div>';}).join('');
-}
-
-async function generateReport(type){
-  var data=await api('/orgs/'+org.id+'/reports',{method:'POST',body:JSON.stringify({type:type})});
-  if(!data){alert('Failed to generate report');return;}
-  var blob=new Blob([JSON.stringify(data.data||data,null,2)],{type:'application/json'});
-  var url=URL.createObjectURL(blob);var a=document.createElement('a');a.href=url;a.download='auditcore-'+type+'-'+new Date().toISOString().slice(0,10)+'.json';a.click();URL.revokeObjectURL(url);
-}
-
-async function startScan(){
-  var btn=document.getElementById('scan-btn');btn.disabled=true;btn.textContent='SCANNING...';
-  var overlay=document.getElementById('scan-overlay'),bar=document.getElementById('scan-bar'),log=document.getElementById('scan-log'),summary=document.getElementById('scan-result-summary');
-  overlay.classList.add('active');bar.style.width='0';log.innerHTML='';summary.textContent='';
-  var lines=['> Initializing scan engine...','> Resolving domain configuration...','> Checking HTTP security headers...','> Querying DNS records (SPF / DMARC)...','> Testing clickjacking protection...','> Checking HTTPS redirect...','> Scanning security.txt...','> Checking sensitive file exposure...','> Testing HTTP methods...','> Scanning open ports...','> Checking mixed content...','> Submitting SSL Labs analysis...','> Aggregating findings...','> Writing results to database...'];
-  var li=0,iv=setInterval(function(){if(li<lines.length){var d=document.createElement('div');d.textContent=lines[li];d.style.opacity='0';d.style.transition='opacity .3s';log.appendChild(d);requestAnimationFrame(function(){d.style.opacity='1';});bar.style.width=((li+1)/lines.length*85)+'%';li++;}},800);
-  var result=await api('/orgs/'+org.id+'/scan',{method:'POST',body:JSON.stringify({})});
-  clearInterval(iv);bar.style.width='100%';
-  var d=document.createElement('div');
-  if(result){d.textContent='> \u2713 Scan complete. '+(result.checksRun||0)+' checks run. '+(result.findingsCreated||0)+' findings created.';d.style.color='var(--green)';log.appendChild(d);summary.textContent='SCORE: '+(result.score||0)+'/100 \u2014 DOMAIN: '+(result.domain||'');summary.style.color=(result.score||0)>=70?'var(--green)':'var(--amber)';}
-  else{d.textContent='> \u26a0 Scan encountered an error.';d.style.color='var(--red)';log.appendChild(d);summary.textContent='SCAN FAILED \u2014 SEE LOGS';summary.style.color='var(--red)';}
-  setTimeout(function(){overlay.classList.remove('active');btn.disabled=false;btn.textContent='RUN SCAN \u25b6';loadDashboard();},2000);
-}
-
-// ── M365 Integration ──────────────────────────────────────────
-async function loadM365Page(){
-  var el=document.getElementById('page-m365');
-  el.innerHTML='<div class="loading">// LOADING INTEGRATION STATUS</div>';
-  var data=await api('/orgs/'+org.id+'/integrations');
-  var existing=null;
-  if(data&&data.integrations)existing=data.integrations.find(function(i){return i.provider==='microsoft365';})||null;
-  var badge=document.getElementById('badge-m365');
-  if(existing){badge.textContent='\u25cf';badge.style.color='var(--green)';}
-  else{badge.textContent='\u25cb';badge.style.color='var(--dim)';}
-  buildM365Page(el,existing);
-}
-
-function buildM365Page(el,existing){
-  var connected=!!existing;
-  var html='<div class="section-title">MICROSOFT 365 INTEGRATION</div><div class="int-card"><div class="int-header"><div class="int-logo">\u229e</div><div><div class="int-name">Microsoft 365</div><div style="font-family:Share Tech Mono,monospace;font-size:0.52rem;color:var(--dim);margin-top:3px;">Azure Active Directory \u2022 Microsoft Graph API</div></div><div style="margin-left:auto"><span class="int-badge '+(connected?'on':'off')+'">'+(connected?'\u25cf CONNECTED':'\u25cb NOT CONNECTED')+'</span></div></div>';
-  if(connected){
-    html+='<div style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);margin-bottom:16px"><span style="color:var(--text)">Tenant:</span> '+existing.tenant_id+' &nbsp;\u2022&nbsp; <span style="color:var(--text)">Last Scan:</span> '+(existing.last_scan_at?new Date(existing.last_scan_at).toLocaleString():'Never')+'</div>';
-    html+='<div class="int-actions"><button class="ibtn ibtn-g" onclick="runM365Scan()" id="m365-scan-btn">RUN M365 SCAN &#9654;</button><button class="ibtn ibtn-a" onclick="showM365Form()">UPDATE CREDENTIALS</button><button class="ibtn ibtn-r" onclick="disconnectM365()">DISCONNECT</button></div>';
-  } else {
-    html+='<p style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);line-height:1.8;margin-bottom:20px">Connect your Microsoft 365 tenant to automatically scan MFA status, Conditional Access policies, privileged accounts, inactive users, audit logging, and more \u2014 closing 15+ NIST controls automatically.</p>';
-    html+='<div class="cred-grid"><div class="cred-field"><label>// Tenant ID</label><input type="text" id="m365-tenant" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off"/></div><div class="cred-field"><label>// Client ID</label><input type="text" id="m365-client" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off"/></div><div class="cred-field cred-full"><label>// Client Secret</label><input type="password" id="m365-secret" placeholder="Your app registration client secret" autocomplete="off"/></div></div>';
-    html+='<div class="int-actions"><button class="ibtn ibtn-c" onclick="testM365Connection()" id="m365-test-btn">TEST CONNECTION</button><button class="ibtn ibtn-g" onclick="saveM365Credentials()" id="m365-save-btn" style="display:none">SAVE &amp; CONNECT &#9654;</button></div>';
-    html+='<div class="int-msg" id="m365-msg"></div>';
-    html+='<div style="margin-top:24px"><div class="section-title" style="font-size:0.65rem">SETUP INSTRUCTIONS</div><div class="setup-list">';
-    html+='<div class="setup-item"><div class="setup-num">1</div><div class="setup-txt">Go to <a href="https://portal.azure.com" target="_blank">portal.azure.com</a> and search for <strong style="color:var(--cyan)">App registrations</strong> \u2192 <strong style="color:var(--cyan)">New registration</strong>. Name it <code>AuditCore Scanner</code> and click Register.</div></div>';
-    html+='<div class="setup-item"><div class="setup-num">2</div><div class="setup-txt">On the overview page copy your <strong style="color:var(--cyan)">Directory (tenant) ID</strong> and <strong style="color:var(--cyan)">Application (client) ID</strong>.</div></div>';
-    html+='<div class="setup-item"><div class="setup-num">3</div><div class="setup-txt">Go to <strong style="color:var(--cyan)">Certificates &amp; secrets</strong> \u2192 New client secret \u2192 copy the <strong style="color:var(--cyan)">Value</strong> immediately (it hides after you leave).</div></div>';
-    html+='<div class="setup-item"><div class="setup-num">4</div><div class="setup-txt">Go to <strong style="color:var(--cyan)">API permissions</strong> \u2192 Add permission \u2192 Microsoft Graph \u2192 Application permissions. Add: <code>User.Read.All</code> <code>UserAuthenticationMethod.Read.All</code> <code>AuditLog.Read.All</code> <code>Directory.Read.All</code> <code>Policy.Read.All</code></div></div>';
-    html+='<div class="setup-item"><div class="setup-num">5</div><div class="setup-txt">Click <strong style="color:var(--cyan)">Grant admin consent</strong>, then paste your three credentials above and click <strong style="color:var(--cyan)">TEST CONNECTION</strong>.</div></div>';
-    html+='</div></div>';
+  // ── Populate sidebar ──────────────────────────────────────
+  if(org){
+    document.getElementById('sb-org-name').textContent = org.name || 'Unknown Org';
+    document.getElementById('sb-org-meta').textContent = `${org.slug||''} • ${(org.tier||'').toUpperCase()}`;
+    document.getElementById('sb-license-info').textContent = `License: ${(org.tier||'').toUpperCase()}`;
   }
-  html+='</div><div id="m365-results"></div>';
-  el.innerHTML=html;
-}
 
-function showM365Form(){buildM365Page(document.getElementById('page-m365'),null);}
+  // ── Cursor ────────────────────────────────────────────────
+  const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
 
-async function testM365Connection(){
-  var t=document.getElementById('m365-tenant'),c=document.getElementById('m365-client'),s=document.getElementById('m365-secret');
-  var msg=document.getElementById('m365-msg'),btn=document.getElementById('m365-test-btn');
-  if(!t||!c||!s||!t.value.trim()||!c.value.trim()||!s.value.trim()){msg.textContent='> All three fields are required.';msg.className='int-msg show err';return;}
-  btn.disabled=true;btn.textContent='TESTING...';msg.textContent='> Testing connection to Microsoft Graph API...';msg.className='int-msg show inf';
-  var result=await api('/orgs/'+org.id+'/integrations/m365/test',{method:'POST',body:JSON.stringify({tenant_id:t.value.trim(),client_id:c.value.trim(),client_secret:s.value.trim()})});
-  btn.disabled=false;btn.textContent='TEST CONNECTION';
-  if(result&&result.success){msg.textContent='> \u2713 Connected to: '+result.tenant_name+'. Click SAVE & CONNECT to store credentials.';msg.className='int-msg show ok';var sb=document.getElementById('m365-save-btn');if(sb)sb.style.display='inline-block';}
-  else{msg.textContent='> \u2717 '+(result?result.error||'Connection failed':'Connection failed. Check credentials.');msg.className='int-msg show err';}
-}
+  // ── API helper ────────────────────────────────────────────
+  async function api(path, opts={}){
+    const res = await fetch(`${API_URL}${path}`, {
+      ...opts,
+      headers:{ 'Authorization':`Bearer ${token}`, 'Content-Type':'application/json', ...(opts.headers||{}) },
+    });
+    if(res.status===401){ signOut(); return null; }
+    return res.json();
+  }
 
-async function saveM365Credentials(){
-  var t=document.getElementById('m365-tenant'),c=document.getElementById('m365-client'),s=document.getElementById('m365-secret');
-  var btn=document.getElementById('m365-save-btn'),msg=document.getElementById('m365-msg');
-  btn.disabled=true;btn.textContent='SAVING...';
-  var result=await api('/orgs/'+org.id+'/integrations/m365',{method:'POST',body:JSON.stringify({tenant_id:t.value.trim(),client_id:c.value.trim(),client_secret:s.value.trim()})});
-  if(result&&(result.integration_id||result.message)){msg.textContent='> \u2713 Microsoft 365 integration saved. Ready to scan.';msg.className='int-msg show ok';setTimeout(loadM365Page,1000);}
-  else{btn.disabled=false;btn.textContent='SAVE & CONNECT \u25b6';msg.textContent='> Failed: '+(result?result.error||'Unknown error':'Unknown error');msg.className='int-msg show err';}
-}
+  // ── Score ring ────────────────────────────────────────────
+  function drawRing(score){
+    const c=document.getElementById('ring-canvas');
+    if(!c) return;
+    const x=c.getContext('2d'),cx=70,cy=70,r=60,lw=6;
+    x.clearRect(0,0,140,140);
+    x.beginPath();x.arc(cx,cy,r,-Math.PI/2,Math.PI*1.5);
+    x.strokeStyle='rgba(0,240,255,0.1)';x.lineWidth=lw;x.stroke();
+    const color=score>=90?'#00ff88':score>=70?'#00f0ff':score>=50?'#ffb800':'#ff3355';
+    x.beginPath();x.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+(Math.PI*2*(score/100)));
+    x.strokeStyle=color;x.lineWidth=lw;x.shadowBlur=10;x.shadowColor=color;x.stroke();
+    x.shadowBlur=0;
+  }
 
-async function disconnectM365(){
-  if(!confirm('Remove Microsoft 365 integration? Scan results will be kept.'))return;
-  await api('/orgs/'+org.id+'/integrations/microsoft365',{method:'DELETE'});
-  loadM365Page();
-}
+  // ── Load posture ──────────────────────────────────────────
+  async function loadPosture(){
+    if(!org) return;
+    const data = await api(`/orgs/${org.id}/posture`);
+    if(!data) return;
 
-async function runM365Scan(){
-  var btn=document.getElementById('m365-scan-btn'),res=document.getElementById('m365-results');
-  btn.disabled=true;btn.textContent='SCANNING...';
-  res.innerHTML='<div class="loading">// RUNNING MICROSOFT 365 SECURITY SCAN \u2014 THIS MAY TAKE 30-60 SECONDS</div>';
-  var result=await api('/orgs/'+org.id+'/scan/m365',{method:'POST',body:JSON.stringify({})});
-  btn.disabled=false;btn.textContent='RUN M365 SCAN \u25b6';
-  if(!result){res.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--red);padding:20px">Scan failed. Check Railway logs.</div>';return;}
-  var r=result.results||{};
-  var checks=[{k:'mfa',n:'MFA Status'},{k:'inactive_accounts',n:'Inactive Accounts'},{k:'privileged_roles',n:'Privileged Roles'},{k:'conditional_access',n:'Conditional Access'},{k:'legacy_auth',n:'Legacy Auth'},{k:'secure_score',n:'Secure Score'},{k:'password_policy',n:'Password Policy'},{k:'audit_logging',n:'Audit Logging'},{k:'guest_accounts',n:'Guest Accounts'},{k:'sspr',n:'Password Reset'}];
-  var sc=result.score>=80?'var(--green)':result.score>=60?'var(--amber)':'var(--red)';
-  var tiles=checks.map(function(ch){
-    var item=r[ch.k];if(!item)return '';
-    var vc=item.status==='pass'?'pass':item.status==='fail'?'fail':item.status==='partial'?'partial':'not_assessed';
-    var vt=item.status==='pass'?'\u25cf PASS':item.status==='fail'?'\u25b2 FAIL':item.status==='partial'?'\u25b2 PARTIAL':'\u2014 N/A';
-    var det='';
-    if(item.details){
-      if(item.details.mfa_adoption_rate)det=item.details.mfa_adoption_rate+' MFA adoption';
-      else if(item.details.inactive_90_days!==undefined)det=item.details.inactive_90_days+' inactive';
-      else if(item.details.total_privileged_users!==undefined)det=item.details.total_privileged_users+' privileged';
-      else if(item.details.enabled_policies!==undefined)det=item.details.enabled_policies+' policies';
-      else if(item.details.percentage)det=item.details.percentage;
+    const score = data.composite_score || 0;
+    const sprs  = data.sprs_score ?? '—';
+    const color = score>=90?'var(--green)':score>=70?'var(--cyan)':score>=50?'var(--amber)':'var(--red)';
+    const label = score>=90?'AUDIT-READY':score>=70?'IN PROGRESS':score>=50?'NEEDS WORK':'AT RISK';
+
+    let curr=0;
+    const iv=setInterval(()=>{
+      curr+=2;if(curr>=score){curr=score;clearInterval(iv);}
+      document.getElementById('score-display').textContent=curr;
+      document.getElementById('score-display').style.color=color;
+      drawRing(curr);
+    },18);
+
+    document.getElementById('score-label').textContent=label;
+    document.getElementById('score-label').style.color=color;
+    document.getElementById('score-sublabel').textContent=`LAST SCAN: ${new Date(data.last_calculated).toLocaleString()}`;
+    document.getElementById('tb-score').textContent=score+'%';
+    document.getElementById('tb-score').style.color=color;
+    document.getElementById('tb-gaps').textContent=data.open_gaps||0;
+    document.getElementById('tb-sprs').textContent=sprs;
+    document.getElementById('sprs-display').textContent=`${sprs} pts`;
+    document.getElementById('badge-gaps').textContent=data.open_gaps||0;
+
+    const fw=data.framework_scores||{};
+    const fwColors={NIST:'var(--cyan)',CMMC:'var(--green)',OWASP:'var(--amber)',SOC2:'var(--magenta)',FIPS:'var(--blue)'};
+    const fwLabels={NIST:'NIST 800-171',CMMC:'CMMC LVL 2',OWASP:'OWASP TOP 10',SOC2:'SOC 2 TYPE II',FIPS:'FIPS 140-3'};
+
+    document.getElementById('score-breakdown').innerHTML=Object.entries(fw).filter(([,v])=>v!==null).map(([k,v])=>`
+      <div class="sb-row">
+        <div class="sb-dot" style="background:${fwColors[k]};"></div>
+        <div class="sb-name">${fwLabels[k]||k}</div>
+        <div class="sb-val" style="color:${fwColors[k]};">${v}%</div>
+      </div>`).join('');
+
+    const fwData=[
+      {cls:'cmmc',key:'CMMC',name:'CMMC LEVEL 2',scope:'Cybersecurity Maturity Model — 110 Practices'},
+      {cls:'nist',key:'NIST',name:'NIST SP 800-171',scope:'CUI Protection — 110 Controls'},
+      {cls:'owasp',key:'OWASP',name:'OWASP TOP 10',scope:'Web Application Security — 2021'},
+      {cls:'soc',key:'SOC2',name:'SOC 2 TYPE II',scope:'Trust Service Criteria'},
+      {cls:'fips',key:'FIPS',name:'FIPS 140-3',scope:'Cryptographic Validation'},
+    ];
+    document.getElementById('fw-grid').innerHTML=fwData.map(f=>{
+      const pct=fw[f.key]??0;
+      const c=fwColors[f.key];
+      const st=pct>=90?`<span class="fw-status pass">&#9679; COMPLIANT</span>`:
+               pct>=70?`<span class="fw-status warn">&#9650; IN PROGRESS</span>`:
+               `<span class="fw-status warn">&#9650; NEEDS WORK</span>`;
+      return `<div class="fw-card ${f.cls}">
+        <div class="fw-header"><div><div class="fw-name">${f.name}</div><div class="fw-scope">${f.scope}</div></div>${st}</div>
+        <div class="fw-bar-wrap">
+          <div class="fw-bar-bg"><div class="fw-bar-fill" style="width:${pct}%;background:${c};"></div></div>
+          <div class="fw-pct" style="color:${c};">${pct}%</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Load controls with remediation buttons ─────────────────
+  async function loadControls(framework){
+    const statusFilter = document.getElementById('status-filter')?.value || '';
+    let url = `/orgs/${org.id}/controls`;
+    const params = [];
+    if(framework) params.push(`framework=${framework}`);
+    if(statusFilter) params.push(`status=${statusFilter}`);
+    if(params.length) url += '?' + params.join('&');
+
+    const data = await api(url);
+    if(!data) return;
+
+    const sm={
+      pass:'<span class="ctrl-status pass">&#9679; PASS</span>',
+      fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',
+      partial:'<span class="ctrl-status warn">&#9650; PARTIAL</span>',
+      not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',
+      not_applicable:'<span class="ctrl-status na">N/A</span>'
+    };
+    const pm={critical:'<span class="priority pri-crit">CRITICAL</span>',high:'<span class="priority pri-high">HIGH</span>',medium:'<span class="priority pri-med">MED</span>',low:'<span class="priority pri-low">LOW</span>'};
+
+    const tbody=document.getElementById('controls-body');
+    if(!data.controls?.length){
+      tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--green);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px;">&#9679; All controls passing</td></tr>';
+      return;
     }
-    return '<div class="m365-tile"><div class="m365-tile-name">'+ch.n.toUpperCase()+'</div><div class="m365-tile-val '+vc+'">'+vt+'</div><div class="m365-tile-detail">'+det+'</div></div>';
-  }).join('');
-  res.innerHTML='<div class="int-card"><div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px"><div class="section-title" style="margin-bottom:0">M365 SCAN RESULTS</div><div style="font-family:Orbitron,monospace;font-size:1.2rem;font-weight:900;color:'+sc+'">'+result.score+'/100</div></div><div class="m365-grid">'+tiles+'</div><div style="margin-top:14px;font-family:Share Tech Mono,monospace;font-size:0.55rem;color:var(--dim)">'+(result.findingsCreated||0)+' finding(s) created \u2022 '+(result.checksRun||0)+' checks run \u2022 '+new Date(result.scannedAt).toLocaleString()+'</div></div>';
-  loadDashboard();
-}
-
-// ── AWS Integration ───────────────────────────────────────────
-async function loadAWSPage(){
-  var el=document.getElementById('page-aws');
-  el.innerHTML='<div class="loading">// LOADING AWS INTEGRATION STATUS...</div>';
-  var data=await api('/orgs/'+org.id+'/integrations');
-  var existing=data&&data.integrations?data.integrations.find(function(i){return i.provider==='aws';}):null;
-  var badge=document.getElementById('badge-aws');
-  if(badge){badge.textContent=existing?'\u25cf':'\u25cb';badge.style.color=existing?'var(--amber)':'var(--dim)';}
-  renderAWSPage(existing);
-}
-
-function renderAWSPage(existing){
-  var el=document.getElementById('page-aws');
-  var isConnected=!!existing;
-  var regions=['us-east-1','us-east-2','us-west-1','us-west-2','eu-west-1','eu-west-2','eu-central-1','ap-northeast-1','ap-southeast-1','ap-southeast-2','ca-central-1'];
-  var regionOpts=regions.map(function(r){return '<option value="'+r+'"'+(r==='us-east-1'?' selected':'')+'>'+r+'</option>';}).join('');
-  var setup='<div style="margin-top:24px;"><div class="section-title" style="font-size:0.65rem;">SETUP INSTRUCTIONS</div><div class="setup-list">'
-    +'<div class="setup-item"><div class="setup-num">1</div><div class="setup-txt">Go to <a href="https://console.aws.amazon.com/iam" target="_blank">AWS IAM Console</a> \u2192 Users \u2192 Create user. Name it <code>auditcore-scanner</code>.</div></div>'
-    +'<div class="setup-item"><div class="setup-num">2</div><div class="setup-txt">Attach managed policies: <code>SecurityAudit</code> and <code>ReadOnlyAccess</code>. These are read-only \u2014 AuditCore cannot modify anything in your account.</div></div>'
-    +'<div class="setup-item"><div class="setup-num">3</div><div class="setup-txt">Go to the user \u2192 Security credentials \u2192 Create access key. Select "Third-party service". Copy both the <strong style="color:var(--amber);">Access Key ID</strong> and <strong style="color:var(--amber);">Secret Access Key</strong>.</div></div>'
-    +'<div class="setup-item"><div class="setup-num">4</div><div class="setup-txt">Select your primary AWS region, paste your credentials below, and click <strong style="color:var(--amber);">TEST CONNECTION</strong>.</div></div>'
-    +'</div></div>';
-  var connectedHtml='<div style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);margin-bottom:16px;">'
-    +'<span style="color:var(--text);">Access Key:</span> '+existing.client_id.slice(0,8)+'... &nbsp;\u2022&nbsp;'
-    +'<span style="color:var(--text);">Region:</span> '+(existing.tenant_id||'us-east-1')+' &nbsp;\u2022&nbsp;'
-    +'<span style="color:var(--text);">Last Scan:</span> '+(existing.last_scan_at?new Date(existing.last_scan_at).toLocaleString():'Never')
-    +'</div>'
-    +'<div class="int-actions">'
-    +'<button class="ibtn ibtn-a" onclick="runAWSScan()" id="aws-scan-btn">RUN AWS SCAN &#9654;</button>'
-    +'<button class="ibtn ibtn-c" onclick="showAWSForm()">UPDATE CREDENTIALS</button>'
-    +'<button class="ibtn ibtn-r" onclick="disconnectAWS()">DISCONNECT</button>'
-    +'</div>';
-  var formHtml='<p style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);line-height:1.8;margin-bottom:20px;">Connect your AWS account to automatically scan IAM, S3, CloudTrail, GuardDuty, EC2 security groups, RDS, and EBS encryption \u2014 closing 20+ NIST controls automatically.</p>'
-    +'<div class="cred-grid">'
-    +'<div class="cred-field"><label>// AWS Access Key ID</label><input type="text" id="aws-key-id" placeholder="AKIAIOSFODNN7EXAMPLE" autocomplete="off"/></div>'
-    +'<div class="cred-field"><label>// AWS Region</label><select id="aws-region" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:#c8e8f0;font-family:Share Tech Mono,monospace;font-size:0.65rem;padding:9px 12px;outline:none;-webkit-appearance:none;appearance:none;">'+regionOpts+'</select></div>'
-    +'<div class="cred-field cred-full"><label>// AWS Secret Access Key</label><input type="password" id="aws-secret-key" placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY" autocomplete="off"/></div>'
-    +'</div>'
-    +'<div class="int-actions">'
-    +'<button class="ibtn ibtn-c" onclick="testAWSConnection()" id="aws-test-btn">TEST CONNECTION</button>'
-    +'<button class="ibtn ibtn-a" style="display:none;" onclick="saveAWSCredentials()" id="aws-save-btn">SAVE &amp; CONNECT &#9654;</button>'
-    +'</div>'
-    +'<div class="int-msg" id="aws-msg"></div>'
-    +setup;
-  el.innerHTML='<div class="section-title">AMAZON AWS INTEGRATION</div>'
-    +'<div class="int-card" style="border-color:rgba(255,184,0,0.2);">'
-    +'<div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,#ffb800,#ff8c00);"></div>'
-    +'<div class="int-header">'
-    +'<div class="int-logo" style="background:linear-gradient(135deg,#ff9900,#ffb800);">&#9729;</div>'
-    +'<div><div class="int-name">Amazon Web Services</div><div style="font-family:Share Tech Mono,monospace;font-size:0.52rem;color:var(--dim);margin-top:3px;">IAM \u2022 S3 \u2022 EC2 \u2022 RDS \u2022 CloudTrail \u2022 GuardDuty</div></div>'
-    +'<div style="margin-left:auto;"><span class="int-badge '+(isConnected?'on':'off')+'">'+(isConnected?'\u25cf CONNECTED':'\u25cb NOT CONNECTED')+'</span></div>'
-    +'</div>'
-    +(isConnected?connectedHtml:formHtml)
-    +'</div>'
-    +'<div id="aws-results"></div>';
-}
-
-function showAWSForm(){renderAWSPage(null);}
-
-async function testAWSConnection(){
-  var keyId=document.getElementById('aws-key-id').value.trim();
-  var secret=document.getElementById('aws-secret-key').value.trim();
-  var region=document.getElementById('aws-region').value;
-  var msg=document.getElementById('aws-msg');
-  var btn=document.getElementById('aws-test-btn');
-  if(!keyId||!secret){msg.textContent='> Access Key ID and Secret Access Key are required.';msg.className='int-msg show err';return;}
-  btn.disabled=true;btn.textContent='TESTING...';
-  msg.textContent='> Connecting to AWS STS...';msg.className='int-msg show inf';
-  var result=await api('/orgs/'+org.id+'/integrations/aws/test',{method:'POST',body:JSON.stringify({access_key_id:keyId,secret_access_key:secret,region:region})});
-  btn.disabled=false;btn.textContent='TEST CONNECTION';
-  if(result&&result.success){
-    msg.textContent='> \u2713 Connected to AWS Account: '+result.account_id+' ('+result.region+'). Click SAVE & CONNECT to store credentials.';
-    msg.className='int-msg show ok';
-    document.getElementById('aws-save-btn').style.display='inline-block';
-  } else {
-    msg.textContent='> \u2717 '+(result&&result.error?result.error:'Connection failed. Check your credentials.');
-    msg.className='int-msg show err';
+    tbody.innerHTML=data.controls.map(c=>`<tr>
+      <td><span class="ctrl-id">${c.id}</span></td>
+      <td style="color:var(--dim)">${c.framework}</td>
+      <td>${c.family}</td>
+      <td style="max-width:260px;line-height:1.4;">${c.title}</td>
+      <td>${sm[c.assessment?.status||'not_assessed']||sm.not_assessed}</td>
+      <td>${pm[c.priority]||pm.medium}</td>
+      <td>${c.remediation_available ?
+        `<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE &#9654;</button>` :
+        '<span style="color:var(--dim);font-family:Share Tech Mono,monospace;font-size:.48rem;">MANUAL</span>'
+      }</td>
+    </tr>`).join('');
   }
-}
 
-async function saveAWSCredentials(){
-  var keyId=document.getElementById('aws-key-id').value.trim();
-  var secret=document.getElementById('aws-secret-key').value.trim();
-  var region=document.getElementById('aws-region').value;
-  var btn=document.getElementById('aws-save-btn');
-  var msg=document.getElementById('aws-msg');
-  btn.disabled=true;btn.textContent='SAVING...';
-  var result=await api('/orgs/'+org.id+'/integrations/aws',{method:'POST',body:JSON.stringify({access_key_id:keyId,secret_access_key:secret,region:region})});
-  if(result&&(result.integration_id||result.message)){
-    msg.textContent='> \u2713 AWS integration saved. Ready to scan.';msg.className='int-msg show ok';
-    setTimeout(function(){loadAWSPage();},1000);
-  } else {
-    btn.disabled=false;btn.textContent='SAVE & CONNECT \u25b6';
-    msg.textContent='> Failed: '+(result&&result.error?result.error:'Unknown error');msg.className='int-msg show err';
+  // ── Load findings with remediation ────────────────────────
+  async function loadFindings(){
+    const data = await api(`/orgs/${org.id}/findings?status=open`);
+    if(!data) return;
+    document.getElementById('badge-findings').textContent=data.total||0;
+    const grid=document.getElementById('findings-grid');
+    if(!data.findings?.length){
+      grid.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--green);padding:30px;text-align:center;border:1px solid var(--border);">&#9679; NO OPEN FINDINGS — EXCELLENT POSTURE</div>';
+      return;
+    }
+    grid.innerHTML=data.findings.map(f=>`
+      <div class="finding-card ${f.severity}">
+        <div class="finding-type">&#9650; ${f.severity.toUpperCase()}</div>
+        <div class="finding-title">${f.title}</div>
+        <div class="finding-desc">${f.description}</div>
+        <div class="finding-actions">
+          ${f.auto_fix_available ?
+            `<span class="auto-fix-badge">&#9679; AUTO-FIX AVAILABLE</span>
+             <button class="btn-fix auto" onclick="executeRemediation('${f.id}','${f.remediation_type}',true)">AUTO-FIX &#9654;</button>` : ''}
+          ${f.remediation_guide_available ?
+            `<button class="btn-fix guide" onclick="executeRemediation('${f.id}','${f.remediation_type}',false)">GUIDE &#9654;</button>` : ''}
+          ${f.control_id ? `<span class="finding-tag">${f.control_id}</span>` : ''}
+          <span class="finding-tag">${f.severity.toUpperCase()} RISK</span>
+        </div>
+      </div>`).join('');
   }
-}
 
-async function disconnectAWS(){
-  if(!confirm('Remove AWS integration? Scan results will be kept.')) return;
-  await api('/orgs/'+org.id+'/integrations/aws',{method:'DELETE'});
-  loadAWSPage();
-}
+  // ── Load POA&M ────────────────────────────────────────────
+  async function loadPOAM(){
+    const data = await api(`/orgs/${org.id}/poam`);
+    if(!data) return;
+    const tbody = document.getElementById('poam-body');
+    if(!data.poam?.length){
+      tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--dim);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px;">No POA&M entries. Click "Generate from Findings" to create.</td></tr>';
+      return;
+    }
+    const riskMap={high:'<span class="risk-badge risk-high">HIGH</span>',moderate:'<span class="risk-badge risk-mod">MOD</span>',low:'<span class="risk-badge risk-low">LOW</span>'};
+    tbody.innerHTML=data.poam.map(p=>`<tr>
+      <td><span class="ctrl-id">${p.control_id||'—'}</span><br/><span style="color:var(--dim);font-size:.46rem;">${p.control_definitions?.family||''}</span></td>
+      <td style="max-width:220px;line-height:1.4;">${p.weakness?.slice(0,100)}${p.weakness?.length>100?'...':''}</td>
+      <td>${riskMap[p.risk_rating]||'—'}</td>
+      <td>${p.scheduled_completion ? new Date(p.scheduled_completion).toLocaleDateString() : '—'}</td>
+      <td><span class="ctrl-status ${p.status==='completed'?'pass':p.status==='in_progress'?'warn':'fail'}">${p.status?.toUpperCase().replace('_',' ')}</span></td>
+      <td style="color:${p.auto_generated?'var(--cyan)':'var(--dim)'};">${p.auto_generated?'AUTO':'MANUAL'}</td>
+    </tr>`).join('');
+  }
 
-async function runAWSScan(){
-  var btn=document.getElementById('aws-scan-btn');
-  var resultsEl=document.getElementById('aws-results');
-  btn.disabled=true;btn.textContent='SCANNING...';
-  resultsEl.innerHTML='<div class="loading">// RUNNING AWS SECURITY SCAN \u2014 THIS MAY TAKE 30-60 SECONDS...</div>';
-  var result=await api('/orgs/'+org.id+'/scan/aws',{method:'POST',body:JSON.stringify({})});
-  btn.disabled=false;btn.textContent='RUN AWS SCAN \u25b6';
-  if(!result){resultsEl.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--red);padding:20px;">Scan failed. Check Railway logs.</div>';return;}
-  var r=result.results||{};
-  var checks=[
-    {key:'iam_summary',name:'Root Account MFA'},
-    {key:'password_policy',name:'Password Policy'},
-    {key:'iam_users',name:'Access Key Rotation'},
-    {key:'s3',name:'S3 Bucket Security'},
-    {key:'cloudtrail',name:'CloudTrail Logging'},
-    {key:'ec2_security_groups',name:'EC2 Security Groups'},
-    {key:'rds',name:'RDS Encryption'},
-    {key:'guardduty',name:'GuardDuty'},
-    {key:'ebs_encryption',name:'EBS Encryption'},
-  ];
-  var tiles=checks.map(function(c){
-    var ch=r[c.key];if(!ch)return '';
-    var sc=ch.status==='pass'?'pass':ch.status==='fail'?'fail':ch.status==='partial'?'partial':'not_assessed';
-    var st=ch.status==='pass'?'\u25cf PASS':ch.status==='fail'?'\u25b2 FAIL':ch.status==='partial'?'\u25b2 PARTIAL':'\u2014 N/A';
-    var det=ch.details&&ch.details.public_buckets!==undefined?ch.details.public_buckets+' public, '+ch.details.unencrypted_buckets+' unencrypted':ch.details&&ch.details.stale_access_keys!==undefined?ch.details.stale_access_keys+' stale keys':ch.details&&ch.details.wide_open_rules!==undefined?ch.details.wide_open_rules+' open rules':ch.details&&ch.details.message?ch.details.message.slice(0,35):'Score: '+ch.score+'/100';
-    return '<div class="m365-tile"><div class="m365-tile-name">'+c.name.toUpperCase()+'</div><div class="m365-tile-val '+sc+'">'+st+'</div><div class="m365-tile-detail">'+det+'</div></div>';
-  }).join('');
-  var sc=result.score>=80?'var(--green)':result.score>=60?'var(--amber)':'var(--red)';
-  resultsEl.innerHTML='<div class="int-card" style="border-color:rgba(255,184,0,0.2);">'
-    +'<div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,#ffb800,#ff8c00);"></div>'
-    +'<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;">'
-    +'<div class="section-title" style="margin-bottom:0;">AWS SCAN RESULTS</div>'
-    +'<div style="font-family:Orbitron,monospace;font-size:1.4rem;font-weight:900;color:'+sc+';">'+result.score+'/100</div>'
-    +'</div>'
-    +'<div class="m365-grid">'+tiles+'</div>'
-    +'<div style="margin-top:14px;font-family:Share Tech Mono,monospace;font-size:0.55rem;color:var(--dim);">'
-    +(result.findingsCreated||0)+' finding(s) created \u2022 '+(result.checksRun||0)+' checks run \u2022 '+new Date(result.scannedAt).toLocaleString()
-    +'</div></div>';
-  loadDashboard();
-}
+  // ── Generate POA&M ────────────────────────────────────────
+  async function generatePOAM(){
+    const data = await api(`/orgs/${org.id}/poam/generate`, { method: 'POST' });
+    if(data) {
+      addBridgeMessage('green', `POA&M: Generated ${data.generated} entries from open findings`, 'POAM');
+      if(document.getElementById('page-poam').style.display!=='none') loadPOAM();
+      if(document.getElementById('page-findings').style.display!=='none') {
+        setTimeout(()=>showPage('poam'),500);
+      }
+    }
+  }
 
-// ── Navigation ─────────────────────────────────────────────────
-var pages=['overview','controls','findings','reports','m365','aws','cmmc','nist','owasp','soc','fips'];
-var titles={overview:'COMPLIANCE OVERVIEW',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',reports:'GENERATE REPORTS',m365:'MICROSOFT 365',aws:'AMAZON AWS',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
+  // ── Show remediation for a control ───────────────────────
+  async function showRemediationForControl(controlId){
+    // Find remediation type from registry
+    const data = await api(`/remediations`);
+    if(!data) return;
+    const match = data.remediations?.find(r => r.controlIds?.includes(controlId));
+    if(!match) return;
+    const guide = await api(`/remediation/${match.key}`);
+    if(guide) showRemediationModal(null, match.key, guide);
+  }
 
-async function showPage(name){
-  pages.forEach(function(p){var el=document.getElementById('page-'+p);if(el)el.style.display='none';});
-  var t=document.getElementById('page-'+name);if(t)t.style.display='';
-  document.querySelectorAll('.nav-item').forEach(function(el){el.classList.remove('active');});
-  document.getElementById('page-title').textContent=titles[name]||name.toUpperCase();
-  document.getElementById('breadcrumb').textContent='AuditCore\u2122 // Dashboard // '+(titles[name]||name);
-  if(name==='controls')await loadControls();
-  if(name==='findings')await loadFindings();
-  if(name==='m365')await loadM365Page();
-  if(name==='aws')await loadAWSPage();
-  if(name==='cmmc'){document.getElementById('page-cmmc').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('cmmc','CMMC');}
-  if(name==='nist'){document.getElementById('page-nist').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('nist','NIST');}
-  if(name==='owasp'){document.getElementById('page-owasp').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('owasp','OWASP');}
-  if(name==='soc'){document.getElementById('page-soc').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('soc','SOC2');}
-  if(name==='fips'){document.getElementById('page-fips').innerHTML='<div class="loading">// LOADING</div>';await loadFwControls('fips','FIPS');}
-}
+  // ── Execute or show remediation ───────────────────────────
+  async function executeRemediation(findingId, remType, autoFix){
+    if(autoFix){
+      const result = await api(`/orgs/${org.id}/findings/${findingId}/remediate`, { method: 'POST', body: JSON.stringify({}) });
+      if(result){
+        if(result.success){
+          addBridgeMessage('green', `AUTO-FIX SUCCESS: ${result.actions?.join('; ')}`, 'REMEDIATION');
+          loadFindings();
+          loadPosture();
+        } else {
+          showRemediationModal(findingId, remType, result.guide);
+        }
+      }
+    } else {
+      const result = await api(`/orgs/${org.id}/findings/${findingId}/remediate`, { method: 'POST', body: JSON.stringify({}) });
+      if(result?.guide) showRemediationModal(findingId, remType, result.guide);
+    }
+  }
 
-async function loadFwControls(pageId,fw){
-  var data=await api('/orgs/'+org.id+'/controls');
-  var el=document.getElementById('page-'+pageId);
-  if(!data||!data.controls){el.innerHTML='<div style="color:var(--red);font-family:Share Tech Mono,monospace;padding:20px">Failed to load</div>';return;}
-  var ctrls=data.controls.filter(function(c){return c.control_definitions&&c.control_definitions.framework===fw;});
-  if(!ctrls.length){el.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px">No '+fw+' controls found.</div>';return;}
-  var sm={pass:'<span class="ctrl-status pass">&#9679; PASS</span>',fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',partial:'<span class="ctrl-status partial">&#9650; PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
-  el.innerHTML='<div class="section-title">'+fw+' CONTROLS</div><table class="controls-table"><thead><tr><th>CONTROL ID</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th></tr></thead><tbody>'+ctrls.map(function(c){var d=c.control_definitions||{};return '<tr><td><span class="ctrl-id">'+(d.id||c.control_id||'\u2014')+'</span></td><td style="color:var(--dim)">'+(d.family||'\u2014')+'</td><td style="max-width:340px;line-height:1.4">'+(d.title||'\u2014')+'</td><td>'+(sm[c.status]||sm.not_assessed)+'</td></tr>';}).join('')+'</tbody></table>';
-}
+  // ── Show remediation modal ────────────────────────────────
+  function showRemediationModal(findingId, remType, guide){
+    if(!guide) return;
+    document.getElementById('rem-title').textContent = guide.title || 'REMEDIATION GUIDE';
+    const modeClass = guide.canAutoFix ? 'auto' : 'guided';
+    const modeText  = guide.canAutoFix ? '&#9679; AUTO-REMEDIABLE' : '&#9650; MANUAL REMEDIATION REQUIRED';
 
-function signOut(){sessionStorage.clear();window.location.href='auditcore.html';}
+    const stepsHtml = guide.guidance?.steps?.map(s=>`
+      <div class="rem-step">
+        <div class="rem-step-num">${s.step}</div>
+        <div class="rem-step-content">
+          <div class="rem-step-action">${s.action}</div>
+          <div class="rem-step-detail">${s.detail}</div>
+          ${s.command ? `<div class="rem-command" onclick="copyCommand(this)">${s.command}</div>` : ''}
+        </div>
+      </div>`).join('') || '';
 
-loadDashboard();
+    const affectsHtml = guide.affectedControls?.length ?
+      `<div class="rem-affects">
+        <div class="rem-affects-title">// ALSO FIXES THESE CONTROLS</div>
+        ${guide.affectedControls.map(c=>`<span class="rem-ctrl-pill">${c}</span>`).join('')}
+      </div>` : '';
+
+    document.getElementById('rem-body').innerHTML = `
+      <div class="rem-mode ${modeClass}">${modeText}</div>
+      ${guide.canAutoFix && findingId ?
+        `<button class="rem-execute-btn" onclick="executeAutoFix('${findingId}')">&#9654; EXECUTE AUTO-FIX NOW</button>` : ''}
+      <div class="rem-summary">${guide.guidance?.summary||''}</div>
+      ${stepsHtml}
+      ${affectsHtml}
+      ${guide.guidance?.docsUrl ? `<div class="rem-docs">Official Documentation: <a href="${guide.guidance.docsUrl}" target="_blank">${guide.guidance.docsUrl}</a></div>` : ''}
+    `;
+    document.getElementById('rem-modal').classList.add('active');
+  }
+
+  function closeRemediation(){ document.getElementById('rem-modal').classList.remove('active'); }
+
+  async function executeAutoFix(findingId){
+    const btn = document.querySelector('.rem-execute-btn');
+    if(btn){ btn.disabled=true; btn.textContent='EXECUTING...'; }
+    const result = await api(`/orgs/${org.id}/findings/${findingId}/remediate`, { method:'POST', body: JSON.stringify({}) });
+    if(result?.success){
+      closeRemediation();
+      addBridgeMessage('green', `AUTO-FIX COMPLETE: ${result.actions?.join('; ')}`, 'REMEDIATION');
+      loadFindings();
+      loadPosture();
+    } else {
+      if(btn){ btn.disabled=false; btn.textContent='RETRY AUTO-FIX'; }
+    }
+  }
+
+  function copyCommand(el){
+    navigator.clipboard.writeText(el.textContent).then(()=>{
+      const orig = el.style.background;
+      el.style.background='rgba(0,255,136,.2)';
+      setTimeout(()=>el.style.background=orig, 800);
+    });
+  }
+
+  // ── Darkbloom Bridge™ polling ─────────────────────────────
+  let bridgeSince = 0;
+  const bridgeColors = {
+    'scan.started': '#00f0ff', 'scan.completed': '#00ff88', 'scan.failed': '#ff3355',
+    'scan.progress': '#00f0ff', 'remediation.success': '#00ff88', 'remediation.failed': '#ff3355',
+    'remediation.guided': '#ffb800', 'finding.created': '#ff3355', 'finding.resolved': '#00ff88',
+    'control.updated': '#00f0ff', 'control.auto_passed': '#00ff88', 'assessor.connected': '#8b5cf6',
+    'score.changed': '#ffb800',
+  };
+
+  function addBridgeMessage(colorKey, text, tag){
+    const color = bridgeColors[colorKey] || '#00f0ff';
+    const feeds = ['bridge-feed','bridge-feed-full'].map(id=>document.getElementById(id)).filter(Boolean);
+    feeds.forEach(feed=>{
+      if(feed.querySelector('.loading')) feed.innerHTML='';
+      const item = document.createElement('div');
+      item.className='bridge-msg';
+      item.innerHTML=`
+        <div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
+        <div class="bridge-msg-content">
+          <div class="bridge-msg-event">${text}</div>
+          <div class="bridge-msg-time">${new Date().toLocaleTimeString()}${tag?' • '+tag:''}</div>
+        </div>`;
+      feed.appendChild(item);
+      feed.scrollTop = feed.scrollHeight;
+      // Keep max 50 messages
+      while(feed.children.length > 50) feed.removeChild(feed.firstChild);
+    });
+  }
+
+  async function pollBridge(){
+    const data = await api(`/orgs/${org.id}/bridge?since=${bridgeSince}`);
+    if(data?.messages?.length){
+      data.messages.forEach(msg=>{
+        const payload = msg.payload || {};
+        const text = formatBridgeEvent(msg.event_type, payload);
+        addBridgeMessage(msg.event_type, text, msg.event_type.split('.')[0].toUpperCase());
+        bridgeSince = Math.max(bridgeSince, new Date(msg.created_at).getTime());
+      });
+      document.getElementById('bridge-status').textContent=`LAST: ${new Date().toLocaleTimeString()}`;
+    }
+  }
+
+  function formatBridgeEvent(type, payload){
+    switch(type){
+      case 'scan.started':    return `&#9654; Scan started for ${payload.domain||'domain'}`;
+      case 'scan.completed':  return `&#9679; Scan complete — Score: ${payload.score||'—'}%`;
+      case 'scan.failed':     return `&#9650; Scan failed: ${payload.error||'unknown error'}`;
+      case 'scan.progress':   return `// Scanning: ${payload.message||''} (${payload.pct||0}%)`;
+      case 'remediation.success': return `&#9679; Auto-fixed: ${payload.result?.actions?.[0]||'issue resolved'}`;
+      case 'remediation.failed':  return `&#9650; Auto-fix failed: ${payload.result?.error||''}`;
+      case 'remediation.guided':  return `&#9650; Guided remediation sent for finding`;
+      case 'finding.created': return `&#9650; New finding: ${payload.title||''}`;
+      case 'finding.resolved':return `&#9679; Finding resolved by ${payload.resolvedBy||'system'}`;
+      case 'control.updated': return `// Control ${payload.controlId||''} → ${payload.status||''}`;
+      case 'control.auto_passed': return `&#9679; Auto-passed: ${payload.controlId||''}`;
+      case 'assessor.connected': return `// C3PAO connected: ${payload.assessor_email||'assessor'}`;
+      case 'score.changed':   return `// Score changed: ${payload.oldScore}% → ${payload.newScore}%`;
+      default: return `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
+    }
+  }
+
+  // Start bridge polling every 5 seconds
+  setInterval(pollBridge, 5000);
+
+  // ── Create assessor session ───────────────────────────────
+  async function createAssessorSession(){
+    const email = document.getElementById('assessor-email').value.trim();
+    const orgName = document.getElementById('assessor-org').value.trim();
+    const framework = document.getElementById('assessor-framework').value;
+    const expires = parseInt(document.getElementById('assessor-expires').value);
+
+    if(!email){ alert('Enter assessor email'); return; }
+
+    const data = await api(`/orgs/${org.id}/assessor-sessions`, {
+      method: 'POST',
+      body: JSON.stringify({
+        assessor_email: email,
+        assessor_org: orgName || undefined,
+        frameworks: framework ? [framework] : undefined,
+        expires_hours: expires,
+      }),
+    });
+
+    if(data?.portal_url){
+      const result = document.getElementById('portal-link-result');
+      result.style.display='block';
+      result.innerHTML=`
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">&#9679; PORTAL LINK GENERATED — SHARE WITH ASSESSOR</div>
+        <div style="color:var(--cyan);word-break:break-all;">${data.portal_url}</div>
+        <div style="color:var(--dim);margin-top:6px;font-size:0.48rem;">Expires: ${new Date(data.session.expires_at).toLocaleString()} • Read-only access only</div>`;
+      addBridgeMessage('assessor.connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
+    }
+  }
+
+  // ── Framework detail ──────────────────────────────────────
+  async function loadFrameworkDetail(pageId, framework, color, name){
+    const el = document.getElementById(pageId);
+    const data = await api(`/orgs/${org.id}/controls?framework=${framework}`);
+    if(!data){ el.innerHTML='<div class="loading">// FAILED TO LOAD</div>'; return; }
+
+    const pass = data.controls.filter(c=>c.assessment?.status==='pass').length;
+    const fail = data.controls.filter(c=>c.assessment?.status==='fail'||c.assessment?.status==='partial').length;
+    const total = data.controls.length;
+    const pct = total > 0 ? Math.round((pass/total)*100) : 0;
+
+    const sm={pass:'<span class="ctrl-status pass">&#9679; PASS</span>',fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',partial:'<span class="ctrl-status warn">&#9650; PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
+    const pm={critical:'<span class="priority pri-crit">CRIT</span>',high:'<span class="priority pri-high">HIGH</span>',medium:'<span class="priority pri-med">MED</span>',low:'<span class="priority pri-low">LOW</span>'};
+
+    el.innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:${color};">${pct}%</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">COMPLIANCE SCORE</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--green);">${pass}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">CONTROLS PASSED</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--red);">${fail}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">GAPS / PARTIALS</div>
+        </div>
+      </div>
+      <div class="section-title" style="color:${color};">${name} — CONTROL DETAIL</div>
+      <table class="controls-table">
+        <thead><tr><th>CONTROL ID</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>PRIORITY</th><th>REMEDIATE</th></tr></thead>
+        <tbody>${data.controls.map(c=>`<tr>
+          <td><span class="ctrl-id" style="color:${color}">${c.id}</span></td>
+          <td>${c.family}</td>
+          <td>${c.title}</td>
+          <td>${sm[c.assessment?.status||'not_assessed']||sm.not_assessed}</td>
+          <td>${pm[c.priority]||pm.medium}</td>
+          <td>${c.remediation_available?`<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE &#9654;</button>`:'—'}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+  }
+
+  // ── Report generation ─────────────────────────────────────
+  async function generateReport(type){
+    const data = await api(`/orgs/${org.id}/reports/${type}`);
+    if(!data) return;
+    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
+    const url  = URL.createObjectURL(blob);
+    const a    = document.createElement('a');
+    a.href=url; a.download=`auditcore-${type}-${new Date().toISOString().slice(0,10)}.json`;
+    a.click(); URL.revokeObjectURL(url);
+    addBridgeMessage('control.updated', `Report generated: ${type.toUpperCase()}`, 'REPORTS');
+  }
+
+  // ── Scan ──────────────────────────────────────────────────
+  const scanLines=['> Initializing Darkbloom Bridge™...','> Connecting to scan engine...','> Loading framework definitions [CMMC/NIST/OWASP/SOC2/FIPS]','> Checking SSL/TLS configuration...','> Scanning HTTP security headers...','> Checking DNS/SPF/DMARC records...','> Verifying HTTPS redirect enforcement...','> Checking clickjacking protection...','> Scanning FIPS cryptographic compliance...','> Cross-referencing findings to NIST controls...','> Applying cross-framework mappings...','> Checking for auto-remediable issues...','> Updating POA&M entries...','> ✓ Scan complete. Results publishing via Bridge™...'];
+  function startScan(){
+    const overlay=document.getElementById('scan-overlay');
+    const bar=document.getElementById('scan-bar');
+    const log=document.getElementById('scan-log');
+    overlay.classList.add('active');
+    bar.style.width='0';log.innerHTML='';
+    api(`/orgs/${org.id}/scan`,{method:'POST'});
+    let i=0;
+    function nextLog(){
+      if(i<scanLines.length){
+        const d=document.createElement('div');d.textContent=scanLines[i];d.style.opacity='0';d.style.transition='opacity .3s';
+        log.appendChild(d);requestAnimationFrame(()=>d.style.opacity='1');
+        bar.style.width=((i+1)/scanLines.length*100)+'%';i++;
+        setTimeout(nextLog,300+Math.random()*200);
+      } else {
+        setTimeout(()=>{overlay.classList.remove('active');loadPosture();loadFindings();},700);
+      }
+    }
+    nextLog();
+  }
+
+  // ── Navigation ────────────────────────────────────────────
+  const pages=['overview','bridge','controls','findings','poam','reports','assessor','cmmc','nist','owasp','soc','fips'];
+  const titles={overview:'COMPLIANCE OVERVIEW',bridge:'DARKBLOOM BRIDGE™',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',poam:'PLAN OF ACTION & MILESTONES',reports:'GENERATE REPORTS',assessor:'C3PAO ASSESSOR PORTAL',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
+
+  async function showPage(name){
+    pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});
+    const target=document.getElementById('page-'+name);
+    if(target) target.style.display='';
+    document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+    document.getElementById('page-title').textContent=titles[name]||name.toUpperCase();
+    document.getElementById('breadcrumb').textContent=`AuditCore™ v2.0 // ${titles[name]||name}`;
+    if(name==='controls') await loadControls();
+    if(name==='findings') await loadFindings();
+    if(name==='poam') await loadPOAM();
+    if(name==='cmmc') await loadFrameworkDetail('page-cmmc','CMMC','var(--green)','CMMC LEVEL 2');
+    if(name==='nist') await loadFrameworkDetail('page-nist','NIST','var(--cyan)','NIST SP 800-171');
+    if(name==='owasp') await loadFrameworkDetail('page-owasp','OWASP','var(--amber)','OWASP TOP 10');
+    if(name==='soc') await loadFrameworkDetail('page-soc','SOC2','var(--magenta)','SOC 2 TYPE II');
+    if(name==='fips') await loadFrameworkDetail('page-fips','FIPS','var(--blue)','FIPS 140-3');
+    if(name==='bridge') loadBridgeFull();
+  }
+
+  async function loadBridgeFull(){
+    const data = await api(`/orgs/${org.id}/bridge?since=0`);
+    const feed = document.getElementById('bridge-feed-full');
+    if(!data?.messages?.length){
+      feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px;text-align:center;">No bridge events yet. Run a scan to populate.</div>';
+      return;
+    }
+    feed.innerHTML='';
+    data.messages.forEach(msg=>{
+      const color = bridgeColors[msg.event_type]||'#00f0ff';
+      const text = formatBridgeEvent(msg.event_type, msg.payload||{});
+      const item = document.createElement('div');
+      item.className='bridge-msg';
+      item.innerHTML=`<div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
+        <div class="bridge-msg-content"><div class="bridge-msg-event">${text}</div>
+        <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleString()}</div></div>`;
+      feed.appendChild(item);
+    });
+  }
+
+  function signOut(){ sessionStorage.clear(); window.location.href='auditcore.html'; }
+
+  // ── Init ──────────────────────────────────────────────────
+  loadPosture();
+  loadFindings();
+  setTimeout(pollBridge, 1000);
+  addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
 </script>
 </body>
 </html>
