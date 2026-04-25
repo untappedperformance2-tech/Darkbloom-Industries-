@@ -11,7 +11,7 @@
     :root{
       --bg:#04060a;--surface:#070c12;--surface2:#0a1018;
       --cyan:#00f0ff;--green:#00ff88;--amber:#ffb800;--red:#ff3355;
-      --magenta:#ff00aa;--blue:#3a7fff;--purple:#8b5cf6;
+      --magenta:#ff00aa;--blue:#3a7fff;--purple:#8b5cf6;--orange:#ff8c42;
       --border:rgba(0,240,255,0.1);--border2:rgba(0,240,255,0.06);
       --text:rgba(200,228,240,0.85);--dim:rgba(200,228,240,0.35);
       --sidebar:228px;
@@ -53,6 +53,8 @@
     .badge-amber{background:rgba(255,184,0,.12);color:var(--amber);border:1px solid rgba(255,184,0,.25);}
     .badge-green{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.2);}
     .badge-purple{background:rgba(139,92,246,.15);color:var(--purple);border:1px solid rgba(139,92,246,.3);}
+    .badge-blue{background:rgba(58,127,255,.12);color:var(--blue);border:1px solid rgba(58,127,255,.25);}
+    .badge-orange{background:rgba(255,140,66,.12);color:var(--orange);border:1px solid rgba(255,140,66,.25);}
     .sb-footer{padding:12px 16px;border-top:1px solid var(--border2);}
     .sb-footer-txt{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(200,228,240,0.18);letter-spacing:0.08em;line-height:1.8;}
     .sb-footer-txt a{color:rgba(0,240,255,0.3);text-decoration:none;}
@@ -176,6 +178,54 @@
     .bridge-msg-event{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--text);letter-spacing:0.05em;}
     .bridge-msg-time{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);margin-top:1px;}
 
+    /* INTEGRATION CARD */
+    .integration-card{background:var(--surface);border:1px solid var(--border);padding:22px;margin-bottom:16px;position:relative;overflow:hidden;}
+    .integration-card.aws::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--orange),transparent);}
+    .integration-card.m365::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--blue),transparent);}
+    .int-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
+    .int-title{font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.08em;}
+    .integration-card.aws .int-title{color:var(--orange);}
+    .integration-card.m365 .int-title{color:var(--blue);}
+    .int-status-badge{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;padding:3px 10px;border:1px solid;display:flex;align-items:center;gap:5px;}
+    .int-status-badge.connected{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.06);}
+    .int-status-badge.disconnected{color:var(--dim);border-color:var(--border);}
+    .int-status-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+    .int-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+    .int-form.single{grid-template-columns:1fr;}
+    .form-field{display:flex;flex-direction:column;gap:5px;}
+    .form-field label{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,0.5);letter-spacing:0.2em;}
+    .form-field input,.form-field select{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:9px 12px;outline:none;transition:border-color .25s;width:100%;}
+    .form-field input:focus,.form-field select:focus{border-color:var(--cyan);}
+    .form-field input::placeholder{color:rgba(200,228,240,0.2);}
+    .int-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+    .btn-int{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;padding:8px 16px;border:none;cursor:pointer;font-weight:700;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:box-shadow .2s;}
+    .btn-int.save{color:var(--bg);background:var(--cyan);}
+    .btn-int.save:hover{box-shadow:0 0 12px rgba(0,240,255,.4);}
+    .btn-int.test{color:var(--amber);background:transparent;border:1px solid rgba(255,184,0,.4);}
+    .btn-int.test:hover{background:rgba(255,184,0,.08);}
+    .btn-int.scan{color:var(--bg);}
+    .integration-card.aws .btn-int.scan{background:var(--orange);}
+    .integration-card.m365 .btn-int.scan{background:var(--blue);}
+    .btn-int.scan:hover{box-shadow:0 0 12px rgba(255,140,66,.4);}
+    .int-msg{font-family:'Share Tech Mono',monospace;font-size:0.54rem;letter-spacing:0.08em;margin-top:10px;padding:8px 12px;border:1px solid;display:none;}
+    .int-msg.show{display:block;}
+    .int-msg.success{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.05);}
+    .int-msg.error{color:var(--red);border-color:rgba(255,51,85,.3);background:rgba(255,51,85,.05);}
+    .int-msg.info{color:var(--cyan);border-color:rgba(0,240,255,.2);background:rgba(0,240,255,.03);}
+    .int-results{margin-top:14px;padding:12px 14px;background:rgba(0,240,255,0.02);border:1px solid var(--border2);display:none;}
+    .int-results.show{display:block;}
+    .int-results-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:8px;}
+    .int-check{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border2);font-family:'Share Tech Mono',monospace;font-size:0.52rem;}
+    .int-check:last-child{border-bottom:none;}
+    .int-check-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
+    .int-check-dot.pass{background:var(--green);box-shadow:0 0 4px var(--green);}
+    .int-check-dot.fail{background:var(--red);box-shadow:0 0 4px var(--red);}
+    .int-check-dot.warn{background:var(--amber);box-shadow:0 0 4px var(--amber);}
+    .int-check-name{flex:1;color:var(--text);}
+    .int-check-score{color:var(--dim);}
+    .int-instructions{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);line-height:1.8;margin-bottom:14px;padding:10px 12px;background:rgba(0,240,255,0.02);border:1px solid var(--border2);}
+    .int-instructions a{color:var(--cyan);text-decoration:none;}
+
     /* REMEDIATION MODAL */
     #rem-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(4,6,10,0.95);z-index:600;display:none;align-items:center;justify-content:center;}
     #rem-modal.active{display:flex;}
@@ -183,7 +233,7 @@
     .rem-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
     .rem-header{padding:20px 24px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;}
     .rem-title{font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;letter-spacing:0.08em;}
-    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:none;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
+    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:pointer;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
     .rem-close:hover{color:var(--red);}
     .rem-body{padding:20px 24px;}
     .rem-mode{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;padding:4px 12px;border:1px solid;display:inline-block;margin-bottom:14px;}
@@ -195,16 +245,10 @@
     .rem-step-content{flex:1;}
     .rem-step-action{font-family:'Rajdhani',sans-serif;font-size:0.9rem;color:#fff;font-weight:600;margin-bottom:4px;}
     .rem-step-detail{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--dim);letter-spacing:0.05em;line-height:1.6;margin-bottom:6px;}
-    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;border-radius:0;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:none;}
-    .rem-command:hover{background:rgba(0,255,136,.1);}
-    .rem-affects{margin-top:14px;padding:10px 14px;background:rgba(0,240,255,.03);border:1px solid var(--border2);}
-    .rem-affects-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:7px;}
-    .rem-ctrl-pill{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--cyan);border:1px solid rgba(0,240,255,.25);padding:2px 8px;display:inline-block;margin:2px;}
+    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:pointer;}
     .rem-execute-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;color:var(--bg);background:var(--green);border:none;padding:13px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;margin-top:16px;transition:box-shadow .2s;}
     .rem-execute-btn:hover{box-shadow:0 0 18px var(--green);}
     .rem-execute-btn:disabled{opacity:.5;}
-    .rem-docs{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,.4);text-align:center;margin-top:10px;}
-    .rem-docs a{color:var(--cyan);text-decoration:none;}
 
     /* POAM TABLE */
     .poam-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
@@ -219,10 +263,6 @@
     .assessor-card{background:var(--surface);border:1px solid rgba(139,92,246,.3);padding:22px;margin-bottom:18px;position:relative;overflow:hidden;}
     .assessor-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent);}
     .assessor-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
-    .form-field{display:flex;flex-direction:column;gap:5px;}
-    .form-field label{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,0.5);letter-spacing:0.2em;}
-    .form-field input,.form-field select{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:9px 12px;outline:none;transition:border-color .25s;width:100%;}
-    .form-field input:focus,.form-field select:focus{border-color:var(--cyan);}
     .portal-link{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--cyan);background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.25);padding:10px 14px;margin-top:12px;word-break:break-all;line-height:1.6;}
 
     /* REPORTS */
@@ -234,7 +274,7 @@
     .report-icon{font-size:1.3rem;margin-bottom:7px;display:block;}
     .report-name{font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--text);letter-spacing:0.07em;margin-bottom:4px;}
     .report-desc{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.04em;line-height:1.5;}
-    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:none;margin-top:9px;display:inline-block;transition:background .2s;}
+    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:pointer;margin-top:9px;display:inline-block;transition:background .2s;}
     .btn-dl:hover{background:rgba(0,240,255,.06);}
 
     /* SCAN OVERLAY */
@@ -325,6 +365,17 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="9" y2="8"/></svg>
       <span class="nav-label">POA&amp;M</span>
     </div>
+    <div class="sb-section">// Integrations</div>
+    <div class="nav-item" onclick="showPage('aws')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ff8c42" stroke-width="1.5"><path d="M2 10c0 2 1.5 3 3.5 3s3.5-1 3.5-3V6c0-2-1.5-3-3.5-3S2 4 2 6v4z"/><path d="M9 5.5c.5-.3 1.2-.5 2-.5 2 0 3 1 3 3s-1 3-3 3"/></svg>
+      <span class="nav-label">AWS</span>
+      <span class="nav-badge badge-orange" id="badge-aws">SETUP</span>
+    </div>
+    <div class="nav-item" onclick="showPage('m365')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#3a7fff" stroke-width="1.5"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg>
+      <span class="nav-label">M365</span>
+      <span class="nav-badge badge-blue" id="badge-m365">SETUP</span>
+    </div>
     <div class="sb-section">// Frameworks</div>
     <div class="nav-item" onclick="showPage('cmmc')">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00ff88" stroke-width="1.5"><polygon points="8,1 15,5 15,11 8,15 1,11 1,5"/></svg>
@@ -366,7 +417,7 @@
     </div>
   </div>
   <div class="sb-footer">
-    <div class="sb-footer-txt">AuditCore&#8482; v2.0 — Darkbloom Bridge&#8482;<br/>&#169; 2025 <a href="https://untappedperformance2-tech.github.io/Darkbloom-Industries-/">Darkbloom Industries&#8482;</a><br/><span id="sb-license-info">Loading license...</span></div>
+    <div class="sb-footer-txt">AuditCore&#8482; v2.0 — Darkbloom Bridge&#8482;<br/>&#169; 2025 <a href="https://darkbloomindustries.com">Darkbloom Industries&#8482;</a><br/><span id="sb-license-info">Loading license...</span></div>
   </div>
 </nav>
 
@@ -428,7 +479,7 @@
       <div class="bridge-panel">
         <div class="bridge-header">
           <div class="bridge-title"><div class="bridge-title-dot"></div>DARKBLOOM BRIDGE&#8482;</div>
-          <div class="bridge-status" id="bridge-status">POLLING...</div>
+          <div class="bridge-status" id="bridge-status">INITIALIZING...</div>
         </div>
         <div class="bridge-feed" id="bridge-feed">
           <div class="loading">// CONNECTING TO BRIDGE</div>
@@ -454,15 +505,13 @@
     <div id="page-controls" style="display:none;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div class="section-title" style="margin-bottom:0;">ALL CONTROLS</div>
-        <div style="display:flex;gap:8px;">
-          <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:none;">
-            <option value="">ALL STATUSES</option>
-            <option value="fail">FAIL ONLY</option>
-            <option value="partial">PARTIAL ONLY</option>
-            <option value="not_assessed">NOT ASSESSED</option>
-            <option value="pass">PASS ONLY</option>
-          </select>
-        </div>
+        <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:pointer;">
+          <option value="">ALL STATUSES</option>
+          <option value="fail">FAIL ONLY</option>
+          <option value="partial">PARTIAL ONLY</option>
+          <option value="not_assessed">NOT ASSESSED</option>
+          <option value="pass">PASS ONLY</option>
+        </select>
       </div>
       <table class="controls-table">
         <thead><tr><th>CONTROL ID</th><th>FW</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>PRIORITY</th><th>REMEDIATE</th></tr></thead>
@@ -491,6 +540,106 @@
         <thead><tr><th>CONTROL</th><th>WEAKNESS</th><th>RISK</th><th>DUE DATE</th><th>STATUS</th><th>AUTO?</th></tr></thead>
         <tbody id="poam-body"><tr><td colspan="6" class="loading">// LOADING POA&M</td></tr></tbody>
       </table>
+    </div>
+
+    <!-- AWS INTEGRATION -->
+    <div id="page-aws" style="display:none;">
+      <div class="section-title">AWS SECURITY INTEGRATION</div>
+      <div class="integration-card aws">
+        <div class="int-header">
+          <div class="int-title">&#9729; AMAZON WEB SERVICES</div>
+          <div class="int-status-badge disconnected" id="aws-status-badge">
+            <div class="int-status-dot"></div>
+            <span id="aws-status-txt">NOT CONNECTED</span>
+          </div>
+        </div>
+        <div class="int-instructions">
+          // TO CONNECT AWS — Create a read-only IAM user with these permissions:<br/>
+          SecurityAudit (AWS managed) + ReadOnlyAccess (AWS managed)<br/>
+          Then generate an access key for that user and paste below.<br/>
+          <a href="https://console.aws.amazon.com/iam/home#/users" target="_blank">&#9654; Open AWS IAM Console</a>
+        </div>
+        <div class="int-form">
+          <div class="form-field">
+            <label>// AWS ACCESS KEY ID</label>
+            <input type="text" id="aws-key-id" placeholder="AKIAIOSFODNN7EXAMPLE" autocomplete="off"/>
+          </div>
+          <div class="form-field">
+            <label>// AWS SECRET ACCESS KEY</label>
+            <input type="password" id="aws-secret-key" placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCY..." autocomplete="off"/>
+          </div>
+          <div class="form-field">
+            <label>// AWS REGION</label>
+            <select id="aws-region">
+              <option value="us-east-1">us-east-1 (N. Virginia)</option>
+              <option value="us-east-2">us-east-2 (Ohio)</option>
+              <option value="us-west-1">us-west-1 (N. California)</option>
+              <option value="us-west-2">us-west-2 (Oregon)</option>
+              <option value="eu-west-1">eu-west-1 (Ireland)</option>
+              <option value="eu-central-1">eu-central-1 (Frankfurt)</option>
+              <option value="ap-southeast-1">ap-southeast-1 (Singapore)</option>
+            </select>
+          </div>
+          <div class="form-field" style="align-items:flex-end;justify-content:flex-end;">
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);line-height:1.6;">Credentials are AES-256 encrypted<br/>before storage. Never stored in plaintext.</div>
+          </div>
+        </div>
+        <div class="int-actions">
+          <button class="btn-int test" onclick="testAWS()">TEST CONNECTION &#9654;</button>
+          <button class="btn-int save" onclick="saveAWS()">SAVE CREDENTIALS &#9654;</button>
+          <button class="btn-int scan" onclick="scanAWS()" id="btn-aws-scan" disabled>RUN AWS SCAN &#9654;</button>
+        </div>
+        <div class="int-msg" id="aws-msg"></div>
+        <div class="int-results" id="aws-results">
+          <div class="int-results-title">// LAST SCAN RESULTS</div>
+          <div id="aws-checks"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- M365 INTEGRATION -->
+    <div id="page-m365" style="display:none;">
+      <div class="section-title">MICROSOFT 365 INTEGRATION</div>
+      <div class="integration-card m365">
+        <div class="int-header">
+          <div class="int-title">&#9635; MICROSOFT 365</div>
+          <div class="int-status-badge disconnected" id="m365-status-badge">
+            <div class="int-status-dot"></div>
+            <span id="m365-status-txt">NOT CONNECTED</span>
+          </div>
+        </div>
+        <div class="int-instructions">
+          // TO CONNECT M365 — Register an app in Azure AD:<br/>
+          1. Go to <a href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank">Azure App Registrations</a><br/>
+          2. New registration → Name it "AuditCore" → Accounts in this org only<br/>
+          3. API Permissions → Add: User.Read.All, AuditLog.Read.All, Policy.Read.All, UserAuthenticationMethod.Read.All, SecurityEvents.Read.All (all Application type)<br/>
+          4. Grant admin consent → Certificates &amp; secrets → New client secret → Copy value below
+        </div>
+        <div class="int-form">
+          <div class="form-field">
+            <label>// TENANT ID (Directory ID)</label>
+            <input type="text" id="m365-tenant-id" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off"/>
+          </div>
+          <div class="form-field">
+            <label>// CLIENT ID (Application ID)</label>
+            <input type="text" id="m365-client-id" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off"/>
+          </div>
+          <div class="form-field" style="grid-column:1/-1;">
+            <label>// CLIENT SECRET (Value — not Secret ID)</label>
+            <input type="password" id="m365-client-secret" placeholder="Paste client secret value here..." autocomplete="off"/>
+          </div>
+        </div>
+        <div class="int-actions">
+          <button class="btn-int test" onclick="testM365()">TEST CONNECTION &#9654;</button>
+          <button class="btn-int save" onclick="saveM365()">SAVE CREDENTIALS &#9654;</button>
+          <button class="btn-int scan" onclick="scanM365()" id="btn-m365-scan" disabled>RUN M365 SCAN &#9654;</button>
+        </div>
+        <div class="int-msg" id="m365-msg"></div>
+        <div class="int-results" id="m365-results">
+          <div class="int-results-title">// LAST SCAN RESULTS</div>
+          <div id="m365-checks"></div>
+        </div>
+      </div>
     </div>
 
     <!-- ASSESSOR PORTAL -->
@@ -624,7 +773,7 @@
 
     document.getElementById('score-label').textContent=label;
     document.getElementById('score-label').style.color=color;
-    document.getElementById('score-sublabel').textContent=`LAST SCAN: ${new Date(data.last_calculated).toLocaleString()}`;
+    document.getElementById('score-sublabel').textContent=`LAST SCAN: ${data.last_calculated?new Date(data.last_calculated).toLocaleString():'Never'}`;
     document.getElementById('tb-score').textContent=score+'%';
     document.getElementById('tb-score').style.color=color;
     document.getElementById('tb-gaps').textContent=data.open_gaps||0;
@@ -666,7 +815,7 @@
     }).join('');
   }
 
-  // ── Load controls with remediation buttons ─────────────────
+  // ── Load controls ─────────────────────────────────────────
   async function loadControls(framework){
     const statusFilter = document.getElementById('status-filter')?.value || '';
     let url = `/orgs/${org.id}/controls`;
@@ -706,7 +855,7 @@
     </tr>`).join('');
   }
 
-  // ── Load findings with remediation ────────────────────────
+  // ── Load findings ─────────────────────────────────────────
   async function loadFindings(){
     const data = await api(`/orgs/${org.id}/findings?status=open`);
     if(!data) return;
@@ -728,7 +877,6 @@
           ${f.remediation_guide_available ?
             `<button class="btn-fix guide" onclick="executeRemediation('${f.id}','${f.remediation_type}',false)">GUIDE &#9654;</button>` : ''}
           ${f.control_id ? `<span class="finding-tag">${f.control_id}</span>` : ''}
-          <span class="finding-tag">${f.severity.toUpperCase()} RISK</span>
         </div>
       </div>`).join('');
   }
@@ -744,7 +892,7 @@
     }
     const riskMap={high:'<span class="risk-badge risk-high">HIGH</span>',moderate:'<span class="risk-badge risk-mod">MOD</span>',low:'<span class="risk-badge risk-low">LOW</span>'};
     tbody.innerHTML=data.poam.map(p=>`<tr>
-      <td><span class="ctrl-id">${p.control_id||'—'}</span><br/><span style="color:var(--dim);font-size:.46rem;">${p.control_definitions?.family||''}</span></td>
+      <td><span class="ctrl-id">${p.control_id||'—'}</span></td>
       <td style="max-width:220px;line-height:1.4;">${p.weakness?.slice(0,100)}${p.weakness?.length>100?'...':''}</td>
       <td>${riskMap[p.risk_rating]||'—'}</td>
       <td>${p.scheduled_completion ? new Date(p.scheduled_completion).toLocaleDateString() : '—'}</td>
@@ -758,16 +906,12 @@
     const data = await api(`/orgs/${org.id}/poam/generate`, { method: 'POST' });
     if(data) {
       addBridgeMessage('green', `POA&M: Generated ${data.generated} entries from open findings`, 'POAM');
-      if(document.getElementById('page-poam').style.display!=='none') loadPOAM();
-      if(document.getElementById('page-findings').style.display!=='none') {
-        setTimeout(()=>showPage('poam'),500);
-      }
+      showPage('poam');
     }
   }
 
   // ── Show remediation for a control ───────────────────────
   async function showRemediationForControl(controlId){
-    // Find remediation type from registry
     const data = await api(`/remediations`);
     if(!data) return;
     const match = data.remediations?.find(r => r.controlIds?.includes(controlId));
@@ -783,8 +927,7 @@
       if(result){
         if(result.success){
           addBridgeMessage('green', `AUTO-FIX SUCCESS: ${result.actions?.join('; ')}`, 'REMEDIATION');
-          loadFindings();
-          loadPosture();
+          loadFindings(); loadPosture();
         } else {
           showRemediationModal(findingId, remType, result.guide);
         }
@@ -795,13 +938,11 @@
     }
   }
 
-  // ── Show remediation modal ────────────────────────────────
   function showRemediationModal(findingId, remType, guide){
     if(!guide) return;
     document.getElementById('rem-title').textContent = guide.title || 'REMEDIATION GUIDE';
     const modeClass = guide.canAutoFix ? 'auto' : 'guided';
     const modeText  = guide.canAutoFix ? '&#9679; AUTO-REMEDIABLE' : '&#9650; MANUAL REMEDIATION REQUIRED';
-
     const stepsHtml = guide.guidance?.steps?.map(s=>`
       <div class="rem-step">
         <div class="rem-step-num">${s.step}</div>
@@ -811,21 +952,12 @@
           ${s.command ? `<div class="rem-command" onclick="copyCommand(this)">${s.command}</div>` : ''}
         </div>
       </div>`).join('') || '';
-
-    const affectsHtml = guide.affectedControls?.length ?
-      `<div class="rem-affects">
-        <div class="rem-affects-title">// ALSO FIXES THESE CONTROLS</div>
-        ${guide.affectedControls.map(c=>`<span class="rem-ctrl-pill">${c}</span>`).join('')}
-      </div>` : '';
-
     document.getElementById('rem-body').innerHTML = `
       <div class="rem-mode ${modeClass}">${modeText}</div>
       ${guide.canAutoFix && findingId ?
         `<button class="rem-execute-btn" onclick="executeAutoFix('${findingId}')">&#9654; EXECUTE AUTO-FIX NOW</button>` : ''}
       <div class="rem-summary">${guide.guidance?.summary||''}</div>
       ${stepsHtml}
-      ${affectsHtml}
-      ${guide.guidance?.docsUrl ? `<div class="rem-docs">Official Documentation: <a href="${guide.guidance.docsUrl}" target="_blank">${guide.guidance.docsUrl}</a></div>` : ''}
     `;
     document.getElementById('rem-modal').classList.add('active');
   }
@@ -839,8 +971,7 @@
     if(result?.success){
       closeRemediation();
       addBridgeMessage('green', `AUTO-FIX COMPLETE: ${result.actions?.join('; ')}`, 'REMEDIATION');
-      loadFindings();
-      loadPosture();
+      loadFindings(); loadPosture();
     } else {
       if(btn){ btn.disabled=false; btn.textContent='RETRY AUTO-FIX'; }
     }
@@ -854,14 +985,22 @@
     });
   }
 
-  // ── Darkbloom Bridge™ polling ─────────────────────────────
+  // ── ═══════════════════════════════════════════════════════
+  //    DARKBLOOM BRIDGE™ — FIXED: polls AND ensures channel exists
+  // ═══════════════════════════════════════════════════════ ──
   let bridgeSince = 0;
+  let bridgeChannelId = null;
   const bridgeColors = {
-    'scan.started': '#00f0ff', 'scan.completed': '#00ff88', 'scan.failed': '#ff3355',
-    'scan.progress': '#00f0ff', 'remediation.success': '#00ff88', 'remediation.failed': '#ff3355',
-    'remediation.guided': '#ffb800', 'finding.created': '#ff3355', 'finding.resolved': '#00ff88',
-    'control.updated': '#00f0ff', 'control.auto_passed': '#00ff88', 'assessor.connected': '#8b5cf6',
-    'score.changed': '#ffb800',
+    'scan.started':'#00f0ff','scan.completed':'#00ff88','scan.failed':'#ff3355',
+    'scan.progress':'#00f0ff','remediation.success':'#00ff88','remediation.failed':'#ff3355',
+    'remediation.guided':'#ffb800','finding.created':'#ff3355','finding.resolved':'#00ff88',
+    'control.updated':'#00f0ff','control.auto_passed':'#00ff88','assessor.connected':'#8b5cf6',
+    'score.changed':'#ffb800',
+    // Bridge message event types from bridge.js
+    'scan_started':'#00f0ff','scan_completed':'#00ff88','scan_failed':'#ff3355',
+    'scan_progress':'#00f0ff','remediation_success':'#00ff88','remediation_failed':'#ff3355',
+    'finding_created':'#ff3355','finding_resolved':'#00ff88','control_updated':'#00f0ff',
+    'score_changed':'#ffb800','assessor_connected':'#8b5cf6','system':'rgba(200,228,240,0.3)',
   };
 
   function addBridgeMessage(colorKey, text, tag){
@@ -879,21 +1018,111 @@
         </div>`;
       feed.appendChild(item);
       feed.scrollTop = feed.scrollHeight;
-      // Keep max 50 messages
-      while(feed.children.length > 50) feed.removeChild(feed.firstChild);
+      while(feed.children.length > 80) feed.removeChild(feed.firstChild);
     });
   }
 
+  // ── Ensure Bridge™ channel exists for this org ─────────────
+  // Without this, scan events never reach the feed because
+  // broadcastToRef() requires at least one channel to exist
+  async function ensureBridgeChannel(){
+    if(bridgeChannelId) return bridgeChannelId;
+    try {
+      const data = await api(`/bridge/channels?ref_id=${org.id}`);
+      if(data?.channels?.length){
+        bridgeChannelId = data.channels[0].id;
+      } else {
+        // Create a channel so Bridge™ events have somewhere to go
+        const created = await api(`/bridge/channels`, {
+          method:'POST',
+          body: JSON.stringify({ ref_id: org.id, channel_type: 'compliance' })
+        });
+        if(created?.channel?.id) bridgeChannelId = created.channel.id;
+      }
+    } catch(e){ /* silent fail */ }
+    return bridgeChannelId;
+  }
+
   async function pollBridge(){
-    const data = await api(`/orgs/${org.id}/bridge?since=${bridgeSince}`);
-    if(data?.messages?.length){
-      data.messages.forEach(msg=>{
-        const payload = msg.payload || {};
-        const text = formatBridgeEvent(msg.event_type, payload);
-        addBridgeMessage(msg.event_type, text, msg.event_type.split('.')[0].toUpperCase());
-        bridgeSince = Math.max(bridgeSince, new Date(msg.created_at).getTime());
-      });
-      document.getElementById('bridge-status').textContent=`LAST: ${new Date().toLocaleTimeString()}`;
+    // Use the bridge channel message history for accurate event log
+    const channelId = await ensureBridgeChannel();
+
+    if(channelId){
+      // Poll channel messages — this is where scan events actually land
+      try {
+        const res = await fetch(`${API_URL}/bridge/channels/${channelId}/messages?limit=20`, {
+          headers:{ 'Authorization':`Bearer ${token}` }
+        });
+        const data = await res.json();
+        if(data?.messages?.length){
+          const newMessages = data.messages.filter(m => new Date(m.created_at).getTime() > bridgeSince);
+          newMessages.forEach(msg => {
+            const payload = msg.payload || {};
+            const text = formatBridgeEventFromMsg(msg);
+            const color = bridgeColors[msg.event_type] || '#00f0ff';
+            const tag = msg.event_type?.replace(/_/g,' ').toUpperCase() || 'EVENT';
+            // Add to feed directly with timestamp
+            const feeds = ['bridge-feed','bridge-feed-full'].map(id=>document.getElementById(id)).filter(Boolean);
+            feeds.forEach(feed=>{
+              if(feed.querySelector('.loading')) feed.innerHTML='';
+              const item = document.createElement('div');
+              item.className='bridge-msg';
+              item.innerHTML=`
+                <div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
+                <div class="bridge-msg-content">
+                  <div class="bridge-msg-event">${text}</div>
+                  <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleTimeString()} • ${tag}</div>
+                </div>`;
+              feed.appendChild(item);
+              feed.scrollTop = feed.scrollHeight;
+              while(feed.children.length > 80) feed.removeChild(feed.firstChild);
+            });
+            bridgeSince = Math.max(bridgeSince, new Date(msg.created_at).getTime());
+          });
+          if(newMessages.length) {
+            document.getElementById('bridge-status').textContent = `LAST: ${new Date().toLocaleTimeString()}`;
+            const fullStatus = document.getElementById('bridge-status-full');
+            if(fullStatus) fullStatus.textContent = 'LIVE';
+          }
+        }
+      } catch(e){ /* silent */ }
+    } else {
+      // Fallback: poll the legacy /bridge endpoint
+      const data = await api(`/orgs/${org.id}/bridge?since=${bridgeSince}`);
+      if(data?.messages?.length){
+        data.messages.forEach(msg=>{
+          const payload = msg.payload || {};
+          const text = formatBridgeEvent(msg.event_type, payload);
+          addBridgeMessage(msg.event_type, text, msg.event_type.split('.')[0].toUpperCase());
+          bridgeSince = Math.max(bridgeSince, new Date(msg.created_at).getTime());
+        });
+        document.getElementById('bridge-status').textContent=`LAST: ${new Date().toLocaleTimeString()}`;
+      }
+    }
+  }
+
+  function formatBridgeEventFromMsg(msg){
+    const payload = msg.payload || {};
+    const type = msg.event_type;
+    // Handle bridge.js BRIDGE_EVENTS format
+    switch(type){
+      case 'scan_started':    return `&#9654; Scan started for ${payload.domain||'domain'}`;
+      case 'scan_completed':  return `&#9679; Scan complete — Score: ${payload.score||'—'}%`;
+      case 'scan_failed':     return `&#9650; Scan failed: ${payload.error||'unknown error'}`;
+      case 'scan_progress':   return `// Scanning: ${payload.message||''} (${payload.pct||0}%)`;
+      case 'remediation_success': return `&#9679; Auto-fixed: ${payload.title||'issue resolved'}`;
+      case 'remediation_failed':  return `&#9650; Auto-fix failed: ${payload.error||''}`;
+      case 'finding_created': return `&#9650; New finding: ${payload.title||''}`;
+      case 'finding_resolved':return `&#9679; Finding resolved`;
+      case 'control_updated': return `// Control ${payload.control_id||''} → ${payload.status||''}`;
+      case 'score_changed':   return `// Score: ${payload.old_score}% → ${payload.new_score}%`;
+      case 'system':          return `// ${payload.text||'System event'}`;
+      case 'presence_join':   return `// ${payload.joiner_name||'Party'} joined the channel`;
+      case 'message':         return `&#9656; ${payload.text||''}`;
+      // Legacy dot-notation format
+      case 'scan.started':    return `&#9654; Scan started for ${payload.domain||'domain'}`;
+      case 'scan.completed':  return `&#9679; Scan complete — Score: ${payload.score||'—'}%`;
+      default: return `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
     }
   }
 
@@ -904,20 +1133,194 @@
       case 'scan.failed':     return `&#9650; Scan failed: ${payload.error||'unknown error'}`;
       case 'scan.progress':   return `// Scanning: ${payload.message||''} (${payload.pct||0}%)`;
       case 'remediation.success': return `&#9679; Auto-fixed: ${payload.result?.actions?.[0]||'issue resolved'}`;
-      case 'remediation.failed':  return `&#9650; Auto-fix failed: ${payload.result?.error||''}`;
-      case 'remediation.guided':  return `&#9650; Guided remediation sent for finding`;
       case 'finding.created': return `&#9650; New finding: ${payload.title||''}`;
-      case 'finding.resolved':return `&#9679; Finding resolved by ${payload.resolvedBy||'system'}`;
+      case 'finding.resolved':return `&#9679; Finding resolved`;
       case 'control.updated': return `// Control ${payload.controlId||''} → ${payload.status||''}`;
-      case 'control.auto_passed': return `&#9679; Auto-passed: ${payload.controlId||''}`;
-      case 'assessor.connected': return `// C3PAO connected: ${payload.assessor_email||'assessor'}`;
       case 'score.changed':   return `// Score changed: ${payload.oldScore}% → ${payload.newScore}%`;
       default: return `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
     }
   }
 
-  // Start bridge polling every 5 seconds
-  setInterval(pollBridge, 5000);
+  // Initialize Bridge™ channel on load
+  ensureBridgeChannel().then(id => {
+    if(id) addBridgeMessage('system', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+  });
+  setInterval(pollBridge, 4000);
+
+  // ── AWS Integration ───────────────────────────────────────
+  function showIntMsg(id, type, text){
+    const el = document.getElementById(id);
+    el.className = `int-msg ${type} show`;
+    el.textContent = `> ${text}`;
+    setTimeout(() => el.className = 'int-msg', 6000);
+  }
+
+  async function testAWS(){
+    const keyId = document.getElementById('aws-key-id').value.trim();
+    const secret = document.getElementById('aws-secret-key').value.trim();
+    const region = document.getElementById('aws-region').value;
+    if(!keyId || !secret){ showIntMsg('aws-msg','error','Enter Access Key ID and Secret Access Key first'); return; }
+    showIntMsg('aws-msg','info','Testing AWS connection...');
+    const data = await api(`/orgs/${org.id}/integrations/aws/test`, {
+      method:'POST',
+      body: JSON.stringify({ access_key_id: keyId, secret_access_key: secret, region })
+    });
+    if(data?.success){
+      showIntMsg('aws-msg','success',`Connected! Account: ${data.account_id} | ARN: ${data.arn?.split('/').pop()}`);
+      document.getElementById('aws-status-badge').className='int-status-badge connected';
+      document.getElementById('aws-status-txt').textContent='CONNECTED';
+      document.getElementById('btn-aws-scan').disabled = false;
+    } else {
+      showIntMsg('aws-msg','error', data?.error || 'Connection failed. Check credentials.');
+    }
+  }
+
+  async function saveAWS(){
+    const keyId = document.getElementById('aws-key-id').value.trim();
+    const secret = document.getElementById('aws-secret-key').value.trim();
+    const region = document.getElementById('aws-region').value;
+    if(!keyId || !secret){ showIntMsg('aws-msg','error','Enter both credentials before saving'); return; }
+    showIntMsg('aws-msg','info','Saving credentials...');
+    const data = await api(`/orgs/${org.id}/integrations/aws`, {
+      method:'POST',
+      body: JSON.stringify({ access_key_id: keyId, secret_access_key: secret, region })
+    });
+    if(data?.integration_id || data?.message){
+      showIntMsg('aws-msg','success','AWS credentials saved and encrypted successfully');
+      document.getElementById('aws-key-id').value = '';
+      document.getElementById('aws-secret-key').value = keyId.slice(0,4)+'...';
+      document.getElementById('aws-status-badge').className='int-status-badge connected';
+      document.getElementById('aws-status-txt').textContent='CONFIGURED';
+      document.getElementById('btn-aws-scan').disabled = false;
+      document.getElementById('badge-aws').textContent='ON';
+      document.getElementById('badge-aws').className='nav-badge badge-green';
+    } else {
+      showIntMsg('aws-msg','error', data?.error || 'Save failed');
+    }
+  }
+
+  async function scanAWS(){
+    const btn = document.getElementById('btn-aws-scan');
+    btn.disabled = true; btn.textContent = 'SCANNING...';
+    showIntMsg('aws-msg','info','AWS security scan running — this takes 30-60 seconds...');
+    addBridgeMessage('scan_started', 'AWS Security scan initiated', 'AWS');
+    const data = await api(`/orgs/${org.id}/scan/aws`, { method:'POST' });
+    btn.disabled = false; btn.textContent = 'RUN AWS SCAN ▶';
+    if(data?.score !== undefined){
+      showIntMsg('aws-msg','success',`AWS scan complete — Score: ${data.score}% | ${data.checksRun} checks | ${data.findingsCreated} findings`);
+      addBridgeMessage('scan_completed', `AWS scan complete — Score: ${data.score}%`, 'AWS');
+      renderIntResults('aws-checks', data.results);
+      document.getElementById('aws-results').classList.add('show');
+      loadPosture(); loadFindings();
+    } else {
+      showIntMsg('aws-msg','error', data?.error || 'Scan failed');
+      addBridgeMessage('scan_failed', 'AWS scan failed', 'AWS');
+    }
+  }
+
+  // ── M365 Integration ──────────────────────────────────────
+  async function testM365(){
+    const tenantId = document.getElementById('m365-tenant-id').value.trim();
+    const clientId = document.getElementById('m365-client-id').value.trim();
+    const clientSecret = document.getElementById('m365-client-secret').value.trim();
+    if(!tenantId || !clientId || !clientSecret){ showIntMsg('m365-msg','error','Enter all three credentials first'); return; }
+    showIntMsg('m365-msg','info','Testing Microsoft 365 connection...');
+    const data = await api(`/orgs/${org.id}/integrations/m365/test`, {
+      method:'POST',
+      body: JSON.stringify({ tenant_id: tenantId, client_id: clientId, client_secret: clientSecret })
+    });
+    if(data?.success){
+      showIntMsg('m365-msg','success',`Connected to: ${data.tenant_name}`);
+      document.getElementById('m365-status-badge').className='int-status-badge connected';
+      document.getElementById('m365-status-txt').textContent='CONNECTED';
+      document.getElementById('btn-m365-scan').disabled = false;
+    } else {
+      showIntMsg('m365-msg','error', data?.error || 'Connection failed. Check credentials and API permissions.');
+    }
+  }
+
+  async function saveM365(){
+    const tenantId = document.getElementById('m365-tenant-id').value.trim();
+    const clientId = document.getElementById('m365-client-id').value.trim();
+    const clientSecret = document.getElementById('m365-client-secret').value.trim();
+    if(!tenantId || !clientId || !clientSecret){ showIntMsg('m365-msg','error','Enter all three credentials before saving'); return; }
+    showIntMsg('m365-msg','info','Saving credentials...');
+    const data = await api(`/orgs/${org.id}/integrations/m365`, {
+      method:'POST',
+      body: JSON.stringify({ tenant_id: tenantId, client_id: clientId, client_secret: clientSecret })
+    });
+    if(data?.integration_id || data?.message){
+      showIntMsg('m365-msg','success','M365 credentials saved and encrypted successfully');
+      document.getElementById('m365-client-secret').value = '••••••••••••••••';
+      document.getElementById('m365-status-badge').className='int-status-badge connected';
+      document.getElementById('m365-status-txt').textContent='CONFIGURED';
+      document.getElementById('btn-m365-scan').disabled = false;
+      document.getElementById('badge-m365').textContent='ON';
+      document.getElementById('badge-m365').className='nav-badge badge-green';
+    } else {
+      showIntMsg('m365-msg','error', data?.error || 'Save failed');
+    }
+  }
+
+  async function scanM365(){
+    const btn = document.getElementById('btn-m365-scan');
+    btn.disabled = true; btn.textContent = 'SCANNING...';
+    showIntMsg('m365-msg','info','Microsoft 365 scan running...');
+    addBridgeMessage('scan_started', 'Microsoft 365 scan initiated', 'M365');
+    const data = await api(`/orgs/${org.id}/scan/m365`, { method:'POST' });
+    btn.disabled = false; btn.textContent = 'RUN M365 SCAN ▶';
+    if(data?.score !== undefined){
+      showIntMsg('m365-msg','success',`M365 scan complete — Score: ${data.score}% | ${data.checksRun} checks | ${data.findingsCreated} findings`);
+      addBridgeMessage('scan_completed', `M365 scan complete — Score: ${data.score}%`, 'M365');
+      renderIntResults('m365-checks', data.results);
+      document.getElementById('m365-results').classList.add('show');
+      loadPosture(); loadFindings();
+    } else {
+      showIntMsg('m365-msg','error', data?.error || 'Scan failed');
+      addBridgeMessage('scan_failed', 'M365 scan failed', 'M365');
+    }
+  }
+
+  function renderIntResults(containerId, results){
+    if(!results) return;
+    const container = document.getElementById(containerId);
+    const scoreColor = s => s>=80?'var(--green)':s>=50?'var(--amber)':'var(--red)';
+    const statusDot = s => s==='pass'?'pass':s==='fail'?'fail':'warn';
+    container.innerHTML = Object.entries(results).filter(([,v])=>v&&v.status&&v.status!=='not_assessed').map(([key, r])=>`
+      <div class="int-check">
+        <div class="int-check-dot ${statusDot(r.status)}"></div>
+        <div class="int-check-name">${r.name||key.replace(/_/g,' ').toUpperCase()}</div>
+        <div class="int-check-score" style="color:${scoreColor(r.score||0)}">${r.score||0}%</div>
+      </div>`).join('');
+  }
+
+  // ── Load integrations status on init ─────────────────────
+  async function loadIntegrationsStatus(){
+    const data = await api(`/orgs/${org.id}/integrations`);
+    if(!data?.integrations) return;
+    for(const int of data.integrations){
+      if(int.provider === 'aws'){
+        document.getElementById('aws-status-badge').className='int-status-badge connected';
+        document.getElementById('aws-status-txt').textContent='CONFIGURED';
+        document.getElementById('btn-aws-scan').disabled = false;
+        document.getElementById('aws-key-id').value = int.client_id||'';
+        document.getElementById('aws-secret-key').value = '••••••••••••••••';
+        if(int.tenant_id) document.getElementById('aws-region').value = int.tenant_id;
+        document.getElementById('badge-aws').textContent='ON';
+        document.getElementById('badge-aws').className='nav-badge badge-green';
+      }
+      if(int.provider === 'microsoft365'){
+        document.getElementById('m365-status-badge').className='int-status-badge connected';
+        document.getElementById('m365-status-txt').textContent='CONFIGURED';
+        document.getElementById('btn-m365-scan').disabled = false;
+        document.getElementById('m365-tenant-id').value = int.tenant_id||'';
+        document.getElementById('m365-client-id').value = int.client_id||'';
+        document.getElementById('m365-client-secret').value = '••••••••••••••••';
+        document.getElementById('badge-m365').textContent='ON';
+        document.getElementById('badge-m365').className='nav-badge badge-green';
+      }
+    }
+  }
 
   // ── Create assessor session ───────────────────────────────
   async function createAssessorSession(){
@@ -945,13 +1348,14 @@
         <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">&#9679; PORTAL LINK GENERATED — SHARE WITH ASSESSOR</div>
         <div style="color:var(--cyan);word-break:break-all;">${data.portal_url}</div>
         <div style="color:var(--dim);margin-top:6px;font-size:0.48rem;">Expires: ${new Date(data.session.expires_at).toLocaleString()} • Read-only access only</div>`;
-      addBridgeMessage('assessor.connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
+      addBridgeMessage('assessor_connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
     }
   }
 
   // ── Framework detail ──────────────────────────────────────
   async function loadFrameworkDetail(pageId, framework, color, name){
     const el = document.getElementById(pageId);
+    el.innerHTML='<div class="loading">// LOADING '+name+'...</div>';
     const data = await api(`/orgs/${org.id}/controls?framework=${framework}`);
     if(!data){ el.innerHTML='<div class="loading">// FAILED TO LOAD</div>'; return; }
 
@@ -996,8 +1400,6 @@
   async function generateReport(type){
     const data = await api(`/orgs/${org.id}/reports/${type}`);
     if(!data) return;
-
-    // Build a readable HTML report
     const reportHTML = buildReportHTML(type, data);
     const blob = new Blob([reportHTML], {type:'text/html'});
     const url = URL.createObjectURL(blob);
@@ -1007,109 +1409,47 @@
   }
 
   function buildReportHTML(type, data) {
-    const org = data.org || {};
+    const orgData = data.org || {};
     const controls = data.controls || [];
     const findings = data.open_findings || [];
     const poam = data.poam_entries || [];
     const now = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-
-    const titleMap = {
-      'ssp':'System Security Plan (SSP)',
-      'poam':'Plan of Action & Milestones (POA&M)',
-      'executive':'Executive Summary',
-      'fips-audit':'FIPS 140-3 Cryptographic Audit',
-      'owasp':'OWASP Top 10 Vulnerability Report',
-      'soc2-readiness':'SOC 2 Type II Readiness Assessment',
-    };
-    const title = titleMap[type] || type.toUpperCase();
-
-    const fwFilter = {
-      'ssp':['NIST','CMMC'],'poam':['NIST','CMMC'],
-      'fips-audit':['FIPS'],'owasp':['OWASP'],'soc2-readiness':['SOC2']
-    }[type] || null;
-
-    const fc = fwFilter ? controls.filter(c=>(c.control_definitions?.framework||c.framework||'') && fwFilter.includes(c.control_definitions?.framework||c.framework)) : controls;
+    const fwFilter = {'ssp':['NIST','CMMC'],'poam':['NIST','CMMC'],'fips-audit':['FIPS'],'owasp':['OWASP'],'soc2-readiness':['SOC2']}[type] || null;
+    const fc = fwFilter ? controls.filter(c=>fwFilter.includes(c.control_definitions?.framework||c.framework||'')) : controls;
     const pass = fc.filter(c=>c.status==='pass').length;
     const fail = fc.filter(c=>c.status==='fail').length;
     const pct = fc.length ? Math.round(pass/fc.length*100) : 0;
-    const pctColor = pct>=80?'#00873d':pct>=50?'#c96a00':'#c0392b';
-
-    const sb = s=>{const m={pass:['#00873d','PASS'],fail:['#c0392b','FAIL'],partial:['#c96a00','PARTIAL'],not_assessed:['#666','NOT ASSESSED'],not_applicable:['#999','N/A']};const[c,l]=m[s]||['#666',s?.toUpperCase()||''];return `<span style="background:${c};color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">${l}</span>`;};
-    const rb = s=>{const m={critical:'#c0392b',warning:'#c96a00',info:'#1a6bbd'};return `<span style="background:${m[s]||'#666'};color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">${(s||'').toUpperCase()}</span>`;};
-
-    const ctrlRows = fc.map(c=>{const d=c.control_definitions||{};return `<tr><td style="font-weight:600;white-space:nowrap;font-size:12px;">${d.id||c.control_id||''}</td><td style="font-size:12px;">${d.family||''}</td><td>${d.title||d.description||''}</td><td style="text-align:center;">${sb(c.status||'not_assessed')}</td><td style="font-size:12px;color:#555;">${c.notes?.slice(0,80)||''}</td></tr>`;}).join('');
-
-    const findRows = findings.map(f=>`<tr><td>${rb(f.severity)}</td><td style="font-weight:600;">${f.title||''}</td><td style="font-size:12px;">${f.control_id||''}</td><td style="font-size:12px;">${(f.description||'').slice(0,120)}</td><td style="font-size:12px;">${(f.remediation||'').slice(0,100)}</td></tr>`).join('');
-
-    const poamRows = poam.map(p=>{const rc=p.risk_rating==='high'?'#c0392b':p.risk_rating==='moderate'?'#c96a00':'#00873d';const sc=p.status==='open'?'#c0392b':'#00873d';return `<tr><td style="font-weight:600;font-size:12px;">${p.control_id||''}</td><td style="font-size:12px;">${(p.weakness||'').slice(0,100)}</td><td><span style="background:${rc};color:#fff;padding:2px 7px;border-radius:3px;font-size:11px;">${(p.risk_rating||'').toUpperCase()}</span></td><td style="font-size:12px;">${p.scheduled_completion?new Date(p.scheduled_completion).toLocaleDateString():''}</td><td><span style="background:${sc};color:#fff;padding:2px 7px;border-radius:3px;font-size:11px;">${(p.status||'').toUpperCase()}</span></td></tr>`;}).join('');
-
-    return `<!DOCTYPE html>
-<html lang="en"><head><meta charset="UTF-8"/>
-<title>AuditCore™ — ${title}</title>
-<style>
-*{box-sizing:border-box;margin:0;padding:0;}
-body{font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f0f2f5;}
-@media print{body{background:#fff;}.no-print{display:none;}}
-.page{max-width:1100px;margin:24px auto;background:#fff;padding:44px;box-shadow:0 2px 16px rgba(0,0,0,.12);border-radius:4px;}
-.hdr{border-bottom:3px solid #0d1b2a;padding-bottom:20px;margin-bottom:28px;display:flex;justify-content:space-between;align-items:flex-start;}
-.hdr h1{font-size:22px;color:#0d1b2a;font-weight:700;}
-.hdr h2{font-size:15px;color:#444;font-weight:400;margin-top:5px;}
-.meta{text-align:right;font-size:12px;color:#555;line-height:1.9;}
-.meta strong{color:#0d1b2a;}
-.wm{font-size:10px;color:#bbb;margin-top:5px;letter-spacing:.1em;}
+    return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>AuditCore™ Report</title>
+<style>body{font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f0f2f5;margin:0;padding:24px;}
+.page{max-width:1100px;margin:0 auto;background:#fff;padding:44px;box-shadow:0 2px 16px rgba(0,0,0,.12);}
+.hdr{border-bottom:3px solid #0d1b2a;padding-bottom:20px;margin-bottom:28px;display:flex;justify-content:space-between;}
+h1{font-size:22px;color:#0d1b2a;} .meta{text-align:right;font-size:12px;color:#555;line-height:1.9;}
 .cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:28px;}
 .card{background:#f8f9fa;border-radius:6px;padding:18px;text-align:center;border-top:4px solid #0d1b2a;}
-.card.g{border-top-color:#00873d;}.card.r{border-top-color:#c0392b;}.card.a{border-top-color:#c96a00;}
-.card .n{font-size:34px;font-weight:700;line-height:1;}
-.card .l{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.08em;margin-top:5px;}
-.sec{margin-bottom:32px;}
-.sec-hdr{font-size:16px;font-weight:700;color:#0d1b2a;padding:8px 0;border-bottom:2px solid #e0e0e0;margin-bottom:14px;}
-table{width:100%;border-collapse:collapse;}
-th{background:#0d1b2a;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:600;letter-spacing:.04em;}
-td{padding:9px 12px;border-bottom:1px solid #e8e8e8;vertical-align:top;line-height:1.4;}
-tr:nth-child(even) td{background:#fafafa;}
+.card .n{font-size:34px;font-weight:700;} .card .l{font-size:11px;color:#666;text-transform:uppercase;}
+table{width:100%;border-collapse:collapse;margin-bottom:24px;} th{background:#0d1b2a;color:#fff;padding:9px 12px;text-align:left;font-size:12px;}
+td{padding:9px 12px;border-bottom:1px solid #e8e8e8;font-size:13px;} tr:nth-child(even) td{background:#fafafa;}
 .ftr{margin-top:40px;padding-top:14px;border-top:1px solid #e0e0e0;text-align:center;font-size:11px;color:#aaa;}
-.pbtn{position:fixed;bottom:24px;right:24px;background:#0d1b2a;color:#fff;border:none;padding:13px 22px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 12px rgba(0,0,0,.3);}
-.pbtn:hover{background:#1a3a5c;}
-.exec-summary{background:#f8f9fa;border-left:4px solid #0d1b2a;padding:18px 20px;margin-bottom:24px;line-height:1.8;border-radius:0 6px 6px 0;}
+.pbtn{position:fixed;bottom:24px;right:24px;background:#0d1b2a;color:#fff;border:none;padding:13px 22px;border-radius:6px;font-size:14px;cursor:pointer;}
 </style></head><body>
 <div class="page">
-<div class="hdr">
-  <div><h1>AuditCore™</h1><h2>${title}</h2></div>
-  <div class="meta">
-    <div><strong>Organization:</strong> ${org.name||'—'}</div>
-    <div><strong>Report Date:</strong> ${now}</div>
-    <div><strong>Prepared By:</strong> AuditCore™ v2.0</div>
-    ${org.sprs_score!=null?'<div><strong>SPRS Score:</strong> '+org.sprs_score+' / 110</div>':''}
-    <div class="wm">AUDITCORE™ • DARKBLOOM INDUSTRIES™ • CONFIDENTIAL</div>
-  </div>
-</div>
-
+<div class="hdr"><div><h1>AuditCore™ — ${type.toUpperCase()} Report</h1></div>
+<div class="meta"><div><strong>Org:</strong> ${orgData.name||'—'}</div><div><strong>Date:</strong> ${now}</div><div>CONFIDENTIAL • DARKBLOOM INDUSTRIES™</div></div></div>
 <div class="cards">
-  <div class="card ${pct>=80?'g':pct>=50?'a':'r'}"><div class="n" style="color:${pctColor}">${pct}%</div><div class="l">Compliance Score</div></div>
-  <div class="card g"><div class="n" style="color:#00873d">${pass}</div><div class="l">Controls Passing</div></div>
-  <div class="card r"><div class="n" style="color:#c0392b">${fail}</div><div class="l">Controls Failing</div></div>
-  <div class="card a"><div class="n" style="color:#c96a00">${findings.length}</div><div class="l">Open Findings</div></div>
-  <div class="card"><div class="n">${fc.length}</div><div class="l">Total Controls</div></div>
-  ${poam.length>0?'<div class="card"><div class="n">'+poam.length+'</div><div class="l">POA&amp;M Entries</div></div>':''}
+<div class="card"><div class="n" style="color:${pct>=80?'#00873d':pct>=50?'#c96a00':'#c0392b'}">${pct}%</div><div class="l">Score</div></div>
+<div class="card"><div class="n" style="color:#00873d">${pass}</div><div class="l">Passing</div></div>
+<div class="card"><div class="n" style="color:#c0392b">${fail}</div><div class="l">Failing</div></div>
+<div class="card"><div class="n" style="color:#c96a00">${findings.length}</div><div class="l">Findings</div></div>
 </div>
-
-${type==='executive'?'<div class="exec-summary"><strong>Summary:</strong> '+( org.name||'Your organization' )+' has completed a compliance assessment via AuditCore™. Overall posture: <strong>'+pct+'%</strong> across '+fc.length+' controls. '+(fail>0?'<strong style=\"color:#c0392b\">'+fail+' gap'+(fail===1?'':'s')+'</strong> require remediation. ':'')+( findings.length>0?'<strong style=\"color:#c96a00\">'+findings.length+' open finding'+(findings.length===1?'':'s')+'</strong> need attention.':'All findings resolved.')+'</div>':''}
-
-${fc.length>0?'<div class="sec"><div class="sec-hdr">✅ Control Assessments ('+fc.length+' controls)</div><table><thead><tr><th>Control ID</th><th>Family</th><th>Description</th><th style=\"text-align:center\">Status</th><th>Notes</th></tr></thead><tbody>'+ctrlRows+'</tbody></table></div>':''}
-
-${findings.length>0?'<div class="sec"><div class="sec-hdr">⚠️ Open Findings ('+findings.length+')</div><table><thead><tr><th>Severity</th><th>Title</th><th>Control</th><th>Description</th><th>Remediation</th></tr></thead><tbody>'+findRows+'</tbody></table></div>':''}
-
-${poam.length>0&&(type==='poam'||type==='ssp')?'<div class="sec"><div class="sec-hdr">📋 Plan of Action &amp; Milestones</div><table><thead><tr><th>Control</th><th>Weakness</th><th>Risk</th><th>Target Date</th><th>Status</th></tr></thead><tbody>'+poamRows+'</tbody></table></div>':''}
-
-<div class="ftr">Generated by AuditCore™ v2.0 &bull; Darkbloom Industries™ &bull; ${now} &bull; CONFIDENTIAL &mdash; DO NOT DISTRIBUTE WITHOUT AUTHORIZATION</div>
-</div>
-<button class="pbtn no-print" onclick="window.print()">🖨 Print / Save PDF</button>
-</body></html>`;
+${fc.length?`<table><thead><tr><th>Control ID</th><th>Description</th><th>Status</th></tr></thead><tbody>${fc.map(c=>`<tr><td>${c.control_definitions?.id||c.control_id||''}</td><td>${c.control_definitions?.title||''}</td><td>${c.status||'not_assessed'}</td></tr>`).join('')}</tbody></table>`:''}
+${findings.length?`<h3>Open Findings</h3><table><thead><tr><th>Severity</th><th>Title</th><th>Description</th></tr></thead><tbody>${findings.map(f=>`<tr><td>${f.severity}</td><td>${f.title}</td><td>${(f.description||'').slice(0,100)}</td></tr>`).join('')}</tbody></table>`:''}
+<div class="ftr">AuditCore™ v2.0 • Darkbloom Industries™ • ${now} • CONFIDENTIAL</div>
+</div><button class="pbtn" onclick="window.print()">Print / Save PDF</button></body></html>`;
   }
 
   // ── Scan ──────────────────────────────────────────────────
-  const scanLines=['> Initializing Darkbloom Bridge™...','> Connecting to scan engine...','> Loading framework definitions [CMMC/NIST/OWASP/SOC2/FIPS]','> Checking SSL/TLS configuration...','> Scanning HTTP security headers...','> Checking DNS/SPF/DMARC records...','> Verifying HTTPS redirect enforcement...','> Checking clickjacking protection...','> Scanning FIPS cryptographic compliance...','> Cross-referencing findings to NIST controls...','> Applying cross-framework mappings...','> Checking for auto-remediable issues...','> Updating POA&M entries...','> ✓ Scan complete. Results publishing via Bridge™...'];
+  const scanLines=['> Initializing Darkbloom Bridge™...','> Connecting to scan engine...','> Loading framework definitions [CMMC/NIST/OWASP/SOC2/FIPS]','> Checking SSL/TLS configuration...','> Scanning HTTP security headers...','> Checking DNS/SPF/DMARC records...','> Verifying HTTPS redirect enforcement...','> Checking clickjacking protection...','> Scanning FIPS cryptographic compliance...','> Cross-referencing findings to NIST controls...','> Applying cross-framework mappings...','> Checking for auto-remediable issues...','> Updating POA&M entries...','> ✓ Scan complete. Results publishing via Darkbloom Bridge™...'];
+
   function startScan(){
     const overlay=document.getElementById('scan-overlay');
     const bar=document.getElementById('scan-bar');
@@ -1132,8 +1472,8 @@ ${poam.length>0&&(type==='poam'||type==='ssp')?'<div class="sec"><div class="sec
   }
 
   // ── Navigation ────────────────────────────────────────────
-  const pages=['overview','bridge','controls','findings','poam','reports','assessor','cmmc','nist','owasp','soc','fips'];
-  const titles={overview:'COMPLIANCE OVERVIEW',bridge:'DARKBLOOM BRIDGE™',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',poam:'PLAN OF ACTION & MILESTONES',reports:'GENERATE REPORTS',assessor:'C3PAO ASSESSOR PORTAL',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
+  const pages=['overview','bridge','controls','findings','poam','reports','assessor','cmmc','nist','owasp','soc','fips','aws','m365'];
+  const titles={overview:'COMPLIANCE OVERVIEW',bridge:'DARKBLOOM BRIDGE™',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',poam:'PLAN OF ACTION & MILESTONES',reports:'GENERATE REPORTS',assessor:'C3PAO ASSESSOR PORTAL',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3',aws:'AWS SECURITY INTEGRATION',m365:'MICROSOFT 365 INTEGRATION'};
 
   async function showPage(name){
     pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});
@@ -1154,23 +1494,37 @@ ${poam.length>0&&(type==='poam'||type==='ssp')?'<div class="sec"><div class="sec
   }
 
   async function loadBridgeFull(){
-    const data = await api(`/orgs/${org.id}/bridge?since=0`);
+    const channelId = await ensureBridgeChannel();
     const feed = document.getElementById('bridge-feed-full');
-    if(!data?.messages?.length){
-      feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px;text-align:center;">No bridge events yet. Run a scan to populate.</div>';
-      return;
+    feed.innerHTML='<div class="loading">// LOADING BRIDGE EVENTS...</div>';
+
+    if(channelId){
+      try {
+        const res = await fetch(`${API_URL}/bridge/channels/${channelId}/messages?limit=100`, {
+          headers:{ 'Authorization':`Bearer ${token}` }
+        });
+        const data = await res.json();
+        if(!data?.messages?.length){
+          feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px;text-align:center;">No bridge events yet. Run a scan to populate.</div>';
+          return;
+        }
+        feed.innerHTML='';
+        data.messages.forEach(msg=>{
+          const color = bridgeColors[msg.event_type]||'#00f0ff';
+          const text = formatBridgeEventFromMsg(msg);
+          const item = document.createElement('div');
+          item.className='bridge-msg';
+          item.innerHTML=`<div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
+            <div class="bridge-msg-content"><div class="bridge-msg-event">${text}</div>
+            <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleString()} • ${msg.event_type?.toUpperCase()}</div></div>`;
+          feed.appendChild(item);
+        });
+      } catch(e) {
+        feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--red);padding:20px;">Error loading bridge events.</div>';
+      }
+    } else {
+      feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px;text-align:center;">No bridge channel yet. Run a scan to create one.</div>';
     }
-    feed.innerHTML='';
-    data.messages.forEach(msg=>{
-      const color = bridgeColors[msg.event_type]||'#00f0ff';
-      const text = formatBridgeEvent(msg.event_type, msg.payload||{});
-      const item = document.createElement('div');
-      item.className='bridge-msg';
-      item.innerHTML=`<div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
-        <div class="bridge-msg-content"><div class="bridge-msg-event">${text}</div>
-        <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleString()}</div></div>`;
-      feed.appendChild(item);
-    });
   }
 
   function signOut(){ sessionStorage.clear(); window.location.href='auditcore.html'; }
@@ -1178,8 +1532,8 @@ ${poam.length>0&&(type==='poam'||type==='ssp')?'<div class="sec"><div class="sec
   // ── Init ──────────────────────────────────────────────────
   loadPosture();
   loadFindings();
-  setTimeout(pollBridge, 1000);
-  addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+  loadIntegrationsStatus();
+  setTimeout(pollBridge, 2000);
 </script>
 </body>
 </html>
