@@ -64,9 +64,7 @@
     .section-divider-tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;}
     .section-divider-line{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);}
 
-    /* ═══════════════════════════════════════
-       AUDITCORE SECTION
-    ═══════════════════════════════════════ */
+    /* AUDITCORE SECTION */
     .ac-section{border:1px solid rgba(0,240,255,0.2);background:linear-gradient(135deg,rgba(0,240,255,0.04),rgba(0,240,255,0.01));position:relative;overflow:hidden;}
     .ac-section::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--ac),#3a7fff,transparent);}
     .ac-inner{padding:52px 60px;}
@@ -90,9 +88,7 @@
     .btn-ac-secondary{font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ac);background:transparent;border:1px solid rgba(0,240,255,0.35);padding:16px 32px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;}
     .btn-ac-secondary:hover{background:rgba(0,240,255,0.08);box-shadow:0 0 20px rgba(0,240,255,0.2);}
 
-    /* ═══════════════════════════════════════
-       WRENCHWARE + CLAIMSYNC SECTION
-    ═══════════════════════════════════════ */
+    /* WRENCHWARE + CLAIMSYNC */
     .products-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;align-items:stretch;}
     .product-card{padding:52px 48px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
     .product-card.ww{border:1px solid rgba(0,200,255,0.2);background:linear-gradient(145deg,rgba(0,200,255,0.04),rgba(0,200,255,0.01));}
@@ -112,14 +108,6 @@
     .product-name sup{font-size:0.35em;vertical-align:super;opacity:0.7;}
     .product-tagline{font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;color:rgba(200,232,240,0.35);margin-bottom:32px;text-transform:uppercase;}
     .product-desc{font-size:1.05rem;color:rgba(200,232,240,0.6);line-height:1.8;margin-bottom:36px;}
-    .feature-list{list-style:none;display:flex;flex-direction:column;gap:12px;margin-bottom:40px;flex:1;}
-    .feature-list li{font-family:'Rajdhani',sans-serif;font-size:0.95rem;color:rgba(200,232,240,0.65);display:flex;align-items:flex-start;gap:12px;line-height:1.5;}
-    .feature-list li .fi{font-size:0.55rem;flex-shrink:0;margin-top:5px;}
-    .product-card.ww .feature-list li .fi{color:var(--ww);}
-    .product-card.cs .feature-list li .fi{color:var(--cs);}
-    .feature-list li strong{font-weight:700;}
-    .product-card.ww .feature-list li strong{color:rgba(0,200,255,0.9);}
-    .product-card.cs .feature-list li strong{color:rgba(255,107,0,0.9);}
     .product-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
     .ptag{font-family:'Share Tech Mono',monospace;font-size:0.58rem;padding:4px 12px;letter-spacing:0.1em;}
     .product-card.ww .ptag{color:var(--ww);border:1px solid rgba(0,200,255,0.25);}
@@ -128,6 +116,21 @@
     .status-dot{width:7px;height:7px;border-radius:50%;animation:pulseDot 2s infinite;}
     .product-card.ww .status-dot,.product-card.cs .status-dot{background:var(--green);box-shadow:0 0 6px var(--green);}
     .product-card.ww .product-status,.product-card.cs .product-status{color:rgba(0,255,136,0.7);}
+
+    /* LOGIN BUTTONS for WW and CS */
+    .product-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:auto;}
+    .btn-ww-primary{font-family:'Share Tech Mono',monospace;font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--ww);border:none;padding:14px 32px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
+    .btn-ww-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
+    .btn-ww-primary:hover::before{left:100%;}
+    .btn-ww-primary:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(0,200,255,0.5);}
+    .btn-ww-secondary{font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ww);background:transparent;border:1px solid rgba(0,200,255,0.35);padding:14px 24px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;}
+    .btn-ww-secondary:hover{background:rgba(0,200,255,0.08);box-shadow:0 0 18px rgba(0,200,255,0.2);}
+    .btn-cs-primary{font-family:'Share Tech Mono',monospace;font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:#fff;background:var(--cs);border:none;padding:14px 32px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
+    .btn-cs-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);transition:left 0.4s;}
+    .btn-cs-primary:hover::before{left:100%;}
+    .btn-cs-primary:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(255,107,0,0.5);}
+    .btn-cs-secondary{font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cs);background:transparent;border:1px solid rgba(255,107,0,0.35);padding:14px 24px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;}
+    .btn-cs-secondary:hover{background:rgba(255,107,0,0.08);box-shadow:0 0 18px rgba(255,107,0,0.2);}
 
     /* BRIDGE SECTION */
     .bridge-section{padding:0 48px 80px;max-width:1280px;margin:0 auto;}
@@ -229,6 +232,8 @@
       .footer-links{justify-content:center;}
       .ac-actions{flex-direction:column;align-items:stretch;}
       .btn-ac-primary,.btn-ac-secondary{text-align:center;}
+      .product-actions{flex-direction:column;align-items:stretch;}
+      .btn-ww-primary,.btn-ww-secondary,.btn-cs-primary,.btn-cs-secondary{text-align:center;}
     }
   </style>
 </head>
@@ -271,9 +276,7 @@
     <p class="hero-sub">Production-grade software built and deployed by Darkbloom Industries&#8482;. Compliance-ready, fully operational, and accepting clients now.</p>
   </section>
 
-  <!-- ═══════════════════════════════════════
-       AUDITCORE SECTION
-  ═══════════════════════════════════════ -->
+  <!-- AUDITCORE SECTION -->
   <div class="section-wrap" style="padding-bottom:0;">
     <div class="section-divider">
       <span class="section-divider-tag" style="color:var(--ac);">// Compliance Intelligence</span>
@@ -283,8 +286,8 @@
       <div class="ac-inner">
         <div class="ac-live-badge"><div class="ac-live-dot"></div>LIVE &mdash; ACCEPTING CLIENTS</div>
         <h2 class="ac-title">AuditCore<sup>&#8482;</sup></h2>
-        <div class="ac-tagline">Real-Time Compliance Intelligence Platform</div>
-        <p class="ac-desc">AuditCore™ is a continuous compliance monitoring platform covering CMMC Level 2, NIST SP 800-171, OWASP Top 10, SOC 2 Type II, and FIPS 140-3 — all in one hardened dashboard. Automated external scanning, Microsoft 365 integration, AWS integration, immutable audit trails, and instant gap detection. Built for defense contractors, healthcare, and fintech.</p>
+        <div class="ac-tagline">Continuous Compliance. Zero Spreadsheets.</div>
+        <p class="ac-desc">Stop guessing your compliance posture. AuditCore&#8482; keeps you continuously audit-ready across CMMC Level 2, NIST SP 800-171, SOC 2 Type II, and more — automatically. Built for defense contractors, healthcare, and fintech. Contact us for a demo.</p>
         <div class="ac-frameworks">
           <span class="ac-fw">CMMC LEVEL 2</span>
           <span class="ac-fw">NIST SP 800-171</span>
@@ -295,27 +298,27 @@
         <div class="ac-features">
           <div class="ac-feat">
             <div class="ac-feat-name">Automated Scanning</div>
-            <div class="ac-feat-desc">External domain scanner runs 14+ security checks — SSL, headers, DNS, ports, and more — with zero manual effort.</div>
+            <div class="ac-feat-desc">Continuous external security checks run automatically — no manual effort, no missed gaps.</div>
           </div>
           <div class="ac-feat">
-            <div class="ac-feat-name">Microsoft 365</div>
-            <div class="ac-feat-desc">Graph API integration scans MFA, Conditional Access, privileged roles, inactive accounts, and audit logging automatically.</div>
+            <div class="ac-feat-name">Cloud Integrations</div>
+            <div class="ac-feat-desc">Deep visibility into your Microsoft 365 and AWS environments — surfacing risks before they become findings.</div>
           </div>
           <div class="ac-feat">
-            <div class="ac-feat-name">Amazon AWS</div>
-            <div class="ac-feat-desc">Read-only IAM integration scans root MFA, S3, CloudTrail, GuardDuty, EC2, RDS, and EBS encryption across your account.</div>
-          </div>
-          <div class="ac-feat">
-            <div class="ac-feat-name">110 Controls</div>
-            <div class="ac-feat-desc">Full NIST SP 800-171 and CMMC Level 2 control library with live assessment status, assignees, and remediation notes.</div>
+            <div class="ac-feat-name">Control Library</div>
+            <div class="ac-feat-desc">Full NIST SP 800-171 and CMMC Level 2 coverage with live assessment status and team accountability.</div>
           </div>
           <div class="ac-feat">
             <div class="ac-feat-name">Findings &amp; Reports</div>
-            <div class="ac-feat-desc">Open findings organized by severity with SSP, POA&amp;M, executive summary, and framework-specific report generation.</div>
+            <div class="ac-feat-desc">Audit-ready reports generated on demand. Walk into any assessment with confidence.</div>
+          </div>
+          <div class="ac-feat">
+            <div class="ac-feat-name">Auto-Remediation</div>
+            <div class="ac-feat-desc">Gaps don't just get flagged — they get fixed. Automated remediation closes issues without manual intervention.</div>
           </div>
           <div class="ac-feat">
             <div class="ac-feat-name">Immutable Audit Log</div>
-            <div class="ac-feat-desc">Every scan, control update, and user action is logged with timestamps — ready for auditor review at any time.</div>
+            <div class="ac-feat-desc">Every action is permanently recorded with timestamps — giving auditors exactly what they need.</div>
           </div>
         </div>
         <div class="ac-actions">
@@ -326,58 +329,46 @@
     </div>
   </div>
 
-  <!-- ═══════════════════════════════════════
-       WRENCHWARE + CLAIMSYNC SECTION
-  ═══════════════════════════════════════ -->
+  <!-- WRENCHWARE + CLAIMSYNC SECTION -->
   <div class="section-wrap">
     <div class="section-divider">
       <span class="section-divider-tag" style="color:var(--magenta);">// Shop &amp; Claims Management</span>
       <div class="section-divider-line"></div>
     </div>
     <div class="products-grid">
+
       <!-- WRENCHWARE PRO -->
       <div class="product-card ww">
         <div class="product-label ww">Shop Management System</div>
         <div class="product-name">WrenchWare Pro<sup>&#8482;</sup></div>
-        <div class="product-tagline">Complete Automotive Shop Operations Platform</div>
-        <p class="product-desc">WrenchWare Pro is a full-featured shop management system engineered for modern automotive repair facilities. From work order creation to technician tracking, parts inventory, and direct insurer communication &mdash; every workflow is unified in one hardened platform.</p>
-        <ul class="feature-list">
-          <li><span class="fi">&#9654;</span><div><strong>Work Order Management</strong> &mdash; Create, assign, and track repair orders from intake to invoice with full audit trail.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Technician &amp; Labor Tracking</strong> &mdash; Real-time technician assignment, time logging, and efficiency reporting.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Parts Inventory Control</strong> &mdash; Live inventory management with reorder alerts and supplier integration.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>AI Damage Assessment</strong> &mdash; Automated visual damage analysis with repair cost estimation.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Direct Insurer Communication</strong> &mdash; Real-time bridge to ClaimSync eliminates email chains and missed calls.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Customer Portal</strong> &mdash; Clients receive live repair status updates and digital approvals.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Invoicing &amp; Payments</strong> &mdash; Integrated billing with insurer-direct payment routing.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Reporting &amp; Analytics</strong> &mdash; Shop performance dashboards with exportable compliance reports.</div></li>
-        </ul>
+        <div class="product-tagline">Run Your Shop. Not Your Inbox.</div>
+        <p class="product-desc">WrenchWare Pro&#8482; is built for modern auto repair shops that are tired of disconnected tools and phone tag with insurers. One platform, every workflow, real-time insurer communication built in.</p>
         <div class="product-tags">
           <span class="ptag">Shop Ops</span><span class="ptag">AI Assessment</span><span class="ptag">Real-Time Comms</span><span class="ptag">Inventory</span><span class="ptag">Invoicing</span><span class="ptag">SOC II</span>
         </div>
         <div class="product-status"><span class="status-dot"></span>FULLY BUILT &mdash; SEEKING PILOT PARTNERS</div>
+        <div class="product-actions">
+          <a href="wrenchware.html" class="btn-ww-primary">SHOP LOGIN &#9654;</a>
+          <a href="index.html#contact" class="btn-ww-secondary">REQUEST ACCESS</a>
+        </div>
       </div>
 
       <!-- CLAIMSYNC -->
       <div class="product-card cs">
         <div class="product-label cs">Insurance Claims Management System</div>
         <div class="product-name">ClaimSync<sup>&#8482;</sup></div>
-        <div class="product-tagline">Complete Auto Insurance Claims Platform</div>
-        <p class="product-desc">ClaimSync is a comprehensive insurance claims management system built for auto insurance companies. It streamlines the entire claims lifecycle &mdash; from first notice of loss to settlement &mdash; with built-in AI fraud detection and a live communication bridge to repair facilities.</p>
-        <ul class="feature-list">
-          <li><span class="fi">&#9654;</span><div><strong>Claims Lifecycle Management</strong> &mdash; Full FNOL to settlement workflow with automated routing and escalation.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>AI Fraud Detection</strong> &mdash; Machine-learning analysis flags suspicious patterns, duplicate claims, and anomalies in real time.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>AI Damage Assessment</strong> &mdash; Automated damage scoring with cost validation against shop estimates.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Direct Shop Communication</strong> &mdash; Real-time bridge to WrenchWare Pro replaces phone tag and email delays.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Adjuster Workflow Tools</strong> &mdash; Intelligent task assignment, deadline tracking, and workload balancing.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Policy &amp; Coverage Verification</strong> &mdash; Instant policy lookup and coverage eligibility validation.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Settlement &amp; Payment Processing</strong> &mdash; Streamlined approval chains with direct disbursement to repair partners.</div></li>
-          <li><span class="fi">&#9654;</span><div><strong>Compliance &amp; Audit Reporting</strong> &mdash; SOC II aligned logs, immutable audit trails, and state regulatory reporting exports.</div></li>
-        </ul>
+        <div class="product-tagline">Close Claims Faster. Catch Fraud Earlier.</div>
+        <p class="product-desc">ClaimSync&#8482; is built for auto insurance companies ready to cut cycle times, eliminate manual handoffs, and stop fraud before it costs them. Direct real-time connection to repair partners included.</p>
         <div class="product-tags">
           <span class="ptag">Claims</span><span class="ptag">AI Fraud Detection</span><span class="ptag">AI Assessment</span><span class="ptag">Real-Time Comms</span><span class="ptag">Compliance</span><span class="ptag">SOC II</span>
         </div>
         <div class="product-status"><span class="status-dot"></span>FULLY BUILT &mdash; SEEKING PILOT PARTNERS</div>
+        <div class="product-actions">
+          <a href="claimsync.html" class="btn-cs-primary">INSURER LOGIN &#9654;</a>
+          <a href="index.html#contact" class="btn-cs-secondary">REQUEST ACCESS</a>
+        </div>
       </div>
+
     </div>
   </div>
 
@@ -387,7 +378,7 @@
       <div style="margin-bottom:40px;">
         <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.35em;text-transform:uppercase;margin-bottom:12px;">// The Integration That Changes Everything</div>
         <h2 style="font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.4rem,3vw,2.2rem);color:#fff;letter-spacing:0.06em;margin-bottom:12px;">The Real-Time <span style="color:var(--cyan);text-shadow:0 0 15px var(--cyan);">Communication Bridge</span></h2>
-        <p style="color:rgba(200,232,240,0.5);max-width:680px;font-size:1rem;line-height:1.8;">WrenchWare Pro and ClaimSync aren't just two separate products &mdash; they are built as a single unified platform with a hardened, real-time communication bridge at their core. No emails. No missed calls. No delays.</p>
+        <p style="color:rgba(200,232,240,0.5);max-width:680px;font-size:1rem;line-height:1.8;">WrenchWare Pro&#8482; and ClaimSync&#8482; operate as a single unified platform. Shops and insurers stay in sync in real time. No emails. No missed calls. No delays.</p>
       </div>
       <div class="bridge-inner">
         <div class="bridge-node ww"><div class="bridge-node-name">WrenchWare Pro&#8482;</div><div class="bridge-node-sub">Shop Side</div></div>
@@ -398,12 +389,12 @@
         <div class="bridge-node cs"><div class="bridge-node-name">ClaimSync&#8482;</div><div class="bridge-node-sub">Insurer Side</div></div>
       </div>
       <div class="bridge-features-grid">
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#9889;</span><div class="bridge-feat-name">Instant Messaging</div><p class="bridge-feat-desc">Shops and adjusters communicate directly inside the platform. No email threads. Decisions happen in seconds.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#129302;</span><div class="bridge-feat-name">AI Fraud Detection</div><p class="bridge-feat-desc">Machine-learning models analyze claim data in real time to flag suspicious activity before approval.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#128247;</span><div class="bridge-feat-name">AI Damage Assessment</div><p class="bridge-feat-desc">Automated damage scoring validates shop estimates against insurer expectations &mdash; reducing disputes.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#128274;</span><div class="bridge-feat-name">SOC II Secured</div><p class="bridge-feat-desc">End-to-end encryption, FIPS 140-3 validated cryptography, and immutable audit logs across every exchange.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#128200;</span><div class="bridge-feat-name">Live Status Sync</div><p class="bridge-feat-desc">Repair status, approvals, parts availability, and supplements sync instantly between both platforms.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#128203;</span><div class="bridge-feat-name">Unified Audit Trail</div><p class="bridge-feat-desc">Every communication and approval is logged with immutable timestamps across both systems.</p></div>
+        <div class="bridge-feat"><span class="bridge-feat-icon">&#9889;</span><div class="bridge-feat-name">Instant Messaging</div><p class="bridge-feat-desc">Shops and adjusters communicate directly inside the platform. Decisions in seconds, not days.</p></div>
+        <div class="bridge-feat"><span class="bridge-feat-icon">&#129302;</span><div class="bridge-feat-name">AI Fraud Detection</div><p class="bridge-feat-desc">Suspicious activity is flagged automatically before any approval is issued.</p></div>
+        <div class="bridge-feat"><span class="bridge-feat-icon">&#128247;</span><div class="bridge-feat-name">AI Damage Assessment</div><p class="bridge-feat-desc">Shop estimates validated automatically. Fewer disputes. Faster closures.</p></div>
+        <div class="bridge-feat"><span class="bridge-feat-icon">&#128274;</span><div class="bridge-feat-name">SOC II Secured</div><p class="bridge-feat-desc">Enterprise-grade security and immutable audit logs across every transaction.</p></div>
+        <div class="bridge-feat"><span class="bridge-feat-icon">&#128200;</span><div class="bridge-feat-name">Live Status Sync</div><p class="bridge-feat-desc">Both sides always know the current status — no calls required.</p></div>
+        <div class="bridge-feat"><span class="bridge-feat-icon">&#128203;</span><div class="bridge-feat-name">Unified Audit Trail</div><p class="bridge-feat-desc">Every communication and approval logged permanently across both platforms.</p></div>
       </div>
     </div>
   </div>
