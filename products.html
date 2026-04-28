@@ -8,16 +8,14 @@
   <meta http-equiv="X-Frame-Options" content="DENY"/>
   <meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin"/>
   <meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=(), payment=(), usb=()"/>
-  <meta name="description" content="Darkbloom Industries products — AuditCore™ compliance intelligence platform, WrenchWare Pro™ shop management, and ClaimSync™ insurance claims platform."/>
+  <meta name="description" content="Darkbloom Industries™ products — AuditCore™, WrenchWare Pro™, and ClaimSync™."/>
   <title>Products &mdash; Darkbloom Industries&#8482;</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <style>
     :root{
       --cyan:#00f5ff;--magenta:#ff00aa;--green:#00ff88;
-      --orange:#ff8c00;--dark:#020408;--border:rgba(0,245,255,0.15);
-      --panel:rgba(0,245,255,0.03);
-      --ww:#00c8ff;--cs:#ff6b00;
-      --ac:#00f0ff;
+      --dark:#020408;--border:rgba(0,245,255,0.15);
+      --ww:#00c8ff;--cs:#ff6b00;--ac:#00f0ff;
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html{scroll-behavior:smooth;}
@@ -28,7 +26,6 @@
     .scanlines{position:fixed;top:0;left:0;width:100%;height:100%;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:1;}
     #app{position:relative;z-index:3;}
 
-    /* NAV */
     nav{position:fixed;top:0;width:100%;padding:18px 48px;display:flex;justify-content:space-between;align-items:center;background:linear-gradient(to bottom,rgba(2,4,8,0.97),transparent);backdrop-filter:blur(6px);z-index:100;border-bottom:1px solid rgba(0,245,255,0.08);}
     .nav-logo{font-family:'Orbitron',monospace;font-weight:900;font-size:1.1rem;color:var(--cyan);letter-spacing:0.2em;text-shadow:0 0 20px var(--cyan);text-decoration:none;}
     .nav-logo sup{font-size:0.55rem;color:var(--magenta);}
@@ -38,8 +35,6 @@
     .nav-links a:hover{color:var(--cyan);}
     .nav-links a:hover::after{width:100%;}
     .nav-cta{background:var(--cyan)!important;color:var(--dark)!important;padding:8px 20px;font-weight:700;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);}
-
-    /* HAMBURGER */
     .hamburger{display:none;flex-direction:column;gap:5px;cursor:none;padding:4px;}
     .hamburger span{display:block;width:24px;height:2px;background:var(--cyan);transition:all 0.3s;box-shadow:0 0 6px var(--cyan);}
     .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
@@ -50,118 +45,71 @@
     .mobile-menu a{font-family:'Share Tech Mono',monospace;font-size:1rem;color:rgba(200,232,240,0.7);text-decoration:none;letter-spacing:0.2em;text-transform:uppercase;transition:color 0.2s;}
     .mobile-menu a:hover{color:var(--cyan);}
 
-    /* HERO */
     #hero{min-height:50vh;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;padding:130px 24px 60px;}
     .hero-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--magenta);letter-spacing:0.4em;text-transform:uppercase;margin-bottom:20px;opacity:0;animation:fadeUp 0.7s 0.2s forwards;}
     .hero-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2rem,6vw,4.5rem);color:#fff;letter-spacing:0.06em;line-height:1.05;opacity:0;animation:fadeUp 0.7s 0.4s forwards;}
-    .hero-sub{font-size:clamp(0.95rem,2vw,1.2rem);color:rgba(200,232,240,0.5);margin-top:16px;max-width:640px;line-height:1.8;opacity:0;animation:fadeUp 0.7s 0.6s forwards;}
+    .hero-sub{font-size:clamp(0.95rem,2vw,1.1rem);color:rgba(200,232,240,0.45);margin-top:16px;max-width:540px;line-height:1.8;opacity:0;animation:fadeUp 0.7s 0.6s forwards;}
 
-    /* SECTION WRAPPER */
-    .section-wrap{padding:80px 48px;max-width:1280px;margin:0 auto;}
+    /* PRODUCT CARDS */
+    .products-wrap{max-width:1200px;margin:0 auto;padding:40px 48px 80px;display:flex;flex-direction:column;gap:3px;}
 
-    /* SECTION DIVIDER */
-    .section-divider{display:flex;align-items:center;gap:20px;margin-bottom:48px;}
-    .section-divider-tag{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.3em;text-transform:uppercase;}
-    .section-divider-line{flex:1;height:1px;background:linear-gradient(to right,var(--border),transparent);}
-
-    /* AUDITCORE SECTION */
-    .ac-section{border:1px solid rgba(0,240,255,0.2);background:linear-gradient(135deg,rgba(0,240,255,0.04),rgba(0,240,255,0.01));position:relative;overflow:hidden;}
-    .ac-section::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--ac),#3a7fff,transparent);}
-    .ac-inner{padding:52px 60px;}
-    .ac-live-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--green);letter-spacing:0.2em;background:rgba(0,255,136,0.1);border:1px solid rgba(0,255,136,0.35);padding:5px 14px;margin-bottom:24px;}
-    .ac-live-dot{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulseDot 1.5s infinite;}
-    .ac-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2rem,5vw,3.5rem);color:var(--ac);letter-spacing:0.06em;text-shadow:0 0 30px rgba(0,240,255,0.4);margin-bottom:8px;line-height:1.1;}
-    .ac-title sup{font-size:0.32em;vertical-align:super;color:var(--magenta);}
-    .ac-tagline{font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:rgba(200,232,240,0.4);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:28px;}
-    .ac-desc{font-size:1.05rem;color:rgba(200,232,240,0.65);line-height:1.8;max-width:680px;margin-bottom:32px;}
-    .ac-frameworks{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
-    .ac-fw{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;padding:5px 14px;color:var(--ac);border:1px solid rgba(0,240,255,0.25);background:rgba(0,240,255,0.04);}
-    .ac-features{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-bottom:40px;}
-    .ac-feat{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.08);padding:20px;}
-    .ac-feat-name{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--ac);letter-spacing:0.08em;margin-bottom:6px;}
-    .ac-feat-desc{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(200,232,240,0.4);letter-spacing:0.05em;line-height:1.6;}
-    .ac-actions{display:flex;gap:16px;flex-wrap:wrap;align-items:center;}
-    .btn-ac-primary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--ac);border:none;padding:16px 40px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
-    .btn-ac-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
-    .btn-ac-primary:hover::before{left:100%;}
-    .btn-ac-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px rgba(0,240,255,0.5);}
-    .btn-ac-secondary{font-family:'Share Tech Mono',monospace;font-size:0.75rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ac);background:transparent;border:1px solid rgba(0,240,255,0.35);padding:16px 32px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;}
-    .btn-ac-secondary:hover{background:rgba(0,240,255,0.08);box-shadow:0 0 20px rgba(0,240,255,0.2);}
-
-    /* WRENCHWARE + CLAIMSYNC */
-    .products-grid{display:grid;grid-template-columns:1fr 1fr;gap:3px;align-items:stretch;}
-    .product-card{padding:52px 48px;position:relative;overflow:hidden;display:flex;flex-direction:column;}
-    .product-card.ww{border:1px solid rgba(0,200,255,0.2);background:linear-gradient(145deg,rgba(0,200,255,0.04),rgba(0,200,255,0.01));}
-    .product-card.cs{border:1px solid rgba(255,107,0,0.2);background:linear-gradient(145deg,rgba(255,107,0,0.04),rgba(255,107,0,0.01));}
+    .product-card{border:1px solid;position:relative;overflow:hidden;padding:56px 60px;}
     .product-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;}
+    .product-card.ac{border-color:rgba(0,240,255,0.2);background:linear-gradient(135deg,rgba(0,240,255,0.04),rgba(0,240,255,0.01));}
+    .product-card.ac::before{background:linear-gradient(90deg,var(--ac),#3a7fff,transparent);}
+    .product-card.ww{border-color:rgba(0,200,255,0.2);background:linear-gradient(135deg,rgba(0,200,255,0.04),rgba(0,200,255,0.01));}
     .product-card.ww::before{background:linear-gradient(90deg,var(--ww),transparent);}
+    .product-card.cs{border-color:rgba(255,107,0,0.2);background:linear-gradient(135deg,rgba(255,107,0,0.04),rgba(255,107,0,0.01));}
     .product-card.cs::before{background:linear-gradient(90deg,var(--cs),transparent);}
-    .product-label{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.35em;text-transform:uppercase;margin-bottom:16px;display:flex;align-items:center;gap:10px;}
-    .product-label.ww{color:rgba(0,200,255,0.5);}
-    .product-label.cs{color:rgba(255,107,0,0.5);}
-    .product-label::before{content:'';display:inline-block;width:24px;height:1px;}
-    .product-card.ww .product-label::before{background:var(--ww);}
-    .product-card.cs .product-label::before{background:var(--cs);}
-    .product-name{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.6rem,3vw,2.4rem);letter-spacing:0.04em;line-height:1.1;margin-bottom:8px;}
-    .product-card.ww .product-name{color:var(--ww);text-shadow:0 0 20px rgba(0,200,255,0.4);}
-    .product-card.cs .product-name{color:var(--cs);text-shadow:0 0 20px rgba(255,107,0,0.4);}
-    .product-name sup{font-size:0.35em;vertical-align:super;opacity:0.7;}
-    .product-tagline{font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.12em;color:rgba(200,232,240,0.35);margin-bottom:32px;text-transform:uppercase;}
-    .product-desc{font-size:1.05rem;color:rgba(200,232,240,0.6);line-height:1.8;margin-bottom:36px;}
-    .product-tags{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px;}
-    .ptag{font-family:'Share Tech Mono',monospace;font-size:0.58rem;padding:4px 12px;letter-spacing:0.1em;}
-    .product-card.ww .ptag{color:var(--ww);border:1px solid rgba(0,200,255,0.25);}
-    .product-card.cs .ptag{color:var(--cs);border:1px solid rgba(255,107,0,0.25);}
-    .product-status{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.2em;display:flex;align-items:center;gap:10px;margin-bottom:32px;}
-    .status-dot{width:7px;height:7px;border-radius:50%;animation:pulseDot 2s infinite;}
-    .product-card.ww .status-dot,.product-card.cs .status-dot{background:var(--green);box-shadow:0 0 6px var(--green);}
-    .product-card.ww .product-status,.product-card.cs .product-status{color:rgba(0,255,136,0.7);}
 
-    /* LOGIN BUTTONS for WW and CS */
-    .product-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;margin-top:auto;}
-    .btn-ww-primary{font-family:'Share Tech Mono',monospace;font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--ww);border:none;padding:14px 32px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
-    .btn-ww-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
-    .btn-ww-primary:hover::before{left:100%;}
-    .btn-ww-primary:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(0,200,255,0.5);}
-    .btn-ww-secondary{font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--ww);background:transparent;border:1px solid rgba(0,200,255,0.35);padding:14px 24px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;}
-    .btn-ww-secondary:hover{background:rgba(0,200,255,0.08);box-shadow:0 0 18px rgba(0,200,255,0.2);}
-    .btn-cs-primary{font-family:'Share Tech Mono',monospace;font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;color:#fff;background:var(--cs);border:none;padding:14px 32px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
-    .btn-cs-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);transition:left 0.4s;}
-    .btn-cs-primary:hover::before{left:100%;}
-    .btn-cs-primary:hover{transform:translateY(-2px);box-shadow:0 0 28px rgba(255,107,0,0.5);}
-    .btn-cs-secondary{font-family:'Share Tech Mono',monospace;font-size:0.72rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--cs);background:transparent;border:1px solid rgba(255,107,0,0.35);padding:14px 24px;cursor:none;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:background 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;}
-    .btn-cs-secondary:hover{background:rgba(255,107,0,0.08);box-shadow:0 0 18px rgba(255,107,0,0.2);}
+    .product-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.35em;text-transform:uppercase;margin-bottom:14px;}
+    .product-card.ac .product-eyebrow{color:rgba(0,240,255,0.4);}
+    .product-card.ww .product-eyebrow{color:rgba(0,200,255,0.4);}
+    .product-card.cs .product-eyebrow{color:rgba(255,107,0,0.4);}
 
-    /* BRIDGE SECTION */
-    .bridge-section{padding:0 48px 80px;max-width:1280px;margin:0 auto;}
-    .bridge-block{border:1px solid rgba(0,245,255,0.15);background:linear-gradient(135deg,rgba(0,200,255,0.03),rgba(0,245,255,0.02),rgba(255,107,0,0.03));padding:56px;position:relative;overflow:hidden;}
-    .bridge-block::before{content:'// INTEGRATED PLATFORM ARCHITECTURE';position:absolute;top:16px;right:24px;font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,245,255,0.2);letter-spacing:0.2em;}
-    .bridge-inner{display:grid;grid-template-columns:1fr auto 1fr;gap:40px;align-items:center;}
-    .bridge-node-name{font-family:'Orbitron',monospace;font-weight:700;font-size:1rem;letter-spacing:0.1em;margin-bottom:6px;text-align:center;}
-    .bridge-node.ww .bridge-node-name{color:var(--ww);}
-    .bridge-node.cs .bridge-node-name{color:var(--cs);}
-    .bridge-node-sub{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(200,232,240,0.3);letter-spacing:0.15em;text-align:center;}
-    .bridge-center{text-align:center;}
-    .bridge-icon{font-family:'Orbitron',monospace;font-size:0.65rem;font-weight:700;color:var(--cyan);text-shadow:0 0 10px var(--cyan);letter-spacing:0.1em;margin-bottom:8px;display:block;}
-    .bridge-arrows{display:flex;align-items:center;gap:0;justify-content:center;}
-    .arrow-line{height:1px;width:60px;background:linear-gradient(90deg,var(--ww),var(--cyan));opacity:0.5;}
-    .arrow-line.right{background:linear-gradient(90deg,var(--cyan),var(--cs));}
-    .arrow-dot{width:8px;height:8px;background:var(--cyan);border-radius:50%;box-shadow:0 0 8px var(--cyan);flex-shrink:0;}
-    .bridge-features-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;margin-top:40px;}
-    .bridge-feat{background:rgba(0,245,255,0.02);border:1px solid rgba(0,245,255,0.08);padding:24px;text-align:center;transition:border-color 0.3s,background 0.3s;}
-    .bridge-feat:hover{border-color:rgba(0,245,255,0.2);background:rgba(0,245,255,0.04);}
-    .bridge-feat-icon{font-size:1.4rem;display:block;margin-bottom:12px;}
-    .bridge-feat-name{font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--cyan);letter-spacing:0.08em;margin-bottom:8px;}
-    .bridge-feat-desc{font-size:0.85rem;color:rgba(200,232,240,0.45);line-height:1.6;}
+    .product-name{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(2rem,4.5vw,3.2rem);letter-spacing:0.05em;line-height:1;margin-bottom:6px;}
+    .product-name sup{font-size:0.3em;vertical-align:super;color:var(--magenta);}
+    .product-card.ac .product-name{color:var(--ac);text-shadow:0 0 28px rgba(0,240,255,0.35);}
+    .product-card.ww .product-name{color:var(--ww);text-shadow:0 0 28px rgba(0,200,255,0.35);}
+    .product-card.cs .product-name{color:var(--cs);text-shadow:0 0 28px rgba(255,107,0,0.35);}
+
+    .product-tagline{font-family:'Share Tech Mono',monospace;font-size:0.68rem;letter-spacing:0.12em;color:rgba(200,232,240,0.25);text-transform:uppercase;margin-bottom:20px;}
+
+    .product-badge{display:inline-flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.2em;padding:5px 14px;margin-bottom:24px;}
+    .product-badge.live{color:var(--green);background:rgba(0,255,136,0.08);border:1px solid rgba(0,255,136,0.28);}
+    .product-badge.built{color:rgba(0,255,136,0.65);background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.18);}
+    .badge-dot{width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 6px var(--green);animation:pulseDot 1.5s infinite;flex-shrink:0;}
+
+    .product-pitch{font-size:1.05rem;color:rgba(200,232,240,0.5);line-height:1.8;max-width:580px;margin-bottom:32px;}
+
+    .product-actions{display:flex;gap:14px;flex-wrap:wrap;align-items:center;}
+
+    /* Buttons */
+    .btn{font-family:'Share Tech Mono',monospace;font-size:0.78rem;letter-spacing:0.2em;text-transform:uppercase;border:none;padding:15px 36px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;}
+    .btn::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.25),transparent);transition:left 0.4s;}
+    .btn:hover::before{left:100%;}
+    .btn:hover{transform:translateY(-2px);}
+    .btn-ac{background:var(--ac);color:var(--dark);}
+    .btn-ac:hover{box-shadow:0 0 28px rgba(0,240,255,0.5);}
+    .btn-ww{background:var(--ww);color:var(--dark);}
+    .btn-ww:hover{box-shadow:0 0 28px rgba(0,200,255,0.5);}
+    .btn-cs{background:var(--cs);color:#fff;}
+    .btn-cs:hover{box-shadow:0 0 28px rgba(255,107,0,0.5);}
+    .btn-outline-ac{background:transparent;color:var(--ac);border:1px solid rgba(0,240,255,0.3);}
+    .btn-outline-ac:hover{background:rgba(0,240,255,0.07);box-shadow:0 0 18px rgba(0,240,255,0.2);}
+    .btn-outline-ww{background:transparent;color:var(--ww);border:1px solid rgba(0,200,255,0.3);}
+    .btn-outline-ww:hover{background:rgba(0,200,255,0.07);box-shadow:0 0 18px rgba(0,200,255,0.2);}
+    .btn-outline-cs{background:transparent;color:var(--cs);border:1px solid rgba(255,107,0,0.3);}
+    .btn-outline-cs:hover{background:rgba(255,107,0,0.07);box-shadow:0 0 18px rgba(255,107,0,0.2);}
 
     /* INQUIRY */
-    .inquiry-section{padding:0 48px 100px;max-width:1280px;margin:0 auto;}
+    .inquiry-section{padding:0 48px 100px;max-width:1200px;margin:0 auto;}
     .inquiry-block{border:1px solid var(--border);background:linear-gradient(135deg,rgba(0,245,255,0.03),rgba(255,0,170,0.02));padding:72px 60px;text-align:center;position:relative;overflow:hidden;}
     .inquiry-block::before{content:'';position:absolute;top:0;left:50%;transform:translateX(-50%);width:300px;height:1px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
     .inquiry-eyebrow{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.35em;text-transform:uppercase;margin-bottom:20px;}
     .inquiry-title{font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.6rem,3.5vw,2.8rem);color:#fff;letter-spacing:0.06em;margin-bottom:16px;line-height:1.15;}
     .inquiry-title .hi{color:var(--cyan);text-shadow:0 0 20px var(--cyan);}
-    .inquiry-sub{font-size:1.1rem;color:rgba(200,232,240,0.45);max-width:600px;margin:0 auto 48px;line-height:1.8;}
+    .inquiry-sub{font-size:1.05rem;color:rgba(200,232,240,0.4);max-width:560px;margin:0 auto 48px;line-height:1.8;}
     .inquiry-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;max-width:900px;margin:0 auto;text-align:left;}
     .iq-form{display:flex;flex-direction:column;gap:18px;}
     .form-group{position:relative;}
@@ -181,20 +129,17 @@
     .hp-field{opacity:0;position:absolute;top:0;left:0;height:0;width:0;z-index:-1;pointer-events:none;}
     .iq-info{display:flex;flex-direction:column;gap:24px;padding-top:8px;}
     .iq-info-title{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:#fff;letter-spacing:0.06em;margin-bottom:8px;}
-    .iq-info-desc{font-size:0.95rem;color:rgba(200,232,240,0.5);line-height:1.7;margin-bottom:20px;}
-    .iq-contact-item{display:flex;align-items:center;gap:14px;font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:rgba(200,232,240,0.45);letter-spacing:0.1em;}
+    .iq-info-desc{font-size:0.95rem;color:rgba(200,232,240,0.45);line-height:1.7;margin-bottom:20px;}
+    .iq-contact-item{display:flex;align-items:center;gap:14px;font-family:'Share Tech Mono',monospace;font-size:0.7rem;color:rgba(200,232,240,0.4);letter-spacing:0.1em;}
     .iq-dot{width:7px;height:7px;border-radius:50%;flex-shrink:0;}
     .iq-pilot-box{border:1px solid rgba(0,245,255,0.12);background:rgba(0,245,255,0.02);padding:20px;margin-top:8px;}
     .iq-pilot-label{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,245,255,0.4);letter-spacing:0.25em;margin-bottom:10px;display:block;}
-    .iq-pilot-text{font-size:0.9rem;color:rgba(200,232,240,0.5);line-height:1.6;}
+    .iq-pilot-text{font-size:0.9rem;color:rgba(200,232,240,0.45);line-height:1.6;}
+    .btn-submit{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:16px 40px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;font-weight:700;width:100%;}
+    .btn-submit::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
+    .btn-submit:hover::before{left:100%;}
+    .btn-submit:hover{transform:translateY(-2px);box-shadow:0 0 30px var(--cyan);}
 
-    /* BUTTONS */
-    .btn-primary{font-family:'Share Tech Mono',monospace;font-size:0.8rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--dark);background:var(--cyan);border:none;padding:16px 40px;cursor:none;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;text-decoration:none;display:inline-block;font-weight:700;width:100%;}
-    .btn-primary::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.3),transparent);transition:left 0.4s;}
-    .btn-primary:hover::before{left:100%;}
-    .btn-primary:hover{transform:translateY(-2px);box-shadow:0 0 30px var(--cyan);}
-
-    /* FOOTER */
     footer{border-top:1px solid var(--border);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;position:relative;z-index:2;}
     .footer-brand{font-family:'Orbitron',monospace;font-size:0.85rem;font-weight:700;color:var(--cyan);}
     .footer-brand sup{color:var(--magenta);font-size:0.5rem;}
@@ -203,37 +148,17 @@
     .footer-links a{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(200,232,240,0.3);text-decoration:none;transition:color 0.2s;}
     .footer-links a:hover{color:var(--cyan);}
 
-    /* ANIMATIONS */
     @keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
     @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
 
-    /* MOBILE */
-    @media(max-width:1000px){
-      .products-grid{grid-template-columns:1fr;}
-      .bridge-inner{grid-template-columns:1fr;gap:24px;}
-      .bridge-features-grid{grid-template-columns:1fr 1fr;}
-      .inquiry-grid{grid-template-columns:1fr;gap:32px;}
-      .ac-features{grid-template-columns:1fr 1fr;}
-    }
+    @media(max-width:900px){.inquiry-grid{grid-template-columns:1fr;gap:32px;}}
     @media(max-width:700px){
-      nav{padding:14px 20px;}
-      .nav-links{display:none;}
-      .hamburger{display:flex;}
-      .section-wrap{padding:60px 20px;}
-      .bridge-section{padding:0 20px 60px;}
-      .inquiry-section{padding:0 20px 60px;}
-      .ac-inner{padding:36px 24px;}
-      .ac-features{grid-template-columns:1fr;}
-      .product-card{padding:36px 24px;}
-      .bridge-block{padding:36px 24px;}
-      .bridge-features-grid{grid-template-columns:1fr;}
-      .inquiry-block{padding:48px 24px;}
-      footer{flex-direction:column;text-align:center;padding:24px 20px;}
-      .footer-links{justify-content:center;}
-      .ac-actions{flex-direction:column;align-items:stretch;}
-      .btn-ac-primary,.btn-ac-secondary{text-align:center;}
-      .product-actions{flex-direction:column;align-items:stretch;}
-      .btn-ww-primary,.btn-ww-secondary,.btn-cs-primary,.btn-cs-secondary{text-align:center;}
+      nav{padding:14px 20px;}.nav-links{display:none;}.hamburger{display:flex;}
+      .products-wrap{padding:32px 20px 60px;}
+      .product-card{padding:36px 20px;}
+      .inquiry-section{padding:0 20px 60px;}.inquiry-block{padding:48px 20px;}
+      footer{flex-direction:column;text-align:center;padding:24px 20px;}.footer-links{justify-content:center;}
+      .product-actions{flex-direction:column;align-items:stretch;}.btn{text-align:center;}
     }
   </style>
 </head>
@@ -243,7 +168,6 @@
 <canvas id="bg-canvas"></canvas>
 <div class="scanlines"></div>
 
-<!-- MOBILE MENU -->
 <div class="mobile-menu" id="mobile-menu">
   <a href="index.html" onclick="closeMobileMenu()">Home</a>
   <a href="index.html#services" onclick="closeMobileMenu()">Services</a>
@@ -254,7 +178,6 @@
 </div>
 
 <div id="app">
-  <!-- NAV -->
   <nav>
     <a href="index.html" class="nav-logo">DARKBLOOM<sup>&#8482;</sup></a>
     <ul class="nav-links">
@@ -264,139 +187,56 @@
       <li><a href="coming-soon.html" style="color:var(--magenta);">Coming Soon</a></li>
       <li><a href="auditcore.html" class="nav-cta">AuditCore&#8482; Login</a></li>
     </ul>
-    <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
-      <span></span><span></span><span></span>
-    </div>
+    <div class="hamburger" id="hamburger" onclick="toggleMobileMenu()"><span></span><span></span><span></span></div>
   </nav>
 
-  <!-- HERO -->
   <section id="hero">
     <p class="hero-eyebrow">// Darkbloom Industries&#8482; &mdash; Our Products</p>
     <h1 class="hero-title">LIVE PLATFORMS</h1>
-    <p class="hero-sub">Production-grade software built and deployed by Darkbloom Industries&#8482;. Compliance-ready, fully operational, and accepting clients now.</p>
+    <p class="hero-sub">Production-grade software built and deployed by Darkbloom Industries&#8482;. Fully operational and accepting clients now.</p>
   </section>
 
-  <!-- AUDITCORE SECTION -->
-  <div class="section-wrap" style="padding-bottom:0;">
-    <div class="section-divider">
-      <span class="section-divider-tag" style="color:var(--ac);">// Compliance Intelligence</span>
-      <div class="section-divider-line"></div>
-    </div>
-    <div class="ac-section">
-      <div class="ac-inner">
-        <div class="ac-live-badge"><div class="ac-live-dot"></div>LIVE &mdash; ACCEPTING CLIENTS</div>
-        <h2 class="ac-title">AuditCore<sup>&#8482;</sup></h2>
-        <div class="ac-tagline">Continuous Compliance. Zero Spreadsheets.</div>
-        <p class="ac-desc">Stop guessing your compliance posture. AuditCore&#8482; keeps you continuously audit-ready across CMMC Level 2, NIST SP 800-171, SOC 2 Type II, and more — automatically. Built for defense contractors, healthcare, and fintech. Contact us for a demo.</p>
-        <div class="ac-frameworks">
-          <span class="ac-fw">CMMC LEVEL 2</span>
-          <span class="ac-fw">NIST SP 800-171</span>
-          <span class="ac-fw">OWASP TOP 10</span>
-          <span class="ac-fw">SOC 2 TYPE II</span>
-          <span class="ac-fw">FIPS 140-3</span>
-        </div>
-        <div class="ac-features">
-          <div class="ac-feat">
-            <div class="ac-feat-name">Automated Scanning</div>
-            <div class="ac-feat-desc">Continuous external security checks run automatically — no manual effort, no missed gaps.</div>
-          </div>
-          <div class="ac-feat">
-            <div class="ac-feat-name">Cloud Integrations</div>
-            <div class="ac-feat-desc">Deep visibility into your Microsoft 365 and AWS environments — surfacing risks before they become findings.</div>
-          </div>
-          <div class="ac-feat">
-            <div class="ac-feat-name">Control Library</div>
-            <div class="ac-feat-desc">Full NIST SP 800-171 and CMMC Level 2 coverage with live assessment status and team accountability.</div>
-          </div>
-          <div class="ac-feat">
-            <div class="ac-feat-name">Findings &amp; Reports</div>
-            <div class="ac-feat-desc">Audit-ready reports generated on demand. Walk into any assessment with confidence.</div>
-          </div>
-          <div class="ac-feat">
-            <div class="ac-feat-name">Auto-Remediation</div>
-            <div class="ac-feat-desc">Gaps don't just get flagged — they get fixed. Automated remediation closes issues without manual intervention.</div>
-          </div>
-          <div class="ac-feat">
-            <div class="ac-feat-name">Immutable Audit Log</div>
-            <div class="ac-feat-desc">Every action is permanently recorded with timestamps — giving auditors exactly what they need.</div>
-          </div>
-        </div>
-        <div class="ac-actions">
-          <a href="auditcore.html" class="btn-ac-primary">ACCESS AUDITCORE&#8482; &#9654;</a>
-          <a href="index.html#contact" class="btn-ac-secondary">REQUEST PILOT ACCESS</a>
-        </div>
+  <div class="products-wrap">
+
+    <!-- AUDITCORE -->
+    <div class="product-card ac">
+      <div class="product-eyebrow">// Compliance Intelligence</div>
+      <div class="product-name">AuditCore<sup>&#8482;</sup></div>
+      <div class="product-tagline">Compliance Intelligence Platform</div>
+      <div class="product-badge live"><span class="badge-dot"></span>LIVE &mdash; ACCEPTING CLIENTS</div>
+      <p class="product-pitch">Know your compliance posture at all times — without the manual work. Built for defense contractors, healthcare, and fintech. Request a demo to see it in action.</p>
+      <div class="product-actions">
+        <a href="auditcore.html" class="btn btn-ac">ACCESS AUDITCORE&#8482; &#9654;</a>
+        <a href="#inquiry" class="btn btn-outline-ac">REQUEST PILOT ACCESS</a>
       </div>
     </div>
-  </div>
 
-  <!-- WRENCHWARE + CLAIMSYNC SECTION -->
-  <div class="section-wrap">
-    <div class="section-divider">
-      <span class="section-divider-tag" style="color:var(--magenta);">// Shop &amp; Claims Management</span>
-      <div class="section-divider-line"></div>
-    </div>
-    <div class="products-grid">
-
-      <!-- WRENCHWARE PRO -->
-      <div class="product-card ww">
-        <div class="product-label ww">Shop Management System</div>
-        <div class="product-name">WrenchWare Pro<sup>&#8482;</sup></div>
-        <div class="product-tagline">Run Your Shop. Not Your Inbox.</div>
-        <p class="product-desc">WrenchWare Pro&#8482; is built for modern auto repair shops that are tired of disconnected tools and phone tag with insurers. One platform, every workflow, real-time insurer communication built in.</p>
-        <div class="product-tags">
-          <span class="ptag">Shop Ops</span><span class="ptag">AI Assessment</span><span class="ptag">Real-Time Comms</span><span class="ptag">Inventory</span><span class="ptag">Invoicing</span><span class="ptag">SOC II</span>
-        </div>
-        <div class="product-status"><span class="status-dot"></span>FULLY BUILT &mdash; SEEKING PILOT PARTNERS</div>
-        <div class="product-actions">
-          <a href="wrenchware.html" class="btn-ww-primary">SHOP LOGIN &#9654;</a>
-          <a href="index.html#contact" class="btn-ww-secondary">REQUEST ACCESS</a>
-        </div>
-      </div>
-
-      <!-- CLAIMSYNC -->
-      <div class="product-card cs">
-        <div class="product-label cs">Insurance Claims Management System</div>
-        <div class="product-name">ClaimSync<sup>&#8482;</sup></div>
-        <div class="product-tagline">Close Claims Faster. Catch Fraud Earlier.</div>
-        <p class="product-desc">ClaimSync&#8482; is built for auto insurance companies ready to cut cycle times, eliminate manual handoffs, and stop fraud before it costs them. Direct real-time connection to repair partners included.</p>
-        <div class="product-tags">
-          <span class="ptag">Claims</span><span class="ptag">AI Fraud Detection</span><span class="ptag">AI Assessment</span><span class="ptag">Real-Time Comms</span><span class="ptag">Compliance</span><span class="ptag">SOC II</span>
-        </div>
-        <div class="product-status"><span class="status-dot"></span>FULLY BUILT &mdash; SEEKING PILOT PARTNERS</div>
-        <div class="product-actions">
-          <a href="claimsync.html" class="btn-cs-primary">INSURER LOGIN &#9654;</a>
-          <a href="index.html#contact" class="btn-cs-secondary">REQUEST ACCESS</a>
-        </div>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- COMMUNICATION BRIDGE -->
-  <div class="bridge-section">
-    <div class="bridge-block">
-      <div style="margin-bottom:40px;">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--magenta);letter-spacing:0.35em;text-transform:uppercase;margin-bottom:12px;">// The Integration That Changes Everything</div>
-        <h2 style="font-family:'Orbitron',monospace;font-weight:900;font-size:clamp(1.4rem,3vw,2.2rem);color:#fff;letter-spacing:0.06em;margin-bottom:12px;">The Real-Time <span style="color:var(--cyan);text-shadow:0 0 15px var(--cyan);">Communication Bridge</span></h2>
-        <p style="color:rgba(200,232,240,0.5);max-width:680px;font-size:1rem;line-height:1.8;">WrenchWare Pro&#8482; and ClaimSync&#8482; operate as a single unified platform. Shops and insurers stay in sync in real time. No emails. No missed calls. No delays.</p>
-      </div>
-      <div class="bridge-inner">
-        <div class="bridge-node ww"><div class="bridge-node-name">WrenchWare Pro&#8482;</div><div class="bridge-node-sub">Shop Side</div></div>
-        <div class="bridge-center">
-          <span class="bridge-icon">REAL-TIME BRIDGE</span>
-          <div class="bridge-arrows"><div class="arrow-line"></div><div class="arrow-dot"></div><div class="arrow-line right"></div></div>
-        </div>
-        <div class="bridge-node cs"><div class="bridge-node-name">ClaimSync&#8482;</div><div class="bridge-node-sub">Insurer Side</div></div>
-      </div>
-      <div class="bridge-features-grid">
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#9889;</span><div class="bridge-feat-name">Instant Messaging</div><p class="bridge-feat-desc">Shops and adjusters communicate directly inside the platform. Decisions in seconds, not days.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#129302;</span><div class="bridge-feat-name">AI Fraud Detection</div><p class="bridge-feat-desc">Suspicious activity is flagged automatically before any approval is issued.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#128247;</span><div class="bridge-feat-name">AI Damage Assessment</div><p class="bridge-feat-desc">Shop estimates validated automatically. Fewer disputes. Faster closures.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#128274;</span><div class="bridge-feat-name">SOC II Secured</div><p class="bridge-feat-desc">Enterprise-grade security and immutable audit logs across every transaction.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#128200;</span><div class="bridge-feat-name">Live Status Sync</div><p class="bridge-feat-desc">Both sides always know the current status — no calls required.</p></div>
-        <div class="bridge-feat"><span class="bridge-feat-icon">&#128203;</span><div class="bridge-feat-name">Unified Audit Trail</div><p class="bridge-feat-desc">Every communication and approval logged permanently across both platforms.</p></div>
+    <!-- WRENCHWARE PRO -->
+    <div class="product-card ww">
+      <div class="product-eyebrow">// Shop Management</div>
+      <div class="product-name">WrenchWare Pro<sup>&#8482;</sup></div>
+      <div class="product-tagline">Automotive Shop Management Platform</div>
+      <div class="product-badge built"><span class="badge-dot"></span>FULLY BUILT &mdash; SEEKING PILOT PARTNERS</div>
+      <p class="product-pitch">The platform built for modern auto repair shops. Request access to see a live demo.</p>
+      <div class="product-actions">
+        <a href="wrenchware.html" class="btn btn-ww">SHOP LOGIN &#9654;</a>
+        <a href="#inquiry" class="btn btn-outline-ww">REQUEST ACCESS</a>
       </div>
     </div>
+
+    <!-- CLAIMSYNC -->
+    <div class="product-card cs">
+      <div class="product-eyebrow">// Insurance Claims Management</div>
+      <div class="product-name">ClaimSync<sup>&#8482;</sup></div>
+      <div class="product-tagline">Auto Insurance Claims Platform</div>
+      <div class="product-badge built"><span class="badge-dot"></span>FULLY BUILT &mdash; SEEKING PILOT PARTNERS</div>
+      <p class="product-pitch">Built for auto insurance companies ready to move faster and smarter. Request access to see a live demo.</p>
+      <div class="product-actions">
+        <a href="claimsync.html" class="btn btn-cs">INSURER LOGIN &#9654;</a>
+        <a href="#inquiry" class="btn btn-outline-cs">REQUEST ACCESS</a>
+      </div>
+    </div>
+
   </div>
 
   <!-- INQUIRY -->
@@ -404,7 +244,7 @@
     <div class="inquiry-block">
       <p class="inquiry-eyebrow">// Pilot Program &mdash; Now Open</p>
       <h2 class="inquiry-title">Inquire Now for <span class="hi">Pricing &amp; Demo</span></h2>
-      <p class="inquiry-sub">We are actively seeking automotive repair shops and auto insurance carriers to join our pilot program. Contact us to discuss pricing, a live demo, or a capabilities consultation.</p>
+      <p class="inquiry-sub">We are actively seeking automotive repair shops and auto insurance carriers to join our pilot program.</p>
       <div class="inquiry-grid">
         <div class="iq-form">
           <input class="hp-field" type="text" name="_honey" tabindex="-1" autocomplete="off"/>
@@ -426,17 +266,17 @@
           </div>
           <div class="form-group"><label>// Message (Optional)</label><textarea id="iq-message" placeholder="Tell us about your organization and what you're looking to improve..." maxlength="2000"></textarea></div>
           <div class="form-msg" id="iq-form-msg"></div>
-          <button class="btn-primary" id="iq-submit-btn" style="cursor:none;padding:18px;font-size:0.85rem;" onclick="handleInquiry(event)">SUBMIT INQUIRY &#9654;</button>
+          <button class="btn-submit" id="iq-submit-btn" style="cursor:none;padding:18px;font-size:0.85rem;" onclick="handleInquiry(event)">SUBMIT INQUIRY &#9654;</button>
         </div>
         <div class="iq-info">
           <div>
             <div class="iq-info-title">Who Should Apply?</div>
             <p class="iq-info-desc">We are looking for forward-thinking partners ready to level up their compliance posture or eliminate the friction between shops and insurers.</p>
             <ul style="list-style:none;display:flex;flex-direction:column;gap:10px;color:rgba(200,232,240,0.55);font-size:0.9rem;">
-              <li style="padding-left:18px;position:relative;">&#9654;&nbsp; Organizations needing CMMC / NIST compliance</li>
-              <li style="padding-left:18px;position:relative;">&#9654;&nbsp; Automotive repair shops processing 20+ claims/month</li>
-              <li style="padding-left:18px;position:relative;">&#9654;&nbsp; Auto insurance carriers reducing claims cycle time</li>
-              <li style="padding-left:18px;position:relative;">&#9654;&nbsp; Multi-location shop groups or regional insurers</li>
+              <li style="padding-left:18px;">&#9654;&nbsp; Organizations needing CMMC / NIST compliance</li>
+              <li style="padding-left:18px;">&#9654;&nbsp; Automotive repair shops processing 20+ claims/month</li>
+              <li style="padding-left:18px;">&#9654;&nbsp; Auto insurance carriers reducing claims cycle time</li>
+              <li style="padding-left:18px;">&#9654;&nbsp; Multi-location shop groups or regional insurers</li>
             </ul>
           </div>
           <div class="iq-pilot-box">
@@ -453,7 +293,6 @@
     </div>
   </div>
 
-  <!-- FOOTER -->
   <footer>
     <div class="footer-brand">DARKBLOOM<sup>&#8482;</sup> INDUSTRIES</div>
     <p class="footer-copy">&#169; 2025 Darkbloom Industries&#8482;. All rights reserved.<br/>WrenchWare Pro&#8482;, ClaimSync&#8482; and AuditCore&#8482; are trademarks of Darkbloom Industries&#8482;.</p>
@@ -520,7 +359,7 @@
   let mx=0,my=0,rx=0,ry=0;
   document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cursor.style.left=mx+'px';cursor.style.top=my+'px';});
   (function animRing(){rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;ring.style.left=rx+'px';ring.style.top=ry+'px';requestAnimationFrame(animRing);})();
-  document.querySelectorAll('a,button,.product-card,.bridge-feat,.ac-feat').forEach(el=>{
+  document.querySelectorAll('a,button,.product-card').forEach(el=>{
     el.addEventListener('mouseenter',()=>{ring.style.width='60px';ring.style.height='60px';ring.style.opacity='0.8';cursor.style.transform='translate(-50%,-50%) scale(0.5)';});
     el.addEventListener('mouseleave',()=>{ring.style.width='36px';ring.style.height='36px';ring.style.opacity='0.5';cursor.style.transform='translate(-50%,-50%) scale(1)';});
   });
@@ -557,7 +396,7 @@
   drawBg();
 
   const obs=new IntersectionObserver(e=>{e.forEach(el=>{if(el.isIntersecting){el.target.style.opacity='1';el.target.style.transform='translateY(0)';}});},{threshold:0.08});
-  document.querySelectorAll('.product-card,.bridge-feat,.ac-feat').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(28px)';el.style.transition='opacity 0.6s ease,transform 0.6s ease';obs.observe(el);});
+  document.querySelectorAll('.product-card').forEach(el=>{el.style.opacity='0';el.style.transform='translateY(24px)';el.style.transition='opacity 0.6s ease,transform 0.6s ease';obs.observe(el);});
 </script>
 </body>
 </html>
