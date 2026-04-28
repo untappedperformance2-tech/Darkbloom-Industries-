@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <meta name="description" content="ClaimSync™ — Insurance Claims Platform Login"/>
+  <title>ClaimSync&#8482; Login &mdash; Darkbloom Industries&#8482;</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --accent:#ff6b00;--accent-dim:rgba(255,107,0,0.1);--accent-border:rgba(255,107,0,0.3);
+      --dark:#020408;--green:#00ff88;--red:#ff4466;--magenta:#ff00aa;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;background:var(--dark);color:#c8e8f0;font-family:'Rajdhani',sans-serif;overflow:hidden;}
+    #bg-canvas{position:fixed;inset:0;z-index:0;pointer-events:none;}
+    .scanlines{position:fixed;inset:0;background:repeating-linear-gradient(to bottom,transparent 0px,transparent 2px,rgba(0,0,0,0.07) 2px,rgba(0,0,0,0.07) 4px);pointer-events:none;z-index:1;}
+    #app{position:relative;z-index:3;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:20px;}
+    .back-link{position:fixed;top:24px;left:32px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:rgba(200,232,240,0.3);text-decoration:none;letter-spacing:0.15em;transition:color 0.2s;}
+    .back-link:hover{color:var(--accent);}
+    .login-card{width:100%;max-width:440px;border:1px solid var(--accent-border);background:linear-gradient(145deg,rgba(255,107,0,0.04),rgba(255,107,0,0.01));position:relative;overflow:hidden;}
+    .login-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:3px;background:linear-gradient(90deg,var(--accent),transparent);}
+    .card-inner{padding:48px 40px 36px;}
+    .product-badge{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(255,107,0,0.45);letter-spacing:0.3em;text-transform:uppercase;margin-bottom:14px;}
+    .product-title{font-family:'Orbitron',monospace;font-weight:900;font-size:2rem;color:var(--accent);letter-spacing:0.06em;text-shadow:0 0 20px rgba(255,107,0,0.4);line-height:1;margin-bottom:4px;}
+    .product-title sup{font-size:0.35em;vertical-align:super;color:var(--magenta);}
+    .product-sub{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:rgba(200,232,240,0.25);letter-spacing:0.15em;text-transform:uppercase;margin-bottom:28px;}
+    .secure-badge{display:flex;align-items:center;gap:8px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--green);letter-spacing:0.15em;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.2);padding:7px 14px;margin-bottom:28px;}
+    .secure-dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulse 1.5s infinite;flex-shrink:0;}
+    .form-group{margin-bottom:18px;}
+    .form-group label{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:rgba(255,107,0,0.45);letter-spacing:0.25em;text-transform:uppercase;display:block;margin-bottom:8px;}
+    .form-group input{width:100%;background:rgba(255,107,0,0.03);border:1px solid rgba(255,107,0,0.15);color:#c8e8f0;font-family:'Rajdhani',sans-serif;font-size:1rem;padding:12px 16px;outline:none;transition:border-color 0.2s;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);}
+    .form-group input:focus{border-color:var(--accent);}
+    .form-group input::placeholder{color:rgba(200,232,240,0.18);}
+    #mfa-group{display:none;}
+    .status-msg{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;padding:10px 14px;margin-bottom:14px;display:none;}
+    .status-msg.error{color:var(--red);border:1px solid rgba(255,68,102,0.3);background:rgba(255,68,102,0.04);}
+    .status-msg.info{color:var(--accent);border:1px solid var(--accent-border);background:var(--accent-dim);}
+    .status-msg.visible{display:block;}
+    .btn-login{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.82rem;letter-spacing:0.25em;text-transform:uppercase;color:#fff;background:var(--accent);border:none;padding:15px;cursor:pointer;position:relative;overflow:hidden;clip-path:polygon(8px 0%,100% 0%,calc(100% - 8px) 100%,0% 100%);transition:transform 0.2s,box-shadow 0.2s;font-weight:700;margin-top:6px;}
+    .btn-login::before{content:'';position:absolute;top:0;left:-100%;width:100%;height:100%;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.2),transparent);transition:left 0.4s;}
+    .btn-login:hover::before{left:100%;}
+    .btn-login:hover{transform:translateY(-1px);box-shadow:0 0 24px rgba(255,107,0,0.4);}
+    .btn-login:disabled{opacity:0.5;cursor:not-allowed;transform:none;}
+    .card-footer{padding:14px 40px 20px;border-top:1px solid rgba(255,107,0,0.08);display:flex;justify-content:space-between;align-items:center;}
+    .footer-link{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:rgba(200,232,240,0.28);text-decoration:none;letter-spacing:0.1em;transition:color 0.2s;}
+    .footer-link:hover{color:var(--accent);}
+    .footer-brand{font-family:'Orbitron',monospace;font-size:0.48rem;color:rgba(200,232,240,0.12);letter-spacing:0.15em;}
+    @keyframes pulse{0%,100%{opacity:1}50%{opacity:0.4}}
+    @media(max-width:480px){.card-inner{padding:32px 20px 24px;}.card-footer{padding:12px 20px 18px;flex-direction:column;gap:10px;text-align:center;}}
+  </style>
+</head>
+<body>
+<canvas id="bg-canvas"></canvas>
+<div class="scanlines"></div>
+<a href="index.html" class="back-link">&#8592; DARKBLOOM INDUSTRIES&#8482;</a>
+<div id="app">
+  <div class="login-card">
+    <div class="card-inner">
+      <div class="product-badge">// Insurance Claims Platform</div>
+      <div class="product-title">ClaimSync<sup>&#8482;</sup></div>
+      <div class="product-sub">Secure Insurer Access</div>
+      <div class="secure-badge"><span class="secure-dot"></span>ENTERPRISE SECURITY ENABLED</div>
+      <div class="status-msg" id="status-msg"></div>
+      <div class="form-group">
+        <label>// Username or Email</label>
+        <input type="text" id="username" placeholder="adjuster.id or email" autocomplete="username" maxlength="150"/>
+      </div>
+      <div class="form-group">
+        <label>// Password</label>
+        <input type="password" id="password" placeholder="&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;&#9679;" autocomplete="current-password" maxlength="200"/>
+      </div>
+      <div class="form-group" id="mfa-group">
+        <label>// MFA Code</label>
+        <input type="text" id="mfa-code" placeholder="6-digit authenticator code" maxlength="6" autocomplete="one-time-code"/>
+      </div>
+      <button class="btn-login" id="login-btn" onclick="handleLogin()">SIGN IN &#9654;</button>
+    </div>
+    <div class="card-footer">
+      <a href="index.html#contact" class="footer-link">Request Access</a>
+      <span class="footer-brand">DARKBLOOM&#8482; INDUSTRIES</span>
+      <a href="index.html#contact" class="footer-link">Support</a>
+    </div>
+  </div>
+</div>
+<script>
+  // Replace with your Railway deployment URL
+  const API_BASE = 'https://YOUR-WRENCHWARE-RAILWAY-URL.railway.app';
+  let mfaRequired = false;
+
+  async function handleLogin() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value;
+    const mfaCode  = document.getElementById('mfa-code').value.trim();
+    const btn = document.getElementById('login-btn');
+    hideStatus();
+    if (!username || !password) { showStatus('Username and password required.', 'error'); return; }
+    btn.disabled = true; btn.textContent = 'AUTHENTICATING...';
+    try {
+      const payload = { username, password };
+      if (mfaRequired && mfaCode) payload.mfa_code = mfaCode;
+      const res = await fetch(`${API_BASE}/api/login`, {
+        method: 'POST', headers: { 'Content-Type': 'application/json' },
+        credentials: 'include', body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        sessionStorage.setItem('cs_token', data.token);
+        sessionStorage.setItem('cs_role', data.role);
+        sessionStorage.setItem('cs_name', data.name);
+        btn.textContent = 'ACCESS GRANTED \u2713';
+        btn.style.background = 'var(--green)'; btn.style.color = '#020408';
+        setTimeout(() => { window.location.href = data.redirect || '/app/insurer'; }, 800);
+      } else if (data.mfa_required) {
+        mfaRequired = true;
+        document.getElementById('mfa-group').style.display = 'block';
+        document.getElementById('mfa-code').focus();
+        showStatus('Enter your 6-digit MFA code.', 'info');
+        btn.disabled = false; btn.textContent = 'VERIFY MFA \u25BA';
+      } else {
+        showStatus(data.message || 'Invalid credentials.', 'error');
+        btn.disabled = false; btn.textContent = 'SIGN IN \u25BA';
+      }
+    } catch(e) {
+      showStatus('Connection error. Please try again.', 'error');
+      btn.disabled = false; btn.textContent = 'SIGN IN \u25BA';
+    }
+  }
+
+  function showStatus(msg, type) {
+    const el = document.getElementById('status-msg');
+    el.textContent = '> ' + msg; el.className = 'status-msg ' + type + ' visible';
+  }
+  function hideStatus() { document.getElementById('status-msg').className = 'status-msg'; }
+  document.addEventListener('keydown', e => { if (e.key === 'Enter') handleLogin(); });
+
+  // Background
+  const canvas = document.getElementById('bg-canvas'), ctx = canvas.getContext('2d');
+  let W, H;
+  function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  resize(); window.addEventListener('resize', resize);
+  const pts = Array.from({length:55},()=>({x:Math.random()*innerWidth,y:Math.random()*innerHeight,vx:(Math.random()-.5)*.22,vy:(Math.random()-.5)*.22,r:Math.random()*1.2+.3,a:Math.random()*.3+.08}));
+  (function draw(){
+    ctx.clearRect(0,0,W,H);
+    ctx.strokeStyle='rgba(255,107,0,0.02)';ctx.lineWidth=1;
+    const cw=W/20,rh=H/12;
+    for(let c=0;c<=20;c++){ctx.beginPath();ctx.moveTo(c*cw,0);ctx.lineTo(c*cw,H);ctx.stroke();}
+    for(let r=0;r<=12;r++){ctx.beginPath();ctx.moveTo(0,r*rh);ctx.lineTo(W,r*rh);ctx.stroke();}
+    pts.forEach(p=>{
+      p.x+=p.vx;p.y+=p.vy;
+      if(p.x<0)p.x=W;if(p.x>W)p.x=0;if(p.y<0)p.y=H;if(p.y>H)p.y=0;
+      ctx.globalAlpha=p.a;ctx.fillStyle='#ff6b00';
+      ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fill();ctx.globalAlpha=1;
+    });
+    requestAnimationFrame(draw);
+  })();
+</script>
+</body>
+</html>
