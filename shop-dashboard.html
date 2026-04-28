@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <title>WrenchWare Pro&#8482; &mdash; Shop Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --cyan:#00f5ff;--magenta:#ff00aa;--green:#00ff88;--red:#ff4466;
+      --orange:#ff8c00;--ww:#00c8ff;--dark:#020408;--dark2:#050c12;
+      --panel:rgba(0,200,255,0.04);--border:rgba(0,200,255,0.15);
+      --text:#c8e8f0;--text-dim:rgba(200,232,240,0.45);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;overflow:hidden;}
+
+    /* LAYOUT */
+    #app{display:flex;height:100vh;overflow:hidden;}
+
+    /* SIDEBAR */
+    #sidebar{width:220px;min-width:220px;background:rgba(0,200,255,0.03);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;}
+    .sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
+    .sidebar-logo .brand{font-family:'Orbitron',monospace;font-weight:900;font-size:0.85rem;color:var(--ww);letter-spacing:0.12em;text-shadow:0 0 12px rgba(0,200,255,0.4);}
+    .sidebar-logo .brand sup{font-size:0.4em;color:var(--magenta);vertical-align:super;}
+    .sidebar-logo .sub{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:0.2em;margin-top:3px;}
+    .nav-section{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,200,255,0.3);letter-spacing:0.3em;padding:14px 18px 6px;text-transform:uppercase;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:background 0.2s,color 0.2s;border-left:2px solid transparent;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;}
+    .nav-item:hover{background:rgba(0,200,255,0.06);color:var(--ww);}
+    .nav-item.active{background:rgba(0,200,255,0.08);border-left-color:var(--ww);color:var(--ww);}
+    .nav-item .icon{font-size:0.9rem;width:18px;text-align:center;}
+    .nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;font-family:'Share Tech Mono',monospace;}
+    .bridge-badge{margin-left:auto;background:var(--green);color:var(--dark);font-size:0.45rem;padding:2px 6px;border-radius:8px;font-family:'Share Tech Mono',monospace;animation:pulseBadge 2s infinite;}
+    @keyframes pulseBadge{0%,100%{opacity:1}50%{opacity:0.5}}
+    .sidebar-bottom{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);}
+    .user-info{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--text-dim);letter-spacing:0.08em;}
+    .user-name{color:var(--ww);font-size:0.65rem;margin-bottom:2px;}
+    .user-role{color:rgba(0,200,255,0.4);font-size:0.55rem;text-transform:uppercase;letter-spacing:0.15em;}
+    .btn-logout{margin-top:10px;width:100%;font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);background:transparent;border:1px solid rgba(255,68,102,0.3);padding:7px;cursor:pointer;transition:background 0.2s;}
+    .btn-logout:hover{background:rgba(255,68,102,0.08);}
+
+    /* MAIN */
+    #main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+    #topbar{height:52px;min-height:52px;background:rgba(0,200,255,0.02);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;}
+    .topbar-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.9rem;color:#fff;letter-spacing:0.08em;}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+    .status-dot-live{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulseDot 1.5s infinite;flex-shrink:0;}
+    .status-label{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--green);letter-spacing:0.15em;}
+    .bridge-status{display:flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid rgba(0,255,136,0.25);background:rgba(0,255,136,0.05);font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--green);letter-spacing:0.1em;}
+    .bridge-status.offline{border-color:rgba(255,68,102,0.25);background:rgba(255,68,102,0.05);color:var(--red);}
+
+    #content{flex:1;overflow-y:auto;padding:24px;}
+
+    /* PANELS */
+    .panel{border:1px solid var(--border);background:var(--panel);position:relative;overflow:hidden;margin-bottom:16px;}
+    .panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),transparent);}
+    .panel-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .panel-title{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;}
+    .panel-body{padding:16px 20px;}
+
+    /* STATS ROW */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+    .stat-card{border:1px solid var(--border);background:var(--panel);padding:16px 18px;position:relative;overflow:hidden;}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;}
+    .stat-card.blue::before{background:linear-gradient(90deg,var(--ww),transparent);}
+    .stat-card.green::before{background:linear-gradient(90deg,var(--green),transparent);}
+    .stat-card.orange::before{background:linear-gradient(90deg,var(--orange),transparent);}
+    .stat-card.red::before{background:linear-gradient(90deg,var(--red),transparent);}
+    .stat-label{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;}
+    .stat-value{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:#fff;line-height:1;}
+    .stat-card.blue .stat-value{color:var(--ww);}
+    .stat-card.green .stat-value{color:var(--green);}
+    .stat-card.orange .stat-value{color:var(--orange);}
+    .stat-card.red .stat-value{color:var(--red);}
+    .stat-sub{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.1em;margin-top:6px;}
+
+    /* TABLE */
+    .data-table{width:100%;border-collapse:collapse;}
+    .data-table th{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,200,255,0.45);letter-spacing:0.2em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
+    .data-table td{font-family:'Rajdhani',sans-serif;font-size:0.88rem;color:var(--text);padding:9px 12px;border-bottom:1px solid rgba(0,200,255,0.06);vertical-align:middle;}
+    .data-table tr:hover td{background:rgba(0,200,255,0.03);}
+    .data-table tr:last-child td{border-bottom:none;}
+
+    /* STATUS BADGES */
+    .badge{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;padding:3px 10px;text-transform:uppercase;display:inline-block;}
+    .badge-pending{color:var(--orange);border:1px solid rgba(255,140,0,0.3);background:rgba(255,140,0,0.06);}
+    .badge-active{color:var(--ww);border:1px solid rgba(0,200,255,0.3);background:rgba(0,200,255,0.06);}
+    .badge-completed{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
+    .badge-approved{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
+    .badge-closed{color:var(--text-dim);border:1px solid rgba(200,232,240,0.15);background:rgba(200,232,240,0.03);}
+    .badge-paused{color:var(--magenta);border:1px solid rgba(255,0,170,0.3);background:rgba(255,0,170,0.06);}
+
+    /* BRIDGE CHAT */
+    #bridge-panel{display:none;position:fixed;bottom:20px;right:20px;width:360px;height:480px;border:1px solid rgba(0,255,136,0.3);background:rgba(2,4,8,0.97);backdrop-filter:blur(12px);z-index:200;flex-direction:column;box-shadow:0 0 40px rgba(0,255,136,0.1);}
+    #bridge-panel.open{display:flex;}
+    #bridge-panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),var(--green),var(--orange));}
+    .bridge-header{padding:12px 16px;border-bottom:1px solid rgba(0,255,136,0.15);display:flex;align-items:center;gap:10px;}
+    .bridge-header-title{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.1em;font-weight:700;flex:1;}
+    .bridge-close{background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:1rem;padding:2px 6px;}
+    .bridge-close:hover{color:var(--red);}
+    .bridge-claim-select{padding:10px 14px;border-bottom:1px solid rgba(0,255,136,0.1);}
+    .bridge-claim-select select{width:100%;background:rgba(0,200,255,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:6px 10px;outline:none;}
+    .bridge-claim-select select option{background:#020408;}
+    .bridge-messages{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
+    .msg{max-width:80%;padding:8px 12px;font-family:'Rajdhani',sans-serif;font-size:0.88rem;line-height:1.4;}
+    .msg.shop{align-self:flex-end;background:rgba(0,200,255,0.12);border:1px solid rgba(0,200,255,0.2);color:var(--text);}
+    .msg.insurer{align-self:flex-start;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.2);color:var(--text);}
+    .msg.system{align-self:center;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.15);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-align:center;max-width:100%;}
+    .msg-meta{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--text-dim);letter-spacing:0.08em;margin-top:4px;}
+    .bridge-input{padding:10px 14px;border-top:1px solid rgba(0,255,136,0.15);display:flex;gap:8px;}
+    .bridge-input input{flex:1;background:rgba(0,200,255,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;}
+    .bridge-input input:focus{border-color:var(--green);}
+    .bridge-send{background:var(--green);color:var(--dark);border:none;padding:8px 14px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;cursor:pointer;font-weight:700;}
+    .bridge-send:hover{opacity:0.85;}
+    #bridge-fab{position:fixed;bottom:20px;right:20px;width:52px;height:52px;background:var(--green);border:none;cursor:pointer;z-index:199;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 20px rgba(0,255,136,0.4);transition:transform 0.2s;}
+    #bridge-fab:hover{transform:scale(1.1);}
+    #bridge-fab .unread-dot{position:absolute;top:8px;right:8px;width:10px;height:10px;background:var(--red);border-radius:50%;display:none;}
+
+    /* FORMS */
+    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+    .form-group label{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,200,255,0.45);letter-spacing:0.2em;text-transform:uppercase;display:block;margin-bottom:6px;}
+    .form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.95rem;padding:9px 12px;outline:none;transition:border-color 0.2s;}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--ww);}
+    .form-group select option{background:#020408;}
+    .form-group textarea{resize:vertical;min-height:80px;}
+
+    /* BUTTONS */
+    .btn{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;border:none;padding:9px 20px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:transform 0.15s,box-shadow 0.15s;}
+    .btn:hover{transform:translateY(-1px);}
+    .btn-primary{background:var(--ww);color:var(--dark);font-weight:700;}
+    .btn-primary:hover{box-shadow:0 0 20px rgba(0,200,255,0.4);}
+    .btn-success{background:var(--green);color:var(--dark);font-weight:700;}
+    .btn-success:hover{box-shadow:0 0 20px rgba(0,255,136,0.4);}
+    .btn-danger{background:var(--red);color:#fff;}
+    .btn-outline{background:transparent;color:var(--ww);border:1px solid var(--border);}
+    .btn-outline:hover{background:rgba(0,200,255,0.06);}
+    .btn-sm{padding:5px 14px;font-size:0.58rem;}
+
+    /* MODAL */
+    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(2,4,8,0.85);z-index:300;align-items:center;justify-content:center;}
+    .modal-overlay.open{display:flex;}
+    .modal{width:600px;max-width:95vw;border:1px solid var(--border);background:#050c12;position:relative;max-height:90vh;overflow-y:auto;}
+    .modal::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),var(--green),transparent);}
+    .modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .modal-title{font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;}
+    .modal-close{background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:1.2rem;}
+    .modal-close:hover{color:var(--red);}
+    .modal-body{padding:20px;}
+    .modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
+
+    /* TABS */
+    .tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;}
+    .tab{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:10px 18px;cursor:pointer;color:var(--text-dim);border-bottom:2px solid transparent;transition:color 0.2s;}
+    .tab:hover{color:var(--ww);}
+    .tab.active{color:var(--ww);border-bottom-color:var(--ww);}
+
+    /* EMPTY STATE */
+    .empty-state{text-align:center;padding:48px 20px;color:var(--text-dim);}
+    .empty-icon{font-size:2rem;margin-bottom:12px;opacity:0.4;}
+    .empty-text{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;}
+
+    /* LOADING */
+    .loading{text-align:center;padding:32px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--text-dim);letter-spacing:0.2em;animation:blink 1s infinite;}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+    /* VIEWS */
+    .view{display:none;}
+    .view.active{display:block;}
+
+    /* SCROLLBAR */
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:rgba(0,200,255,0.2);border-radius:2px;}
+
+    @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+
+    /* MOBILE */
+    @media(max-width:768px){
+      #sidebar{display:none;}
+      .stats-row{grid-template-columns:1fr 1fr;}
+    }
+  </style>
+</head>
+<body>
+<div id="app">
+
+  <!-- SIDEBAR -->
+  <nav id="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">WrenchWare Pro<sup>&#8482;</sup></div>
+      <div class="sub">// Shop Dashboard</div>
+    </div>
+
+    <div class="nav-section">Operations</div>
+    <div class="nav-item active" onclick="showView('dashboard')">
+      <span class="icon">&#9783;</span> Dashboard
+    </div>
+    <div class="nav-item" onclick="showView('workorders')">
+      <span class="icon">&#128203;</span> Work Orders
+      <span class="nav-badge" id="badge-wo">0</span>
+    </div>
+    <div class="nav-item" onclick="showView('customers')">
+      <span class="icon">&#128100;</span> Customers
+    </div>
+    <div class="nav-item" onclick="showView('technicians')">
+      <span class="icon">&#128295;</span> Technicians
+    </div>
+
+    <div class="nav-section">Shop</div>
+    <div class="nav-item" onclick="showView('inventory')">
+      <span class="icon">&#128230;</span> Inventory
+    </div>
+    <div class="nav-item" onclick="showView('invoices')">
+      <span class="icon">&#128184;</span> Invoices
+    </div>
+
+    <div class="nav-section">Bridge&#8482;</div>
+    <div class="nav-item" onclick="toggleBridge()">
+      <span class="icon">&#9889;</span> Insurer Bridge
+      <span class="bridge-badge" id="bridge-nav-badge">LIVE</span>
+    </div>
+
+    <div class="sidebar-bottom">
+      <div class="user-info">
+        <div class="user-name" id="sb-username">Loading...</div>
+        <div class="user-role" id="sb-role">--</div>
+      </div>
+      <button class="btn-logout" onclick="logout()">&#8594; Sign Out</button>
+    </div>
+  </nav>
+
+  <!-- MAIN -->
+  <div id="main">
+    <div id="topbar">
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+      <div class="topbar-right">
+        <div class="bridge-status" id="bridge-status-bar">
+          <span class="status-dot-live"></span>
+          <span>BRIDGE CONNECTING...</span>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--text-dim);letter-spacing:0.1em;" id="topbar-time"></div>
+      </div>
+    </div>
+
+    <div id="content">
+
+      <!-- DASHBOARD VIEW -->
+      <div class="view active" id="view-dashboard">
+        <div class="stats-row">
+          <div class="stat-card blue">
+            <div class="stat-label">Active Jobs</div>
+            <div class="stat-value" id="stat-active">--</div>
+            <div class="stat-sub">In progress today</div>
+          </div>
+          <div class="stat-card orange">
+            <div class="stat-label">Pending</div>
+            <div class="stat-value" id="stat-pending">--</div>
+            <div class="stat-sub">Awaiting approval</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">Completed</div>
+            <div class="stat-value" id="stat-completed">--</div>
+            <div class="stat-sub">This month</div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-label">Techs On Duty</div>
+            <div class="stat-value" id="stat-techs">--</div>
+            <div class="stat-sub">Active right now</div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Recent Work Orders</span>
+            <button class="btn btn-primary btn-sm" onclick="showView('workorders');openNewWO()">+ New Work Order</button>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="dashboard-wo-list"><div class="loading">LOADING WORK ORDERS...</div></div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Technician Status</span>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="dashboard-tech-list"><div class="loading">LOADING TECHNICIANS...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- WORK ORDERS VIEW -->
+      <div class="view" id="view-workorders">
+        <div class="tab-bar">
+          <div class="tab active" onclick="filterWO('all',this)">All</div>
+          <div class="tab" onclick="filterWO('pending',this)">Pending</div>
+          <div class="tab" onclick="filterWO('active',this)">Active</div>
+          <div class="tab" onclick="filterWO('completed',this)">Completed</div>
+          <div class="tab" onclick="filterWO('approved',this)">Approved</div>
+        </div>
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Work Orders</span>
+            <div style="display:flex;gap:8px;">
+              <input id="wo-search" type="text" placeholder="Search..." style="background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:5px 10px;outline:none;width:180px;" oninput="loadWorkOrders()"/>
+              <button class="btn btn-primary btn-sm" onclick="openNewWO()">+ New</button>
+            </div>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="wo-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- CUSTOMERS VIEW -->
+      <div class="view" id="view-customers">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Customers</span>
+            <button class="btn btn-primary btn-sm" onclick="openNewCustomer()">+ New Customer</button>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="customer-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- TECHNICIANS VIEW -->
+      <div class="view" id="view-technicians">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Technician Overview</span>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="tech-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INVENTORY VIEW -->
+      <div class="view" id="view-inventory">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Parts Inventory</span>
+            <button class="btn btn-primary btn-sm" onclick="openNewPart()">+ Add Part</button>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="inventory-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INVOICES VIEW -->
+      <div class="view" id="view-invoices">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Invoices</span>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="invoice-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /content -->
+  </div><!-- /main -->
+</div><!-- /app -->
+
+<!-- BRIDGE CHAT PANEL -->
+<button id="bridge-fab" onclick="toggleBridge()" title="Darkbloom Bridge™">
+  &#9889;
+  <span class="unread-dot" id="unread-dot"></span>
+</button>
+
+<div id="bridge-panel">
+  <div class="bridge-header">
+    <span class="bridge-header-title">&#9889; DARKBLOOM BRIDGE&#8482;</span>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.1em;" id="bridge-conn-label">CONNECTING...</span>
+    <button class="bridge-close" onclick="toggleBridge()">&#10005;</button>
+  </div>
+  <div class="bridge-claim-select">
+    <select id="bridge-claim-id" onchange="loadBridgeMessages()">
+      <option value="">-- Select Work Order / Claim --</option>
+    </select>
+  </div>
+  <div class="bridge-messages" id="bridge-messages">
+    <div class="msg system">Select a work order to start messaging the insurer.</div>
+  </div>
+  <div class="bridge-input">
+    <input type="text" id="bridge-msg-input" placeholder="Message insurer..." onkeydown="if(event.key==='Enter')sendBridgeMessage()"/>
+    <button class="bridge-send" onclick="sendBridgeMessage()">SEND</button>
+  </div>
+</div>
+
+<!-- NEW WORK ORDER MODAL -->
+<div class="modal-overlay" id="modal-new-wo">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">NEW WORK ORDER</span>
+      <button class="modal-close" onclick="closeModal('modal-new-wo')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group">
+          <label>Customer</label>
+          <select id="wo-customer-id"><option value="">-- Select --</option></select>
+        </div>
+        <div class="form-group">
+          <label>Vehicle</label>
+          <select id="wo-vehicle-id"><option value="">-- Select --</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Service Type</label>
+          <select id="wo-service-type">
+            <option value="">-- Select --</option>
+            <option>Collision Repair</option>
+            <option>Mechanical</option>
+            <option>Paint</option>
+            <option>Glass</option>
+            <option>Detailing</option>
+            <option>Inspection</option>
+            <option>Other</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Priority</label>
+          <select id="wo-priority">
+            <option value="normal">Normal</option>
+            <option value="high">High</option>
+            <option value="urgent">Urgent</option>
+            <option value="low">Low</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Assigned Technician</label>
+          <select id="wo-tech-id"><option value="">-- Unassigned --</option></select>
+        </div>
+        <div class="form-group">
+          <label>Insurance Company</label>
+          <select id="wo-insurer-id"><option value="">-- None / Self Pay --</option></select>
+        </div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;">
+        <label>Description</label>
+        <textarea id="wo-description" placeholder="Describe the work needed..."></textarea>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Estimated Hours</label>
+          <input type="number" id="wo-est-hours" placeholder="0.0" step="0.5" min="0"/>
+        </div>
+        <div class="form-group">
+          <label>Estimated Cost ($)</label>
+          <input type="number" id="wo-est-cost" placeholder="0.00" step="0.01" min="0"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Customer Notes</label>
+        <input type="text" id="wo-customer-notes" placeholder="Any notes from the customer..."/>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-new-wo')">Cancel</button>
+      <button class="btn btn-primary" onclick="createWorkOrder()">Create Work Order</button>
+    </div>
+  </div>
+</div>
+
+<!-- WO DETAIL MODAL -->
+<div class="modal-overlay" id="modal-wo-detail">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="wo-detail-title">WORK ORDER</span>
+      <button class="modal-close" onclick="closeModal('modal-wo-detail')">&#10005;</button>
+    </div>
+    <div class="modal-body" id="wo-detail-body">Loading...</div>
+    <div class="modal-footer" id="wo-detail-footer"></div>
+  </div>
+</div>
+
+<!-- NEW CUSTOMER MODAL -->
+<div class="modal-overlay" id="modal-new-customer">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">NEW CUSTOMER</span>
+      <button class="modal-close" onclick="closeModal('modal-new-customer')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>First Name</label><input type="text" id="cust-first" placeholder="Jane"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" id="cust-last" placeholder="Smith"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>Phone</label><input type="tel" id="cust-phone" placeholder="(555) 000-0000"/></div>
+        <div class="form-group"><label>Email</label><input type="email" id="cust-email" placeholder="jane@example.com"/></div>
+      </div>
+      <div class="form-group" style="margin-bottom:12px;"><label>Address</label><input type="text" id="cust-address" placeholder="123 Main St"/></div>
+      <div class="form-row">
+        <div class="form-group"><label>City</label><input type="text" id="cust-city"/></div>
+        <div class="form-group"><label>State</label><input type="text" id="cust-state" maxlength="2"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-new-customer')">Cancel</button>
+      <button class="btn btn-primary" onclick="createCustomer()">Save Customer</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ── Config ────────────────────────────────────────────────────────────────────
+const API = 'https://web-production-f13e8.up.railway.app';
+const SUPABASE_URL = 'https://bomumxpxuprkxgkyuheh.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvbXVteHB4dXBya3hna3l1aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMzk0NzAsImV4cCI6MjA5MjkxNTQ3MH0.QEPmhF0pkRP0rPtgJaJN63pWAMkNcMJB6RW7PSibqS4';
+
+// ── Auth ───────────────────────────────────────────────────────────────────────
+const token = sessionStorage.getItem('ww_token');
+const role  = sessionStorage.getItem('ww_role');
+const name  = sessionStorage.getItem('ww_name');
+
+if (!token) { window.location.href = 'wrenchware.html'; }
+
+document.getElementById('sb-username').textContent = name || 'User';
+document.getElementById('sb-role').textContent = role || '';
+
+// ── API helper ─────────────────────────────────────────────────────────────────
+async function api(path, method='GET', body=null) {
+  const opts = {
+    method,
+    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
+  };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(API + path, opts);
+  if (r.status === 401) { logout(); return null; }
+  return r.json();
+}
+
+// ── Supabase Realtime ──────────────────────────────────────────────────────────
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+let bridgeChannel = null;
+let currentClaimId = null;
+let unreadCount = 0;
+
+function initBridge() {
+  bridgeChannel = sb.channel('bridge-shop')
+    .on('postgres_changes', {
+      event: 'INSERT',
+      schema: 'public',
+      table: 'claim_messages'
+    }, (payload) => {
+      const msg = payload.new;
+      if (msg.sender_type !== 'shop') {
+        if (currentClaimId && msg.claim_sharing_id == currentClaimId) {
+          appendMessage(msg);
+        } else {
+          unreadCount++;
+          document.getElementById('unread-dot').style.display = 'block';
+          document.getElementById('unread-dot').textContent = unreadCount > 9 ? '9+' : unreadCount;
+        }
+      }
+    })
+    .subscribe((status) => {
+      const bar = document.getElementById('bridge-status-bar');
+      const label = document.getElementById('bridge-conn-label');
+      if (status === 'SUBSCRIBED') {
+        bar.className = 'bridge-status';
+        bar.innerHTML = '<span class="status-dot-live"></span><span>BRIDGE LIVE</span>';
+        label.textContent = 'CONNECTED';
+        label.style.color = 'var(--green)';
+      } else {
+        bar.className = 'bridge-status offline';
+        bar.innerHTML = '<span style="width:7px;height:7px;background:var(--red);border-radius:50%;display:inline-block;"></span><span>BRIDGE OFFLINE</span>';
+        label.textContent = 'OFFLINE';
+        label.style.color = 'var(--red)';
+      }
+    });
+}
+
+function toggleBridge() {
+  const panel = document.getElementById('bridge-panel');
+  const fab = document.getElementById('bridge-fab');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) {
+    fab.style.display = 'none';
+    unreadCount = 0;
+    document.getElementById('unread-dot').style.display = 'none';
+    loadBridgeClaimList();
+  } else {
+    fab.style.display = 'flex';
+  }
+}
+
+async function loadBridgeClaimList() {
+  const data = await api('/api/work-orders?status=active&limit=20');
+  const sel = document.getElementById('bridge-claim-id');
+  sel.innerHTML = '<option value="">-- Select Work Order / Claim --</option>';
+  if (data && data.items) {
+    data.items.forEach(wo => {
+      const opt = document.createElement('option');
+      opt.value = wo.id;
+      opt.textContent = `${wo.work_order_number} — ${wo.customer_name || 'Unknown'}`;
+      sel.appendChild(opt);
+    });
+  }
+}
+
+async function loadBridgeMessages() {
+  currentClaimId = document.getElementById('bridge-claim-id').value;
+  const box = document.getElementById('bridge-messages');
+  if (!currentClaimId) {
+    box.innerHTML = '<div class="msg system">Select a work order to start messaging the insurer.</div>';
+    return;
+  }
+  box.innerHTML = '<div class="loading">LOADING MESSAGES...</div>';
+  const data = await api(`/api/bridge/messages/${currentClaimId}`);
+  box.innerHTML = '';
+  if (!data || !data.messages || data.messages.length === 0) {
+    box.innerHTML = '<div class="msg system">No messages yet. Send the first message to the insurer.</div>';
+    return;
+  }
+  data.messages.forEach(m => appendMessage(m));
+  box.scrollTop = box.scrollHeight;
+}
+
+function appendMessage(msg) {
+  const box = document.getElementById('bridge-messages');
+  const div = document.createElement('div');
+  const isShop = msg.sender_type === 'shop';
+  div.className = `msg ${isShop ? 'shop' : 'insurer'}`;
+  div.innerHTML = `${msg.message_text}<div class="msg-meta">${msg.sender_name} &bull; ${new Date(msg.created_at).toLocaleTimeString()}</div>`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function sendBridgeMessage() {
+  const input = document.getElementById('bridge-msg-input');
+  const text = input.value.trim();
+  if (!text || !currentClaimId) return;
+  input.value = '';
+  await api('/api/bridge/send', 'POST', {
+    claim_sharing_id: currentClaimId,
+    message: text,
+    sender_type: 'shop',
+    sender_name: name
+  });
+}
+
+// ── Views ──────────────────────────────────────────────────────────────────────
+const views = ['dashboard','workorders','customers','technicians','inventory','invoices'];
+const viewTitles = {
+  dashboard:'Dashboard', workorders:'Work Orders', customers:'Customers',
+  technicians:'Technicians', inventory:'Inventory', invoices:'Invoices'
+};
+let currentWOFilter = 'all';
+
+function showView(v) {
+  views.forEach(id => {
+    document.getElementById(`view-${id}`).classList.remove('active');
+  });
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(`view-${v}`).classList.add('active');
+  document.querySelectorAll('.nav-item').forEach(el => {
+    if (el.textContent.toLowerCase().includes(v.replace(/s$/',''))) el.classList.add('active');
+  });
+  document.getElementById('topbar-title').textContent = viewTitles[v] || v;
+
+  if (v === 'dashboard') loadDashboard();
+  else if (v === 'workorders') loadWorkOrders();
+  else if (v === 'customers') loadCustomers();
+  else if (v === 'technicians') loadTechnicians();
+  else if (v === 'inventory') loadInventory();
+  else if (v === 'invoices') loadInvoices();
+}
+
+// ── Dashboard ──────────────────────────────────────────────────────────────────
+async function loadDashboard() {
+  const stats = await api('/api/stats');
+  if (stats) {
+    document.getElementById('stat-active').textContent = stats.active || 0;
+    document.getElementById('stat-pending').textContent = stats.pending || 0;
+    document.getElementById('stat-completed').textContent = stats.completed || 0;
+    document.getElementById('stat-techs').textContent = stats.active_techs || 0;
+    document.getElementById('badge-wo').textContent = (stats.pending || 0) + (stats.active || 0);
+  }
+  const wos = await api('/api/work-orders?limit=8');
+  renderWOTable('dashboard-wo-list', wos);
+  const techs = await api('/api/technicians');
+  renderTechTable('dashboard-tech-list', techs);
+}
+
+// ── Work Orders ────────────────────────────────────────────────────────────────
+async function loadWorkOrders() {
+  const search = document.getElementById('wo-search')?.value || '';
+  const filter = currentWOFilter === 'all' ? '' : `&status=${currentWOFilter}`;
+  const data = await api(`/api/work-orders?search=${encodeURIComponent(search)}${filter}`);
+  renderWOTable('wo-list', data);
+}
+
+function filterWO(status, el) {
+  currentWOFilter = status;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  loadWorkOrders();
+}
+
+function renderWOTable(containerId, data) {
+  const container = document.getElementById(containerId);
+  if (!data || !data.items || data.items.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128203;</div><div class="empty-text">No work orders found</div></div>';
+    return;
+  }
+  container.innerHTML = `<table class="data-table">
+    <thead><tr>
+      <th>WO #</th><th>Customer</th><th>Vehicle</th><th>Service</th>
+      <th>Tech</th><th>Status</th><th>Est. Cost</th><th>Actions</th>
+    </tr></thead>
+    <tbody>${data.items.map(wo => `
+      <tr>
+        <td style="color:var(--ww);font-family:'Share Tech Mono',monospace;font-size:0.75rem;">${wo.work_order_number}</td>
+        <td>${wo.customer_name || '--'}</td>
+        <td style="font-size:0.82rem;">${wo.vehicle || '--'}</td>
+        <td style="font-size:0.82rem;">${wo.service_type || '--'}</td>
+        <td style="font-size:0.82rem;">${wo.tech_name || 'Unassigned'}</td>
+        <td><span class="badge badge-${wo.status}">${wo.status}</span></td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">$${parseFloat(wo.estimated_cost||0).toFixed(2)}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="openWODetail(${wo.id})">View</button></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+async function openWODetail(id) {
+  const data = await api(`/api/work-orders/${id}`);
+  if (!data) return;
+  const wo = data.work_order;
+  document.getElementById('wo-detail-title').textContent = `WORK ORDER — ${wo.work_order_number}`;
+  document.getElementById('wo-detail-body').innerHTML = `
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">CUSTOMER</div><div style="font-size:0.95rem;">${wo.customer_name||'--'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">VEHICLE</div><div style="font-size:0.95rem;">${wo.vehicle||'--'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">STATUS</div><span class="badge badge-${wo.status}">${wo.status}</span></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">PRIORITY</div><div style="font-size:0.95rem;text-transform:uppercase;">${wo.priority||'normal'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">SERVICE TYPE</div><div style="font-size:0.95rem;">${wo.service_type||'--'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">TECHNICIAN</div><div style="font-size:0.95rem;">${wo.tech_name||'Unassigned'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">EST. HOURS</div><div style="font-size:0.95rem;">${wo.estimated_hours||0}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">EST. COST</div><div style="font-size:0.95rem;color:var(--green);">$${parseFloat(wo.estimated_cost||0).toFixed(2)}</div></div>
+    </div>
+    ${wo.description ? `<div style="margin-bottom:12px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:6px;">DESCRIPTION</div><div style="font-size:0.9rem;color:var(--text-dim);line-height:1.6;">${wo.description}</div></div>` : ''}
+    ${wo.insurer_name ? `<div style="margin-bottom:12px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">INSURANCE</div><div style="font-size:0.95rem;">${wo.insurer_name}</div></div>` : ''}
+    <div style="margin-top:12px;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:8px;">UPDATE STATUS</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-outline btn-sm" onclick="updateWOStatus(${wo.id},'pending')">Pending</button>
+        <button class="btn btn-primary btn-sm" onclick="updateWOStatus(${wo.id},'active')">Active</button>
+        <button class="btn btn-success btn-sm" onclick="updateWOStatus(${wo.id},'completed')">Complete</button>
+        <button class="btn btn-outline btn-sm" onclick="updateWOStatus(${wo.id},'approved')">Approve</button>
+        <button class="btn btn-outline btn-sm" onclick="updateWOStatus(${wo.id},'closed')">Close</button>
+      </div>
+    </div>`;
+  document.getElementById('wo-detail-footer').innerHTML = `
+    <button class="btn btn-outline" onclick="closeModal('modal-wo-detail')">Close</button>
+    <button class="btn btn-primary" onclick="openBridgeForWO(${wo.id},'${wo.work_order_number}')">&#9889; Message Insurer</button>`;
+  openModal('modal-wo-detail');
+}
+
+async function updateWOStatus(id, status) {
+  await api(`/api/work-orders/${id}/status`, 'PATCH', { status });
+  closeModal('modal-wo-detail');
+  loadWorkOrders();
+  loadDashboard();
+}
+
+function openBridgeForWO(id, woNum) {
+  closeModal('modal-wo-detail');
+  toggleBridge();
+  setTimeout(() => {
+    const sel = document.getElementById('bridge-claim-id');
+    sel.value = id;
+    loadBridgeMessages();
+  }, 300);
+}
+
+// ── Create Work Order ─────────────────────────────────────────────────────────
+async function openNewWO() {
+  const customers = await api('/api/customers');
+  const sel = document.getElementById('wo-customer-id');
+  sel.innerHTML = '<option value="">-- Select Customer --</option>';
+  if (customers && customers.items) {
+    customers.items.forEach(c => {
+      sel.innerHTML += `<option value="${c.id}">${c.first_name} ${c.last_name}</option>`;
+    });
+  }
+  const techs = await api('/api/technicians');
+  const tsel = document.getElementById('wo-tech-id');
+  tsel.innerHTML = '<option value="">-- Unassigned --</option>';
+  if (techs && techs.items) {
+    techs.items.forEach(t => {
+      tsel.innerHTML += `<option value="${t.employee_id}">${t.name}</option>`;
+    });
+  }
+  const insurers = await api('/api/insurers');
+  const isel = document.getElementById('wo-insurer-id');
+  isel.innerHTML = '<option value="">-- None / Self Pay --</option>';
+  if (insurers && insurers.items) {
+    insurers.items.forEach(i => {
+      isel.innerHTML += `<option value="${i.id}">${i.company_name}</option>`;
+    });
+  }
+  document.getElementById('wo-customer-id').addEventListener('change', loadVehiclesForCustomer);
+  openModal('modal-new-wo');
+}
+
+async function loadVehiclesForCustomer() {
+  const custId = document.getElementById('wo-customer-id').value;
+  const sel = document.getElementById('wo-vehicle-id');
+  if (!custId) { sel.innerHTML = '<option value="">-- Select Vehicle --</option>'; return; }
+  const data = await api(`/api/vehicles?customer_id=${custId}`);
+  sel.innerHTML = '<option value="">-- Select Vehicle --</option>';
+  if (data && data.items) {
+    data.items.forEach(v => {
+      sel.innerHTML += `<option value="${v.id}">${v.year} ${v.make} ${v.model}</option>`;
+    });
+  }
+}
+
+async function createWorkOrder() {
+  const body = {
+    customer_id: document.getElementById('wo-customer-id').value,
+    vehicle_id: document.getElementById('wo-vehicle-id').value,
+    service_type: document.getElementById('wo-service-type').value,
+    priority: document.getElementById('wo-priority').value,
+    assigned_to_emp_id: document.getElementById('wo-tech-id').value,
+    insurer_id: document.getElementById('wo-insurer-id').value,
+    description: document.getElementById('wo-description').value,
+    estimated_hours: parseFloat(document.getElementById('wo-est-hours').value) || 0,
+    estimated_cost: parseFloat(document.getElementById('wo-est-cost').value) || 0,
+    customer_notes: document.getElementById('wo-customer-notes').value,
+  };
+  const result = await api('/api/work-orders', 'POST', body);
+  if (result && result.success) {
+    closeModal('modal-new-wo');
+    loadWorkOrders();
+    loadDashboard();
+  } else {
+    alert('Failed to create work order. Please try again.');
+  }
+}
+
+// ── Customers ──────────────────────────────────────────────────────────────────
+async function loadCustomers() {
+  const data = await api('/api/customers');
+  const container = document.getElementById('customer-list');
+  if (!data || !data.items || data.items.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128100;</div><div class="empty-text">No customers yet</div></div>';
+    return;
+  }
+  container.innerHTML = `<table class="data-table">
+    <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Last Visit</th><th>Actions</th></tr></thead>
+    <tbody>${data.items.map(c => `
+      <tr>
+        <td>${c.first_name} ${c.last_name}</td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">${c.phone||'--'}</td>
+        <td style="font-size:0.82rem;">${c.email||'--'}</td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--text-dim);">${c.last_visit ? new Date(c.last_visit).toLocaleDateString() : '--'}</td>
+        <td><button class="btn btn-outline btn-sm" onclick="openNewWO()">New WO</button></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+async function createCustomer() {
+  const body = {
+    first_name: document.getElementById('cust-first').value,
+    last_name: document.getElementById('cust-last').value,
+    phone: document.getElementById('cust-phone').value,
+    email: document.getElementById('cust-email').value,
+    address: document.getElementById('cust-address').value,
+    city: document.getElementById('cust-city').value,
+    state: document.getElementById('cust-state').value,
+  };
+  const result = await api('/api/customers', 'POST', body);
+  if (result && result.success) {
+    closeModal('modal-new-customer');
+    loadCustomers();
+  }
+}
+
+// ── Technicians ────────────────────────────────────────────────────────────────
+async function loadTechnicians() {
+  const data = await api('/api/technicians');
+  renderTechTable('tech-list', data);
+}
+
+function renderTechTable(containerId, data) {
+  const container = document.getElementById(containerId);
+  if (!data || !data.items || data.items.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128295;</div><div class="empty-text">No technicians found</div></div>';
+    return;
+  }
+  container.innerHTML = `<table class="data-table">
+    <thead><tr><th>Technician</th><th>Role</th><th>Active Jobs</th><th>Status</th></tr></thead>
+    <tbody>${data.items.map(t => `
+      <tr>
+        <td>${t.name}</td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;text-transform:uppercase;color:var(--text-dim);">${t.role}</td>
+        <td style="color:var(--ww);font-family:'Orbitron',monospace;">${t.active_jobs||0}</td>
+        <td><span class="badge ${t.active_jobs > 0 ? 'badge-active' : 'badge-closed'}">${t.active_jobs > 0 ? 'On Job' : 'Available'}</span></td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+// ── Inventory ──────────────────────────────────────────────────────────────────
+async function loadInventory() {
+  const data = await api('/api/inventory');
+  const container = document.getElementById('inventory-list');
+  if (!data || !data.items || data.items.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128230;</div><div class="empty-text">No parts in inventory</div></div>';
+    return;
+  }
+  container.innerHTML = `<table class="data-table">
+    <thead><tr><th>Part #</th><th>Description</th><th>Category</th><th>Qty</th><th>Reorder Point</th><th>Price</th></tr></thead>
+    <tbody>${data.items.map(p => `
+      <tr>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--ww);">${p.part_number||'--'}</td>
+        <td>${p.description||'--'}</td>
+        <td style="font-size:0.82rem;color:var(--text-dim);">${p.category||'--'}</td>
+        <td style="font-family:'Orbitron',monospace;color:${p.quantity <= p.reorder_point ? 'var(--red)' : 'var(--green)'};">${p.quantity}</td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">${p.reorder_point}</td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">$${parseFloat(p.selling_price||0).toFixed(2)}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+function openNewPart() { alert('New part form coming soon.'); }
+
+// ── Invoices ───────────────────────────────────────────────────────────────────
+async function loadInvoices() {
+  const data = await api('/api/invoices');
+  const container = document.getElementById('invoice-list');
+  if (!data || !data.items || data.items.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128184;</div><div class="empty-text">No invoices yet</div></div>';
+    return;
+  }
+  container.innerHTML = `<table class="data-table">
+    <thead><tr><th>Invoice #</th><th>Customer</th><th>Total</th><th>Status</th><th>Due Date</th></tr></thead>
+    <tbody>${data.items.map(i => `
+      <tr>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--ww);">${i.invoice_number}</td>
+        <td>${i.customer_name||'--'}</td>
+        <td style="font-family:'Orbitron',monospace;color:var(--green);">$${parseFloat(i.total||0).toFixed(2)}</td>
+        <td><span class="badge badge-${i.status}">${i.status}</span></td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${i.due_date ? new Date(i.due_date).toLocaleDateString() : '--'}</td>
+      </tr>`).join('')}
+    </tbody></table>`;
+}
+
+// ── Modals ─────────────────────────────────────────────────────────────────────
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function openNewCustomer() { openModal('modal-new-customer'); }
+
+// ── Clock ──────────────────────────────────────────────────────────────────────
+function updateClock() {
+  const now = new Date();
+  document.getElementById('topbar-time').textContent =
+    now.toLocaleDateString('en-US', {month:'short',day:'numeric'}) + ' ' +
+    now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+// ── Logout ─────────────────────────────────────────────────────────────────────
+function logout() {
+  fetch(API + '/api/logout', { method:'POST', headers:{'Authorization':`Bearer ${token}`} });
+  sessionStorage.clear();
+  window.location.href = 'wrenchware.html';
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────────
+initBridge();
+loadDashboard();
+</script>
+</body>
+</html>
