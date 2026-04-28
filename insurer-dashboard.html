@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <title>ClaimSync&#8482; &mdash; Insurer Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <style>
+    :root{
+      --accent:#ff6b00;--accent-dim:rgba(255,107,0,0.12);--accent-border:rgba(255,107,0,0.25);
+      --cyan:#00f5ff;--magenta:#ff00aa;--green:#00ff88;--red:#ff4466;--ww:#00c8ff;
+      --dark:#020408;--panel:rgba(255,107,0,0.03);--border:rgba(255,107,0,0.15);
+      --text:#c8e8f0;--text-dim:rgba(200,232,240,0.45);
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;overflow:hidden;}
+    #app{display:flex;height:100vh;overflow:hidden;}
+
+    #sidebar{width:220px;min-width:220px;background:rgba(255,107,0,0.03);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;}
+    .sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
+    .sidebar-logo .brand{font-family:'Orbitron',monospace;font-weight:900;font-size:0.85rem;color:var(--accent);letter-spacing:0.12em;text-shadow:0 0 12px rgba(255,107,0,0.4);}
+    .sidebar-logo .brand sup{font-size:0.4em;color:var(--magenta);vertical-align:super;}
+    .sidebar-logo .sub{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:0.2em;margin-top:3px;}
+    .nav-section{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(255,107,0,0.3);letter-spacing:0.3em;padding:14px 18px 6px;text-transform:uppercase;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:background 0.2s,color 0.2s;border-left:2px solid transparent;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;}
+    .nav-item:hover{background:rgba(255,107,0,0.06);color:var(--accent);}
+    .nav-item.active{background:rgba(255,107,0,0.08);border-left-color:var(--accent);color:var(--accent);}
+    .nav-item .icon{font-size:0.9rem;width:18px;text-align:center;}
+    .nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;}
+    .fraud-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;animation:pulseBadge 1s infinite;}
+    @keyframes pulseBadge{0%,100%{opacity:1}50%{opacity:0.4}}
+    .sidebar-bottom{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);}
+    .user-name{color:var(--accent);font-size:0.65rem;margin-bottom:2px;font-family:'Share Tech Mono',monospace;}
+    .user-role{color:rgba(255,107,0,0.4);font-size:0.55rem;text-transform:uppercase;letter-spacing:0.15em;font-family:'Share Tech Mono',monospace;}
+    .btn-logout{margin-top:10px;width:100%;font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);background:transparent;border:1px solid rgba(255,68,102,0.3);padding:7px;cursor:pointer;}
+    .btn-logout:hover{background:rgba(255,68,102,0.08);}
+
+    #main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
+    #topbar{height:52px;min-height:52px;background:rgba(255,107,0,0.02);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;}
+    .topbar-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.9rem;color:#fff;letter-spacing:0.08em;}
+    .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
+    .bridge-status{display:flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid rgba(0,255,136,0.25);background:rgba(0,255,136,0.05);font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--green);letter-spacing:0.1em;}
+    .status-dot-live{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulseDot 1.5s infinite;}
+    @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+
+    #content{flex:1;overflow-y:auto;padding:24px;}
+    .view{display:none;}
+    .view.active{display:block;}
+
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+    .stat-card{border:1px solid var(--border);background:var(--panel);padding:16px 18px;position:relative;overflow:hidden;}
+    .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;}
+    .stat-card.orange::before{background:linear-gradient(90deg,var(--accent),transparent);}
+    .stat-card.red::before{background:linear-gradient(90deg,var(--red),transparent);}
+    .stat-card.green::before{background:linear-gradient(90deg,var(--green),transparent);}
+    .stat-card.blue::before{background:linear-gradient(90deg,var(--cyan),transparent);}
+    .stat-label{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;}
+    .stat-value{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;}
+    .stat-card.orange .stat-value{color:var(--accent);}
+    .stat-card.red .stat-value{color:var(--red);}
+    .stat-card.green .stat-value{color:var(--green);}
+    .stat-card.blue .stat-value{color:var(--cyan);}
+    .stat-sub{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);margin-top:6px;}
+
+    .panel{border:1px solid var(--border);background:var(--panel);position:relative;overflow:hidden;margin-bottom:16px;}
+    .panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),transparent);}
+    .panel-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .panel-title{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--accent);letter-spacing:0.1em;font-weight:700;}
+    .panel-body{padding:16px 20px;}
+
+    .data-table{width:100%;border-collapse:collapse;}
+    .data-table th{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(255,107,0,0.45);letter-spacing:0.2em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+    .data-table td{font-family:'Rajdhani',sans-serif;font-size:0.88rem;color:var(--text);padding:9px 12px;border-bottom:1px solid rgba(255,107,0,0.06);vertical-align:middle;}
+    .data-table tr:hover td{background:rgba(255,107,0,0.03);}
+    .data-table tr:last-child td{border-bottom:none;}
+
+    .badge{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;padding:3px 10px;text-transform:uppercase;display:inline-block;}
+    .badge-pending{color:var(--accent);border:1px solid rgba(255,107,0,0.3);background:rgba(255,107,0,0.06);}
+    .badge-active{color:var(--cyan);border:1px solid rgba(0,245,255,0.3);background:rgba(0,245,255,0.06);}
+    .badge-completed{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
+    .badge-approved{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
+    .badge-closed{color:var(--text-dim);border:1px solid rgba(200,232,240,0.15);}
+    .badge-high{color:var(--red);border:1px solid rgba(255,68,102,0.3);background:rgba(255,68,102,0.08);}
+    .badge-medium{color:var(--accent);border:1px solid rgba(255,107,0,0.3);background:rgba(255,107,0,0.06);}
+    .badge-low{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
+
+    /* Bridge */
+    #bridge-panel{display:none;position:fixed;bottom:20px;right:20px;width:360px;height:480px;border:1px solid rgba(0,255,136,0.3);background:rgba(2,4,8,0.97);backdrop-filter:blur(12px);z-index:200;flex-direction:column;box-shadow:0 0 40px rgba(0,255,136,0.1);}
+    #bridge-panel.open{display:flex;}
+    #bridge-panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),var(--green),var(--accent));}
+    .bridge-header{padding:12px 16px;border-bottom:1px solid rgba(0,255,136,0.15);display:flex;align-items:center;gap:10px;}
+    .bridge-header-title{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.1em;font-weight:700;flex:1;}
+    .bridge-close{background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:1rem;padding:2px 6px;}
+    .bridge-claim-select{padding:10px 14px;border-bottom:1px solid rgba(0,255,136,0.1);}
+    .bridge-claim-select select{width:100%;background:rgba(255,107,0,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:6px 10px;outline:none;}
+    .bridge-claim-select select option{background:#020408;}
+    .bridge-messages{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
+    .msg{max-width:80%;padding:8px 12px;font-family:'Rajdhani',sans-serif;font-size:0.88rem;line-height:1.4;}
+    .msg.insurer{align-self:flex-end;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.2);}
+    .msg.shop{align-self:flex-start;background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.2);}
+    .msg.system{align-self:center;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.15);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-align:center;max-width:100%;}
+    .msg-meta{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--text-dim);margin-top:4px;}
+    .bridge-input{padding:10px 14px;border-top:1px solid rgba(0,255,136,0.15);display:flex;gap:8px;}
+    .bridge-input input{flex:1;background:rgba(255,107,0,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;}
+    .bridge-input input:focus{border-color:var(--accent);}
+    .bridge-send{background:var(--accent);color:#fff;border:none;padding:8px 14px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;cursor:pointer;font-weight:700;}
+    #bridge-fab{position:fixed;bottom:20px;right:20px;width:52px;height:52px;background:var(--accent);border:none;cursor:pointer;z-index:199;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 20px rgba(255,107,0,0.4);transition:transform 0.2s;}
+    #bridge-fab:hover{transform:scale(1.1);}
+
+    .btn{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;border:none;padding:9px 20px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:transform 0.15s;}
+    .btn:hover{transform:translateY(-1px);}
+    .btn-primary{background:var(--accent);color:#fff;font-weight:700;}
+    .btn-outline{background:transparent;color:var(--accent);border:1px solid var(--border);}
+    .btn-sm{padding:5px 14px;font-size:0.58rem;}
+
+    .tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;}
+    .tab{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:10px 18px;cursor:pointer;color:var(--text-dim);border-bottom:2px solid transparent;}
+    .tab:hover{color:var(--accent);}
+    .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+    .empty-state{text-align:center;padding:48px 20px;color:var(--text-dim);}
+    .empty-icon{font-size:2rem;margin-bottom:12px;opacity:0.4;}
+    .empty-text{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;}
+    .loading{text-align:center;padding:32px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--text-dim);letter-spacing:0.2em;animation:blink 1s infinite;}
+    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+
+    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar-track{background:transparent;}
+    ::-webkit-scrollbar-thumb{background:rgba(255,107,0,0.2);border-radius:2px;}
+  </style>
+</head>
+<body>
+<div id="app">
+  <nav id="sidebar">
+    <div class="sidebar-logo">
+      <div class="brand">ClaimSync<sup>&#8482;</sup></div>
+      <div class="sub">// Insurer Dashboard</div>
+    </div>
+    <div class="nav-section">Claims</div>
+    <div class="nav-item active" onclick="showView('dashboard')"><span class="icon">&#9783;</span> Dashboard</div>
+    <div class="nav-item" onclick="showView('claims')"><span class="icon">&#128203;</span> All Claims<span class="nav-badge" id="badge-claims">0</span></div>
+    <div class="nav-item" onclick="showView('myclaims')"><span class="icon">&#128100;</span> My Claims</div>
+    <div class="nav-section">Intelligence</div>
+    <div class="nav-item" onclick="showView('fraud')"><span class="icon">&#128680;</span> Fraud Alerts<span class="fraud-badge" id="badge-fraud">0</span></div>
+    <div class="nav-section">Bridge&#8482;</div>
+    <div class="nav-item" onclick="toggleBridge()"><span class="icon">&#9889;</span> Shop Bridge<span class="badge" style="margin-left:auto;background:var(--green);color:var(--dark);font-family:'Share Tech Mono',monospace;font-size:0.45rem;padding:2px 6px;border-radius:8px;">LIVE</span></div>
+    <div class="sidebar-bottom">
+      <div class="user-name" id="sb-username">Loading...</div>
+      <div class="user-role" id="sb-role">--</div>
+      <button class="btn-logout" onclick="logout()">&#8594; Sign Out</button>
+    </div>
+  </nav>
+
+  <div id="main">
+    <div id="topbar">
+      <span class="topbar-title" id="topbar-title">Dashboard</span>
+      <div class="topbar-right">
+        <div class="bridge-status" id="bridge-status-bar">
+          <span class="status-dot-live"></span>
+          <span>BRIDGE CONNECTING...</span>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--text-dim);" id="topbar-time"></div>
+      </div>
+    </div>
+
+    <div id="content">
+
+      <!-- DASHBOARD -->
+      <div class="view active" id="view-dashboard">
+        <div class="stats-row">
+          <div class="stat-card orange"><div class="stat-label">Open Claims</div><div class="stat-value" id="stat-open">--</div><div class="stat-sub">Pending + Active</div></div>
+          <div class="stat-card red"><div class="stat-label">Fraud Alerts</div><div class="stat-value" id="stat-fraud">--</div><div class="stat-sub">Unresolved</div></div>
+          <div class="stat-card green"><div class="stat-label">Closed This Month</div><div class="stat-value" id="stat-closed">--</div><div class="stat-sub">Settled</div></div>
+          <div class="stat-card blue"><div class="stat-label">My Active Claims</div><div class="stat-value" id="stat-mine">--</div><div class="stat-sub">Assigned to me</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">&#9654; Recent Claims</span></div>
+          <div style="padding:0;" id="dashboard-claims"><div class="loading">LOADING CLAIMS...</div></div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">&#128680; Active Fraud Alerts</span></div>
+          <div style="padding:0;" id="dashboard-fraud"><div class="loading">LOADING ALERTS...</div></div>
+        </div>
+      </div>
+
+      <!-- ALL CLAIMS -->
+      <div class="view" id="view-claims">
+        <div class="tab-bar">
+          <div class="tab active" onclick="filterClaims('all',this)">All</div>
+          <div class="tab" onclick="filterClaims('pending',this)">Pending</div>
+          <div class="tab" onclick="filterClaims('active',this)">Active</div>
+          <div class="tab" onclick="filterClaims('completed',this)">Completed</div>
+          <div class="tab" onclick="filterClaims('approved',this)">Approved</div>
+        </div>
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">&#9654; Claims</span></div>
+          <div style="padding:0;" id="claims-list"><div class="loading">LOADING...</div></div>
+        </div>
+      </div>
+
+      <!-- MY CLAIMS -->
+      <div class="view" id="view-myclaims">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">&#9654; My Assigned Claims</span></div>
+          <div style="padding:0;" id="myclaims-list"><div class="loading">LOADING...</div></div>
+        </div>
+      </div>
+
+      <!-- FRAUD -->
+      <div class="view" id="view-fraud">
+        <div class="panel">
+          <div class="panel-header"><span class="panel-title">&#128680; Fraud Alerts</span></div>
+          <div style="padding:0;" id="fraud-list"><div class="loading">LOADING...</div></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<button id="bridge-fab" onclick="toggleBridge()" title="Darkbloom Bridge™">&#9889;</button>
+
+<div id="bridge-panel">
+  <div class="bridge-header">
+    <span class="bridge-header-title">&#9889; DARKBLOOM BRIDGE&#8482;</span>
+    <span style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);" id="bridge-conn-label">CONNECTING...</span>
+    <button class="bridge-close" onclick="toggleBridge()">&#10005;</button>
+  </div>
+  <div class="bridge-claim-select">
+    <select id="bridge-claim-id" onchange="loadBridgeMessages()">
+      <option value="">-- Select Claim --</option>
+    </select>
+  </div>
+  <div class="bridge-messages" id="bridge-messages">
+    <div class="msg system">Select a claim to message the repair shop.</div>
+  </div>
+  <div class="bridge-input">
+    <input type="text" id="bridge-msg-input" placeholder="Message shop..." onkeydown="if(event.key==='Enter')sendBridgeMessage()"/>
+    <button class="bridge-send" onclick="sendBridgeMessage()">SEND</button>
+  </div>
+</div>
+
+<script>
+const API = 'https://web-production-f13e8.up.railway.app';
+const SUPABASE_URL = 'https://bomumxpxuprkxgkyuheh.supabase.co';
+const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvbXVteHB4dXBya3hna3l1aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMzk0NzAsImV4cCI6MjA5MjkxNTQ3MH0.QEPmhF0pkRP0rPtgJaJN63pWAMkNcMJB6RW7PSibqS4';
+
+const token = sessionStorage.getItem('cs_token') || sessionStorage.getItem('ww_token');
+const role  = sessionStorage.getItem('cs_role')  || sessionStorage.getItem('ww_role');
+const name  = sessionStorage.getItem('cs_name')  || sessionStorage.getItem('ww_name');
+
+if (!token) window.location.href = 'claimsync.html';
+
+document.getElementById('sb-username').textContent = name || 'User';
+document.getElementById('sb-role').textContent = role || '';
+
+async function api(path, method='GET', body=null) {
+  const opts = { method, headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`} };
+  if (body) opts.body = JSON.stringify(body);
+  const r = await fetch(API + path, opts);
+  if (r.status === 401) { logout(); return null; }
+  return r.json();
+}
+
+// Bridge
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
+let bridgeChannel = null;
+let currentClaimId = null;
+
+function initBridge() {
+  bridgeChannel = sb.channel('bridge-insurer')
+    .on('postgres_changes', { event:'INSERT', schema:'public', table:'claim_messages' }, (payload) => {
+      const msg = payload.new;
+      if (msg.sender_type === 'shop' && currentClaimId && msg.claim_sharing_id == currentClaimId) {
+        appendMessage(msg);
+      }
+    })
+    .subscribe((status) => {
+      const bar = document.getElementById('bridge-status-bar');
+      const label = document.getElementById('bridge-conn-label');
+      if (status === 'SUBSCRIBED') {
+        bar.className = 'bridge-status';
+        bar.innerHTML = '<span class="status-dot-live"></span><span>BRIDGE LIVE</span>';
+        label.textContent = 'CONNECTED'; label.style.color = 'var(--green)';
+      } else {
+        bar.className = 'bridge-status';
+        bar.style.borderColor = 'rgba(255,68,102,0.25)';
+        bar.innerHTML = '<span style="width:7px;height:7px;background:var(--red);border-radius:50%;display:inline-block;"></span><span>OFFLINE</span>';
+        label.textContent = 'OFFLINE'; label.style.color = 'var(--red)';
+      }
+    });
+}
+
+function toggleBridge() {
+  const panel = document.getElementById('bridge-panel');
+  const fab = document.getElementById('bridge-fab');
+  panel.classList.toggle('open');
+  if (panel.classList.contains('open')) { fab.style.display='none'; loadBridgeClaimList(); }
+  else fab.style.display='flex';
+}
+
+async function loadBridgeClaimList() {
+  const data = await api('/api/claims?limit=20');
+  const sel = document.getElementById('bridge-claim-id');
+  sel.innerHTML = '<option value="">-- Select Claim --</option>';
+  if (data && data.items) {
+    data.items.forEach(c => {
+      sel.innerHTML += `<option value="${c.id}">${c.work_order_number} — ${c.customer_name||'Unknown'}</option>`;
+    });
+  }
+}
+
+async function loadBridgeMessages() {
+  currentClaimId = document.getElementById('bridge-claim-id').value;
+  const box = document.getElementById('bridge-messages');
+  if (!currentClaimId) { box.innerHTML = '<div class="msg system">Select a claim to message the repair shop.</div>'; return; }
+  box.innerHTML = '<div class="loading">LOADING MESSAGES...</div>';
+  const data = await api(`/api/bridge/messages/${currentClaimId}`);
+  box.innerHTML = '';
+  if (!data || !data.messages || data.messages.length === 0) {
+    box.innerHTML = '<div class="msg system">No messages yet. Send the first message to the shop.</div>';
+    return;
+  }
+  data.messages.forEach(m => appendMessage(m));
+  box.scrollTop = box.scrollHeight;
+}
+
+function appendMessage(msg) {
+  const box = document.getElementById('bridge-messages');
+  const div = document.createElement('div');
+  div.className = `msg ${msg.sender_type === 'insurer' ? 'insurer' : 'shop'}`;
+  div.innerHTML = `${msg.message_text}<div class="msg-meta">${msg.sender_name} &bull; ${new Date(msg.created_at).toLocaleTimeString()}</div>`;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function sendBridgeMessage() {
+  const input = document.getElementById('bridge-msg-input');
+  const text = input.value.trim();
+  if (!text || !currentClaimId) return;
+  input.value = '';
+  await api('/api/bridge/send', 'POST', { claim_sharing_id: currentClaimId, message: text, sender_type: 'insurer', sender_name: name });
+}
+
+// Views
+const viewTitles = { dashboard:'Dashboard', claims:'All Claims', myclaims:'My Claims', fraud:'Fraud Alerts' };
+let currentClaimsFilter = 'all';
+
+function showView(v) {
+  ['dashboard','claims','myclaims','fraud'].forEach(id => document.getElementById(`view-${id}`).classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(`view-${v}`).classList.add('active');
+  document.getElementById('topbar-title').textContent = viewTitles[v] || v;
+  if (v==='dashboard') loadDashboard();
+  else if (v==='claims') loadClaims();
+  else if (v==='myclaims') loadMyClaims();
+  else if (v==='fraud') loadFraud();
+}
+
+async function loadDashboard() {
+  const claims = await api('/api/claims');
+  if (claims && claims.items) {
+    const open = claims.items.filter(c => ['pending','active'].includes(c.status)).length;
+    const closed = claims.items.filter(c => c.status==='closed').length;
+    const mine = claims.items.filter(c => c.assigned_adjuster_id === (sessionStorage.getItem('cs_role'))).length;
+    document.getElementById('stat-open').textContent = open;
+    document.getElementById('stat-closed').textContent = closed;
+    document.getElementById('stat-mine').textContent = mine;
+    document.getElementById('badge-claims').textContent = open;
+    renderClaimsTable('dashboard-claims', {items: claims.items.slice(0,8)});
+  }
+  const fraud = await api('/api/fraud-alerts');
+  if (fraud && fraud.items) {
+    document.getElementById('stat-fraud').textContent = fraud.items.length;
+    document.getElementById('badge-fraud').textContent = fraud.items.length;
+    renderFraudTable('dashboard-fraud', {items: fraud.items.slice(0,5)});
+  }
+}
+
+async function loadClaims() {
+  const f = currentClaimsFilter === 'all' ? '' : `?status=${currentClaimsFilter}`;
+  const data = await api(`/api/claims${f}`);
+  renderClaimsTable('claims-list', data);
+}
+
+async function loadMyClaims() {
+  const data = await api('/api/claims?mine=1');
+  renderClaimsTable('myclaims-list', data);
+}
+
+async function loadFraud() {
+  const data = await api('/api/fraud-alerts');
+  renderFraudTable('fraud-list', data);
+}
+
+function filterClaims(status, el) {
+  currentClaimsFilter = status;
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  el.classList.add('active');
+  loadClaims();
+}
+
+function renderClaimsTable(containerId, data) {
+  const c = document.getElementById(containerId);
+  if (!data || !data.items || data.items.length === 0) {
+    c.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128203;</div><div class="empty-text">No claims found</div></div>';
+    return;
+  }
+  c.innerHTML = `<table class="data-table">
+    <thead><tr><th>Claim #</th><th>Customer</th><th>Vehicle</th><th>Insurer</th><th>Status</th><th>Est. Cost</th><th>Actions</th></tr></thead>
+    <tbody>${data.items.map(cl => `<tr>
+      <td style="color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:0.72rem;">${cl.work_order_number}</td>
+      <td>${cl.customer_name||'--'}</td>
+      <td style="font-size:0.82rem;">${cl.vehicle||'--'}</td>
+      <td style="font-size:0.82rem;">${cl.insurer_name||'--'}</td>
+      <td><span class="badge badge-${cl.status}">${cl.status}</span></td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">$${parseFloat(cl.estimated_cost||0).toFixed(2)}</td>
+      <td style="display:flex;gap:6px;">
+        <button class="btn btn-outline btn-sm" onclick="openBridgeForClaim(${cl.id},'${cl.work_order_number}')">&#9889; Message Shop</button>
+      </td>
+    </tr>`).join('')}
+    </tbody></table>`;
+}
+
+function renderFraudTable(containerId, data) {
+  const c = document.getElementById(containerId);
+  if (!data || !data.items || data.items.length === 0) {
+    c.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128680;</div><div class="empty-text">No fraud alerts</div></div>';
+    return;
+  }
+  c.innerHTML = `<table class="data-table">
+    <thead><tr><th>WO #</th><th>Alert Type</th><th>Severity</th><th>Score</th><th>Description</th><th>Detected</th></tr></thead>
+    <tbody>${data.items.map(fa => `<tr>
+      <td style="color:var(--accent);font-family:'Share Tech Mono',monospace;font-size:0.72rem;">${fa.work_order_number||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">${fa.alert_type||'--'}</td>
+      <td><span class="badge badge-${fa.severity==='high'?'high':fa.severity==='medium'?'medium':'low'}">${fa.severity||'--'}</span></td>
+      <td style="font-family:'Orbitron',monospace;color:var(--red);">${parseFloat(fa.score||0).toFixed(1)}</td>
+      <td style="font-size:0.82rem;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${fa.description||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--text-dim);">${fa.created_at ? new Date(fa.created_at).toLocaleDateString() : '--'}</td>
+    </tr>`).join('')}
+    </tbody></table>`;
+}
+
+function openBridgeForClaim(id, woNum) {
+  toggleBridge();
+  setTimeout(() => {
+    const sel = document.getElementById('bridge-claim-id');
+    sel.value = id;
+    loadBridgeMessages();
+  }, 300);
+}
+
+function updateClock() {
+  const now = new Date();
+  document.getElementById('topbar-time').textContent =
+    now.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' '+
+    now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
+}
+setInterval(updateClock, 1000);
+updateClock();
+
+function logout() {
+  fetch(API+'/api/logout',{method:'POST',headers:{'Authorization':`Bearer ${token}`}});
+  sessionStorage.clear();
+  window.location.href = 'claimsync.html';
+}
+
+initBridge();
+loadDashboard();
+</script>
+</body>
+</html>
