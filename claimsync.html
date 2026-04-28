@@ -112,7 +112,7 @@
         sessionStorage.setItem('cs_name', data.name);
         btn.textContent = 'ACCESS GRANTED \u2713';
         btn.style.background = 'var(--green)'; btn.style.color = '#020408';
-        setTimeout(() => { window.location.href = data.redirect || '/app/insurer'; }, 800);
+        setTimeout(() => { window.location.href = 'insurer-dashboard.html'; }, 800);
       } else if (data.mfa_required) {
         mfaRequired = true;
         document.getElementById('mfa-group').style.display = 'block';
