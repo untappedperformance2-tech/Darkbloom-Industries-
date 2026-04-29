@@ -369,6 +369,20 @@
   </div><!-- /main -->
 </div><!-- /app -->
 
+
+      <!-- EMPLOYEES VIEW -->
+      <div class="view" id="view-employees">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Employee Management</span>
+            <button class="btn btn-primary btn-sm" onclick="openNewEmployee()" id="new-emp-btn">+ New Employee</button>
+          </div>
+          <div class="panel-body" style="padding:0;">
+            <div id="employee-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+      </div>
+
 <!-- BRIDGE CHAT PANEL -->
 <button id="bridge-fab" onclick="toggleBridge()" title="Darkbloom Bridge™">
   &#9889;
@@ -403,72 +417,212 @@
       <button class="modal-close" onclick="closeModal('modal-new-wo')">&#10005;</button>
     </div>
     <div class="modal-body">
-      <div class="form-row">
-        <div class="form-group">
-          <label>Customer</label>
-          <select id="wo-customer-id"><option value="">-- Select --</option></select>
+      <!-- TABS -->
+      <div class="tab-bar" style="margin-bottom:16px;">
+        <div class="tab active" onclick="woTab('customer',this)">&#128100; Customer</div>
+        <div class="tab" onclick="woTab('vehicle',this)">&#128663; Vehicle</div>
+        <div class="tab" onclick="woTab('insurance',this)">&#128203; Insurance</div>
+        <div class="tab" onclick="woTab('job',this)">&#128295; Job Details</div>
+      </div>
+
+      <!-- CUSTOMER TAB -->
+      <div id="wo-tab-customer">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,200,255,0.4);letter-spacing:0.2em;margin-bottom:10px;">EXISTING CUSTOMER</div>
+        <div class="form-group" style="margin-bottom:14px;">
+          <label>Search Existing Customers</label>
+          <input type="text" id="wo-customer-search" placeholder="Search by name, phone, email..." oninput="searchCustomersWO()"/>
         </div>
-        <div class="form-group">
-          <label>Vehicle</label>
-          <select id="wo-vehicle-id"><option value="">-- Select --</option></select>
+        <div id="wo-customer-results" style="margin-bottom:14px;max-height:120px;overflow-y:auto;"></div>
+        <div id="wo-selected-customer" style="display:none;padding:10px;background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.2);margin-bottom:14px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);"></div>
+        <input type="hidden" id="wo-customer-id"/>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,200,255,0.4);letter-spacing:0.2em;margin-bottom:10px;margin-top:16px;">— OR CREATE NEW CUSTOMER —</div>
+        <div class="form-row">
+          <div class="form-group"><label>First Name</label><input type="text" id="wo-cust-first" placeholder="Jane"/></div>
+          <div class="form-group"><label>Last Name</label><input type="text" id="wo-cust-last" placeholder="Smith"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Phone</label><input type="tel" id="wo-cust-phone" placeholder="(555) 000-0000"/></div>
+          <div class="form-group"><label>Email</label><input type="email" id="wo-cust-email" placeholder="jane@example.com"/></div>
+        </div>
+        <div class="form-group" style="margin-bottom:10px;"><label>Address</label><input type="text" id="wo-cust-address" placeholder="123 Main St"/></div>
+        <div class="form-row">
+          <div class="form-group"><label>City</label><input type="text" id="wo-cust-city"/></div>
+          <div class="form-group"><label>State</label><input type="text" id="wo-cust-state" maxlength="2" placeholder="UT"/></div>
+          <div class="form-group"><label>ZIP</label><input type="text" id="wo-cust-zip" maxlength="10"/></div>
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Service Type</label>
-          <select id="wo-service-type">
-            <option value="">-- Select --</option>
-            <option>Collision Repair</option>
-            <option>Mechanical</option>
-            <option>Paint</option>
-            <option>Glass</option>
-            <option>Detailing</option>
-            <option>Inspection</option>
-            <option>Other</option>
-          </select>
+
+      <!-- VEHICLE TAB -->
+      <div id="wo-tab-vehicle" style="display:none;">
+        <div id="wo-existing-vehicles" style="margin-bottom:14px;"></div>
+        <input type="hidden" id="wo-vehicle-id"/>
+        <div id="wo-selected-vehicle" style="display:none;padding:10px;background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.2);margin-bottom:14px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);"></div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,200,255,0.4);letter-spacing:0.2em;margin-bottom:10px;">— OR ADD NEW VEHICLE —</div>
+        <div class="form-row">
+          <div class="form-group"><label>Year</label><input type="number" id="wo-veh-year" placeholder="2022" min="1900" max="2030"/></div>
+          <div class="form-group"><label>Make</label><input type="text" id="wo-veh-make" placeholder="Toyota"/></div>
+          <div class="form-group"><label>Model</label><input type="text" id="wo-veh-model" placeholder="Camry"/></div>
         </div>
-        <div class="form-group">
-          <label>Priority</label>
-          <select id="wo-priority">
-            <option value="normal">Normal</option>
-            <option value="high">High</option>
-            <option value="urgent">Urgent</option>
-            <option value="low">Low</option>
-          </select>
+        <div class="form-row">
+          <div class="form-group"><label>VIN</label><input type="text" id="wo-veh-vin" placeholder="1HGBH41JXMN109186" maxlength="17"/></div>
+          <div class="form-group"><label>License Plate</label><input type="text" id="wo-veh-plate" placeholder="ABC1234"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Color</label><input type="text" id="wo-veh-color" placeholder="Silver"/></div>
+          <div class="form-group"><label>Mileage</label><input type="number" id="wo-veh-mileage" placeholder="45000" min="0"/></div>
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Assigned Technician</label>
-          <select id="wo-tech-id"><option value="">-- Unassigned --</option></select>
+
+      <!-- INSURANCE TAB -->
+      <div id="wo-tab-insurance" style="display:none;">
+        <div class="form-row" style="margin-bottom:8px;">
+          <div class="form-group">
+            <label>State (for regional insurers)</label>
+            <input type="text" id="wo-ins-state" placeholder="UT" maxlength="2" oninput="loadInsurersForWO()"/>
+          </div>
+          <div class="form-group">
+            <label>Search Insurer</label>
+            <input type="text" id="wo-ins-search" placeholder="Type to search..." oninput="filterInsurers()"/>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Insurance Company</label>
-          <select id="wo-insurer-id"><option value="">-- None / Self Pay --</option></select>
+        <div id="wo-ins-list" style="max-height:150px;overflow-y:auto;border:1px solid var(--border);margin-bottom:14px;background:rgba(0,200,255,0.02);"></div>
+        <input type="hidden" id="wo-insurer-id"/>
+        <input type="hidden" id="wo-insurer-name-val"/>
+        <div id="wo-selected-insurer" style="display:none;padding:10px;background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.2);margin-bottom:14px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);"></div>
+        <div class="form-row">
+          <div class="form-group"><label>Policy Number</label><input type="text" id="wo-policy-num" placeholder="POL-123456"/></div>
+          <div class="form-group"><label>Claim Number</label><input type="text" id="wo-claim-num" placeholder="CLM-789012"/></div>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Adjuster Name</label><input type="text" id="wo-adjuster-name" placeholder="John Doe"/></div>
+          <div class="form-group"><label>Adjuster Phone</label><input type="text" id="wo-adjuster-phone" placeholder="(555) 000-0000"/></div>
+        </div>
+        <div style="margin-top:12px;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,200,255,0.4);letter-spacing:0.2em;margin-bottom:10px;">— OR ADD UNLISTED INSURER —</div>
+          <div class="form-row">
+            <div class="form-group"><label>Insurer Name</label><input type="text" id="wo-ins-custom-name" placeholder="Custom Insurance Co."/></div>
+            <div class="form-group"><label>Claims Phone</label><input type="text" id="wo-ins-custom-phone"/></div>
+          </div>
         </div>
       </div>
-      <div class="form-group" style="margin-bottom:12px;">
-        <label>Description</label>
-        <textarea id="wo-description" placeholder="Describe the work needed..."></textarea>
-      </div>
-      <div class="form-row">
-        <div class="form-group">
-          <label>Estimated Hours</label>
-          <input type="number" id="wo-est-hours" placeholder="0.0" step="0.5" min="0"/>
+
+      <!-- JOB DETAILS TAB -->
+      <div id="wo-tab-job" style="display:none;">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Service Type</label>
+            <select id="wo-service-type">
+              <option value="">-- Select --</option>
+              <option>Collision Repair</option><option>Mechanical</option>
+              <option>Paint</option><option>Glass</option>
+              <option>Detailing</option><option>Inspection</option><option>Other</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select id="wo-priority">
+              <option value="normal">Normal</option><option value="high">High</option>
+              <option value="urgent">Urgent</option><option value="low">Low</option>
+            </select>
+          </div>
         </div>
-        <div class="form-group">
-          <label>Estimated Cost ($)</label>
-          <input type="number" id="wo-est-cost" placeholder="0.00" step="0.01" min="0"/>
+        <div class="form-row">
+          <div class="form-group">
+            <label>Assigned Technician</label>
+            <select id="wo-tech-id"><option value="">-- Unassigned --</option></select>
+          </div>
+          <div class="form-group"></div>
         </div>
+        <div class="form-group" style="margin-bottom:12px;">
+          <label>Description</label>
+          <textarea id="wo-description" placeholder="Describe the work needed..."></textarea>
+        </div>
+        <div class="form-row">
+          <div class="form-group"><label>Estimated Hours</label><input type="number" id="wo-est-hours" placeholder="0.0" step="0.5" min="0"/></div>
+          <div class="form-group"><label>Estimated Cost ($)</label><input type="number" id="wo-est-cost" placeholder="0.00" step="0.01" min="0"/></div>
+        </div>
+        <div class="form-group"><label>Customer Notes</label><input type="text" id="wo-customer-notes" placeholder="Any notes from the customer..."/></div>
       </div>
-      <div class="form-group">
-        <label>Customer Notes</label>
-        <input type="text" id="wo-customer-notes" placeholder="Any notes from the customer..."/>
-      </div>
+
     </div>
     <div class="modal-footer">
       <button class="btn btn-outline" onclick="closeModal('modal-new-wo')">Cancel</button>
       <button class="btn btn-primary" onclick="createWorkOrder()">Create Work Order</button>
+    </div>
+  </div>
+</div>
+
+
+<!-- NEW EMPLOYEE MODAL -->
+<div class="modal-overlay" id="modal-new-employee">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">NEW EMPLOYEE</span>
+      <button class="modal-close" onclick="closeModal('modal-new-employee')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div class="form-row">
+        <div class="form-group"><label>// Full Name</label><input type="text" id="emp-name" placeholder="Jane Smith"/></div>
+        <div class="form-group">
+          <label>// Role</label>
+          <select id="emp-role">
+            <option value="technician">Technician</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+            <option value="parts_manager">Parts Manager</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>// Email</label><input type="email" id="emp-email" placeholder="employee@shop.com"/></div>
+        <div class="form-group"><label>// Phone</label><input type="tel" id="emp-phone" placeholder="(555) 000-0000"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>// Hourly Rate ($)</label><input type="number" id="emp-rate" placeholder="25.00" step="0.50" min="0"/></div>
+        <div class="form-group"><label>// Password</label><input type="password" id="emp-password" placeholder="Set login password"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-outline" onclick="closeModal('modal-new-employee')">Cancel</button>
+      <button class="btn btn-primary" onclick="createEmployee()">Create Employee</button>
+    </div>
+  </div>
+</div>
+
+<!-- EDIT EMPLOYEE MODAL -->
+<div class="modal-overlay" id="modal-edit-employee">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title" id="edit-emp-title">EDIT EMPLOYEE</span>
+      <button class="modal-close" onclick="closeModal('modal-edit-employee')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <input type="hidden" id="edit-emp-id"/>
+      <div class="form-row">
+        <div class="form-group"><label>// Full Name</label><input type="text" id="edit-emp-name"/></div>
+        <div class="form-group">
+          <label>// Role</label>
+          <select id="edit-emp-role">
+            <option value="technician">Technician</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+            <option value="parts_manager">Parts Manager</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>// Email</label><input type="email" id="edit-emp-email"/></div>
+        <div class="form-group"><label>// Phone</label><input type="tel" id="edit-emp-phone"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-group"><label>// Hourly Rate ($)</label><input type="number" id="edit-emp-rate" step="0.50" min="0"/></div>
+        <div class="form-group"><label>// New Password (leave blank to keep)</label><input type="password" id="edit-emp-password" placeholder="Leave blank to keep current"/></div>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <button class="btn btn-danger btn-sm" onclick="deactivateEmployee()">Deactivate</button>
+      <button class="btn btn-outline" onclick="closeModal('modal-edit-employee')">Cancel</button>
+      <button class="btn btn-primary" onclick="saveEmployee()">Save Changes</button>
     </div>
   </div>
 </div>
@@ -677,6 +831,7 @@ function showView(v) {
   else if (v === 'technicians') loadTechnicians();
   else if (v === 'inventory') loadInventory();
   else if (v === 'invoices') loadInvoices();
+  else if (v === 'employees') loadEmployees();
 }
 
 // ── Dashboard ──────────────────────────────────────────────────────────────────
