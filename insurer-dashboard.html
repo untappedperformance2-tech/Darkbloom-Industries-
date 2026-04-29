@@ -144,6 +144,8 @@
     <div class="nav-item" onclick="showView('myclaims')"><span class="icon">&#128100;</span> My Claims</div>
     <div class="nav-section">Intelligence</div>
     <div class="nav-item" onclick="showView('fraud')"><span class="icon">&#128680;</span> Fraud Alerts<span class="fraud-badge" id="badge-fraud">0</span></div>
+    <div class="nav-section">Team</div>
+    <div class="nav-item" onclick="showView('employees')"><span class="icon">&#128101;</span> Adjusters</div>
     <div class="nav-section">Bridge&#8482;</div>
     <div class="nav-item" onclick="toggleBridge()"><span class="icon">&#9889;</span> Shop Bridge<span class="badge" style="margin-left:auto;background:var(--green);color:var(--dark);font-family:'Share Tech Mono',monospace;font-size:0.45rem;padding:2px 6px;border-radius:8px;">LIVE</span></div>
     <div style="padding:8px 18px;border-top:1px solid rgba(255,107,0,0.08);margin-top:0;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(200,232,240,0.25);letter-spacing:0.15em;">POWERED BY</div><div style="font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;">WrenchWare Pro<sup style="font-size:0.4em;color:var(--magenta);">&#8482;</sup></div></div><div class="sidebar-bottom">
@@ -239,6 +241,41 @@
   <div class="bridge-input">
     <input type="text" id="bridge-msg-input" placeholder="Message shop..." onkeydown="if(event.key==='Enter')sendBridgeMessage()"/>
     <button class="bridge-send" onclick="sendBridgeMessage()">SEND</button>
+  </div>
+</div>
+
+<!-- NEW ADJUSTER MODAL -->
+<div class="modal-overlay" id="modal-new-employee">
+  <div class="modal" style="border-color:rgba(255,107,0,0.3);">
+    <div class="modal-header" style="border-color:rgba(255,107,0,0.15);">
+      <span class="modal-title" style="color:var(--accent);">NEW ADJUSTER / INSURER STAFF</span>
+      <button class="modal-close" onclick="closeModal('modal-new-employee')">&#10005;</button>
+    </div>
+    <div class="modal-body">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Full Name</label><input type="text" id="emp-name" placeholder="John Doe" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
+        <div class="form-group">
+          <label style="color:rgba(255,107,0,0.45);">// Role</label>
+          <select id="emp-role" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);">
+            <option value="claims_adjuster">Claims Adjuster</option>
+            <option value="claims_admin">Claims Admin</option>
+            <option value="insurance_admin">Insurance Admin</option>
+          </select>
+        </div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
+        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Email</label><input type="email" id="emp-email" placeholder="adjuster@insurer.com" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
+        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Phone</label><input type="tel" id="emp-phone" placeholder="(555) 000-0000" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Password</label><input type="password" id="emp-password" placeholder="Set login password" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
+        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Hourly Rate ($)</label><input type="number" id="emp-rate" placeholder="35.00" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
+      </div>
+    </div>
+    <div style="padding:14px 20px;border-top:1px solid rgba(255,107,0,0.1);display:flex;gap:10px;justify-content:flex-end;">
+      <button class="btn btn-outline" style="color:var(--accent);border-color:rgba(255,107,0,0.3);" onclick="closeModal('modal-new-employee')">Cancel</button>
+      <button class="btn btn-primary" onclick="createEmployee()">Create Staff</button>
+    </div>
   </div>
 </div>
 
@@ -362,6 +399,7 @@ function showView(v) {
   else if (v==='claims') loadClaims();
   else if (v==='myclaims') loadMyClaims();
   else if (v==='fraud') loadFraud();
+  else if (v==='employees') loadEmployees();
 }
 
 async function loadDashboard() {
@@ -457,7 +495,67 @@ function openBridgeForClaim(id, woNum) {
   }, 300);
 }
 
-function updateClock() {
+
+  // ── Employee Management (Insurer Side) ──────────────────────────────────────
+  async function loadEmployees() {
+    const data = await api('/api/employees');
+    const container = document.getElementById('employee-list');
+    if (!data || !data.items || data.items.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128101;</div><div class="empty-text">No staff found</div></div>';
+      return;
+    }
+    const insurerRoles = ['claims_admin','claims_adjuster','insurance_admin'];
+    const staff = data.items.filter(e => insurerRoles.includes(e.role));
+    if (staff.length === 0) {
+      container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128101;</div><div class="empty-text">No adjusters found</div></div>';
+      return;
+    }
+    container.innerHTML = `<table class="data-table">
+      <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th><th>Phone</th><th>Active Claims</th><th>Last Login</th></tr></thead>
+      <tbody>${staff.map(e => `<tr>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--accent);">${e.employee_id}</td>
+        <td>${e.name}</td>
+        <td><span class="badge badge-pending">${e.role}</span></td>
+        <td style="font-size:0.82rem;">${e.email||'--'}</td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${e.phone||'--'}</td>
+        <td style="font-family:'Orbitron',monospace;color:var(--accent);">${e.active_jobs||0}</td>
+        <td style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--text-dim);">${e.last_login ? new Date(e.last_login).toLocaleDateString() : 'Never'}</td>
+      </tr>`).join('')}
+      </tbody></table>`;
+  }
+
+  function openModal(id) { document.getElementById(id).classList.add('open'); }
+  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+  function openNewEmployee() {
+    if (!['claims_admin','insurance_admin'].includes(role)) {
+      alert('Only Claims Admin or Insurance Admin can create staff accounts.');
+      return;
+    }
+    openModal('modal-new-employee');
+  }
+
+  async function createEmployee() {
+    const body = {
+      name: document.getElementById('emp-name').value,
+      role: document.getElementById('emp-role').value,
+      email: document.getElementById('emp-email').value,
+      phone: document.getElementById('emp-phone').value,
+      hourly_rate: document.getElementById('emp-rate').value || 0,
+      password: document.getElementById('emp-password').value,
+    };
+    if (!body.name || !body.password) { alert('Name and password are required.'); return; }
+    const result = await api('/api/employees', 'POST', body);
+    if (result && result.success) {
+      closeModal('modal-new-employee');
+      loadEmployees();
+      alert('Staff created! Login ID: ' + result.employee_id);
+    } else {
+      alert('Failed: ' + (result && result.error ? result.error : 'Unknown error'));
+    }
+  }
+
+  function updateClock() {
   const now = new Date();
   document.getElementById('topbar-time').textContent =
     now.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' '+
