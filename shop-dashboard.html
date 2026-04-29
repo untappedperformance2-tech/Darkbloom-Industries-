@@ -946,71 +946,11 @@ function openBridgeForWO(id, woNum) {
   }, 300);
 }
 
-// ── Create Work Order ─────────────────────────────────────────────────────────
-async function openNewWO() {
-  const customers = await api('/api/customers');
-  const sel = document.getElementById('wo-customer-id');
-  sel.innerHTML = '<option value="">-- Select Customer --</option>';
-  if (customers && customers.items) {
-    customers.items.forEach(c => {
-      sel.innerHTML += `<option value="${c.id}">${c.first_name} ${c.last_name}</option>`;
-    });
-  }
-  const techs = await api('/api/technicians');
-  const tsel = document.getElementById('wo-tech-id');
-  tsel.innerHTML = '<option value="">-- Unassigned --</option>';
-  if (techs && techs.items) {
-    techs.items.forEach(t => {
-      tsel.innerHTML += `<option value="${t.employee_id}">${t.name}</option>`;
-    });
-  }
-  const insurers = await api('/api/insurers');
-  const isel = document.getElementById('wo-insurer-id');
-  isel.innerHTML = '<option value="">-- None / Self Pay --</option>';
-  if (insurers && insurers.items) {
-    insurers.items.forEach(i => {
-      isel.innerHTML += `<option value="${i.id}">${i.company_name}</option>`;
-    });
-  }
-  document.getElementById('wo-customer-id').addEventListener('change', loadVehiclesForCustomer);
-  openModal('modal-new-wo');
-}
+// openNewWO replaced below
 
-async function loadVehiclesForCustomer() {
-  const custId = document.getElementById('wo-customer-id').value;
-  const sel = document.getElementById('wo-vehicle-id');
-  if (!custId) { sel.innerHTML = '<option value="">-- Select Vehicle --</option>'; return; }
-  const data = await api(`/api/vehicles?customer_id=${custId}`);
-  sel.innerHTML = '<option value="">-- Select Vehicle --</option>';
-  if (data && data.items) {
-    data.items.forEach(v => {
-      sel.innerHTML += `<option value="${v.id}">${v.year} ${v.make} ${v.model}</option>`;
-    });
-  }
-}
 
-async function createWorkOrder() {
-  const body = {
-    customer_id: document.getElementById('wo-customer-id').value,
-    vehicle_id: document.getElementById('wo-vehicle-id').value,
-    service_type: document.getElementById('wo-service-type').value,
-    priority: document.getElementById('wo-priority').value,
-    assigned_to_emp_id: document.getElementById('wo-tech-id').value,
-    insurer_id: document.getElementById('wo-insurer-id').value,
-    description: document.getElementById('wo-description').value,
-    estimated_hours: parseFloat(document.getElementById('wo-est-hours').value) || 0,
-    estimated_cost: parseFloat(document.getElementById('wo-est-cost').value) || 0,
-    customer_notes: document.getElementById('wo-customer-notes').value,
-  };
-  const result = await api('/api/work-orders', 'POST', body);
-  if (result && result.success) {
-    closeModal('modal-new-wo');
-    loadWorkOrders();
-    loadDashboard();
-  } else {
-    alert('Failed to create work order. Please try again.');
-  }
-}
+
+// createWorkOrder replaced below
 
 // ── Customers ──────────────────────────────────────────────────────────────────
 async function loadCustomers() {
