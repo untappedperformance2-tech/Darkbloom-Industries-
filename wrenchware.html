@@ -112,7 +112,7 @@
         sessionStorage.setItem('ww_name', data.name);
         btn.textContent = 'ACCESS GRANTED \u2713';
         btn.style.background = 'var(--green)'; btn.style.color = '#020408';
-        setTimeout(() => { window.location.href = 'shop-dashboard.html'; }, 800);
+        setTimeout(() => { window.location.href = data.role && ['claims_admin','claims_adjuster','insurance_admin'].includes(data.role) ? 'insurer-dashboard.html' : 'shop-dashboard.html'; }, 800);
       } else if (data.mfa_required) {
         mfaRequired = true;
         document.getElementById('mfa-group').style.display = 'block';
