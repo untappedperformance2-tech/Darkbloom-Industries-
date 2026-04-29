@@ -191,7 +191,7 @@
   <nav id="sidebar">
     <div class="sidebar-logo">
       <div class="brand">WrenchWare Pro<sup>&#8482;</sup></div>
-      <div class="sub">// Shop Dashboard</div>
+      <div class="sub">// Powered by ClaimSync&#8482;</div>
     </div>
 
     <div class="nav-section">Operations</div>
@@ -223,7 +223,7 @@
       <span class="bridge-badge" id="bridge-nav-badge">LIVE</span>
     </div>
 
-    <div class="sidebar-bottom">
+    <div style="padding:8px 18px;border-top:1px solid rgba(0,200,255,0.08);margin-top:0;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(200,232,240,0.25);letter-spacing:0.15em;">POWERED BY</div><div style="font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--cs);letter-spacing:0.1em;font-weight:700;">ClaimSync<sup style="font-size:0.4em;color:var(--magenta);">&#8482;</sup></div></div><div class="sidebar-bottom">
       <div class="user-info">
         <div class="user-name" id="sb-username">Loading...</div>
         <div class="user-role" id="sb-role">--</div>
@@ -667,7 +667,7 @@ function showView(v) {
   document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
   document.getElementById(`view-${v}`).classList.add('active');
   document.querySelectorAll('.nav-item').forEach(el => {
-    if (el.textContent.toLowerCase().includes(v.replace(/s$/',''))) el.classList.add('active');
+    
   });
   document.getElementById('topbar-title').textContent = viewTitles[v] || v;
 
