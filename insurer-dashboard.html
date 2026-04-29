@@ -136,7 +136,7 @@
   <nav id="sidebar">
     <div class="sidebar-logo">
       <div class="brand">ClaimSync<sup>&#8482;</sup></div>
-      <div class="sub">// Insurer Dashboard</div>
+      <div class="sub">// Powered by WrenchWare Pro&#8482;</div>
     </div>
     <div class="nav-section">Claims</div>
     <div class="nav-item active" onclick="showView('dashboard')"><span class="icon">&#9783;</span> Dashboard</div>
@@ -146,7 +146,7 @@
     <div class="nav-item" onclick="showView('fraud')"><span class="icon">&#128680;</span> Fraud Alerts<span class="fraud-badge" id="badge-fraud">0</span></div>
     <div class="nav-section">Bridge&#8482;</div>
     <div class="nav-item" onclick="toggleBridge()"><span class="icon">&#9889;</span> Shop Bridge<span class="badge" style="margin-left:auto;background:var(--green);color:var(--dark);font-family:'Share Tech Mono',monospace;font-size:0.45rem;padding:2px 6px;border-radius:8px;">LIVE</span></div>
-    <div class="sidebar-bottom">
+    <div style="padding:8px 18px;border-top:1px solid rgba(255,107,0,0.08);margin-top:0;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(200,232,240,0.25);letter-spacing:0.15em;">POWERED BY</div><div style="font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;">WrenchWare Pro<sup style="font-size:0.4em;color:var(--magenta);">&#8482;</sup></div></div><div class="sidebar-bottom">
       <div class="user-name" id="sb-username">Loading...</div>
       <div class="user-role" id="sb-role">--</div>
       <button class="btn-logout" onclick="logout()">&#8594; Sign Out</button>
@@ -250,6 +250,11 @@ const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFz
 const token = sessionStorage.getItem('cs_token') || sessionStorage.getItem('ww_token');
 const role  = sessionStorage.getItem('cs_role')  || sessionStorage.getItem('ww_role');
 const name  = sessionStorage.getItem('cs_name')  || sessionStorage.getItem('ww_name');
+
+// Redirect shop roles away from insurer dashboard
+if (role && ['admin','manager','technician','parts_manager','developer'].includes(role)) {
+  window.location.href = 'shop-dashboard.html';
+}
 
 if (!token) window.location.href = 'claimsync.html';
 
