@@ -675,11 +675,16 @@ const SUPABASE_URL = 'https://bomumxpxuprkxgkyuheh.supabase.co';
 const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvbXVteHB4dXBya3hna3l1aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMzk0NzAsImV4cCI6MjA5MjkxNTQ3MH0.QEPmhF0pkRP0rPtgJaJN63pWAMkNcMJB6RW7PSibqS4';
 
 // ── Auth ───────────────────────────────────────────────────────────────────────
-const token = sessionStorage.getItem('ww_token');
-const role  = sessionStorage.getItem('ww_role');
-const name  = sessionStorage.getItem('ww_name');
+const token = sessionStorage.getItem('ww_token') || sessionStorage.getItem('cs_token');
+const role  = sessionStorage.getItem('ww_role')  || sessionStorage.getItem('cs_role');
+const name  = sessionStorage.getItem('ww_name')  || sessionStorage.getItem('cs_name');
 
 if (!token) { window.location.href = 'wrenchware.html'; }
+
+// Redirect insurer roles away from shop dashboard
+if (role && ['claims_admin','claims_adjuster','insurance_admin'].includes(role)) {
+  window.location.href = 'insurer-dashboard.html';
+}
 
 document.getElementById('sb-username').textContent = name || 'User';
 document.getElementById('sb-role').textContent = role || '';
