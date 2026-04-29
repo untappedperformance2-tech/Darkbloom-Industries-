@@ -4,231 +4,193 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <meta http-equiv="X-Frame-Options" content="DENY"/>
-  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
   <title>WrenchWare Pro&#8482; &mdash; Shop Dashboard</title>
   <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
-    :root{
-      --cyan:#00f5ff;--magenta:#ff00aa;--green:#00ff88;--red:#ff4466;
-      --orange:#ff8c00;--ww:#00c8ff;--dark:#020408;--dark2:#050c12;
-      --panel:rgba(0,200,255,0.04);--border:rgba(0,200,255,0.15);
-      --text:#c8e8f0;--text-dim:rgba(200,232,240,0.45);
-    }
+    :root{--cyan:#00f5ff;--magenta:#ff00aa;--green:#00ff88;--red:#ff4466;--orange:#ff8c00;--ww:#00c8ff;--cs:#ff6b00;--dark:#020408;--panel:rgba(0,200,255,0.04);--border:rgba(0,200,255,0.15);--text:#c8e8f0;--dim:rgba(200,232,240,0.45);}
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;overflow:hidden;}
-
-    /* LAYOUT */
     #app{display:flex;height:100vh;overflow:hidden;}
-
     /* SIDEBAR */
-    #sidebar{width:220px;min-width:220px;background:rgba(0,200,255,0.03);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;}
-    .sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
-    .sidebar-logo .brand{font-family:'Orbitron',monospace;font-weight:900;font-size:0.85rem;color:var(--ww);letter-spacing:0.12em;text-shadow:0 0 12px rgba(0,200,255,0.4);}
-    .sidebar-logo .brand sup{font-size:0.4em;color:var(--magenta);vertical-align:super;}
-    .sidebar-logo .sub{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:0.2em;margin-top:3px;}
-    .nav-section{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,200,255,0.3);letter-spacing:0.3em;padding:14px 18px 6px;text-transform:uppercase;}
-    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:background 0.2s,color 0.2s;border-left:2px solid transparent;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;}
+    #sidebar{width:220px;min-width:220px;background:rgba(0,200,255,0.03);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;overflow-y:auto;}
+    .sidebar-logo{padding:20px 18px 14px;border-bottom:1px solid var(--border);}
+    .brand{font-family:'Orbitron',monospace;font-weight:900;font-size:0.85rem;color:var(--ww);letter-spacing:0.12em;text-shadow:0 0 12px rgba(0,200,255,0.4);}
+    .brand sup{font-size:0.4em;color:var(--magenta);vertical-align:super;}
+    .brand-sub{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.2em;margin-top:3px;}
+    .nav-sec{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,200,255,0.3);letter-spacing:0.3em;padding:12px 18px 5px;text-transform:uppercase;}
+    .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;border-left:2px solid transparent;font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.1em;color:var(--dim);text-transform:uppercase;transition:all 0.15s;}
     .nav-item:hover{background:rgba(0,200,255,0.06);color:var(--ww);}
     .nav-item.active{background:rgba(0,200,255,0.08);border-left-color:var(--ww);color:var(--ww);}
-    .nav-item .icon{font-size:0.9rem;width:18px;text-align:center;}
-    .nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;font-family:'Share Tech Mono',monospace;}
-    .bridge-badge{margin-left:auto;background:var(--green);color:var(--dark);font-size:0.45rem;padding:2px 6px;border-radius:8px;font-family:'Share Tech Mono',monospace;animation:pulseBadge 2s infinite;}
-    @keyframes pulseBadge{0%,100%{opacity:1}50%{opacity:0.5}}
-    .sidebar-bottom{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);}
-    .user-info{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--text-dim);letter-spacing:0.08em;}
-    .user-name{color:var(--ww);font-size:0.65rem;margin-bottom:2px;}
-    .user-role{color:rgba(0,200,255,0.4);font-size:0.55rem;text-transform:uppercase;letter-spacing:0.15em;}
-    .btn-logout{margin-top:10px;width:100%;font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);background:transparent;border:1px solid rgba(255,68,102,0.3);padding:7px;cursor:pointer;transition:background 0.2s;}
+    .nav-item .icon{font-size:0.9rem;width:18px;text-align:center;flex-shrink:0;}
+    .nbadge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;font-family:'Share Tech Mono',monospace;}
+    .nbadge.green{background:var(--green);color:var(--dark);animation:pb 2s infinite;}
+    @keyframes pb{0%,100%{opacity:1}50%{opacity:0.5}}
+    .sb-bottom{margin-top:auto;border-top:1px solid var(--border);}
+    .powered{padding:8px 18px;font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(200,232,240,0.22);letter-spacing:0.12em;}
+    .powered span{font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--cs);letter-spacing:0.1em;font-weight:700;}
+    .user-box{padding:10px 18px 14px;}
+    .user-name{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);margin-bottom:2px;}
+    .user-role{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.35);text-transform:uppercase;letter-spacing:0.12em;}
+    .btn-logout{margin-top:8px;width:100%;font-family:'Share Tech Mono',monospace;font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);background:transparent;border:1px solid rgba(255,68,102,0.3);padding:7px;cursor:pointer;}
     .btn-logout:hover{background:rgba(255,68,102,0.08);}
-
     /* MAIN */
     #main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
     #topbar{height:52px;min-height:52px;background:rgba(0,200,255,0.02);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;}
     .topbar-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.9rem;color:#fff;letter-spacing:0.08em;}
     .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
-    .status-dot-live{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulseDot 1.5s infinite;flex-shrink:0;}
-    .status-label{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--green);letter-spacing:0.15em;}
-    .bridge-status{display:flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid rgba(0,255,136,0.25);background:rgba(0,255,136,0.05);font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--green);letter-spacing:0.1em;}
-    .bridge-status.offline{border-color:rgba(255,68,102,0.25);background:rgba(255,68,102,0.05);color:var(--red);}
-
-    #content{flex:1;overflow-y:auto;padding:24px;}
-
-    /* PANELS */
+    .bridge-pill{display:flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid rgba(0,255,136,0.25);background:rgba(0,255,136,0.05);font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--green);letter-spacing:0.1em;}
+    .bridge-pill.offline{border-color:rgba(255,68,102,0.25);background:rgba(255,68,102,0.05);color:var(--red);}
+    .dot-live{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pd 1.5s infinite;flex-shrink:0;}
+    @keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+    .clock{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--dim);}
+    #content{flex:1;overflow-y:auto;padding:20px 24px;}
+    /* VIEWS */
+    .view{display:none;}.view.active{display:block;}
+    /* STATS */
+    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
+    .stat{border:1px solid var(--border);background:var(--panel);padding:16px 18px;position:relative;overflow:hidden;}
+    .stat::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;}
+    .stat.blue::before{background:linear-gradient(90deg,var(--ww),transparent);}
+    .stat.orange::before{background:linear-gradient(90deg,var(--orange),transparent);}
+    .stat.green::before{background:linear-gradient(90deg,var(--green),transparent);}
+    .stat.red::before{background:linear-gradient(90deg,var(--red),transparent);}
+    .stat-lbl{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;}
+    .stat-val{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:#fff;}
+    .stat.blue .stat-val{color:var(--ww);}
+    .stat.orange .stat-val{color:var(--orange);}
+    .stat.green .stat-val{color:var(--green);}
+    .stat.red .stat-val{color:var(--red);}
+    .stat-sub{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);margin-top:5px;}
+    /* PANEL */
     .panel{border:1px solid var(--border);background:var(--panel);position:relative;overflow:hidden;margin-bottom:16px;}
     .panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),transparent);}
-    .panel-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-    .panel-title{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;}
-    .panel-body{padding:16px 20px;}
-
-    /* STATS ROW */
-    .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
-    .stat-card{border:1px solid var(--border);background:var(--panel);padding:16px 18px;position:relative;overflow:hidden;}
-    .stat-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;}
-    .stat-card.blue::before{background:linear-gradient(90deg,var(--ww),transparent);}
-    .stat-card.green::before{background:linear-gradient(90deg,var(--green),transparent);}
-    .stat-card.orange::before{background:linear-gradient(90deg,var(--orange),transparent);}
-    .stat-card.red::before{background:linear-gradient(90deg,var(--red),transparent);}
-    .stat-label{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--text-dim);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:8px;}
-    .stat-value{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:#fff;line-height:1;}
-    .stat-card.blue .stat-value{color:var(--ww);}
-    .stat-card.green .stat-value{color:var(--green);}
-    .stat-card.orange .stat-value{color:var(--orange);}
-    .stat-card.red .stat-value{color:var(--red);}
-    .stat-sub{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.1em;margin-top:6px;}
-
+    .ph{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .pt{font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;}
     /* TABLE */
-    .data-table{width:100%;border-collapse:collapse;}
-    .data-table th{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,200,255,0.45);letter-spacing:0.2em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);white-space:nowrap;}
-    .data-table td{font-family:'Rajdhani',sans-serif;font-size:0.88rem;color:var(--text);padding:9px 12px;border-bottom:1px solid rgba(0,200,255,0.06);vertical-align:middle;}
-    .data-table tr:hover td{background:rgba(0,200,255,0.03);}
-    .data-table tr:last-child td{border-bottom:none;}
-
-    /* STATUS BADGES */
-    .badge{font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.1em;padding:3px 10px;text-transform:uppercase;display:inline-block;}
-    .badge-pending{color:var(--orange);border:1px solid rgba(255,140,0,0.3);background:rgba(255,140,0,0.06);}
-    .badge-active{color:var(--ww);border:1px solid rgba(0,200,255,0.3);background:rgba(0,200,255,0.06);}
-    .badge-completed{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
-    .badge-approved{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
-    .badge-closed{color:var(--text-dim);border:1px solid rgba(200,232,240,0.15);background:rgba(200,232,240,0.03);}
-    .badge-paused{color:var(--magenta);border:1px solid rgba(255,0,170,0.3);background:rgba(255,0,170,0.06);}
-
-    /* BRIDGE CHAT */
-    #bridge-panel{display:none;position:fixed;bottom:20px;right:20px;width:360px;height:480px;border:1px solid rgba(0,255,136,0.3);background:rgba(2,4,8,0.97);backdrop-filter:blur(12px);z-index:200;flex-direction:column;box-shadow:0 0 40px rgba(0,255,136,0.1);}
-    #bridge-panel.open{display:flex;}
-    #bridge-panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),var(--green),var(--orange));}
-    .bridge-header{padding:12px 16px;border-bottom:1px solid rgba(0,255,136,0.15);display:flex;align-items:center;gap:10px;}
-    .bridge-header-title{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.1em;font-weight:700;flex:1;}
-    .bridge-close{background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:1rem;padding:2px 6px;}
-    .bridge-close:hover{color:var(--red);}
-    .bridge-claim-select{padding:10px 14px;border-bottom:1px solid rgba(0,255,136,0.1);}
-    .bridge-claim-select select{width:100%;background:rgba(0,200,255,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:6px 10px;outline:none;}
-    .bridge-claim-select select option{background:#020408;}
-    .bridge-messages{flex:1;overflow-y:auto;padding:12px 14px;display:flex;flex-direction:column;gap:8px;}
-    .msg{max-width:80%;padding:8px 12px;font-family:'Rajdhani',sans-serif;font-size:0.88rem;line-height:1.4;}
-    .msg.shop{align-self:flex-end;background:rgba(0,200,255,0.12);border:1px solid rgba(0,200,255,0.2);color:var(--text);}
-    .msg.insurer{align-self:flex-start;background:rgba(255,107,0,0.1);border:1px solid rgba(255,107,0,0.2);color:var(--text);}
-    .msg.system{align-self:center;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.15);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-align:center;max-width:100%;}
-    .msg-meta{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--text-dim);letter-spacing:0.08em;margin-top:4px;}
-    .bridge-input{padding:10px 14px;border-top:1px solid rgba(0,255,136,0.15);display:flex;gap:8px;}
-    .bridge-input input{flex:1;background:rgba(0,200,255,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;}
-    .bridge-input input:focus{border-color:var(--green);}
-    .bridge-send{background:var(--green);color:var(--dark);border:none;padding:8px 14px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;cursor:pointer;font-weight:700;}
-    .bridge-send:hover{opacity:0.85;}
-    #bridge-fab{position:fixed;bottom:20px;right:20px;width:52px;height:52px;background:var(--green);border:none;cursor:pointer;z-index:199;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 20px rgba(0,255,136,0.4);transition:transform 0.2s;}
-    #bridge-fab:hover{transform:scale(1.1);}
-    #bridge-fab .unread-dot{position:absolute;top:8px;right:8px;width:10px;height:10px;background:var(--red);border-radius:50%;display:none;}
-
-    /* FORMS */
-    .form-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
-    .form-group label{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,200,255,0.45);letter-spacing:0.2em;text-transform:uppercase;display:block;margin-bottom:6px;}
-    .form-group input,.form-group select,.form-group textarea{width:100%;background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.95rem;padding:9px 12px;outline:none;transition:border-color 0.2s;}
-    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--ww);}
-    .form-group select option{background:#020408;}
-    .form-group textarea{resize:vertical;min-height:80px;}
-
-    /* BUTTONS */
-    .btn{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;border:none;padding:9px 20px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:transform 0.15s,box-shadow 0.15s;}
-    .btn:hover{transform:translateY(-1px);}
-    .btn-primary{background:var(--ww);color:var(--dark);font-weight:700;}
-    .btn-primary:hover{box-shadow:0 0 20px rgba(0,200,255,0.4);}
-    .btn-success{background:var(--green);color:var(--dark);font-weight:700;}
-    .btn-success:hover{box-shadow:0 0 20px rgba(0,255,136,0.4);}
-    .btn-danger{background:var(--red);color:#fff;}
-    .btn-outline{background:transparent;color:var(--ww);border:1px solid var(--border);}
-    .btn-outline:hover{background:rgba(0,200,255,0.06);}
-    .btn-sm{padding:5px 14px;font-size:0.58rem;}
-
-    /* MODAL */
-    .modal-overlay{display:none;position:fixed;inset:0;background:rgba(2,4,8,0.85);z-index:300;align-items:center;justify-content:center;}
-    .modal-overlay.open{display:flex;}
-    .modal{width:600px;max-width:95vw;border:1px solid var(--border);background:#050c12;position:relative;max-height:90vh;overflow-y:auto;}
-    .modal::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),var(--green),transparent);}
-    .modal-header{padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
-    .modal-title{font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;}
-    .modal-close{background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:1.2rem;}
-    .modal-close:hover{color:var(--red);}
-    .modal-body{padding:20px;}
-    .modal-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
-
+    .dt{width:100%;border-collapse:collapse;}
+    .dt th{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.4);letter-spacing:0.18em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
+    .dt td{font-size:0.88rem;padding:8px 12px;border-bottom:1px solid rgba(0,200,255,0.05);vertical-align:middle;}
+    .dt tr:hover td{background:rgba(0,200,255,0.03);}
+    .dt tr:last-child td{border-bottom:none;}
+    /* BADGE */
+    .badge{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;padding:3px 8px;text-transform:uppercase;display:inline-block;}
+    .b-pending{color:var(--orange);border:1px solid rgba(255,140,0,0.3);background:rgba(255,140,0,0.06);}
+    .b-active{color:var(--ww);border:1px solid rgba(0,200,255,0.3);background:rgba(0,200,255,0.06);}
+    .b-completed{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
+    .b-approved{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
+    .b-closed{color:var(--dim);border:1px solid rgba(200,232,240,0.12);}
+    .b-paused{color:var(--magenta);border:1px solid rgba(255,0,170,0.3);background:rgba(255,0,170,0.06);}
+    .b-role{color:var(--ww);border:1px solid rgba(0,200,255,0.2);}
     /* TABS */
-    .tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;}
-    .tab{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:10px 18px;cursor:pointer;color:var(--text-dim);border-bottom:2px solid transparent;transition:color 0.2s;}
+    .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:14px;gap:0;overflow-x:auto;}
+    .tab{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:9px 16px;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.15s;}
     .tab:hover{color:var(--ww);}
     .tab.active{color:var(--ww);border-bottom-color:var(--ww);}
-
-    /* EMPTY STATE */
-    .empty-state{text-align:center;padding:48px 20px;color:var(--text-dim);}
-    .empty-icon{font-size:2rem;margin-bottom:12px;opacity:0.4;}
-    .empty-text{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;}
-
-    /* LOADING */
-    .loading{text-align:center;padding:32px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--text-dim);letter-spacing:0.2em;animation:blink 1s infinite;}
+    /* BTN */
+    .btn{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;border:none;padding:8px 18px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);transition:transform 0.12s,box-shadow 0.12s;font-weight:700;}
+    .btn:hover{transform:translateY(-1px);}
+    .btn-p{background:var(--ww);color:var(--dark);}
+    .btn-p:hover{box-shadow:0 0 20px rgba(0,200,255,0.4);}
+    .btn-s{background:var(--green);color:var(--dark);}
+    .btn-s:hover{box-shadow:0 0 20px rgba(0,255,136,0.4);}
+    .btn-d{background:var(--red);color:#fff;}
+    .btn-o{background:transparent;color:var(--ww);border:1px solid var(--border);}
+    .btn-o:hover{background:rgba(0,200,255,0.06);}
+    .btn-sm{padding:5px 12px;font-size:0.55rem;}
+    /* MODAL */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(2,4,8,0.88);z-index:300;align-items:center;justify-content:center;overflow-y:auto;padding:20px 0;}
+    .overlay.open{display:flex;}
+    .modal{width:660px;max-width:96vw;border:1px solid var(--border);background:#050c12;position:relative;max-height:90vh;overflow-y:auto;}
+    .modal::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),var(--green),transparent);}
+    .mh{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+    .mt{font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;}
+    .mc{background:transparent;border:none;color:var(--dim);cursor:pointer;font-size:1.2rem;}
+    .mc:hover{color:var(--red);}
+    .mb{padding:18px 20px;}
+    .mf{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
+    /* FORM */
+    .fg{margin-bottom:12px;}
+    .fg label{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.4);letter-spacing:0.22em;text-transform:uppercase;display:block;margin-bottom:6px;}
+    .fg input,.fg select,.fg textarea{width:100%;background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.95rem;padding:10px 12px;outline:none;transition:border-color 0.2s;}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--ww);}
+    .fg select option{background:#020408;}
+    .fg textarea{resize:vertical;min-height:70px;}
+    .fg input::placeholder,.fg textarea::placeholder{color:rgba(200,232,240,0.18);}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+    .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
+    /* WO TABS CONTENT */
+    .wo-tab-content{display:none;}.wo-tab-content.active{display:block;}
+    /* SECTION LABEL */
+    .sec-lbl{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.35);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:10px;margin-top:14px;padding-bottom:6px;border-bottom:1px solid rgba(0,200,255,0.08);}
+    /* SEARCH RESULTS */
+    .search-results{max-height:130px;overflow-y:auto;border:1px solid var(--border);background:rgba(0,200,255,0.02);margin-bottom:10px;}
+    .search-item{padding:8px 12px;cursor:pointer;font-size:0.9rem;border-bottom:1px solid rgba(0,200,255,0.04);transition:background 0.1s;}
+    .search-item:hover{background:rgba(0,200,255,0.07);}
+    .search-item:last-child{border-bottom:none;}
+    .selected-box{padding:8px 12px;background:rgba(0,200,255,0.07);border:1px solid rgba(0,200,255,0.22);margin-bottom:10px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--ww);display:none;}
+    /* BRIDGE */
+    #bridge-panel{display:none;position:fixed;bottom:20px;right:20px;width:360px;height:480px;border:1px solid rgba(0,255,136,0.3);background:rgba(2,4,8,0.97);z-index:200;flex-direction:column;box-shadow:0 0 30px rgba(0,255,136,0.1);}
+    #bridge-panel.open{display:flex;}
+    #bridge-panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),var(--green),var(--cs));}
+    .bh{padding:10px 14px;border-bottom:1px solid rgba(0,255,136,0.15);display:flex;align-items:center;gap:10px;}
+    .bht{font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--green);letter-spacing:0.1em;font-weight:700;flex:1;}
+    .bclose{background:transparent;border:none;color:var(--dim);cursor:pointer;font-size:1rem;padding:2px 6px;}
+    .bclose:hover{color:var(--red);}
+    .bsel{padding:8px 12px;border-bottom:1px solid rgba(0,255,136,0.1);}
+    .bsel select{width:100%;background:rgba(0,200,255,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:6px 10px;outline:none;}
+    .bsel select option{background:#020408;}
+    .bmsgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:7px;}
+    .msg{max-width:82%;padding:7px 11px;font-size:0.88rem;line-height:1.4;}
+    .msg.shop{align-self:flex-end;background:rgba(0,200,255,0.1);border:1px solid rgba(0,200,255,0.18);}
+    .msg.insurer{align-self:flex-start;background:rgba(255,107,0,0.09);border:1px solid rgba(255,107,0,0.18);}
+    .msg.system{align-self:center;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.15);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.52rem;letter-spacing:0.08em;text-align:center;max-width:100%;}
+    .msg-meta{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);margin-top:3px;}
+    .binput{padding:8px 12px;border-top:1px solid rgba(0,255,136,0.15);display:flex;gap:7px;}
+    .binput input{flex:1;background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:7px 10px;outline:none;}
+    .binput input:focus{border-color:var(--green);}
+    .bsend{background:var(--green);color:var(--dark);border:none;padding:7px 12px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;cursor:pointer;font-weight:700;}
+    #bridge-fab{position:fixed;bottom:20px;right:20px;width:50px;height:50px;background:var(--green);border:none;cursor:pointer;z-index:199;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 0 18px rgba(0,255,136,0.4);transition:transform 0.2s;}
+    #bridge-fab:hover{transform:scale(1.1);}
+    /* EMPTY / LOADING */
+    .empty{text-align:center;padding:40px 20px;color:var(--dim);}
+    .empty-icon{font-size:2rem;margin-bottom:10px;opacity:0.35;}
+    .empty-txt{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;}
+    .loading{text-align:center;padding:28px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);letter-spacing:0.18em;animation:blink 1s infinite;}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-
-    /* VIEWS */
-    .view{display:none;}
-    .view.active{display:block;}
-
-    /* SCROLLBAR */
-    ::-webkit-scrollbar{width:4px;}
+    ::-webkit-scrollbar{width:4px;height:4px;}
     ::-webkit-scrollbar-track{background:transparent;}
-    ::-webkit-scrollbar-thumb{background:rgba(0,200,255,0.2);border-radius:2px;}
-
-    @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
-
-    /* MOBILE */
-    @media(max-width:768px){
-      #sidebar{display:none;}
-      .stats-row{grid-template-columns:1fr 1fr;}
-    }
+    ::-webkit-scrollbar-thumb{background:rgba(0,200,255,0.18);border-radius:2px;}
+    @media(max-width:700px){#sidebar{display:none;}.stats-row{grid-template-columns:1fr 1fr;}}
   </style>
 </head>
 <body>
 <div id="app">
-
   <!-- SIDEBAR -->
   <nav id="sidebar">
     <div class="sidebar-logo">
       <div class="brand">WrenchWare Pro<sup>&#8482;</sup></div>
-      <div class="sub">// Powered by ClaimSync&#8482;</div>
+      <div class="brand-sub">// Shop Dashboard</div>
     </div>
-
-    <div class="nav-section">Operations</div>
-    <div class="nav-item active" onclick="showView('dashboard')">
-      <span class="icon">&#9783;</span> Dashboard
-    </div>
-    <div class="nav-item" onclick="showView('workorders')">
-      <span class="icon">&#128203;</span> Work Orders
-      <span class="nav-badge" id="badge-wo">0</span>
-    </div>
-    <div class="nav-item" onclick="showView('customers')">
-      <span class="icon">&#128100;</span> Customers
-    </div>
-    <div class="nav-item" onclick="showView('technicians')">
-      <span class="icon">&#128295;</span> Technicians
-    </div>
-
-    <div class="nav-section">Shop</div>
-    <div class="nav-item" onclick="showView('inventory')">
-      <span class="icon">&#128230;</span> Inventory
-    </div>
-    <div class="nav-item" onclick="showView('invoices')">
-      <span class="icon">&#128184;</span> Invoices
-    </div>
-
-    <div class="nav-section">Bridge&#8482;</div>
-    <div class="nav-item" onclick="toggleBridge()">
-      <span class="icon">&#9889;</span> Insurer Bridge
-      <span class="bridge-badge" id="bridge-nav-badge">LIVE</span>
-    </div>
-
-    <div style="padding:8px 18px;border-top:1px solid rgba(0,200,255,0.08);margin-top:0;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(200,232,240,0.25);letter-spacing:0.15em;">POWERED BY</div><div style="font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--cs);letter-spacing:0.1em;font-weight:700;">ClaimSync<sup style="font-size:0.4em;color:var(--magenta);">&#8482;</sup></div></div><div class="sidebar-bottom">
-      <div class="user-info">
-        <div class="user-name" id="sb-username">Loading...</div>
+    <div class="nav-sec">Operations</div>
+    <div class="nav-item active" onclick="showView('dashboard',this)"><span class="icon">&#9783;</span>Dashboard</div>
+    <div class="nav-item" onclick="showView('workorders',this)"><span class="icon">&#128203;</span>Work Orders<span class="nbadge" id="badge-wo">0</span></div>
+    <div class="nav-item" onclick="showView('customers',this)"><span class="icon">&#128100;</span>Customers</div>
+    <div class="nav-item" onclick="showView('technicians',this)"><span class="icon">&#128295;</span>Technicians</div>
+    <div class="nav-sec">Shop</div>
+    <div class="nav-item" onclick="showView('inventory',this)"><span class="icon">&#128230;</span>Inventory</div>
+    <div class="nav-item" onclick="showView('invoices',this)"><span class="icon">&#128184;</span>Invoices</div>
+    <div class="nav-sec">Admin</div>
+    <div class="nav-item" id="nav-employees" onclick="showView('employees',this)"><span class="icon">&#128101;</span>Employees</div>
+    <div class="nav-sec">Bridge&#8482;</div>
+    <div class="nav-item" onclick="toggleBridge()"><span class="icon">&#9889;</span>Insurer Bridge<span class="nbadge green" id="bridge-nav-badge">LIVE</span></div>
+    <div class="sb-bottom">
+      <div class="powered">POWERED BY <br/><span>ClaimSync<sup style="font-size:0.4em;color:var(--magenta);">&#8482;</sup></span></div>
+      <div class="user-box">
+        <div class="user-name" id="sb-name">--</div>
         <div class="user-role" id="sb-role">--</div>
+        <button class="btn-logout" onclick="logout()">&#8594; Sign Out</button>
       </div>
-      <button class="btn-logout" onclick="logout()">&#8594; Sign Out</button>
     </div>
   </nav>
 
@@ -237,64 +199,33 @@
     <div id="topbar">
       <span class="topbar-title" id="topbar-title">Dashboard</span>
       <div class="topbar-right">
-        <div class="bridge-status" id="bridge-status-bar">
-          <span class="status-dot-live"></span>
-          <span>BRIDGE CONNECTING...</span>
-        </div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--text-dim);letter-spacing:0.1em;" id="topbar-time"></div>
+        <div class="bridge-pill" id="bridge-pill"><span class="dot-live"></span><span id="bridge-lbl">BRIDGE CONNECTING...</span></div>
+        <div class="clock" id="clock"></div>
       </div>
     </div>
-
     <div id="content">
 
-      <!-- DASHBOARD VIEW -->
+      <!-- DASHBOARD -->
       <div class="view active" id="view-dashboard">
         <div class="stats-row">
-          <div class="stat-card blue">
-            <div class="stat-label">Active Jobs</div>
-            <div class="stat-value" id="stat-active">--</div>
-            <div class="stat-sub">In progress today</div>
-          </div>
-          <div class="stat-card orange">
-            <div class="stat-label">Pending</div>
-            <div class="stat-value" id="stat-pending">--</div>
-            <div class="stat-sub">Awaiting approval</div>
-          </div>
-          <div class="stat-card green">
-            <div class="stat-label">Completed</div>
-            <div class="stat-value" id="stat-completed">--</div>
-            <div class="stat-sub">This month</div>
-          </div>
-          <div class="stat-card red">
-            <div class="stat-label">Techs On Duty</div>
-            <div class="stat-value" id="stat-techs">--</div>
-            <div class="stat-sub">Active right now</div>
-          </div>
+          <div class="stat blue"><div class="stat-lbl">Active Jobs</div><div class="stat-val" id="s-active">--</div><div class="stat-sub">In progress</div></div>
+          <div class="stat orange"><div class="stat-lbl">Pending</div><div class="stat-val" id="s-pending">--</div><div class="stat-sub">Awaiting start</div></div>
+          <div class="stat green"><div class="stat-lbl">Completed</div><div class="stat-val" id="s-completed">--</div><div class="stat-sub">This month</div></div>
+          <div class="stat red"><div class="stat-lbl">Technicians</div><div class="stat-val" id="s-techs">--</div><div class="stat-sub">On duty</div></div>
         </div>
-
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">&#9654; Recent Work Orders</span>
-            <button class="btn btn-primary btn-sm" onclick="showView('workorders');openNewWO()">+ New Work Order</button>
-          </div>
-          <div class="panel-body" style="padding:0;">
-            <div id="dashboard-wo-list"><div class="loading">LOADING WORK ORDERS...</div></div>
-          </div>
+          <div class="ph"><span class="pt">&#9654; Recent Work Orders</span><button class="btn btn-p btn-sm" onclick="openNewWO()">+ New Work Order</button></div>
+          <div id="dash-wo"><div class="loading">LOADING...</div></div>
         </div>
-
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">&#9654; Technician Status</span>
-          </div>
-          <div class="panel-body" style="padding:0;">
-            <div id="dashboard-tech-list"><div class="loading">LOADING TECHNICIANS...</div></div>
-          </div>
+          <div class="ph"><span class="pt">&#9654; Technician Status</span></div>
+          <div id="dash-tech"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
-      <!-- WORK ORDERS VIEW -->
+      <!-- WORK ORDERS -->
       <div class="view" id="view-workorders">
-        <div class="tab-bar">
+        <div class="tabs">
           <div class="tab active" onclick="filterWO('all',this)">All</div>
           <div class="tab" onclick="filterWO('pending',this)">Pending</div>
           <div class="tab" onclick="filterWO('active',this)">Active</div>
@@ -302,781 +233,763 @@
           <div class="tab" onclick="filterWO('approved',this)">Approved</div>
         </div>
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">&#9654; Work Orders</span>
+          <div class="ph">
+            <span class="pt">&#9654; Work Orders</span>
             <div style="display:flex;gap:8px;">
-              <input id="wo-search" type="text" placeholder="Search..." style="background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:5px 10px;outline:none;width:180px;" oninput="loadWorkOrders()"/>
-              <button class="btn btn-primary btn-sm" onclick="openNewWO()">+ New</button>
+              <input id="wo-search" type="text" placeholder="Search..." style="background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:5px 10px;outline:none;width:160px;" oninput="loadWOs()"/>
+              <button class="btn btn-p btn-sm" onclick="openNewWO()">+ New</button>
             </div>
           </div>
-          <div class="panel-body" style="padding:0;">
-            <div id="wo-list"><div class="loading">LOADING...</div></div>
-          </div>
+          <div id="wo-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
-      <!-- CUSTOMERS VIEW -->
+      <!-- CUSTOMERS -->
       <div class="view" id="view-customers">
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">&#9654; Customers</span>
-            <button class="btn btn-primary btn-sm" onclick="openNewCustomer()">+ New Customer</button>
-          </div>
-          <div class="panel-body" style="padding:0;">
-            <div id="customer-list"><div class="loading">LOADING...</div></div>
-          </div>
+          <div class="ph"><span class="pt">&#9654; Customers</span><button class="btn btn-p btn-sm" onclick="openModal('modal-customer')">+ New Customer</button></div>
+          <div id="cust-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
-      <!-- TECHNICIANS VIEW -->
+      <!-- TECHNICIANS -->
       <div class="view" id="view-technicians">
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">&#9654; Technician Overview</span>
-          </div>
-          <div class="panel-body" style="padding:0;">
-            <div id="tech-list"><div class="loading">LOADING...</div></div>
-          </div>
+          <div class="ph"><span class="pt">&#9654; Technician Overview</span></div>
+          <div id="tech-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
-      <!-- INVENTORY VIEW -->
+      <!-- INVENTORY -->
       <div class="view" id="view-inventory">
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">&#9654; Parts Inventory</span>
-            <button class="btn btn-primary btn-sm" onclick="openNewPart()">+ Add Part</button>
-          </div>
-          <div class="panel-body" style="padding:0;">
-            <div id="inventory-list"><div class="loading">LOADING...</div></div>
-          </div>
+          <div class="ph"><span class="pt">&#9654; Parts Inventory</span></div>
+          <div id="inv-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
-      <!-- INVOICES VIEW -->
+      <!-- INVOICES -->
       <div class="view" id="view-invoices">
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">&#9654; Invoices</span>
-          </div>
-          <div class="panel-body" style="padding:0;">
-            <div id="invoice-list"><div class="loading">LOADING...</div></div>
-          </div>
+          <div class="ph"><span class="pt">&#9654; Invoices</span></div>
+          <div id="inv-invoice-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
-    </div><!-- /content -->
-  </div><!-- /main -->
-</div><!-- /app -->
-
-
-      <!-- EMPLOYEES VIEW -->
+      <!-- EMPLOYEES -->
       <div class="view" id="view-employees">
         <div class="panel">
-          <div class="panel-header">
-            <span class="panel-title">&#9654; Employee Management</span>
-            <button class="btn btn-primary btn-sm" onclick="openNewEmployee()" id="new-emp-btn">+ New Employee</button>
-          </div>
-          <div class="panel-body" style="padding:0;">
-            <div id="employee-list"><div class="loading">LOADING...</div></div>
-          </div>
+          <div class="ph"><span class="pt">&#9654; Employee Management</span><button class="btn btn-p btn-sm" onclick="openNewEmployee()">+ New Employee</button></div>
+          <div id="emp-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
-<!-- BRIDGE CHAT PANEL -->
-<button id="bridge-fab" onclick="toggleBridge()" title="Darkbloom Bridge™">
-  &#9889;
-  <span class="unread-dot" id="unread-dot"></span>
-</button>
-
-<div id="bridge-panel">
-  <div class="bridge-header">
-    <span class="bridge-header-title">&#9889; DARKBLOOM BRIDGE&#8482;</span>
-    <span style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.1em;" id="bridge-conn-label">CONNECTING...</span>
-    <button class="bridge-close" onclick="toggleBridge()">&#10005;</button>
-  </div>
-  <div class="bridge-claim-select">
-    <select id="bridge-claim-id" onchange="loadBridgeMessages()">
-      <option value="">-- Select Work Order / Claim --</option>
-    </select>
-  </div>
-  <div class="bridge-messages" id="bridge-messages">
-    <div class="msg system">Select a work order to start messaging the insurer.</div>
-  </div>
-  <div class="bridge-input">
-    <input type="text" id="bridge-msg-input" placeholder="Message insurer..." onkeydown="if(event.key==='Enter')sendBridgeMessage()"/>
-    <button class="bridge-send" onclick="sendBridgeMessage()">SEND</button>
+    </div>
   </div>
 </div>
 
-<!-- NEW WORK ORDER MODAL -->
-<div class="modal-overlay" id="modal-new-wo">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title">NEW WORK ORDER</span>
-      <button class="modal-close" onclick="closeModal('modal-new-wo')">&#10005;</button>
-    </div>
-    <div class="modal-body">
-      <!-- TABS -->
-      <div class="tab-bar" style="margin-bottom:16px;">
-        <div class="tab active" onclick="woTab('customer',this)">&#128100; Customer</div>
-        <div class="tab" onclick="woTab('vehicle',this)">&#128663; Vehicle</div>
-        <div class="tab" onclick="woTab('insurance',this)">&#128203; Insurance</div>
+<!-- BRIDGE FAB -->
+<button id="bridge-fab" onclick="toggleBridge()" title="Darkbloom Bridge&#8482;">&#9889;</button>
+
+<!-- BRIDGE PANEL -->
+<div id="bridge-panel">
+  <div class="bh">
+    <span class="bht">&#9889; DARKBLOOM BRIDGE&#8482;</span>
+    <span id="bridge-conn" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);">CONNECTING...</span>
+    <button class="bclose" onclick="toggleBridge()">&#10005;</button>
+  </div>
+  <div class="bsel"><select id="bridge-wo-sel" onchange="loadBridgeMsgs()"><option value="">-- Select Work Order --</option></select></div>
+  <div class="bmsgs" id="bridge-msgs"><div class="msg system">Select a work order to message the insurer.</div></div>
+  <div class="binput">
+    <input type="text" id="bridge-input" placeholder="Message insurer..." onkeydown="if(event.key==='Enter')sendMsg()"/>
+    <button class="bsend" onclick="sendMsg()">SEND</button>
+  </div>
+</div>
+
+<!-- ═══ MODALS ═══ -->
+
+<!-- NEW WORK ORDER -->
+<div class="overlay" id="modal-wo">
+  <div class="modal" style="width:700px;">
+    <div class="mh"><span class="mt">NEW WORK ORDER</span><button class="mc" onclick="closeModal('modal-wo')">&#10005;</button></div>
+    <div class="mb">
+      <div class="tabs" id="wo-tabs">
+        <div class="tab active" onclick="woTab('cust',this)">&#128100; Customer</div>
+        <div class="tab" onclick="woTab('veh',this)">&#128663; Vehicle</div>
+        <div class="tab" onclick="woTab('ins',this)">&#128203; Insurance</div>
         <div class="tab" onclick="woTab('job',this)">&#128295; Job Details</div>
       </div>
-
       <!-- CUSTOMER TAB -->
-      <div id="wo-tab-customer">
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,200,255,0.4);letter-spacing:0.2em;margin-bottom:10px;">EXISTING CUSTOMER</div>
-        <div class="form-group" style="margin-bottom:14px;">
-          <label>Search Existing Customers</label>
-          <input type="text" id="wo-customer-search" placeholder="Search by name, phone, email..." oninput="searchCustomersWO()"/>
-        </div>
-        <div id="wo-customer-results" style="margin-bottom:14px;max-height:120px;overflow-y:auto;"></div>
-        <div id="wo-selected-customer" style="display:none;padding:10px;background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.2);margin-bottom:14px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);"></div>
-        <input type="hidden" id="wo-customer-id"/>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,200,255,0.4);letter-spacing:0.2em;margin-bottom:10px;margin-top:16px;">— OR CREATE NEW CUSTOMER —</div>
-        <div class="form-row">
-          <div class="form-group"><label>First Name</label><input type="text" id="wo-cust-first" placeholder="Jane"/></div>
-          <div class="form-group"><label>Last Name</label><input type="text" id="wo-cust-last" placeholder="Smith"/></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Phone</label><input type="tel" id="wo-cust-phone" placeholder="(555) 000-0000"/></div>
-          <div class="form-group"><label>Email</label><input type="email" id="wo-cust-email" placeholder="jane@example.com"/></div>
-        </div>
-        <div class="form-group" style="margin-bottom:10px;"><label>Address</label><input type="text" id="wo-cust-address" placeholder="123 Main St"/></div>
-        <div class="form-row">
-          <div class="form-group"><label>City</label><input type="text" id="wo-cust-city"/></div>
-          <div class="form-group"><label>State</label><input type="text" id="wo-cust-state" maxlength="2" placeholder="UT"/></div>
-          <div class="form-group"><label>ZIP</label><input type="text" id="wo-cust-zip" maxlength="10"/></div>
-        </div>
+      <div class="wo-tab-content active" id="wotab-cust">
+        <div class="sec-lbl">Search Existing Customer</div>
+        <div class="fg"><input type="text" id="cust-search" placeholder="Search by name, phone, or email..." oninput="searchCusts()"/></div>
+        <div class="search-results" id="cust-search-res" style="display:none;"></div>
+        <div class="selected-box" id="cust-selected-box"></div>
+        <input type="hidden" id="wo-cust-id"/>
+        <div class="sec-lbl">— Or Create New Customer —</div>
+        <div class="row2"><div class="fg"><label>First Name</label><input type="text" id="nc-first" placeholder="Jane"/></div><div class="fg"><label>Last Name</label><input type="text" id="nc-last" placeholder="Smith"/></div></div>
+        <div class="row2"><div class="fg"><label>Phone</label><input type="tel" id="nc-phone" placeholder="(555) 000-0000"/></div><div class="fg"><label>Email</label><input type="email" id="nc-email" placeholder="jane@example.com"/></div></div>
+        <div class="fg"><label>Address</label><input type="text" id="nc-addr" placeholder="123 Main St"/></div>
+        <div class="row3"><div class="fg"><label>City</label><input type="text" id="nc-city"/></div><div class="fg"><label>State</label><input type="text" id="nc-state" maxlength="2" placeholder="UT"/></div><div class="fg"><label>ZIP</label><input type="text" id="nc-zip" maxlength="10"/></div></div>
       </div>
-
       <!-- VEHICLE TAB -->
-      <div id="wo-tab-vehicle" style="display:none;">
-        <div id="wo-existing-vehicles" style="margin-bottom:14px;"></div>
-        <input type="hidden" id="wo-vehicle-id"/>
-        <div id="wo-selected-vehicle" style="display:none;padding:10px;background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.2);margin-bottom:14px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);"></div>
-        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,200,255,0.4);letter-spacing:0.2em;margin-bottom:10px;">— OR ADD NEW VEHICLE —</div>
-        <div class="form-row">
-          <div class="form-group"><label>Year</label><input type="number" id="wo-veh-year" placeholder="2022" min="1900" max="2030"/></div>
-          <div class="form-group"><label>Make</label><input type="text" id="wo-veh-make" placeholder="Toyota"/></div>
-          <div class="form-group"><label>Model</label><input type="text" id="wo-veh-model" placeholder="Camry"/></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>VIN</label><input type="text" id="wo-veh-vin" placeholder="1HGBH41JXMN109186" maxlength="17"/></div>
-          <div class="form-group"><label>License Plate</label><input type="text" id="wo-veh-plate" placeholder="ABC1234"/></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Color</label><input type="text" id="wo-veh-color" placeholder="Silver"/></div>
-          <div class="form-group"><label>Mileage</label><input type="number" id="wo-veh-mileage" placeholder="45000" min="0"/></div>
-        </div>
+      <div class="wo-tab-content" id="wotab-veh">
+        <div class="sec-lbl">Existing Vehicles for Customer</div>
+        <div id="veh-existing-list"></div>
+        <div class="selected-box" id="veh-selected-box"></div>
+        <input type="hidden" id="wo-veh-id"/>
+        <div class="sec-lbl">— Or Add New Vehicle —</div>
+        <div class="row3"><div class="fg"><label>Year</label><input type="number" id="nv-year" placeholder="2022" min="1900" max="2030"/></div><div class="fg"><label>Make</label><input type="text" id="nv-make" placeholder="Toyota"/></div><div class="fg"><label>Model</label><input type="text" id="nv-model" placeholder="Camry"/></div></div>
+        <div class="row2"><div class="fg"><label>VIN</label><input type="text" id="nv-vin" placeholder="1HGBH41JXMN109186" maxlength="17"/></div><div class="fg"><label>License Plate</label><input type="text" id="nv-plate"/></div></div>
+        <div class="row2"><div class="fg"><label>Color</label><input type="text" id="nv-color" placeholder="Silver"/></div><div class="fg"><label>Mileage</label><input type="number" id="nv-miles" placeholder="45000" min="0"/></div></div>
       </div>
-
       <!-- INSURANCE TAB -->
-      <div id="wo-tab-insurance" style="display:none;">
-        <div class="form-row" style="margin-bottom:8px;">
-          <div class="form-group">
-            <label>State (for regional insurers)</label>
-            <input type="text" id="wo-ins-state" placeholder="UT" maxlength="2" oninput="loadInsurersForWO()"/>
-          </div>
-          <div class="form-group">
-            <label>Search Insurer</label>
-            <input type="text" id="wo-ins-search" placeholder="Type to search..." oninput="filterInsurers()"/>
-          </div>
-        </div>
-        <div id="wo-ins-list" style="max-height:150px;overflow-y:auto;border:1px solid var(--border);margin-bottom:14px;background:rgba(0,200,255,0.02);"></div>
-        <input type="hidden" id="wo-insurer-id"/>
-        <input type="hidden" id="wo-insurer-name-val"/>
-        <div id="wo-selected-insurer" style="display:none;padding:10px;background:rgba(0,200,255,0.06);border:1px solid rgba(0,200,255,0.2);margin-bottom:14px;font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);"></div>
-        <div class="form-row">
-          <div class="form-group"><label>Policy Number</label><input type="text" id="wo-policy-num" placeholder="POL-123456"/></div>
-          <div class="form-group"><label>Claim Number</label><input type="text" id="wo-claim-num" placeholder="CLM-789012"/></div>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Adjuster Name</label><input type="text" id="wo-adjuster-name" placeholder="John Doe"/></div>
-          <div class="form-group"><label>Adjuster Phone</label><input type="text" id="wo-adjuster-phone" placeholder="(555) 000-0000"/></div>
-        </div>
-        <div style="margin-top:12px;">
-          <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,200,255,0.4);letter-spacing:0.2em;margin-bottom:10px;">— OR ADD UNLISTED INSURER —</div>
-          <div class="form-row">
-            <div class="form-group"><label>Insurer Name</label><input type="text" id="wo-ins-custom-name" placeholder="Custom Insurance Co."/></div>
-            <div class="form-group"><label>Claims Phone</label><input type="text" id="wo-ins-custom-phone"/></div>
-          </div>
-        </div>
+      <div class="wo-tab-content" id="wotab-ins">
+        <div class="row2"><div class="fg"><label>Shop State (for regional carriers)</label><input type="text" id="ins-state" maxlength="2" placeholder="UT" oninput="loadInsurers()"/></div><div class="fg"><label>Search Insurer</label><input type="text" id="ins-search" placeholder="Type to search..." oninput="filterIns()"/></div></div>
+        <div class="search-results" id="ins-list" style="max-height:140px;"></div>
+        <div class="selected-box" id="ins-selected-box"></div>
+        <input type="hidden" id="wo-ins-id"/>
+        <input type="hidden" id="wo-ins-name"/>
+        <div class="row2"><div class="fg"><label>Policy Number</label><input type="text" id="ins-policy" placeholder="POL-123456"/></div><div class="fg"><label>Claim Number</label><input type="text" id="ins-claim" placeholder="CLM-789012"/></div></div>
+        <div class="row2"><div class="fg"><label>Adjuster Name</label><input type="text" id="ins-adj-name" placeholder="John Doe"/></div><div class="fg"><label>Adjuster Phone</label><input type="text" id="ins-adj-phone" placeholder="(555) 000-0000"/></div></div>
+        <div class="sec-lbl">— Or Add Unlisted Insurer —</div>
+        <div class="row2"><div class="fg"><label>Insurer Name</label><input type="text" id="ins-custom" placeholder="Custom Insurance Co."/></div><div class="fg"><label>Claims Phone</label><input type="text" id="ins-custom-phone"/></div></div>
       </div>
-
-      <!-- JOB DETAILS TAB -->
-      <div id="wo-tab-job" style="display:none;">
-        <div class="form-row">
-          <div class="form-group">
-            <label>Service Type</label>
-            <select id="wo-service-type">
-              <option value="">-- Select --</option>
-              <option>Collision Repair</option><option>Mechanical</option>
-              <option>Paint</option><option>Glass</option>
-              <option>Detailing</option><option>Inspection</option><option>Other</option>
-            </select>
-          </div>
-          <div class="form-group">
-            <label>Priority</label>
-            <select id="wo-priority">
-              <option value="normal">Normal</option><option value="high">High</option>
-              <option value="urgent">Urgent</option><option value="low">Low</option>
-            </select>
-          </div>
+      <!-- JOB TAB -->
+      <div class="wo-tab-content" id="wotab-job">
+        <div class="row2">
+          <div class="fg"><label>Service Type</label><select id="job-svc"><option value="">-- Select --</option><option>Collision Repair</option><option>Mechanical</option><option>Paint</option><option>Glass</option><option>Detailing</option><option>Inspection</option><option>Other</option></select></div>
+          <div class="fg"><label>Priority</label><select id="job-pri"><option value="normal">Normal</option><option value="high">High</option><option value="urgent">Urgent</option><option value="low">Low</option></select></div>
         </div>
-        <div class="form-row">
-          <div class="form-group">
-            <label>Assigned Technician</label>
-            <select id="wo-tech-id"><option value="">-- Unassigned --</option></select>
-          </div>
-          <div class="form-group"></div>
-        </div>
-        <div class="form-group" style="margin-bottom:12px;">
-          <label>Description</label>
-          <textarea id="wo-description" placeholder="Describe the work needed..."></textarea>
-        </div>
-        <div class="form-row">
-          <div class="form-group"><label>Estimated Hours</label><input type="number" id="wo-est-hours" placeholder="0.0" step="0.5" min="0"/></div>
-          <div class="form-group"><label>Estimated Cost ($)</label><input type="number" id="wo-est-cost" placeholder="0.00" step="0.01" min="0"/></div>
-        </div>
-        <div class="form-group"><label>Customer Notes</label><input type="text" id="wo-customer-notes" placeholder="Any notes from the customer..."/></div>
+        <div class="fg"><label>Assigned Technician</label><select id="job-tech"><option value="">-- Unassigned --</option></select></div>
+        <div class="fg"><label>Description</label><textarea id="job-desc" placeholder="Describe the work needed..."></textarea></div>
+        <div class="row2"><div class="fg"><label>Estimated Hours</label><input type="number" id="job-hours" placeholder="0.0" step="0.5" min="0"/></div><div class="fg"><label>Estimated Cost ($)</label><input type="number" id="job-cost" placeholder="0.00" step="0.01" min="0"/></div></div>
+        <div class="fg"><label>Customer Notes</label><input type="text" id="job-notes" placeholder="Any notes from the customer..."/></div>
       </div>
-
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-new-wo')">Cancel</button>
-      <button class="btn btn-primary" onclick="createWorkOrder()">Create Work Order</button>
+    <div class="mf">
+      <button class="btn btn-o" onclick="closeModal('modal-wo')">Cancel</button>
+      <button class="btn btn-p" onclick="createWO()">Create Work Order</button>
     </div>
   </div>
 </div>
 
-
-<!-- NEW EMPLOYEE MODAL -->
-<div class="modal-overlay" id="modal-new-employee">
+<!-- WO DETAIL -->
+<div class="overlay" id="modal-wo-detail">
   <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title">NEW EMPLOYEE</span>
-      <button class="modal-close" onclick="closeModal('modal-new-employee')">&#10005;</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-row">
-        <div class="form-group"><label>// Full Name</label><input type="text" id="emp-name" placeholder="Jane Smith"/></div>
-        <div class="form-group">
-          <label>// Role</label>
-          <select id="emp-role">
-            <option value="technician">Technician</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-            <option value="parts_manager">Parts Manager</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>// Email</label><input type="email" id="emp-email" placeholder="employee@shop.com"/></div>
-        <div class="form-group"><label>// Phone</label><input type="tel" id="emp-phone" placeholder="(555) 000-0000"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>// Hourly Rate ($)</label><input type="number" id="emp-rate" placeholder="25.00" step="0.50" min="0"/></div>
-        <div class="form-group"><label>// Password</label><input type="password" id="emp-password" placeholder="Set login password"/></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-new-employee')">Cancel</button>
-      <button class="btn btn-primary" onclick="createEmployee()">Create Employee</button>
-    </div>
+    <div class="mh"><span class="mt" id="wo-detail-title">WORK ORDER</span><button class="mc" onclick="closeModal('modal-wo-detail')">&#10005;</button></div>
+    <div class="mb" id="wo-detail-body"></div>
+    <div class="mf" id="wo-detail-footer"></div>
   </div>
 </div>
 
-<!-- EDIT EMPLOYEE MODAL -->
-<div class="modal-overlay" id="modal-edit-employee">
+<!-- NEW CUSTOMER -->
+<div class="overlay" id="modal-customer">
   <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title" id="edit-emp-title">EDIT EMPLOYEE</span>
-      <button class="modal-close" onclick="closeModal('modal-edit-employee')">&#10005;</button>
+    <div class="mh"><span class="mt">NEW CUSTOMER</span><button class="mc" onclick="closeModal('modal-customer')">&#10005;</button></div>
+    <div class="mb">
+      <div class="row2"><div class="fg"><label>First Name</label><input type="text" id="c-first" placeholder="Jane"/></div><div class="fg"><label>Last Name</label><input type="text" id="c-last" placeholder="Smith"/></div></div>
+      <div class="row2"><div class="fg"><label>Phone</label><input type="tel" id="c-phone" placeholder="(555) 000-0000"/></div><div class="fg"><label>Email</label><input type="email" id="c-email" placeholder="jane@example.com"/></div></div>
+      <div class="fg"><label>Address</label><input type="text" id="c-addr" placeholder="123 Main St"/></div>
+      <div class="row3"><div class="fg"><label>City</label><input type="text" id="c-city"/></div><div class="fg"><label>State</label><input type="text" id="c-state" maxlength="2"/></div><div class="fg"><label>ZIP</label><input type="text" id="c-zip" maxlength="10"/></div></div>
     </div>
-    <div class="modal-body">
-      <input type="hidden" id="edit-emp-id"/>
-      <div class="form-row">
-        <div class="form-group"><label>// Full Name</label><input type="text" id="edit-emp-name"/></div>
-        <div class="form-group">
-          <label>// Role</label>
-          <select id="edit-emp-role">
-            <option value="technician">Technician</option>
-            <option value="manager">Manager</option>
-            <option value="admin">Admin</option>
-            <option value="parts_manager">Parts Manager</option>
-          </select>
-        </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>// Email</label><input type="email" id="edit-emp-email"/></div>
-        <div class="form-group"><label>// Phone</label><input type="tel" id="edit-emp-phone"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>// Hourly Rate ($)</label><input type="number" id="edit-emp-rate" step="0.50" min="0"/></div>
-        <div class="form-group"><label>// New Password (leave blank to keep)</label><input type="password" id="edit-emp-password" placeholder="Leave blank to keep current"/></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-danger btn-sm" onclick="deactivateEmployee()">Deactivate</button>
-      <button class="btn btn-outline" onclick="closeModal('modal-edit-employee')">Cancel</button>
-      <button class="btn btn-primary" onclick="saveEmployee()">Save Changes</button>
-    </div>
+    <div class="mf"><button class="btn btn-o" onclick="closeModal('modal-customer')">Cancel</button><button class="btn btn-p" onclick="saveCustomer()">Save Customer</button></div>
   </div>
 </div>
 
-<!-- WO DETAIL MODAL -->
-<div class="modal-overlay" id="modal-wo-detail">
+<!-- NEW EMPLOYEE -->
+<div class="overlay" id="modal-employee">
   <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title" id="wo-detail-title">WORK ORDER</span>
-      <button class="modal-close" onclick="closeModal('modal-wo-detail')">&#10005;</button>
+    <div class="mh"><span class="mt" id="emp-modal-title">NEW EMPLOYEE</span><button class="mc" onclick="closeModal('modal-employee')">&#10005;</button></div>
+    <div class="mb">
+      <input type="hidden" id="emp-edit-id"/>
+      <div class="row2"><div class="fg"><label>Full Name</label><input type="text" id="emp-name" placeholder="Jane Smith"/></div><div class="fg"><label>Role</label><select id="emp-role"><option value="technician">Technician</option><option value="manager">Manager</option><option value="admin">Admin</option><option value="parts_manager">Parts Manager</option></select></div></div>
+      <div class="row2"><div class="fg"><label>Email</label><input type="email" id="emp-email" placeholder="employee@shop.com"/></div><div class="fg"><label>Phone</label><input type="tel" id="emp-phone" placeholder="(555) 000-0000"/></div></div>
+      <div class="row2"><div class="fg"><label>Hourly Rate ($)</label><input type="number" id="emp-rate" placeholder="25.00" step="0.50" min="0"/></div><div class="fg"><label>Password <span id="emp-pw-hint" style="color:var(--dim);font-size:0.45rem;">(required for new)</span></label><input type="password" id="emp-pw" placeholder="Set login password"/></div></div>
     </div>
-    <div class="modal-body" id="wo-detail-body">Loading...</div>
-    <div class="modal-footer" id="wo-detail-footer"></div>
-  </div>
-</div>
-
-<!-- NEW CUSTOMER MODAL -->
-<div class="modal-overlay" id="modal-new-customer">
-  <div class="modal">
-    <div class="modal-header">
-      <span class="modal-title">NEW CUSTOMER</span>
-      <button class="modal-close" onclick="closeModal('modal-new-customer')">&#10005;</button>
-    </div>
-    <div class="modal-body">
-      <div class="form-row">
-        <div class="form-group"><label>First Name</label><input type="text" id="cust-first" placeholder="Jane"/></div>
-        <div class="form-group"><label>Last Name</label><input type="text" id="cust-last" placeholder="Smith"/></div>
-      </div>
-      <div class="form-row">
-        <div class="form-group"><label>Phone</label><input type="tel" id="cust-phone" placeholder="(555) 000-0000"/></div>
-        <div class="form-group"><label>Email</label><input type="email" id="cust-email" placeholder="jane@example.com"/></div>
-      </div>
-      <div class="form-group" style="margin-bottom:12px;"><label>Address</label><input type="text" id="cust-address" placeholder="123 Main St"/></div>
-      <div class="form-row">
-        <div class="form-group"><label>City</label><input type="text" id="cust-city"/></div>
-        <div class="form-group"><label>State</label><input type="text" id="cust-state" maxlength="2"/></div>
-      </div>
-    </div>
-    <div class="modal-footer">
-      <button class="btn btn-outline" onclick="closeModal('modal-new-customer')">Cancel</button>
-      <button class="btn btn-primary" onclick="createCustomer()">Save Customer</button>
+    <div class="mf">
+      <button class="btn btn-d btn-sm" id="emp-deactivate-btn" style="display:none;" onclick="deactivateEmp()">Deactivate</button>
+      <button class="btn btn-o" onclick="closeModal('modal-employee')">Cancel</button>
+      <button class="btn btn-p" onclick="saveEmployee()">Save</button>
     </div>
   </div>
 </div>
 
 <script>
-// ── Config ────────────────────────────────────────────────────────────────────
 const API = 'https://web-production-f13e8.up.railway.app';
-const SUPABASE_URL = 'https://bomumxpxuprkxgkyuheh.supabase.co';
-const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvbXVteHB4dXBya3hna3l1aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMzk0NzAsImV4cCI6MjA5MjkxNTQ3MH0.QEPmhF0pkRP0rPtgJaJN63pWAMkNcMJB6RW7PSibqS4';
+const SB_URL = 'https://bomumxpxuprkxgkyuheh.supabase.co';
+const SB_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImJvbXVteHB4dXBya3hna3l1aGVoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzczMzk0NzAsImV4cCI6MjA5MjkxNTQ3MH0.QEPmhF0pkRP0rPtgJaJN63pWAMkNcMJB6RW7PSibqS4';
 
-// ── Auth ───────────────────────────────────────────────────────────────────────
 const token = sessionStorage.getItem('ww_token') || sessionStorage.getItem('cs_token');
 const role  = sessionStorage.getItem('ww_role')  || sessionStorage.getItem('cs_role');
-const name  = sessionStorage.getItem('ww_name')  || sessionStorage.getItem('cs_name');
+const uname = sessionStorage.getItem('ww_name')  || sessionStorage.getItem('cs_name');
 
 if (!token) { window.location.href = 'wrenchware.html'; }
-
-// Redirect insurer roles away from shop dashboard
 if (role && ['claims_admin','claims_adjuster','insurance_admin'].includes(role)) {
   window.location.href = 'insurer-dashboard.html';
 }
 
-document.getElementById('sb-username').textContent = name || 'User';
+document.getElementById('sb-name').textContent = uname || 'User';
 document.getElementById('sb-role').textContent = role || '';
 
-// ── API helper ─────────────────────────────────────────────────────────────────
-async function api(path, method='GET', body=null) {
-  const opts = {
-    method,
-    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` }
-  };
-  if (body) opts.body = JSON.stringify(body);
-  const r = await fetch(API + path, opts);
-  if (r.status === 401) { logout(); return null; }
-  return r.json();
+// Hide employees nav for techs
+if (role === 'technician' || role === 'parts_manager') {
+  document.getElementById('nav-employees').style.display = 'none';
 }
 
-// ── Supabase Realtime ──────────────────────────────────────────────────────────
-const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
-let bridgeChannel = null;
-let currentClaimId = null;
-let unreadCount = 0;
+// ── API ────────────────────────────────────────────────────────────────────────
+async function api(path, method='GET', body=null) {
+  const opts = { method, headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`} };
+  if (body) opts.body = JSON.stringify(body);
+  try {
+    const r = await fetch(API + path, opts);
+    if (r.status === 401) { logout(); return null; }
+    return await r.json();
+  } catch(e) { console.error('API error:', e); return null; }
+}
+
+// ── Bridge ─────────────────────────────────────────────────────────────────────
+const sb = supabase.createClient(SB_URL, SB_KEY);
+let bridgeChannel = null, currentBridgeWO = null;
 
 function initBridge() {
-  bridgeChannel = sb.channel('bridge-shop')
-    .on('postgres_changes', {
-      event: 'INSERT',
-      schema: 'public',
-      table: 'claim_messages'
-    }, (payload) => {
+  bridgeChannel = sb.channel('bridge-shop-v2')
+    .on('postgres_changes', {event:'INSERT', schema:'public', table:'claim_messages'}, payload => {
       const msg = payload.new;
-      if (msg.sender_type !== 'shop') {
-        if (currentClaimId && msg.claim_sharing_id == currentClaimId) {
-          appendMessage(msg);
-        } else {
-          unreadCount++;
-          document.getElementById('unread-dot').style.display = 'block';
-          document.getElementById('unread-dot').textContent = unreadCount > 9 ? '9+' : unreadCount;
-        }
+      if (msg.sender_type !== 'shop' && currentBridgeWO && msg.claim_sharing_id == currentBridgeWO) {
+        appendMsg(msg);
       }
     })
-    .subscribe((status) => {
-      const bar = document.getElementById('bridge-status-bar');
-      const label = document.getElementById('bridge-conn-label');
+    .subscribe(status => {
+      const pill = document.getElementById('bridge-pill');
+      const lbl = document.getElementById('bridge-lbl');
+      const conn = document.getElementById('bridge-conn');
       if (status === 'SUBSCRIBED') {
-        bar.className = 'bridge-status';
-        bar.innerHTML = '<span class="status-dot-live"></span><span>BRIDGE LIVE</span>';
-        label.textContent = 'CONNECTED';
-        label.style.color = 'var(--green)';
+        pill.className = 'bridge-pill';
+        pill.innerHTML = '<span class="dot-live"></span><span>BRIDGE LIVE</span>';
+        if(conn){conn.textContent='CONNECTED';conn.style.color='var(--green)';}
       } else {
-        bar.className = 'bridge-status offline';
-        bar.innerHTML = '<span style="width:7px;height:7px;background:var(--red);border-radius:50%;display:inline-block;"></span><span>BRIDGE OFFLINE</span>';
-        label.textContent = 'OFFLINE';
-        label.style.color = 'var(--red)';
+        pill.className = 'bridge-pill offline';
+        pill.innerHTML = '<span style="width:7px;height:7px;background:var(--red);border-radius:50%;display:inline-block;"></span><span>BRIDGE OFFLINE</span>';
+        if(conn){conn.textContent='OFFLINE';conn.style.color='var(--red)';}
       }
     });
 }
 
 function toggleBridge() {
-  const panel = document.getElementById('bridge-panel');
-  const fab = document.getElementById('bridge-fab');
-  panel.classList.toggle('open');
-  if (panel.classList.contains('open')) {
-    fab.style.display = 'none';
-    unreadCount = 0;
-    document.getElementById('unread-dot').style.display = 'none';
-    loadBridgeClaimList();
-  } else {
-    fab.style.display = 'flex';
-  }
+  const p = document.getElementById('bridge-panel');
+  const f = document.getElementById('bridge-fab');
+  p.classList.toggle('open');
+  if (p.classList.contains('open')) { f.style.display='none'; loadBridgeWOs(); }
+  else f.style.display='flex';
 }
 
-async function loadBridgeClaimList() {
+async function loadBridgeWOs() {
   const data = await api('/api/work-orders?status=active&limit=20');
-  const sel = document.getElementById('bridge-claim-id');
-  sel.innerHTML = '<option value="">-- Select Work Order / Claim --</option>';
+  const sel = document.getElementById('bridge-wo-sel');
+  sel.innerHTML = '<option value="">-- Select Work Order --</option>';
   if (data && data.items) {
     data.items.forEach(wo => {
-      const opt = document.createElement('option');
-      opt.value = wo.id;
-      opt.textContent = `${wo.work_order_number} — ${wo.customer_name || 'Unknown'}`;
-      sel.appendChild(opt);
+      sel.innerHTML += `<option value="${wo.id}">${wo.work_order_number} — ${wo.customer_name||'Unknown'}</option>`;
     });
   }
 }
 
-async function loadBridgeMessages() {
-  currentClaimId = document.getElementById('bridge-claim-id').value;
-  const box = document.getElementById('bridge-messages');
-  if (!currentClaimId) {
-    box.innerHTML = '<div class="msg system">Select a work order to start messaging the insurer.</div>';
-    return;
-  }
-  box.innerHTML = '<div class="loading">LOADING MESSAGES...</div>';
-  const data = await api(`/api/bridge/messages/${currentClaimId}`);
+async function loadBridgeMsgs() {
+  currentBridgeWO = document.getElementById('bridge-wo-sel').value;
+  const box = document.getElementById('bridge-msgs');
+  if (!currentBridgeWO) { box.innerHTML = '<div class="msg system">Select a work order to start messaging.</div>'; return; }
+  box.innerHTML = '<div class="loading">LOADING...</div>';
+  const data = await api(`/api/bridge/messages/${currentBridgeWO}`);
   box.innerHTML = '';
   if (!data || !data.messages || data.messages.length === 0) {
-    box.innerHTML = '<div class="msg system">No messages yet. Send the first message to the insurer.</div>';
-    return;
+    box.innerHTML = '<div class="msg system">No messages yet.</div>'; return;
   }
-  data.messages.forEach(m => appendMessage(m));
+  data.messages.forEach(m => appendMsg(m));
   box.scrollTop = box.scrollHeight;
 }
 
-function appendMessage(msg) {
-  const box = document.getElementById('bridge-messages');
+function appendMsg(msg) {
+  const box = document.getElementById('bridge-msgs');
   const div = document.createElement('div');
-  const isShop = msg.sender_type === 'shop';
-  div.className = `msg ${isShop ? 'shop' : 'insurer'}`;
+  div.className = `msg ${msg.sender_type === 'shop' ? 'shop' : 'insurer'}`;
   div.innerHTML = `${msg.message_text}<div class="msg-meta">${msg.sender_name} &bull; ${new Date(msg.created_at).toLocaleTimeString()}</div>`;
   box.appendChild(div);
   box.scrollTop = box.scrollHeight;
 }
 
-async function sendBridgeMessage() {
-  const input = document.getElementById('bridge-msg-input');
+async function sendMsg() {
+  const input = document.getElementById('bridge-input');
   const text = input.value.trim();
-  if (!text || !currentClaimId) return;
+  if (!text || !currentBridgeWO) return;
   input.value = '';
   await api('/api/bridge/send', 'POST', {
-    claim_sharing_id: currentClaimId,
-    message: text,
-    sender_type: 'shop',
-    sender_name: name
+    claim_sharing_id: currentBridgeWO, message: text,
+    sender_type: 'shop', sender_name: uname
   });
 }
 
 // ── Views ──────────────────────────────────────────────────────────────────────
-const views = ['dashboard','workorders','customers','technicians','inventory','invoices'];
-const viewTitles = {
-  dashboard:'Dashboard', workorders:'Work Orders', customers:'Customers',
-  technicians:'Technicians', inventory:'Inventory', invoices:'Invoices'
-};
-let currentWOFilter = 'all';
+const VIEWS = ['dashboard','workorders','customers','technicians','inventory','invoices','employees'];
+const VIEW_TITLES = {dashboard:'Dashboard',workorders:'Work Orders',customers:'Customers',technicians:'Technicians',inventory:'Inventory',invoices:'Invoices',employees:'Employees'};
+let woFilter = 'all';
 
-function showView(v) {
-  views.forEach(id => {
-    document.getElementById(`view-${id}`).classList.remove('active');
-  });
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  document.getElementById(`view-${v}`).classList.add('active');
-  document.querySelectorAll('.nav-item').forEach(el => {
-    
-  });
-  document.getElementById('topbar-title').textContent = viewTitles[v] || v;
-
-  if (v === 'dashboard') loadDashboard();
-  else if (v === 'workorders') loadWorkOrders();
-  else if (v === 'customers') loadCustomers();
-  else if (v === 'technicians') loadTechnicians();
-  else if (v === 'inventory') loadInventory();
-  else if (v === 'invoices') loadInvoices();
-  else if (v === 'employees') loadEmployees();
+function showView(v, el) {
+  VIEWS.forEach(id => document.getElementById('view-'+id).classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('view-'+v).classList.add('active');
+  if (el) el.classList.add('active');
+  document.getElementById('topbar-title').textContent = VIEW_TITLES[v] || v;
+  const loaders = {
+    dashboard: loadDashboard, workorders: loadWOs, customers: loadCustomers,
+    technicians: loadTechs, inventory: loadInventory, invoices: loadInvoices, employees: loadEmployees
+  };
+  if (loaders[v]) loaders[v]();
 }
 
 // ── Dashboard ──────────────────────────────────────────────────────────────────
 async function loadDashboard() {
-  const stats = await api('/api/stats');
-  if (stats) {
-    document.getElementById('stat-active').textContent = stats.active || 0;
-    document.getElementById('stat-pending').textContent = stats.pending || 0;
-    document.getElementById('stat-completed').textContent = stats.completed || 0;
-    document.getElementById('stat-techs').textContent = stats.active_techs || 0;
-    document.getElementById('badge-wo').textContent = (stats.pending || 0) + (stats.active || 0);
+  const s = await api('/api/stats');
+  if (s) {
+    document.getElementById('s-active').textContent = s.active || 0;
+    document.getElementById('s-pending').textContent = s.pending || 0;
+    document.getElementById('s-completed').textContent = s.completed || 0;
+    document.getElementById('s-techs').textContent = s.active_techs || 0;
+    document.getElementById('badge-wo').textContent = (s.pending||0) + (s.active||0);
   }
   const wos = await api('/api/work-orders?limit=8');
-  renderWOTable('dashboard-wo-list', wos);
+  renderWOTable('dash-wo', wos);
   const techs = await api('/api/technicians');
-  renderTechTable('dashboard-tech-list', techs);
+  renderTechTable('dash-tech', techs);
 }
 
 // ── Work Orders ────────────────────────────────────────────────────────────────
-async function loadWorkOrders() {
+async function loadWOs() {
   const search = document.getElementById('wo-search')?.value || '';
-  const filter = currentWOFilter === 'all' ? '' : `&status=${currentWOFilter}`;
-  const data = await api(`/api/work-orders?search=${encodeURIComponent(search)}${filter}`);
+  const f = woFilter === 'all' ? '' : '&status=' + woFilter;
+  const data = await api('/api/work-orders?search=' + encodeURIComponent(search) + f);
   renderWOTable('wo-list', data);
 }
 
 function filterWO(status, el) {
-  currentWOFilter = status;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  woFilter = status;
+  document.querySelectorAll('#view-workorders .tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
-  loadWorkOrders();
+  loadWOs();
 }
 
 function renderWOTable(containerId, data) {
-  const container = document.getElementById(containerId);
+  const c = document.getElementById(containerId);
   if (!data || !data.items || data.items.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128203;</div><div class="empty-text">No work orders found</div></div>';
-    return;
+    c.innerHTML = '<div class="empty"><div class="empty-icon">&#128203;</div><div class="empty-txt">No work orders found</div></div>'; return;
   }
-  container.innerHTML = `<table class="data-table">
-    <thead><tr>
-      <th>WO #</th><th>Customer</th><th>Vehicle</th><th>Service</th>
-      <th>Tech</th><th>Status</th><th>Est. Cost</th><th>Actions</th>
-    </tr></thead>
-    <tbody>${data.items.map(wo => `
-      <tr>
-        <td style="color:var(--ww);font-family:'Share Tech Mono',monospace;font-size:0.75rem;">${wo.work_order_number}</td>
-        <td>${wo.customer_name || '--'}</td>
-        <td style="font-size:0.82rem;">${wo.vehicle || '--'}</td>
-        <td style="font-size:0.82rem;">${wo.service_type || '--'}</td>
-        <td style="font-size:0.82rem;">${wo.tech_name || 'Unassigned'}</td>
-        <td><span class="badge badge-${wo.status}">${wo.status}</span></td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">$${parseFloat(wo.estimated_cost||0).toFixed(2)}</td>
-        <td><button class="btn btn-outline btn-sm" onclick="openWODetail(${wo.id})">View</button></td>
-      </tr>`).join('')}
-    </tbody></table>`;
+  c.innerHTML = `<table class="dt">
+    <thead><tr><th>WO #</th><th>Customer</th><th>Vehicle</th><th>Service</th><th>Tech</th><th>Status</th><th>Est. Cost</th><th></th></tr></thead>
+    <tbody>${data.items.map(wo => `<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--ww);">${wo.work_order_number}</td>
+      <td>${wo.customer_name||'--'}</td>
+      <td style="font-size:0.82rem;">${wo.vehicle||'--'}</td>
+      <td style="font-size:0.8rem;">${wo.service_type||'--'}</td>
+      <td style="font-size:0.82rem;">${wo.tech_name||'Unassigned'}</td>
+      <td><span class="badge b-${wo.status}">${wo.status}</span></td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">$${parseFloat(wo.estimated_cost||0).toFixed(2)}</td>
+      <td><button class="btn btn-o btn-sm" onclick="openWODetail(${wo.id})">View</button></td>
+    </tr>`).join('')}</tbody></table>`;
 }
 
 async function openWODetail(id) {
-  const data = await api(`/api/work-orders/${id}`);
+  const data = await api('/api/work-orders/' + id);
   if (!data) return;
   const wo = data.work_order;
-  document.getElementById('wo-detail-title').textContent = `WORK ORDER — ${wo.work_order_number}`;
+  document.getElementById('wo-detail-title').textContent = 'WORK ORDER — ' + wo.work_order_number;
   document.getElementById('wo-detail-body').innerHTML = `
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;">
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">CUSTOMER</div><div style="font-size:0.95rem;">${wo.customer_name||'--'}</div></div>
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">VEHICLE</div><div style="font-size:0.95rem;">${wo.vehicle||'--'}</div></div>
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">STATUS</div><span class="badge badge-${wo.status}">${wo.status}</span></div>
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">PRIORITY</div><div style="font-size:0.95rem;text-transform:uppercase;">${wo.priority||'normal'}</div></div>
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">SERVICE TYPE</div><div style="font-size:0.95rem;">${wo.service_type||'--'}</div></div>
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">TECHNICIAN</div><div style="font-size:0.95rem;">${wo.tech_name||'Unassigned'}</div></div>
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">EST. HOURS</div><div style="font-size:0.95rem;">${wo.estimated_hours||0}</div></div>
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">EST. COST</div><div style="font-size:0.95rem;color:var(--green);">$${parseFloat(wo.estimated_cost||0).toFixed(2)}</div></div>
+    <div class="row2" style="margin-bottom:12px;">
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">CUSTOMER</div><div>${wo.customer_name||'--'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">VEHICLE</div><div>${wo.vehicle||'--'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">STATUS</div><span class="badge b-${wo.status}">${wo.status}</span></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">PRIORITY</div><div style="text-transform:uppercase;">${wo.priority||'normal'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">SERVICE</div><div>${wo.service_type||'--'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">TECHNICIAN</div><div>${wo.tech_name||'Unassigned'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">EST. HOURS</div><div style="font-family:'Orbitron',monospace;">${wo.estimated_hours||0}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">EST. COST</div><div style="font-family:'Orbitron',monospace;color:var(--green);">$${parseFloat(wo.estimated_cost||0).toFixed(2)}</div></div>
     </div>
-    ${wo.description ? `<div style="margin-bottom:12px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:6px;">DESCRIPTION</div><div style="font-size:0.9rem;color:var(--text-dim);line-height:1.6;">${wo.description}</div></div>` : ''}
-    ${wo.insurer_name ? `<div style="margin-bottom:12px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:4px;">INSURANCE</div><div style="font-size:0.95rem;">${wo.insurer_name}</div></div>` : ''}
-    <div style="margin-top:12px;">
-      <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--text-dim);letter-spacing:0.2em;margin-bottom:8px;">UPDATE STATUS</div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap;">
-        <button class="btn btn-outline btn-sm" onclick="updateWOStatus(${wo.id},'pending')">Pending</button>
-        <button class="btn btn-primary btn-sm" onclick="updateWOStatus(${wo.id},'active')">Active</button>
-        <button class="btn btn-success btn-sm" onclick="updateWOStatus(${wo.id},'completed')">Complete</button>
-        <button class="btn btn-outline btn-sm" onclick="updateWOStatus(${wo.id},'approved')">Approve</button>
-        <button class="btn btn-outline btn-sm" onclick="updateWOStatus(${wo.id},'closed')">Close</button>
-      </div>
-    </div>`;
+    ${wo.insurer_name ? `<div style="margin-bottom:10px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">INSURANCE</div><div>${wo.insurer_name}</div></div>` : ''}
+    ${wo.description ? `<div style="margin-bottom:10px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">DESCRIPTION</div><div style="color:var(--dim);font-size:0.9rem;line-height:1.6;">${wo.description}</div></div>` : ''}
+    <div style="margin-top:14px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:8px;">UPDATE STATUS</div>
+    <div style="display:flex;gap:7px;flex-wrap:wrap;">
+      <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'pending')">Pending</button>
+      <button class="btn btn-p btn-sm" onclick="updateWOStatus(${wo.id},'active')">Active</button>
+      <button class="btn btn-s btn-sm" onclick="updateWOStatus(${wo.id},'completed')">Complete</button>
+      <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'approved')">Approve</button>
+      <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'closed')">Close</button>
+    </div></div>`;
   document.getElementById('wo-detail-footer').innerHTML = `
-    <button class="btn btn-outline" onclick="closeModal('modal-wo-detail')">Close</button>
-    <button class="btn btn-primary" onclick="openBridgeForWO(${wo.id},'${wo.work_order_number}')">&#9889; Message Insurer</button>`;
+    <button class="btn btn-o" onclick="closeModal('modal-wo-detail')">Close</button>
+    <button class="btn btn-p" onclick="openBridgeForWO(${wo.id},'${wo.work_order_number}')">&#9889; Message Insurer</button>
+    <button class="btn btn-s" onclick="triggerAI(${wo.id})">&#129302; AI Assess</button>`;
   openModal('modal-wo-detail');
 }
 
 async function updateWOStatus(id, status) {
-  await api(`/api/work-orders/${id}/status`, 'PATCH', { status });
+  await api('/api/work-orders/' + id + '/status', 'PATCH', {status});
   closeModal('modal-wo-detail');
-  loadWorkOrders();
-  loadDashboard();
+  loadWOs(); loadDashboard();
 }
 
-function openBridgeForWO(id, woNum) {
+function openBridgeForWO(id, num) {
   closeModal('modal-wo-detail');
   toggleBridge();
   setTimeout(() => {
-    const sel = document.getElementById('bridge-claim-id');
+    const sel = document.getElementById('bridge-wo-sel');
     sel.value = id;
-    loadBridgeMessages();
+    loadBridgeMsgs();
   }, 300);
 }
 
-// openNewWO replaced below
+// ── NEW WORK ORDER ─────────────────────────────────────────────────────────────
+let allInsurers = [];
 
+async function openNewWO() {
+  // Reset everything
+  ['wo-cust-id','wo-veh-id','wo-ins-id','wo-ins-name'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['cust-search-res','veh-existing-list','ins-list'].forEach(id => { const el=document.getElementById(id); if(el) el.innerHTML=''; });
+  ['cust-search'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  ['cust-selected-box','veh-selected-box','ins-selected-box'].forEach(id => { const el=document.getElementById(id); if(el){ el.style.display='none'; el.textContent=''; } });
+  document.getElementById('cust-search-res').style.display = 'none';
+  // Reset new customer fields
+  ['nc-first','nc-last','nc-phone','nc-email','nc-addr','nc-city','nc-state','nc-zip'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  // Reset new vehicle fields
+  ['nv-year','nv-make','nv-model','nv-vin','nv-plate','nv-color','nv-miles'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  // Reset insurance fields
+  ['ins-state','ins-search','ins-policy','ins-claim','ins-adj-name','ins-adj-phone','ins-custom','ins-custom-phone'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  // Reset job fields
+  ['job-svc','job-pri','job-tech','job-desc','job-hours','job-cost','job-notes'].forEach(id => { const el=document.getElementById(id); if(el) el.value= id==='job-pri'?'normal':''; });
+  // Reset tabs
+  woTab('cust', document.querySelector('#wo-tabs .tab'));
+  // Load techs
+  const techs = await api('/api/technicians');
+  const tsel = document.getElementById('job-tech');
+  tsel.innerHTML = '<option value="">-- Unassigned --</option>';
+  if (techs && techs.items) techs.items.forEach(t => { tsel.innerHTML += `<option value="${t.employee_id}">${t.name} (${t.role})</option>`; });
+  // Load insurers
+  loadInsurers();
+  openModal('modal-wo');
+}
 
+function woTab(tab, el) {
+  document.querySelectorAll('.wo-tab-content').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('#wo-tabs .tab').forEach(t => t.classList.remove('active'));
+  const tc = document.getElementById('wotab-'+tab);
+  if (tc) tc.classList.add('active');
+  if (el) el.classList.add('active');
+  if (tab === 'veh') loadExistingVehicles();
+}
 
-// createWorkOrder replaced below
+async function searchCusts() {
+  const q = document.getElementById('cust-search').value.trim();
+  const res = document.getElementById('cust-search-res');
+  if (q.length < 2) { res.style.display='none'; res.innerHTML=''; return; }
+  const data = await api('/api/customers?search='+encodeURIComponent(q));
+  if (!data || !data.items || data.items.length === 0) {
+    res.style.display='block'; res.innerHTML='<div class="search-item" style="color:var(--dim);">No customers found</div>'; return;
+  }
+  res.style.display='block';
+  res.innerHTML = data.items.map(c => `<div class="search-item" onclick="selectCust(${c.id},'${(c.first_name+' '+c.last_name).replace(/'/g,'')}')">${c.first_name} ${c.last_name} &bull; ${c.phone||''} &bull; ${c.email||''}</div>`).join('');
+}
+
+function selectCust(id, name) {
+  document.getElementById('wo-cust-id').value = id;
+  document.getElementById('cust-search-res').style.display='none';
+  const box = document.getElementById('cust-selected-box');
+  box.textContent = '✓ SELECTED: ' + name;
+  box.style.display='block';
+  ['nc-first','nc-last','nc-phone','nc-email','nc-addr','nc-city','nc-state','nc-zip'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+async function loadExistingVehicles() {
+  const custId = document.getElementById('wo-cust-id').value;
+  const box = document.getElementById('veh-existing-list');
+  if (!custId) { box.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);padding:8px;">Select a customer first (Customer tab)</div>'; return; }
+  const data = await api('/api/vehicles?customer_id='+custId);
+  if (!data || !data.items || data.items.length === 0) { box.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:0.6rem;color:var(--dim);padding:8px;">No existing vehicles for this customer</div>'; return; }
+  box.innerHTML = '<div style="font-family:Share Tech Mono,monospace;font-size:0.52rem;color:rgba(0,200,255,0.35);letter-spacing:0.2em;margin-bottom:8px;">EXISTING VEHICLES</div>' +
+    data.items.map(v => `<div class="search-item" onclick="selectVeh(${v.id},'${v.year} ${v.make} ${v.model}','${v.vin||''}')">${v.year} ${v.make} ${v.model} &bull; ${v.vin||'No VIN'} &bull; ${v.license_plate||''}</div>`).join('');
+}
+
+function selectVeh(id, desc, vin) {
+  document.getElementById('wo-veh-id').value = id;
+  const box = document.getElementById('veh-selected-box');
+  box.textContent = '✓ SELECTED: ' + desc + (vin ? ' — VIN: '+vin : '');
+  box.style.display='block';
+  ['nv-year','nv-make','nv-model','nv-vin','nv-plate','nv-color','nv-miles'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+}
+
+async function loadInsurers() {
+  const state = (document.getElementById('ins-state')||{}).value || '';
+  const data = await api('/api/insurers?state='+encodeURIComponent(state));
+  allInsurers = (data && data.items) ? data.items : [];
+  renderInsList(allInsurers);
+}
+
+function filterIns() {
+  const q = (document.getElementById('ins-search').value||'').toLowerCase();
+  renderInsList(q ? allInsurers.filter(i => i.company_name.toLowerCase().includes(q)) : allInsurers);
+}
+
+function renderInsList(list) {
+  const box = document.getElementById('ins-list');
+  if (!list || list.length === 0) { box.innerHTML='<div class="search-item" style="color:var(--dim);">No insurers found</div>'; return; }
+  box.innerHTML = list.slice(0,40).map(i => {
+    const tag = i.state === 'national' ? '<span style="font-size:0.48rem;color:var(--dim);"> NATIONAL</span>' : i.state ? `<span style="font-size:0.48rem;color:var(--ww);"> ${i.state}</span>` : '';
+    return `<div class="search-item" onclick="selectIns(${JSON.stringify(i.id||null)},'${i.company_name.replace(/'/g,'')}')">${i.company_name}${tag}</div>`;
+  }).join('');
+}
+
+function selectIns(id, name) {
+  document.getElementById('wo-ins-id').value = id || '';
+  document.getElementById('wo-ins-name').value = name;
+  document.getElementById('ins-custom').value = '';
+  const box = document.getElementById('ins-selected-box');
+  box.textContent = '✓ SELECTED: ' + name;
+  box.style.display='block';
+}
+
+async function createWO() {
+  const custId = document.getElementById('wo-cust-id').value;
+  const vehId = document.getElementById('wo-veh-id').value;
+  const insId = document.getElementById('wo-ins-id').value;
+  const insName = document.getElementById('wo-ins-name').value || document.getElementById('ins-custom').value;
+  const body = {
+    customer_id: custId || null,
+    vehicle_id: vehId || null,
+    customer_first_name: document.getElementById('nc-first').value,
+    customer_last_name: document.getElementById('nc-last').value,
+    customer_phone: document.getElementById('nc-phone').value,
+    customer_email: document.getElementById('nc-email').value,
+    customer_address: document.getElementById('nc-addr').value,
+    customer_city: document.getElementById('nc-city').value,
+    customer_state: document.getElementById('nc-state').value,
+    customer_zip: document.getElementById('nc-zip').value,
+    vehicle_year: document.getElementById('nv-year').value,
+    vehicle_make: document.getElementById('nv-make').value,
+    vehicle_model: document.getElementById('nv-model').value,
+    vehicle_vin: document.getElementById('nv-vin').value,
+    vehicle_plate: document.getElementById('nv-plate').value,
+    vehicle_color: document.getElementById('nv-color').value,
+    vehicle_mileage: document.getElementById('nv-miles').value,
+    insurer_id: insId || null,
+    insurer_name: insName,
+    insurer_phone: document.getElementById('ins-custom-phone').value,
+    insurer_claim_number: document.getElementById('ins-claim').value,
+    service_type: document.getElementById('job-svc').value,
+    priority: document.getElementById('job-pri').value,
+    assigned_to_emp_id: document.getElementById('job-tech').value,
+    description: document.getElementById('job-desc').value,
+    estimated_hours: document.getElementById('job-hours').value,
+    estimated_cost: document.getElementById('job-cost').value,
+    customer_notes: document.getElementById('job-notes').value,
+  };
+  const r = await api('/api/work-orders', 'POST', body);
+  if (r && r.success) {
+    closeModal('modal-wo');
+    loadWOs(); loadDashboard();
+    alert('Work Order ' + r.work_order_number + ' created!');
+  } else {
+    alert('Failed: ' + (r && r.error ? r.error : 'Check Railway logs'));
+  }
+}
 
 // ── Customers ──────────────────────────────────────────────────────────────────
 async function loadCustomers() {
   const data = await api('/api/customers');
-  const container = document.getElementById('customer-list');
-  if (!data || !data.items || data.items.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128100;</div><div class="empty-text">No customers yet</div></div>';
-    return;
-  }
-  container.innerHTML = `<table class="data-table">
-    <thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Last Visit</th><th>Actions</th></tr></thead>
-    <tbody>${data.items.map(c => `
-      <tr>
-        <td>${c.first_name} ${c.last_name}</td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">${c.phone||'--'}</td>
-        <td style="font-size:0.82rem;">${c.email||'--'}</td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--text-dim);">${c.last_visit ? new Date(c.last_visit).toLocaleDateString() : '--'}</td>
-        <td><button class="btn btn-outline btn-sm" onclick="openNewWO()">New WO</button></td>
-      </tr>`).join('')}
-    </tbody></table>`;
+  const c = document.getElementById('cust-list');
+  if (!data || !data.items || data.items.length === 0) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128100;</div><div class="empty-txt">No customers yet</div></div>'; return; }
+  c.innerHTML = `<table class="dt"><thead><tr><th>Name</th><th>Phone</th><th>Email</th><th>Address</th><th>Last Visit</th></tr></thead>
+    <tbody>${data.items.map(cu => `<tr>
+      <td>${cu.first_name} ${cu.last_name}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${cu.phone||'--'}</td>
+      <td style="font-size:0.82rem;">${cu.email||'--'}</td>
+      <td style="font-size:0.8rem;">${[cu.address,cu.city,cu.state].filter(Boolean).join(', ')||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);">${cu.last_visit?new Date(cu.last_visit).toLocaleDateString():'--'}</td>
+    </tr>`).join('')}</tbody></table>`;
 }
 
-async function createCustomer() {
+async function saveCustomer() {
   const body = {
-    first_name: document.getElementById('cust-first').value,
-    last_name: document.getElementById('cust-last').value,
-    phone: document.getElementById('cust-phone').value,
-    email: document.getElementById('cust-email').value,
-    address: document.getElementById('cust-address').value,
-    city: document.getElementById('cust-city').value,
-    state: document.getElementById('cust-state').value,
+    first_name: document.getElementById('c-first').value,
+    last_name: document.getElementById('c-last').value,
+    phone: document.getElementById('c-phone').value,
+    email: document.getElementById('c-email').value,
+    address: document.getElementById('c-addr').value,
+    city: document.getElementById('c-city').value,
+    state: document.getElementById('c-state').value,
+    zip: document.getElementById('c-zip').value,
   };
-  const result = await api('/api/customers', 'POST', body);
-  if (result && result.success) {
-    closeModal('modal-new-customer');
-    loadCustomers();
-  }
+  if (!body.first_name) { alert('First name required'); return; }
+  const r = await api('/api/customers', 'POST', body);
+  if (r && r.success) { closeModal('modal-customer'); loadCustomers(); }
+  else alert('Failed: ' + (r&&r.error?r.error:'Unknown'));
 }
 
 // ── Technicians ────────────────────────────────────────────────────────────────
-async function loadTechnicians() {
+async function loadTechs() {
   const data = await api('/api/technicians');
   renderTechTable('tech-list', data);
 }
 
 function renderTechTable(containerId, data) {
-  const container = document.getElementById(containerId);
-  if (!data || !data.items || data.items.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128295;</div><div class="empty-text">No technicians found</div></div>';
-    return;
-  }
-  container.innerHTML = `<table class="data-table">
-    <thead><tr><th>Technician</th><th>Role</th><th>Active Jobs</th><th>Status</th></tr></thead>
-    <tbody>${data.items.map(t => `
-      <tr>
-        <td>${t.name}</td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;text-transform:uppercase;color:var(--text-dim);">${t.role}</td>
-        <td style="color:var(--ww);font-family:'Orbitron',monospace;">${t.active_jobs||0}</td>
-        <td><span class="badge ${t.active_jobs > 0 ? 'badge-active' : 'badge-closed'}">${t.active_jobs > 0 ? 'On Job' : 'Available'}</span></td>
-      </tr>`).join('')}
-    </tbody></table>`;
+  const c = document.getElementById(containerId);
+  if (!data || !data.items || data.items.length === 0) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128295;</div><div class="empty-txt">No technicians found</div></div>'; return; }
+  c.innerHTML = `<table class="dt"><thead><tr><th>Name</th><th>Role</th><th>Email</th><th>Active Jobs</th><th>Status</th></tr></thead>
+    <tbody>${data.items.map(t => `<tr>
+      <td>${t.name}</td>
+      <td><span class="badge b-role">${t.role}</span></td>
+      <td style="font-size:0.82rem;">${t.email||'--'}</td>
+      <td style="font-family:'Orbitron',monospace;color:var(--ww);">${t.active_jobs||0}</td>
+      <td><span class="badge ${t.active_jobs>0?'b-active':'b-closed'}">${t.active_jobs>0?'On Job':'Available'}</span></td>
+    </tr>`).join('')}</tbody></table>`;
 }
 
 // ── Inventory ──────────────────────────────────────────────────────────────────
 async function loadInventory() {
   const data = await api('/api/inventory');
-  const container = document.getElementById('inventory-list');
-  if (!data || !data.items || data.items.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128230;</div><div class="empty-text">No parts in inventory</div></div>';
-    return;
-  }
-  container.innerHTML = `<table class="data-table">
-    <thead><tr><th>Part #</th><th>Description</th><th>Category</th><th>Qty</th><th>Reorder Point</th><th>Price</th></tr></thead>
-    <tbody>${data.items.map(p => `
-      <tr>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--ww);">${p.part_number||'--'}</td>
-        <td>${p.description||'--'}</td>
-        <td style="font-size:0.82rem;color:var(--text-dim);">${p.category||'--'}</td>
-        <td style="font-family:'Orbitron',monospace;color:${p.quantity <= p.reorder_point ? 'var(--red)' : 'var(--green)'};">${p.quantity}</td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">${p.reorder_point}</td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">$${parseFloat(p.selling_price||0).toFixed(2)}</td>
-      </tr>`).join('')}
-    </tbody></table>`;
+  const c = document.getElementById('inv-list');
+  if (!data || !data.items || data.items.length === 0) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128230;</div><div class="empty-txt">No parts in inventory</div></div>'; return; }
+  c.innerHTML = `<table class="dt"><thead><tr><th>Part #</th><th>Description</th><th>Category</th><th>Qty</th><th>Reorder Pt</th><th>Price</th></tr></thead>
+    <tbody>${data.items.map(p => `<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--ww);">${p.part_number||'--'}</td>
+      <td>${p.description||'--'}</td>
+      <td style="font-size:0.8rem;color:var(--dim);">${p.category||'--'}</td>
+      <td style="font-family:'Orbitron',monospace;color:${p.quantity<=(p.reorder_point||5)?'var(--red)':'var(--green)'};">${p.quantity}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${p.reorder_point||5}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">$${parseFloat(p.selling_price||0).toFixed(2)}</td>
+    </tr>`).join('')}</tbody></table>`;
 }
-
-function openNewPart() { alert('New part form coming soon.'); }
 
 // ── Invoices ───────────────────────────────────────────────────────────────────
 async function loadInvoices() {
   const data = await api('/api/invoices');
-  const container = document.getElementById('invoice-list');
-  if (!data || !data.items || data.items.length === 0) {
-    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128184;</div><div class="empty-text">No invoices yet</div></div>';
-    return;
+  const c = document.getElementById('inv-invoice-list');
+  if (!data || !data.items || data.items.length === 0) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128184;</div><div class="empty-txt">No invoices yet</div></div>'; return; }
+  c.innerHTML = `<table class="dt"><thead><tr><th>Invoice #</th><th>Customer</th><th>Total</th><th>Status</th><th>Due Date</th></tr></thead>
+    <tbody>${data.items.map(i => `<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--ww);">${i.invoice_number}</td>
+      <td>${i.customer_name||'--'}</td>
+      <td style="font-family:'Orbitron',monospace;color:var(--green);">$${parseFloat(i.total||0).toFixed(2)}</td>
+      <td><span class="badge b-${i.status}">${i.status}</span></td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;">${i.due_date?new Date(i.due_date).toLocaleDateString():'--'}</td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+// ── Employees ──────────────────────────────────────────────────────────────────
+async function loadEmployees() {
+  const data = await api('/api/employees');
+  const c = document.getElementById('emp-list');
+  if (!data || !data.items || data.items.length === 0) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128101;</div><div class="empty-txt">No employees found</div></div>'; return; }
+  c.innerHTML = `<table class="dt"><thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th><th>Phone</th><th>Rate</th><th>Active Jobs</th><th>Last Login</th><th></th></tr></thead>
+    <tbody>${data.items.map(e => `<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);">${e.employee_id}</td>
+      <td>${e.name}</td>
+      <td><span class="badge b-role">${e.role}</span></td>
+      <td style="font-size:0.8rem;">${e.email||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">${e.phone||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">$${parseFloat(e.hourly_rate||0).toFixed(2)}</td>
+      <td style="font-family:'Orbitron',monospace;color:var(--ww);">${e.active_jobs||0}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);">${e.last_login?new Date(e.last_login).toLocaleDateString():'Never'}</td>
+      <td><button class="btn btn-o btn-sm" onclick="openEditEmp('${e.employee_id}','${e.name.replace(/'/g,'')}','${e.role}','${e.email||''}','${e.phone||''}',${e.hourly_rate||0})">Edit</button></td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+function openNewEmployee() {
+  if (!['admin','manager','developer'].includes(role)) { alert('Only admins and managers can create employees.'); return; }
+  document.getElementById('emp-edit-id').value = '';
+  document.getElementById('emp-modal-title').textContent = 'NEW EMPLOYEE';
+  ['emp-name','emp-email','emp-phone','emp-rate','emp-pw'].forEach(id => { document.getElementById(id).value=''; });
+  document.getElementById('emp-role').value = 'technician';
+  document.getElementById('emp-deactivate-btn').style.display='none';
+  document.getElementById('emp-pw-hint').textContent = '(required for new)';
+  openModal('modal-employee');
+}
+
+function openEditEmp(id, name, empRole, email, phone, rate) {
+  document.getElementById('emp-edit-id').value = id;
+  document.getElementById('emp-modal-title').textContent = 'EDIT — ' + name;
+  document.getElementById('emp-name').value = name;
+  document.getElementById('emp-role').value = empRole;
+  document.getElementById('emp-email').value = email;
+  document.getElementById('emp-phone').value = phone;
+  document.getElementById('emp-rate').value = rate;
+  document.getElementById('emp-pw').value = '';
+  document.getElementById('emp-deactivate-btn').style.display='inline-block';
+  document.getElementById('emp-pw-hint').textContent = '(leave blank to keep current)';
+  openModal('modal-employee');
+}
+
+async function saveEmployee() {
+  const editId = document.getElementById('emp-edit-id').value;
+  const body = {
+    name: document.getElementById('emp-name').value,
+    role: document.getElementById('emp-role').value,
+    email: document.getElementById('emp-email').value,
+    phone: document.getElementById('emp-phone').value,
+    hourly_rate: document.getElementById('emp-rate').value || 0,
+    password: document.getElementById('emp-pw').value || undefined,
+  };
+  if (!body.name) { alert('Name is required.'); return; }
+  if (!editId && !body.password) { alert('Password is required for new employees.'); return; }
+  const path = editId ? '/api/employees/'+editId : '/api/employees';
+  const method = editId ? 'PATCH' : 'POST';
+  const r = await api(path, method, body);
+  if (r && r.success) {
+    closeModal('modal-employee');
+    loadEmployees();
+    if (!editId) alert('Employee created! Login ID: ' + r.employee_id);
+  } else {
+    alert('Failed: ' + (r&&r.error?r.error:'Unknown'));
   }
-  container.innerHTML = `<table class="data-table">
-    <thead><tr><th>Invoice #</th><th>Customer</th><th>Total</th><th>Status</th><th>Due Date</th></tr></thead>
-    <tbody>${data.items.map(i => `
-      <tr>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;color:var(--ww);">${i.invoice_number}</td>
-        <td>${i.customer_name||'--'}</td>
-        <td style="font-family:'Orbitron',monospace;color:var(--green);">$${parseFloat(i.total||0).toFixed(2)}</td>
-        <td><span class="badge badge-${i.status}">${i.status}</span></td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${i.due_date ? new Date(i.due_date).toLocaleDateString() : '--'}</td>
-      </tr>`).join('')}
-    </tbody></table>`;
+}
+
+async function deactivateEmp() {
+  const id = document.getElementById('emp-edit-id').value;
+  if (!confirm('Deactivate this employee? They will lose all access immediately.')) return;
+  const r = await api('/api/employees/'+id, 'DELETE');
+  if (r && r.success) { closeModal('modal-employee'); loadEmployees(); }
+  else alert('Failed: ' + (r&&r.error?r.error:'Unknown'));
+}
+
+// ── AI Assessment ──────────────────────────────────────────────────────────────
+async function triggerAI(woId) {
+  if (!confirm('Run AI damage assessment on this work order?')) return;
+  const r = await api('/api/ai/assess/'+woId, 'POST');
+  if (!r || !r.success) { alert('AI assessment failed: ' + (r&&r.error?r.error:'Unknown')); return; }
+  let msg = `AI Assessment Complete${r.demo_mode?' [DEMO]':''}\n\n`;
+  msg += `Total Cost: $${parseFloat(r.total_cost||0).toFixed(2)}\n`;
+  msg += `Labor Hours: ${r.total_hours||0}\n`;
+  msg += `Repairable: ${r.repairable?'Yes':'Total Loss'}\n`;
+  msg += `Total Loss Score: ${((r.total_loss_score||0)*100).toFixed(0)}%\n`;
+  msg += `Fraud Score: ${((r.fraud_score||0)*100).toFixed(0)}%\n\n`;
+  if (r.parts && r.parts.length > 0) {
+    msg += 'Parts Assessed:\n';
+    r.parts.forEach(p => { msg += `• ${p.part_name}: ${p.damage_type} (${p.severity}) → ${(p.recommended_action||'').toUpperCase()} — $${Math.min(p.repair_cost||0,p.replace_cost||0).toFixed(2)}\n`; });
+  }
+  alert(msg);
+  loadWOs();
 }
 
 // ── Modals ─────────────────────────────────────────────────────────────────────
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-function openNewCustomer() { openModal('modal-new-customer'); }
 
 // ── Clock ──────────────────────────────────────────────────────────────────────
 function updateClock() {
   const now = new Date();
-  document.getElementById('topbar-time').textContent =
-    now.toLocaleDateString('en-US', {month:'short',day:'numeric'}) + ' ' +
-    now.toLocaleTimeString('en-US', {hour:'2-digit',minute:'2-digit'});
+  document.getElementById('clock').textContent = now.toLocaleDateString('en-US',{month:'short',day:'numeric'}) + ' ' + now.toLocaleTimeString('en-US',{hour:'2-digit',minute:'2-digit'});
 }
-setInterval(updateClock, 1000);
-updateClock();
+setInterval(updateClock, 1000); updateClock();
 
 // ── Logout ─────────────────────────────────────────────────────────────────────
 function logout() {
-  fetch(API + '/api/logout', { method:'POST', headers:{'Authorization':`Bearer ${token}`} });
+  fetch(API+'/api/logout',{method:'POST',headers:{'Authorization':`Bearer ${token}`}});
   sessionStorage.clear();
   window.location.href = 'wrenchware.html';
 }
