@@ -18,7 +18,7 @@
     html,body{height:100%;background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;overflow:hidden;}
     #app{display:flex;height:100vh;overflow:hidden;}
 
-    #sidebar{width:220px;min-width:220px;background:rgba(255,107,0,0.03);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;}
+    #sidebar{width:220px;min-width:220px;background:rgba(255,107,0,0.03);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;overflow-y:auto;}
     .sidebar-logo{padding:20px 18px 16px;border-bottom:1px solid var(--border);}
     .sidebar-logo .brand{font-family:'Orbitron',monospace;font-weight:900;font-size:0.85rem;color:var(--accent);letter-spacing:0.12em;text-shadow:0 0 12px rgba(255,107,0,0.4);}
     .sidebar-logo .brand sup{font-size:0.4em;color:var(--magenta);vertical-align:super;}
@@ -27,9 +27,9 @@
     .nav-item{display:flex;align-items:center;gap:10px;padding:9px 18px;cursor:pointer;transition:background 0.2s,color 0.2s;border-left:2px solid transparent;font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;}
     .nav-item:hover{background:rgba(255,107,0,0.06);color:var(--accent);}
     .nav-item.active{background:rgba(255,107,0,0.08);border-left-color:var(--accent);color:var(--accent);}
-    .nav-item .icon{font-size:0.9rem;width:18px;text-align:center;}
-    .nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;}
-    .fraud-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;animation:pulseBadge 1s infinite;}
+    .nav-item .icon{font-size:0.9rem;width:18px;text-align:center;flex-shrink:0;}
+    .nav-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;font-family:'Share Tech Mono',monospace;}
+    .fraud-badge{margin-left:auto;background:var(--red);color:#fff;font-size:0.45rem;padding:2px 6px;border-radius:8px;animation:pulseBadge 1s infinite;font-family:'Share Tech Mono',monospace;}
     @keyframes pulseBadge{0%,100%{opacity:1}50%{opacity:0.4}}
     .sidebar-bottom{margin-top:auto;padding:14px 18px;border-top:1px solid var(--border);}
     .user-name{color:var(--accent);font-size:0.65rem;margin-bottom:2px;font-family:'Share Tech Mono',monospace;}
@@ -42,12 +42,11 @@
     .topbar-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.9rem;color:#fff;letter-spacing:0.08em;}
     .topbar-right{margin-left:auto;display:flex;align-items:center;gap:12px;}
     .bridge-status{display:flex;align-items:center;gap:6px;padding:4px 12px;border:1px solid rgba(0,255,136,0.25);background:rgba(0,255,136,0.05);font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--green);letter-spacing:0.1em;}
-    .status-dot-live{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulseDot 1.5s infinite;}
+    .status-dot-live{width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulseDot 1.5s infinite;flex-shrink:0;}
     @keyframes pulseDot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
 
     #content{flex:1;overflow-y:auto;padding:24px;}
-    .view{display:none;}
-    .view.active{display:block;}
+    .view{display:none;}.view.active{display:block;}
 
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
     .stat-card{border:1px solid var(--border);background:var(--panel);padding:16px 18px;position:relative;overflow:hidden;}
@@ -68,7 +67,6 @@
     .panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),transparent);}
     .panel-header{padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
     .panel-title{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--accent);letter-spacing:0.1em;font-weight:700;}
-    .panel-body{padding:16px 20px;}
 
     .data-table{width:100%;border-collapse:collapse;}
     .data-table th{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(255,107,0,0.45);letter-spacing:0.2em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
@@ -85,14 +83,16 @@
     .badge-high{color:var(--red);border:1px solid rgba(255,68,102,0.3);background:rgba(255,68,102,0.08);}
     .badge-medium{color:var(--accent);border:1px solid rgba(255,107,0,0.3);background:rgba(255,107,0,0.06);}
     .badge-low{color:var(--green);border:1px solid rgba(0,255,136,0.3);background:rgba(0,255,136,0.06);}
+    .badge-role{color:var(--accent);border:1px solid rgba(255,107,0,0.2);}
 
     /* Bridge */
-    #bridge-panel{display:none;position:fixed;bottom:20px;right:20px;width:360px;height:480px;border:1px solid rgba(0,255,136,0.3);background:rgba(2,4,8,0.97);backdrop-filter:blur(12px);z-index:200;flex-direction:column;box-shadow:0 0 40px rgba(0,255,136,0.1);}
+    #bridge-panel{display:none;position:fixed;bottom:20px;right:20px;width:360px;height:480px;border:1px solid rgba(0,255,136,0.3);background:rgba(2,4,8,0.97);z-index:200;flex-direction:column;box-shadow:0 0 40px rgba(0,255,136,0.1);}
     #bridge-panel.open{display:flex;}
     #bridge-panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),var(--green),var(--accent));}
     .bridge-header{padding:12px 16px;border-bottom:1px solid rgba(0,255,136,0.15);display:flex;align-items:center;gap:10px;}
     .bridge-header-title{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--green);letter-spacing:0.1em;font-weight:700;flex:1;}
     .bridge-close{background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:1rem;padding:2px 6px;}
+    .bridge-close:hover{color:var(--red);}
     .bridge-claim-select{padding:10px 14px;border-bottom:1px solid rgba(0,255,136,0.1);}
     .bridge-claim-select select{width:100%;background:rgba(255,107,0,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:6px 10px;outline:none;}
     .bridge-claim-select select option{background:#020408;}
@@ -102,23 +102,41 @@
     .msg.shop{align-self:flex-start;background:rgba(0,200,255,0.08);border:1px solid rgba(0,200,255,0.2);}
     .msg.system{align-self:center;background:rgba(0,255,136,0.06);border:1px solid rgba(0,255,136,0.15);color:var(--green);font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;text-align:center;max-width:100%;}
     .msg-meta{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--text-dim);margin-top:4px;}
-    .bridge-input{padding:10px 14px;border-top:1px solid rgba(0,255,136,0.15);display:flex;gap:8px;}
-    .bridge-input input{flex:1;background:rgba(255,107,0,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;}
-    .bridge-input input:focus{border-color:var(--accent);}
+    .bridge-input-row{padding:10px 14px;border-top:1px solid rgba(0,255,136,0.15);display:flex;gap:8px;}
+    .bridge-input-row input{flex:1;background:rgba(255,107,0,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;}
+    .bridge-input-row input:focus{border-color:var(--accent);}
     .bridge-send{background:var(--accent);color:#fff;border:none;padding:8px 14px;font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.1em;cursor:pointer;font-weight:700;}
     #bridge-fab{position:fixed;bottom:20px;right:20px;width:52px;height:52px;background:var(--accent);border:none;cursor:pointer;z-index:199;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 0 20px rgba(255,107,0,0.4);transition:transform 0.2s;}
     #bridge-fab:hover{transform:scale(1.1);}
 
-    .btn{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;border:none;padding:9px 20px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:transform 0.15s;}
+    .btn{font-family:'Share Tech Mono',monospace;font-size:0.65rem;letter-spacing:0.15em;text-transform:uppercase;border:none;padding:9px 20px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);transition:transform 0.15s;font-weight:700;}
     .btn:hover{transform:translateY(-1px);}
-    .btn-primary{background:var(--accent);color:#fff;font-weight:700;}
-    .btn-outline{background:transparent;color:var(--accent);border:1px solid var(--border);}
+    .btn-primary{background:var(--accent);color:#fff;}
+    .btn-outline{background:transparent;color:var(--accent);border:1px solid rgba(255,107,0,0.3);}
     .btn-sm{padding:5px 14px;font-size:0.58rem;}
 
-    .tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;}
-    .tab{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:10px 18px;cursor:pointer;color:var(--text-dim);border-bottom:2px solid transparent;}
+    .tab-bar{display:flex;border-bottom:1px solid var(--border);margin-bottom:16px;overflow-x:auto;}
+    .tab{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.15em;text-transform:uppercase;padding:10px 18px;cursor:pointer;color:var(--text-dim);border-bottom:2px solid transparent;white-space:nowrap;}
     .tab:hover{color:var(--accent);}
     .tab.active{color:var(--accent);border-bottom-color:var(--accent);}
+
+    /* MODAL */
+    .overlay{display:none;position:fixed;inset:0;background:rgba(2,4,8,0.88);z-index:300;align-items:center;justify-content:center;padding:20px 0;}
+    .overlay.open{display:flex;}
+    .modal{width:600px;max-width:96vw;border:1px solid rgba(255,107,0,0.3);background:#050c12;position:relative;max-height:90vh;overflow-y:auto;}
+    .modal::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--accent),var(--red),transparent);}
+    .mh{padding:14px 20px;border-bottom:1px solid rgba(255,107,0,0.15);display:flex;align-items:center;justify-content:space-between;}
+    .mt{font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--accent);letter-spacing:0.1em;font-weight:700;}
+    .mc{background:transparent;border:none;color:var(--text-dim);cursor:pointer;font-size:1.2rem;}
+    .mc:hover{color:var(--red);}
+    .mb{padding:18px 20px;}
+    .mf{padding:12px 20px;border-top:1px solid rgba(255,107,0,0.1);display:flex;gap:10px;justify-content:flex-end;}
+    .fg{margin-bottom:12px;}
+    .fg label{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(255,107,0,0.45);letter-spacing:0.22em;text-transform:uppercase;display:block;margin-bottom:6px;}
+    .fg input,.fg select,.fg textarea{width:100%;background:rgba(255,107,0,0.03);border:1px solid rgba(255,107,0,0.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.95rem;padding:10px 12px;outline:none;transition:border-color 0.2s;}
+    .fg input:focus,.fg select:focus{border-color:var(--accent);}
+    .fg select option{background:#020408;}
+    .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
 
     .empty-state{text-align:center;padding:48px 20px;color:var(--text-dim);}
     .empty-icon{font-size:2rem;margin-bottom:12px;opacity:0.4;}
@@ -139,16 +157,23 @@
       <div class="sub">// Powered by WrenchWare Pro&#8482;</div>
     </div>
     <div class="nav-section">Claims</div>
-    <div class="nav-item active" onclick="showView('dashboard')"><span class="icon">&#9783;</span> Dashboard</div>
-    <div class="nav-item" onclick="showView('claims')"><span class="icon">&#128203;</span> All Claims<span class="nav-badge" id="badge-claims">0</span></div>
-    <div class="nav-item" onclick="showView('myclaims')"><span class="icon">&#128100;</span> My Claims</div>
+    <div class="nav-item active" onclick="showView('dashboard',this)"><span class="icon">&#9783;</span> Dashboard</div>
+    <div class="nav-item" onclick="showView('claims',this)"><span class="icon">&#128203;</span> All Claims<span class="nav-badge" id="badge-claims">0</span></div>
+    <div class="nav-item" onclick="showView('myclaims',this)"><span class="icon">&#128100;</span> My Claims</div>
     <div class="nav-section">Intelligence</div>
-    <div class="nav-item" onclick="showView('fraud')"><span class="icon">&#128680;</span> Fraud Alerts<span class="fraud-badge" id="badge-fraud">0</span></div>
-    <div class="nav-section">Team</div>
-    <div class="nav-item" onclick="showView('employees')"><span class="icon">&#128101;</span> Adjusters</div>
+    <div class="nav-item" onclick="showView('fraud',this)"><span class="icon">&#128680;</span> Fraud Alerts<span class="fraud-badge" id="badge-fraud">0</span></div>
+    <!-- Admin-only nav items injected by JS -->
+    <div id="nav-admin-section" style="display:none;">
+      <div class="nav-section">Admin</div>
+      <div class="nav-item" id="nav-adjusters" onclick="showView('employees',this)"><span class="icon">&#128101;</span> Adjusters</div>
+    </div>
     <div class="nav-section">Bridge&#8482;</div>
-    <div class="nav-item" onclick="toggleBridge()"><span class="icon">&#9889;</span> Shop Bridge<span class="badge" style="margin-left:auto;background:var(--green);color:var(--dark);font-family:'Share Tech Mono',monospace;font-size:0.45rem;padding:2px 6px;border-radius:8px;">LIVE</span></div>
-    <div style="padding:8px 18px;border-top:1px solid rgba(255,107,0,0.08);margin-top:0;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(200,232,240,0.25);letter-spacing:0.15em;">POWERED BY</div><div style="font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;">WrenchWare Pro<sup style="font-size:0.4em;color:var(--magenta);">&#8482;</sup></div></div><div class="sidebar-bottom">
+    <div class="nav-item" onclick="toggleBridge()"><span class="icon">&#9889;</span> Shop Bridge<span style="margin-left:auto;background:var(--green);color:var(--dark);font-family:'Share Tech Mono',monospace;font-size:0.45rem;padding:2px 6px;border-radius:8px;">LIVE</span></div>
+    <div style="padding:8px 18px;border-top:1px solid rgba(255,107,0,0.08);">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(200,232,240,0.25);letter-spacing:0.15em;">POWERED BY</div>
+      <div style="font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;">WrenchWare Pro<sup style="font-size:0.4em;color:var(--magenta);">&#8482;</sup></div>
+    </div>
+    <div class="sidebar-bottom">
       <div class="user-name" id="sb-username">Loading...</div>
       <div class="user-role" id="sb-role">--</div>
       <button class="btn-logout" onclick="logout()">&#8594; Sign Out</button>
@@ -179,11 +204,11 @@
         </div>
         <div class="panel">
           <div class="panel-header"><span class="panel-title">&#9654; Recent Claims</span></div>
-          <div style="padding:0;" id="dashboard-claims"><div class="loading">LOADING CLAIMS...</div></div>
+          <div id="dashboard-claims"><div class="loading">LOADING CLAIMS...</div></div>
         </div>
         <div class="panel">
           <div class="panel-header"><span class="panel-title">&#128680; Active Fraud Alerts</span></div>
-          <div style="padding:0;" id="dashboard-fraud"><div class="loading">LOADING ALERTS...</div></div>
+          <div id="dashboard-fraud"><div class="loading">LOADING ALERTS...</div></div>
         </div>
       </div>
 
@@ -197,8 +222,8 @@
           <div class="tab" onclick="filterClaims('approved',this)">Approved</div>
         </div>
         <div class="panel">
-          <div class="panel-header"><span class="panel-title">&#9654; Claims</span></div>
-          <div style="padding:0;" id="claims-list"><div class="loading">LOADING...</div></div>
+          <div class="panel-header"><span class="panel-title">&#9654; All Claims</span></div>
+          <div id="claims-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
@@ -206,7 +231,7 @@
       <div class="view" id="view-myclaims">
         <div class="panel">
           <div class="panel-header"><span class="panel-title">&#9654; My Assigned Claims</span></div>
-          <div style="padding:0;" id="myclaims-list"><div class="loading">LOADING...</div></div>
+          <div id="myclaims-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
@@ -214,7 +239,18 @@
       <div class="view" id="view-fraud">
         <div class="panel">
           <div class="panel-header"><span class="panel-title">&#128680; Fraud Alerts</span></div>
-          <div style="padding:0;" id="fraud-list"><div class="loading">LOADING...</div></div>
+          <div id="fraud-list"><div class="loading">LOADING...</div></div>
+        </div>
+      </div>
+
+      <!-- EMPLOYEES — INSURER ADMIN ONLY — insurer roles filtered -->
+      <div class="view" id="view-employees">
+        <div class="panel">
+          <div class="panel-header">
+            <span class="panel-title">&#9654; Adjuster &amp; Staff Management</span>
+            <button class="btn btn-primary btn-sm" onclick="openNewEmployee()">+ New Staff</button>
+          </div>
+          <div id="employee-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
@@ -222,7 +258,7 @@
   </div>
 </div>
 
-<button id="bridge-fab" onclick="toggleBridge()" title="Darkbloom Bridge™">&#9889;</button>
+<button id="bridge-fab" onclick="toggleBridge()" title="Darkbloom Bridge&#8482;">&#9889;</button>
 
 <div id="bridge-panel">
   <div class="bridge-header">
@@ -238,42 +274,43 @@
   <div class="bridge-messages" id="bridge-messages">
     <div class="msg system">Select a claim to message the repair shop.</div>
   </div>
-  <div class="bridge-input">
+  <div class="bridge-input-row">
     <input type="text" id="bridge-msg-input" placeholder="Message shop..." onkeydown="if(event.key==='Enter')sendBridgeMessage()"/>
     <button class="bridge-send" onclick="sendBridgeMessage()">SEND</button>
   </div>
 </div>
 
-<!-- NEW ADJUSTER MODAL -->
-<div class="modal-overlay" id="modal-new-employee">
-  <div class="modal" style="border-color:rgba(255,107,0,0.3);">
-    <div class="modal-header" style="border-color:rgba(255,107,0,0.15);">
-      <span class="modal-title" style="color:var(--accent);">NEW ADJUSTER / INSURER STAFF</span>
-      <button class="modal-close" onclick="closeModal('modal-new-employee')">&#10005;</button>
+<!-- NEW STAFF MODAL -->
+<div class="overlay" id="modal-new-employee">
+  <div class="modal">
+    <div class="mh">
+      <span class="mt">NEW ADJUSTER / INSURER STAFF</span>
+      <button class="mc" onclick="closeModal('modal-new-employee')">&#10005;</button>
     </div>
-    <div class="modal-body">
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Full Name</label><input type="text" id="emp-name" placeholder="John Doe" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
-        <div class="form-group">
-          <label style="color:rgba(255,107,0,0.45);">// Role</label>
-          <select id="emp-role" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);">
+    <div class="mb">
+      <div class="row2">
+        <div class="fg"><label>Full Name</label><input type="text" id="emp-name" placeholder="John Doe"/></div>
+        <div class="fg">
+          <label>Role</label>
+          <!-- FIX: Insurer-only roles -->
+          <select id="emp-role">
             <option value="claims_adjuster">Claims Adjuster</option>
             <option value="claims_admin">Claims Admin</option>
             <option value="insurance_admin">Insurance Admin</option>
           </select>
         </div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;">
-        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Email</label><input type="email" id="emp-email" placeholder="adjuster@insurer.com" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
-        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Phone</label><input type="tel" id="emp-phone" placeholder="(555) 000-0000" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
+      <div class="row2">
+        <div class="fg"><label>Email</label><input type="email" id="emp-email" placeholder="adjuster@insurer.com"/></div>
+        <div class="fg"><label>Phone</label><input type="tel" id="emp-phone" placeholder="(555) 000-0000"/></div>
       </div>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
-        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Password</label><input type="password" id="emp-password" placeholder="Set login password" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
-        <div class="form-group"><label style="color:rgba(255,107,0,0.45);">// Hourly Rate ($)</label><input type="number" id="emp-rate" placeholder="35.00" style="border-color:rgba(255,107,0,0.15);background:rgba(255,107,0,0.03);"/></div>
+      <div class="row2">
+        <div class="fg"><label>Password</label><input type="password" id="emp-password" placeholder="Set login password"/></div>
+        <div class="fg"><label>Hourly Rate ($)</label><input type="number" id="emp-rate" placeholder="35.00" step="0.50" min="0"/></div>
       </div>
     </div>
-    <div style="padding:14px 20px;border-top:1px solid rgba(255,107,0,0.1);display:flex;gap:10px;justify-content:flex-end;">
-      <button class="btn btn-outline" style="color:var(--accent);border-color:rgba(255,107,0,0.3);" onclick="closeModal('modal-new-employee')">Cancel</button>
+    <div class="mf">
+      <button class="btn btn-outline" onclick="closeModal('modal-new-employee')">Cancel</button>
       <button class="btn btn-primary" onclick="createEmployee()">Create Staff</button>
     </div>
   </div>
@@ -288,31 +325,41 @@ const token = sessionStorage.getItem('cs_token') || sessionStorage.getItem('ww_t
 const role  = sessionStorage.getItem('cs_role')  || sessionStorage.getItem('ww_role');
 const name  = sessionStorage.getItem('cs_name')  || sessionStorage.getItem('ww_name');
 
-// Redirect shop roles away from insurer dashboard
-if (role && ['admin','manager','technician','parts_manager','developer'].includes(role)) {
-  window.location.href = 'shop-dashboard.html';
-}
+// FIX: Correct role sets — shop roles redirect away, insurer roles stay
+const SHOP_ROLES = ['admin','manager','technician','parts_manager','developer'];
+const INSURER_ROLES = ['claims_adjuster','claims_admin','insurance_admin','insurer_admin'];
+const INSURER_ADMIN_ROLES = ['claims_admin','insurance_admin','insurer_admin'];
 
-if (!token) window.location.href = 'claimsync.html';
+if (!token) { window.location.href = 'claimsync.html'; }
+if (role && SHOP_ROLES.includes(role)) { window.location.href = 'shop-dashboard.html'; }
+// If role is not recognized as insurer, redirect to login
+if (role && !INSURER_ROLES.includes(role)) { window.location.href = 'claimsync.html'; }
 
 document.getElementById('sb-username').textContent = name || 'User';
-document.getElementById('sb-role').textContent = role || '';
+document.getElementById('sb-role').textContent = role ? role.replace(/_/g,' ').toUpperCase() : '';
+
+// FIX: Show admin nav only for admin roles
+if (INSURER_ADMIN_ROLES.includes(role)) {
+  document.getElementById('nav-admin-section').style.display = 'block';
+}
 
 async function api(path, method='GET', body=null) {
   const opts = { method, headers: {'Content-Type':'application/json','Authorization':`Bearer ${token}`} };
   if (body) opts.body = JSON.stringify(body);
-  const r = await fetch(API + path, opts);
-  if (r.status === 401) { logout(); return null; }
-  return r.json();
+  try {
+    const r = await fetch(API + path, opts);
+    if (r.status === 401) { logout(); return null; }
+    return r.json();
+  } catch(e) { console.error('API error:', e); return null; }
 }
 
-// Bridge
+// ── Bridge ─────────────────────────────────────────────────────────────────────
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_ANON);
 let bridgeChannel = null;
 let currentClaimId = null;
 
 function initBridge() {
-  bridgeChannel = sb.channel('bridge-insurer')
+  bridgeChannel = sb.channel('bridge-insurer-v2')
     .on('postgres_changes', { event:'INSERT', schema:'public', table:'claim_messages' }, (payload) => {
       const msg = payload.new;
       if (msg.sender_type === 'shop' && currentClaimId && msg.claim_sharing_id == currentClaimId) {
@@ -323,14 +370,11 @@ function initBridge() {
       const bar = document.getElementById('bridge-status-bar');
       const label = document.getElementById('bridge-conn-label');
       if (status === 'SUBSCRIBED') {
-        bar.className = 'bridge-status';
         bar.innerHTML = '<span class="status-dot-live"></span><span>BRIDGE LIVE</span>';
-        label.textContent = 'CONNECTED'; label.style.color = 'var(--green)';
+        if(label){label.textContent='CONNECTED';label.style.color='var(--green)';}
       } else {
-        bar.className = 'bridge-status';
-        bar.style.borderColor = 'rgba(255,68,102,0.25)';
-        bar.innerHTML = '<span style="width:7px;height:7px;background:var(--red);border-radius:50%;display:inline-block;"></span><span>OFFLINE</span>';
-        label.textContent = 'OFFLINE'; label.style.color = 'var(--red)';
+        bar.innerHTML = '<span style="width:7px;height:7px;background:var(--red);border-radius:50%;display:inline-block;flex-shrink:0;"></span><span>OFFLINE</span>';
+        if(label){label.textContent='OFFLINE';label.style.color='var(--red)';}
       }
     });
 }
@@ -344,7 +388,7 @@ function toggleBridge() {
 }
 
 async function loadBridgeClaimList() {
-  const data = await api('/api/claims?limit=20');
+  const data = await api('/api/claims?limit=50');
   const sel = document.getElementById('bridge-claim-id');
   sel.innerHTML = '<option value="">-- Select Claim --</option>';
   if (data && data.items) {
@@ -386,28 +430,34 @@ async function sendBridgeMessage() {
   await api('/api/bridge/send', 'POST', { claim_sharing_id: currentClaimId, message: text, sender_type: 'insurer', sender_name: name });
 }
 
-// Views
-const viewTitles = { dashboard:'Dashboard', claims:'All Claims', myclaims:'My Claims', fraud:'Fraud Alerts' };
+// ── Views ──────────────────────────────────────────────────────────────────────
+const VIEW_TITLES = { dashboard:'Dashboard', claims:'All Claims', myclaims:'My Claims', fraud:'Fraud Alerts', employees:'Staff Management' };
 let currentClaimsFilter = 'all';
 
-function showView(v) {
-  ['dashboard','claims','myclaims','fraud'].forEach(id => document.getElementById(`view-${id}`).classList.remove('active'));
-  document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-  document.getElementById(`view-${v}`).classList.add('active');
-  document.getElementById('topbar-title').textContent = viewTitles[v] || v;
-  if (v==='dashboard') loadDashboard();
-  else if (v==='claims') loadClaims();
-  else if (v==='myclaims') loadMyClaims();
-  else if (v==='fraud') loadFraud();
-  else if (v==='employees') loadEmployees();
+function showView(v, el) {
+  ['dashboard','claims','myclaims','fraud','employees'].forEach(id => {
+    const el = document.getElementById(`view-${id}`);
+    if (el) el.classList.remove('active');
+  });
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const vEl = document.getElementById(`view-${v}`);
+  if (vEl) vEl.classList.add('active');
+  if (el) el.classList.add('active');
+  document.getElementById('topbar-title').textContent = VIEW_TITLES[v] || v;
+  const loaders = {
+    dashboard: loadDashboard, claims: loadClaims, myclaims: loadMyClaims,
+    fraud: loadFraud, employees: loadEmployees
+  };
+  if (loaders[v]) loaders[v]();
 }
 
+// ── Dashboard ──────────────────────────────────────────────────────────────────
 async function loadDashboard() {
   const claims = await api('/api/claims');
   if (claims && claims.items) {
     const open = claims.items.filter(c => ['pending','active'].includes(c.status)).length;
     const closed = claims.items.filter(c => c.status==='closed').length;
-    const mine = claims.items.filter(c => c.assigned_adjuster_id === (sessionStorage.getItem('cs_role'))).length;
+    const mine = claims.items.filter(c => c.status === 'active').length; // approximate
     document.getElementById('stat-open').textContent = open;
     document.getElementById('stat-closed').textContent = closed;
     document.getElementById('stat-mine').textContent = mine;
@@ -422,6 +472,7 @@ async function loadDashboard() {
   }
 }
 
+// ── Claims ─────────────────────────────────────────────────────────────────────
 async function loadClaims() {
   const f = currentClaimsFilter === 'all' ? '' : `?status=${currentClaimsFilter}`;
   const data = await api(`/api/claims${f}`);
@@ -440,7 +491,7 @@ async function loadFraud() {
 
 function filterClaims(status, el) {
   currentClaimsFilter = status;
-  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('#view-claims .tab').forEach(t => t.classList.remove('active'));
   el.classList.add('active');
   loadClaims();
 }
@@ -460,9 +511,7 @@ function renderClaimsTable(containerId, data) {
       <td style="font-size:0.82rem;">${cl.insurer_name||'--'}</td>
       <td><span class="badge badge-${cl.status}">${cl.status}</span></td>
       <td style="font-family:'Share Tech Mono',monospace;font-size:0.72rem;">$${parseFloat(cl.estimated_cost||0).toFixed(2)}</td>
-      <td style="display:flex;gap:6px;">
-        <button class="btn btn-outline btn-sm" onclick="openBridgeForClaim(${cl.id},'${cl.work_order_number}')">&#9889; Message Shop</button>
-      </td>
+      <td><button class="btn btn-outline btn-sm" onclick="openBridgeForClaim(${cl.id},'${cl.work_order_number}')">&#9889; Message Shop</button></td>
     </tr>`).join('')}
     </tbody></table>`;
 }
@@ -487,75 +536,86 @@ function renderFraudTable(containerId, data) {
 }
 
 function openBridgeForClaim(id, woNum) {
-  toggleBridge();
+  const p = document.getElementById('bridge-panel');
+  if (!p.classList.contains('open')) toggleBridge();
+  else loadBridgeClaimList();
   setTimeout(() => {
     const sel = document.getElementById('bridge-claim-id');
     sel.value = id;
     loadBridgeMessages();
-  }, 300);
+  }, 350);
 }
 
+// ── Employees — FIX: Insurer-only roles, admin-gated ──────────────────────────
+const INSURER_STAFF_ROLES = ['claims_adjuster','claims_admin','insurance_admin','insurer_admin'];
 
-  // ── Employee Management (Insurer Side) ──────────────────────────────────────
-  async function loadEmployees() {
-    const data = await api('/api/employees');
-    const container = document.getElementById('employee-list');
-    if (!data || !data.items || data.items.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128101;</div><div class="empty-text">No staff found</div></div>';
-      return;
-    }
-    const insurerRoles = ['claims_admin','claims_adjuster','insurance_admin'];
-    const staff = data.items.filter(e => insurerRoles.includes(e.role));
-    if (staff.length === 0) {
-      container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128101;</div><div class="empty-text">No adjusters found</div></div>';
-      return;
-    }
-    container.innerHTML = `<table class="data-table">
-      <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th><th>Phone</th><th>Active Claims</th><th>Last Login</th></tr></thead>
-      <tbody>${staff.map(e => `<tr>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--accent);">${e.employee_id}</td>
-        <td>${e.name}</td>
-        <td><span class="badge badge-pending">${e.role}</span></td>
-        <td style="font-size:0.82rem;">${e.email||'--'}</td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${e.phone||'--'}</td>
-        <td style="font-family:'Orbitron',monospace;color:var(--accent);">${e.active_jobs||0}</td>
-        <td style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--text-dim);">${e.last_login ? new Date(e.last_login).toLocaleDateString() : 'Never'}</td>
-      </tr>`).join('')}
-      </tbody></table>`;
+async function loadEmployees() {
+  // Gate: only admins can see this view
+  if (!INSURER_ADMIN_ROLES.includes(role)) {
+    document.getElementById('employee-list').innerHTML =
+      '<div class="empty-state"><div class="empty-icon">&#128274;</div><div class="empty-text">Admin access required</div></div>';
+    return;
   }
-
-  function openModal(id) { document.getElementById(id).classList.add('open'); }
-  function closeModal(id) { document.getElementById(id).classList.remove('open'); }
-
-  function openNewEmployee() {
-    if (!['claims_admin','insurance_admin'].includes(role)) {
-      alert('Only Claims Admin or Insurance Admin can create staff accounts.');
-      return;
-    }
-    openModal('modal-new-employee');
+  const data = await api('/api/employees');
+  const container = document.getElementById('employee-list');
+  if (!data || !data.items) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128101;</div><div class="empty-text">No staff found</div></div>';
+    return;
   }
-
-  async function createEmployee() {
-    const body = {
-      name: document.getElementById('emp-name').value,
-      role: document.getElementById('emp-role').value,
-      email: document.getElementById('emp-email').value,
-      phone: document.getElementById('emp-phone').value,
-      hourly_rate: document.getElementById('emp-rate').value || 0,
-      password: document.getElementById('emp-password').value,
-    };
-    if (!body.name || !body.password) { alert('Name and password are required.'); return; }
-    const result = await api('/api/employees', 'POST', body);
-    if (result && result.success) {
-      closeModal('modal-new-employee');
-      loadEmployees();
-      alert('Staff created! Login ID: ' + result.employee_id);
-    } else {
-      alert('Failed: ' + (result && result.error ? result.error : 'Unknown error'));
-    }
+  // FIX: Filter to insurer roles ONLY — never show shop staff
+  const staff = data.items.filter(e => INSURER_STAFF_ROLES.includes(e.role));
+  if (staff.length === 0) {
+    container.innerHTML = '<div class="empty-state"><div class="empty-icon">&#128101;</div><div class="empty-text">No adjusters or insurer staff found</div></div>';
+    return;
   }
+  container.innerHTML = `<table class="data-table">
+    <thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th><th>Phone</th><th>Active Claims</th><th>Last Login</th></tr></thead>
+    <tbody>${staff.map(e => `<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--accent);">${e.employee_id}</td>
+      <td>${e.name}</td>
+      <td><span class="badge badge-role">${e.role.replace(/_/g,' ')}</span></td>
+      <td style="font-size:0.82rem;">${e.email||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${e.phone||'--'}</td>
+      <td style="font-family:'Orbitron',monospace;color:var(--accent);">${e.active_jobs||0}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--text-dim);">${e.last_login ? new Date(e.last_login).toLocaleDateString() : 'Never'}</td>
+    </tr>`).join('')}
+    </tbody></table>`;
+}
 
-  function updateClock() {
+function openNewEmployee() {
+  if (!INSURER_ADMIN_ROLES.includes(role)) {
+    alert('Only Claims Admin or Insurance Admin can create staff accounts.');
+    return;
+  }
+  ['emp-name','emp-email','emp-phone','emp-password','emp-rate'].forEach(id => { document.getElementById(id).value=''; });
+  document.getElementById('emp-role').value = 'claims_adjuster';
+  openModal('modal-new-employee');
+}
+
+async function createEmployee() {
+  const body = {
+    name: document.getElementById('emp-name').value,
+    role: document.getElementById('emp-role').value,
+    email: document.getElementById('emp-email').value,
+    phone: document.getElementById('emp-phone').value,
+    hourly_rate: document.getElementById('emp-rate').value || 0,
+    password: document.getElementById('emp-password').value,
+  };
+  if (!body.name || !body.password) { alert('Name and password are required.'); return; }
+  const result = await api('/api/employees', 'POST', body);
+  if (result && result.success) {
+    closeModal('modal-new-employee');
+    loadEmployees();
+    alert('Staff created! Login ID: ' + result.employee_id);
+  } else {
+    alert('Failed: ' + (result && result.error ? result.error : 'Unknown error'));
+  }
+}
+
+function openModal(id) { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+
+function updateClock() {
   const now = new Date();
   document.getElementById('topbar-time').textContent =
     now.toLocaleDateString('en-US',{month:'short',day:'numeric'})+' '+
