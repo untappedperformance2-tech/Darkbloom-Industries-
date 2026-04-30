@@ -1329,35 +1329,58 @@ function openPartModal(part) {
 }
 
 async function loadPartSupplierDropdown(selectedId) {
-  const data = await api('/api/suppliers');
   const sel = document.getElementById('pm-supplier');
-  sel.innerHTML = '<option value="">-- No Supplier --</option>';
-  if (data && data.items) {
-    data.items.forEach(s => {
-      sel.innerHTML += `<option value="${s.id}" ${s.id == selectedId ? 'selected' : ''}>${s.name}</option>`;
-    });
+  sel.innerHTML = '<option value="">-- No Supplier --</option><option value="__new__">+ Create New Supplier...</option>';
+  try {
+    const data = await api('/api/suppliers');
+    if (data && data.items && data.items.length > 0) {
+      sel.innerHTML = '<option value="">-- No Supplier --</option>';
+      data.items.forEach(s => {
+        sel.innerHTML += `<option value="${s.id}" ${s.id == selectedId ? 'selected' : ''}>${s.name}</option>`;
+      });
+      sel.innerHTML += '<option value="__new__">+ Create New Supplier...</option>';
+    }
+  } catch(e) {
+    console.warn('Could not load suppliers:', e);
   }
+  sel.onchange = function() {
+    if (this.value === '__new__') {
+      this.value = '';
+      supplierFromPartModal = true;
+      closeModal('modal-part');
+      openSupplierModal(null);
+    }
+  };
 }
 
 async function savePart() {
+  const suppVal = document.getElementById('pm-supplier').value;
   const body = {
-    part_number: document.getElementById('pm-part-number').value,
+    part_number: document.getElementById('pm-part-number').value || null,
     description: document.getElementById('pm-description').value,
     category: document.getElementById('pm-category').value,
     quantity: parseInt(document.getElementById('pm-qty').value) || 0,
     reorder_point: parseInt(document.getElementById('pm-reorder').value) || 5,
     cost_price: parseFloat(document.getElementById('pm-cost').value) || 0,
     selling_price: parseFloat(document.getElementById('pm-sell').value) || 0,
-    bin_location: document.getElementById('pm-location').value,
-    notes: document.getElementById('pm-notes').value,
-    supplier_id: document.getElementById('pm-supplier').value || null,
+    bin_location: document.getElementById('pm-location').value || null,
+    notes: document.getElementById('pm-notes').value || null,
+    supplier_id: (suppVal && suppVal !== '__new__') ? parseInt(suppVal) : null,
   };
   if (!body.description) { alert('Description is required.'); return; }
+  const btn = document.querySelector('#modal-part .btn-p');
+  if (btn) { btn.disabled = true; btn.textContent = 'SAVING...'; }
   const path = editingPartId ? '/api/inventory/'+editingPartId : '/api/inventory';
   const method = editingPartId ? 'PATCH' : 'POST';
   const r = await api(path, method, body);
-  if (r && (r.success || r.id)) { closeModal('modal-part'); loadInventory(); }
-  else alert('Failed: ' + (r&&r.error?r.error:'Check Railway logs'));
+  if (btn) { btn.disabled = false; btn.textContent = 'Save Part'; }
+  if (r && (r.success || r.id)) {
+    closeModal('modal-part');
+    loadInventory();
+  } else {
+    const msg = r && r.error ? r.error : (r ? JSON.stringify(r) : 'No response from API — check Railway logs');
+    alert('Save failed: ' + msg);
+  }
 }
 
 async function deletePart() {
@@ -1563,8 +1586,19 @@ async function saveSupplier() {
   const path = editingSupplierId ? '/api/suppliers/'+editingSupplierId : '/api/suppliers';
   const method = editingSupplierId ? 'PATCH' : 'POST';
   const r = await api(path, method, body);
-  if (r && (r.success || r.id)) { closeModal('modal-supplier'); loadSuppliers(); }
-  else alert('Failed: '+(r&&r.error?r.error:'Check Railway logs'));
+  if (r && (r.success || r.id)) {
+    closeModal('modal-supplier');
+    // If we came from the part modal, reopen it with the new supplier selected
+    if (supplierFromPartModal) {
+      supplierFromPartModal = false;
+      openModal('modal-part');
+      loadPartSupplierDropdown(r.id || null);
+    } else {
+      loadSuppliers();
+    }
+  } else {
+    alert('Failed: '+(r&&r.error?r.error:'Check Railway logs'));
+  }
 }
 
 async function deleteSupplier() {
@@ -1577,6 +1611,7 @@ async function deleteSupplier() {
 
 // ── Purchase Orders ───────────────────────────────────────────────────────────
 let poLineItems = [];
+let supplierFromPartModal = false;
 
 async function loadPOs() {
   const f = currentPOFilter === 'all' ? '' : '?status='+currentPOFilter;
