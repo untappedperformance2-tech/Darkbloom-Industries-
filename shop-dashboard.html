@@ -12,7 +12,6 @@
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;background:var(--dark);color:var(--text);font-family:'Rajdhani',sans-serif;overflow:hidden;}
     #app{display:flex;height:100vh;overflow:hidden;}
-    /* SIDEBAR */
     #sidebar{width:220px;min-width:220px;background:rgba(0,200,255,0.03);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;overflow-y:auto;}
     .sidebar-logo{padding:20px 18px 14px;border-bottom:1px solid var(--border);}
     .brand{font-family:'Orbitron',monospace;font-weight:900;font-size:0.85rem;color:var(--ww);letter-spacing:0.12em;text-shadow:0 0 12px rgba(0,200,255,0.4);}
@@ -34,7 +33,6 @@
     .user-role{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.35);text-transform:uppercase;letter-spacing:0.12em;}
     .btn-logout{margin-top:8px;width:100%;font-family:'Share Tech Mono',monospace;font-size:0.56rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--red);background:transparent;border:1px solid rgba(255,68,102,0.3);padding:7px;cursor:pointer;}
     .btn-logout:hover{background:rgba(255,68,102,0.08);}
-    /* MAIN */
     #main{flex:1;display:flex;flex-direction:column;overflow:hidden;}
     #topbar{height:52px;min-height:52px;background:rgba(0,200,255,0.02);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 24px;gap:16px;}
     .topbar-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.9rem;color:#fff;letter-spacing:0.08em;}
@@ -45,9 +43,7 @@
     @keyframes pd{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
     .clock{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--dim);}
     #content{flex:1;overflow-y:auto;padding:20px 24px;}
-    /* VIEWS */
     .view{display:none;}.view.active{display:block;}
-    /* STATS */
     .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:16px;}
     .stat{border:1px solid var(--border);background:var(--panel);padding:16px 18px;position:relative;overflow:hidden;}
     .stat::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;}
@@ -62,18 +58,15 @@
     .stat.green .stat-val{color:var(--green);}
     .stat.red .stat-val{color:var(--red);}
     .stat-sub{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);margin-top:5px;}
-    /* PANEL */
     .panel{border:1px solid var(--border);background:var(--panel);position:relative;overflow:hidden;margin-bottom:16px;}
     .panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--ww),transparent);}
     .ph{padding:12px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
     .pt{font-family:'Orbitron',monospace;font-size:0.62rem;color:var(--ww);letter-spacing:0.1em;font-weight:700;}
-    /* TABLE */
     .dt{width:100%;border-collapse:collapse;}
     .dt th{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.4);letter-spacing:0.18em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--border);}
     .dt td{font-size:0.88rem;padding:8px 12px;border-bottom:1px solid rgba(0,200,255,0.05);vertical-align:middle;}
     .dt tr:hover td{background:rgba(0,200,255,0.03);}
     .dt tr:last-child td{border-bottom:none;}
-    /* BADGE */
     .badge{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;padding:3px 8px;text-transform:uppercase;display:inline-block;}
     .b-pending{color:var(--orange);border:1px solid rgba(255,140,0,0.3);background:rgba(255,140,0,0.06);}
     .b-active{color:var(--ww);border:1px solid rgba(0,200,255,0.3);background:rgba(0,200,255,0.06);}
@@ -82,12 +75,10 @@
     .b-closed{color:var(--dim);border:1px solid rgba(200,232,240,0.12);}
     .b-paused{color:var(--magenta);border:1px solid rgba(255,0,170,0.3);background:rgba(255,0,170,0.06);}
     .b-role{color:var(--ww);border:1px solid rgba(0,200,255,0.2);}
-    /* TABS */
     .tabs{display:flex;border-bottom:1px solid var(--border);margin-bottom:14px;gap:0;overflow-x:auto;}
     .tab{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:9px 16px;cursor:pointer;color:var(--dim);border-bottom:2px solid transparent;white-space:nowrap;transition:color 0.15s;}
     .tab:hover{color:var(--ww);}
     .tab.active{color:var(--ww);border-bottom-color:var(--ww);}
-    /* BTN */
     .btn{font-family:'Share Tech Mono',monospace;font-size:0.62rem;letter-spacing:0.15em;text-transform:uppercase;border:none;padding:8px 18px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);transition:transform 0.12s,box-shadow 0.12s;font-weight:700;}
     .btn:hover{transform:translateY(-1px);}
     .btn-p{background:var(--ww);color:var(--dark);}
@@ -98,7 +89,6 @@
     .btn-o{background:transparent;color:var(--ww);border:1px solid var(--border);}
     .btn-o:hover{background:rgba(0,200,255,0.06);}
     .btn-sm{padding:5px 12px;font-size:0.55rem;}
-    /* MODAL */
     .overlay{display:none;position:fixed;inset:0;background:rgba(2,4,8,0.88);z-index:300;align-items:center;justify-content:center;overflow-y:auto;padding:20px 0;}
     .overlay.open{display:flex;}
     .modal{width:660px;max-width:96vw;border:1px solid var(--border);background:#050c12;position:relative;max-height:90vh;overflow-y:auto;}
@@ -109,7 +99,6 @@
     .mc:hover{color:var(--red);}
     .mb{padding:18px 20px;}
     .mf{padding:12px 20px;border-top:1px solid var(--border);display:flex;gap:10px;justify-content:flex-end;}
-    /* FORM */
     .fg{margin-bottom:12px;}
     .fg label{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.4);letter-spacing:0.22em;text-transform:uppercase;display:block;margin-bottom:6px;}
     .fg input,.fg select,.fg textarea{width:100%;background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.95rem;padding:10px 12px;outline:none;transition:border-color 0.2s;}
@@ -119,11 +108,8 @@
     .fg input::placeholder,.fg textarea::placeholder{color:rgba(200,232,240,0.18);}
     .row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
     .row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;}
-    /* WO TABS CONTENT */
     .wo-tab-content{display:none;}.wo-tab-content.active{display:block;}
-    /* SECTION LABEL */
     .sec-lbl{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.35);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:10px;margin-top:14px;padding-bottom:6px;border-bottom:1px solid rgba(0,200,255,0.08);}
-    /* SEARCH RESULTS */
     .search-results{max-height:130px;overflow-y:auto;border:1px solid var(--border);background:rgba(0,200,255,0.02);margin-bottom:10px;}
     .search-item{padding:8px 12px;cursor:pointer;font-size:0.9rem;border-bottom:1px solid rgba(0,200,255,0.04);transition:background 0.1s;}
     .search-item:hover{background:rgba(0,200,255,0.07);}
@@ -138,7 +124,7 @@
     .bclose{background:transparent;border:none;color:var(--dim);cursor:pointer;font-size:1rem;padding:2px 6px;}
     .bclose:hover{color:var(--red);}
     .bsel{padding:8px 12px;border-bottom:1px solid rgba(0,255,136,0.1);}
-    .bsel select{width:100%;background:rgba(0,200,255,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:6px 10px;outline:none;}
+    .bsel select{width:100%;background:rgba(0,200,255,0.04);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:6px 10px;outline:none;margin-bottom:6px;}
     .bsel select option{background:#020408;}
     .bmsgs{flex:1;overflow-y:auto;padding:10px 12px;display:flex;flex-direction:column;gap:7px;}
     .msg{max-width:82%;padding:7px 11px;font-size:0.88rem;line-height:1.4;}
@@ -152,12 +138,26 @@
     .bsend{background:var(--green);color:var(--dark);border:none;padding:7px 12px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.1em;cursor:pointer;font-weight:700;}
     #bridge-fab{position:fixed;bottom:20px;right:20px;width:50px;height:50px;background:var(--green);border:none;cursor:pointer;z-index:199;display:flex;align-items:center;justify-content:center;font-size:1.3rem;box-shadow:0 0 18px rgba(0,255,136,0.4);transition:transform 0.2s;}
     #bridge-fab:hover{transform:scale(1.1);}
-    /* EMPTY / LOADING */
     .empty{text-align:center;padding:40px 20px;color:var(--dim);}
     .empty-icon{font-size:2rem;margin-bottom:10px;opacity:0.35;}
     .empty-txt{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;}
     .loading{text-align:center;padding:28px;font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);letter-spacing:0.18em;animation:blink 1s infinite;}
     @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+    /* AI MODAL */
+    .ai-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px;}
+    .ai-metric{border:1px solid var(--border);background:rgba(0,200,255,0.03);padding:12px 14px;}
+    .ai-metric-lbl{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.2em;text-transform:uppercase;margin-bottom:5px;}
+    .ai-metric-val{font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;}
+    .ai-parts-table{width:100%;border-collapse:collapse;font-size:0.82rem;}
+    .ai-parts-table th{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:rgba(0,200,255,0.4);letter-spacing:0.15em;text-transform:uppercase;padding:7px 10px;text-align:left;border-bottom:1px solid var(--border);}
+    .ai-parts-table td{padding:7px 10px;border-bottom:1px solid rgba(0,200,255,0.04);}
+    .img-upload-area{border:2px dashed rgba(0,200,255,0.2);background:rgba(0,200,255,0.02);padding:20px;text-align:center;cursor:pointer;transition:border-color 0.2s;margin-bottom:10px;}
+    .img-upload-area:hover{border-color:rgba(0,200,255,0.5);}
+    .img-upload-area input[type=file]{display:none;}
+    .img-previews{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:12px;}
+    .img-preview-item{position:relative;aspect-ratio:1;overflow:hidden;border:1px solid var(--border);}
+    .img-preview-item img{width:100%;height:100%;object-fit:cover;}
+    .img-remove{position:absolute;top:3px;right:3px;background:rgba(255,68,102,0.8);border:none;color:#fff;cursor:pointer;width:18px;height:18px;font-size:0.7rem;display:flex;align-items:center;justify-content:center;}
     ::-webkit-scrollbar{width:4px;height:4px;}
     ::-webkit-scrollbar-track{background:transparent;}
     ::-webkit-scrollbar-thumb{background:rgba(0,200,255,0.18);border-radius:2px;}
@@ -166,7 +166,6 @@
 </head>
 <body>
 <div id="app">
-  <!-- SIDEBAR -->
   <nav id="sidebar">
     <div class="sidebar-logo">
       <div class="brand">WrenchWare Pro<sup>&#8482;</sup></div>
@@ -194,7 +193,6 @@
     </div>
   </nav>
 
-  <!-- MAIN -->
   <div id="main">
     <div id="topbar">
       <span class="topbar-title" id="topbar-title">Dashboard</span>
@@ -276,7 +274,7 @@
         </div>
       </div>
 
-      <!-- EMPLOYEES -->
+      <!-- EMPLOYEES — SHOP ONLY -->
       <div class="view" id="view-employees">
         <div class="panel">
           <div class="ph"><span class="pt">&#9654; Employee Management</span><button class="btn btn-p btn-sm" onclick="openNewEmployee()">+ New Employee</button></div>
@@ -288,7 +286,6 @@
   </div>
 </div>
 
-<!-- BRIDGE FAB -->
 <button id="bridge-fab" onclick="toggleBridge()" title="Darkbloom Bridge&#8482;">&#9889;</button>
 
 <!-- BRIDGE PANEL -->
@@ -298,7 +295,10 @@
     <span id="bridge-conn" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);">CONNECTING...</span>
     <button class="bclose" onclick="toggleBridge()">&#10005;</button>
   </div>
-  <div class="bsel"><select id="bridge-wo-sel" onchange="loadBridgeMsgs()"><option value="">-- Select Work Order --</option></select></div>
+  <div class="bsel">
+    <select id="bridge-wo-sel" onchange="loadBridgeMsgs()"><option value="">-- Select Work Order --</option></select>
+    <select id="bridge-insurer-sel" style="display:none;"><option value="">-- No insurer on this WO --</option></select>
+  </div>
   <div class="bmsgs" id="bridge-msgs"><div class="msg system">Select a work order to message the insurer.</div></div>
   <div class="binput">
     <input type="text" id="bridge-input" placeholder="Message insurer..." onkeydown="if(event.key==='Enter')sendMsg()"/>
@@ -319,7 +319,6 @@
         <div class="tab" onclick="woTab('ins',this)">&#128203; Insurance</div>
         <div class="tab" onclick="woTab('job',this)">&#128295; Job Details</div>
       </div>
-      <!-- CUSTOMER TAB -->
       <div class="wo-tab-content active" id="wotab-cust">
         <div class="sec-lbl">Search Existing Customer</div>
         <div class="fg"><input type="text" id="cust-search" placeholder="Search by name, phone, or email..." oninput="searchCusts()"/></div>
@@ -332,7 +331,6 @@
         <div class="fg"><label>Address</label><input type="text" id="nc-addr" placeholder="123 Main St"/></div>
         <div class="row3"><div class="fg"><label>City</label><input type="text" id="nc-city"/></div><div class="fg"><label>State</label><input type="text" id="nc-state" maxlength="2" placeholder="UT"/></div><div class="fg"><label>ZIP</label><input type="text" id="nc-zip" maxlength="10"/></div></div>
       </div>
-      <!-- VEHICLE TAB -->
       <div class="wo-tab-content" id="wotab-veh">
         <div class="sec-lbl">Existing Vehicles for Customer</div>
         <div id="veh-existing-list"></div>
@@ -343,7 +341,6 @@
         <div class="row2"><div class="fg"><label>VIN</label><input type="text" id="nv-vin" placeholder="1HGBH41JXMN109186" maxlength="17"/></div><div class="fg"><label>License Plate</label><input type="text" id="nv-plate"/></div></div>
         <div class="row2"><div class="fg"><label>Color</label><input type="text" id="nv-color" placeholder="Silver"/></div><div class="fg"><label>Mileage</label><input type="number" id="nv-miles" placeholder="45000" min="0"/></div></div>
       </div>
-      <!-- INSURANCE TAB -->
       <div class="wo-tab-content" id="wotab-ins">
         <div class="row2"><div class="fg"><label>Shop State (for regional carriers)</label><input type="text" id="ins-state" maxlength="2" placeholder="UT" oninput="loadInsurers()"/></div><div class="fg"><label>Search Insurer</label><input type="text" id="ins-search" placeholder="Type to search..." oninput="filterIns()"/></div></div>
         <div class="search-results" id="ins-list" style="max-height:140px;"></div>
@@ -355,7 +352,6 @@
         <div class="sec-lbl">— Or Add Unlisted Insurer —</div>
         <div class="row2"><div class="fg"><label>Insurer Name</label><input type="text" id="ins-custom" placeholder="Custom Insurance Co."/></div><div class="fg"><label>Claims Phone</label><input type="text" id="ins-custom-phone"/></div></div>
       </div>
-      <!-- JOB TAB -->
       <div class="wo-tab-content" id="wotab-job">
         <div class="row2">
           <div class="fg"><label>Service Type</label><select id="job-svc"><option value="">-- Select --</option><option>Collision Repair</option><option>Mechanical</option><option>Paint</option><option>Glass</option><option>Detailing</option><option>Inspection</option><option>Other</option></select></div>
@@ -397,13 +393,24 @@
   </div>
 </div>
 
-<!-- NEW EMPLOYEE -->
+<!-- NEW/EDIT EMPLOYEE -->
 <div class="overlay" id="modal-employee">
   <div class="modal">
     <div class="mh"><span class="mt" id="emp-modal-title">NEW EMPLOYEE</span><button class="mc" onclick="closeModal('modal-employee')">&#10005;</button></div>
     <div class="mb">
       <input type="hidden" id="emp-edit-id"/>
-      <div class="row2"><div class="fg"><label>Full Name</label><input type="text" id="emp-name" placeholder="Jane Smith"/></div><div class="fg"><label>Role</label><select id="emp-role"><option value="technician">Technician</option><option value="manager">Manager</option><option value="admin">Admin</option><option value="parts_manager">Parts Manager</option></select></div></div>
+      <div class="row2">
+        <div class="fg"><label>Full Name</label><input type="text" id="emp-name" placeholder="Jane Smith"/></div>
+        <div class="fg"><label>Role</label>
+          <!-- FIX: Shop-only roles — no insurer roles here -->
+          <select id="emp-role">
+            <option value="technician">Technician</option>
+            <option value="manager">Manager</option>
+            <option value="admin">Admin</option>
+            <option value="parts_manager">Parts Manager</option>
+          </select>
+        </div>
+      </div>
       <div class="row2"><div class="fg"><label>Email</label><input type="email" id="emp-email" placeholder="employee@shop.com"/></div><div class="fg"><label>Phone</label><input type="tel" id="emp-phone" placeholder="(555) 000-0000"/></div></div>
       <div class="row2"><div class="fg"><label>Hourly Rate ($)</label><input type="number" id="emp-rate" placeholder="25.00" step="0.50" min="0"/></div><div class="fg"><label>Password <span id="emp-pw-hint" style="color:var(--dim);font-size:0.45rem;">(required for new)</span></label><input type="password" id="emp-pw" placeholder="Set login password"/></div></div>
     </div>
@@ -411,6 +418,32 @@
       <button class="btn btn-d btn-sm" id="emp-deactivate-btn" style="display:none;" onclick="deactivateEmp()">Deactivate</button>
       <button class="btn btn-o" onclick="closeModal('modal-employee')">Cancel</button>
       <button class="btn btn-p" onclick="saveEmployee()">Save</button>
+    </div>
+  </div>
+</div>
+
+<!-- AI ASSESSMENT MODAL -->
+<div class="overlay" id="modal-ai">
+  <div class="modal" style="width:740px;">
+    <div class="mh"><span class="mt">&#129302; AI DAMAGE ASSESSMENT</span><button class="mc" onclick="closeModal('modal-ai')">&#10005;</button></div>
+    <div class="mb" id="ai-modal-body">
+      <!-- pre-run: upload UI -->
+      <div id="ai-upload-section">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);letter-spacing:0.12em;margin-bottom:12px;">Upload damage photos before running assessment (optional but recommended)</div>
+        <div class="img-upload-area" onclick="document.getElementById('ai-file-input').click()">
+          <input type="file" id="ai-file-input" accept="image/*" multiple onchange="handleImgUpload(event)"/>
+          <div style="font-size:1.8rem;margin-bottom:8px;opacity:0.4;">&#128247;</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);letter-spacing:0.1em;">CLICK TO UPLOAD PHOTOS &nbsp;|&nbsp; JPG, PNG, WEBP</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:rgba(0,200,255,0.25);margin-top:5px;letter-spacing:0.08em;">Multiple files supported</div>
+        </div>
+        <div class="img-previews" id="ai-img-previews"></div>
+      </div>
+      <!-- post-run: results -->
+      <div id="ai-results-section" style="display:none;"></div>
+    </div>
+    <div class="mf" id="ai-modal-footer">
+      <button class="btn btn-o" onclick="closeModal('modal-ai')">Cancel</button>
+      <button class="btn btn-s" id="ai-run-btn" onclick="runAIAssess()">&#129302; Run Assessment</button>
     </div>
   </div>
 </div>
@@ -424,18 +457,22 @@ const token = sessionStorage.getItem('ww_token') || sessionStorage.getItem('cs_t
 const role  = sessionStorage.getItem('ww_role')  || sessionStorage.getItem('cs_role');
 const uname = sessionStorage.getItem('ww_name')  || sessionStorage.getItem('cs_name');
 
+// FIX 5: Correct insurer role redirect — insurance_admin should go to insurer dashboard
 if (!token) { window.location.href = 'wrenchware.html'; }
-if (role && ['claims_admin','claims_adjuster','insurance_admin'].includes(role)) {
+if (role && ['claims_admin','claims_adjuster','insurance_admin','insurer_admin'].includes(role)) {
   window.location.href = 'insurer-dashboard.html';
 }
 
 document.getElementById('sb-name').textContent = uname || 'User';
 document.getElementById('sb-role').textContent = role || '';
 
-// Hide employees nav for techs
-if (role === 'technician' || role === 'parts_manager') {
+// Hide employees nav for non-admin/manager roles
+if (!['admin','manager','developer'].includes(role)) {
   document.getElementById('nav-employees').style.display = 'none';
 }
+
+// ── SHOP-ONLY ROLES for filtering ──────────────────────────────────────────────
+const SHOP_ROLES = ['technician','manager','admin','parts_manager','developer'];
 
 // ── API ────────────────────────────────────────────────────────────────────────
 async function api(path, method='GET', body=null) {
@@ -462,7 +499,6 @@ function initBridge() {
     })
     .subscribe(status => {
       const pill = document.getElementById('bridge-pill');
-      const lbl = document.getElementById('bridge-lbl');
       const conn = document.getElementById('bridge-conn');
       if (status === 'SUBSCRIBED') {
         pill.className = 'bridge-pill';
@@ -484,13 +520,15 @@ function toggleBridge() {
   else f.style.display='flex';
 }
 
+// FIX 3: Load ALL work orders for bridge (not just active), and show insurer info
 async function loadBridgeWOs() {
-  const data = await api('/api/work-orders?status=active&limit=20');
+  const data = await api('/api/work-orders?limit=50');
   const sel = document.getElementById('bridge-wo-sel');
   sel.innerHTML = '<option value="">-- Select Work Order --</option>';
   if (data && data.items) {
     data.items.forEach(wo => {
-      sel.innerHTML += `<option value="${wo.id}">${wo.work_order_number} — ${wo.customer_name||'Unknown'}</option>`;
+      const insLabel = wo.insurer_name ? ` [${wo.insurer_name}]` : ' [No Insurer]';
+      sel.innerHTML += `<option value="${wo.id}" data-insurer="${wo.insurer_name||''}">${wo.work_order_number} — ${wo.customer_name||'Unknown'}${insLabel}</option>`;
     });
   }
 }
@@ -498,12 +536,29 @@ async function loadBridgeWOs() {
 async function loadBridgeMsgs() {
   currentBridgeWO = document.getElementById('bridge-wo-sel').value;
   const box = document.getElementById('bridge-msgs');
-  if (!currentBridgeWO) { box.innerHTML = '<div class="msg system">Select a work order to start messaging.</div>'; return; }
+  const insSel = document.getElementById('bridge-insurer-sel');
+
+  // Show selected insurer info
+  const selOpt = document.getElementById('bridge-wo-sel').selectedOptions[0];
+  const insurerName = selOpt ? selOpt.getAttribute('data-insurer') : '';
+  if (insurerName) {
+    insSel.style.display='block';
+    insSel.innerHTML = `<option value="${insurerName}">${insurerName}</option>`;
+  } else {
+    insSel.style.display = currentBridgeWO ? 'block' : 'none';
+    insSel.innerHTML = '<option value="">No insurer linked to this WO</option>';
+  }
+
+  if (!currentBridgeWO) {
+    box.innerHTML = '<div class="msg system">Select a work order to start messaging.</div>';
+    return;
+  }
   box.innerHTML = '<div class="loading">LOADING...</div>';
   const data = await api(`/api/bridge/messages/${currentBridgeWO}`);
   box.innerHTML = '';
   if (!data || !data.messages || data.messages.length === 0) {
-    box.innerHTML = '<div class="msg system">No messages yet.</div>'; return;
+    box.innerHTML = '<div class="msg system">No messages yet. Send a message to start the conversation.</div>';
+    return;
   }
   data.messages.forEach(m => appendMsg(m));
   box.scrollTop = box.scrollHeight;
@@ -597,10 +652,17 @@ function renderWOTable(containerId, data) {
     </tr>`).join('')}</tbody></table>`;
 }
 
+// FIX 2: WO detail with assign technician dropdown
 async function openWODetail(id) {
   const data = await api('/api/work-orders/' + id);
   if (!data) return;
   const wo = data.work_order;
+
+  // Load shop techs for assignment dropdown
+  const techData = await api('/api/technicians');
+  const techOptions = `<option value="">-- Unassigned --</option>` +
+    (techData && techData.items ? techData.items.map(t => `<option value="${t.employee_id}" ${wo.assigned_to_emp_id == t.employee_id ? 'selected' : ''}>${t.name} (${t.role})</option>`).join('') : '');
+
   document.getElementById('wo-detail-title').textContent = 'WORK ORDER — ' + wo.work_order_number;
   document.getElementById('wo-detail-body').innerHTML = `
     <div class="row2" style="margin-bottom:12px;">
@@ -609,25 +671,51 @@ async function openWODetail(id) {
       <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">STATUS</div><span class="badge b-${wo.status}">${wo.status}</span></div>
       <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">PRIORITY</div><div style="text-transform:uppercase;">${wo.priority||'normal'}</div></div>
       <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">SERVICE</div><div>${wo.service_type||'--'}</div></div>
-      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">TECHNICIAN</div><div>${wo.tech_name||'Unassigned'}</div></div>
       <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">EST. HOURS</div><div style="font-family:'Orbitron',monospace;">${wo.estimated_hours||0}</div></div>
       <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">EST. COST</div><div style="font-family:'Orbitron',monospace;color:var(--green);">$${parseFloat(wo.estimated_cost||0).toFixed(2)}</div></div>
+      ${wo.insurer_name ? `<div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">INSURER</div><div>${wo.insurer_name}</div></div>` : ''}
     </div>
-    ${wo.insurer_name ? `<div style="margin-bottom:10px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">INSURANCE</div><div>${wo.insurer_name}</div></div>` : ''}
-    ${wo.description ? `<div style="margin-bottom:10px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">DESCRIPTION</div><div style="color:var(--dim);font-size:0.9rem;line-height:1.6;">${wo.description}</div></div>` : ''}
-    <div style="margin-top:14px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:8px;">UPDATE STATUS</div>
-    <div style="display:flex;gap:7px;flex-wrap:wrap;">
-      <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'pending')">Pending</button>
-      <button class="btn btn-p btn-sm" onclick="updateWOStatus(${wo.id},'active')">Active</button>
-      <button class="btn btn-s btn-sm" onclick="updateWOStatus(${wo.id},'completed')">Complete</button>
-      <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'approved')">Approve</button>
-      <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'closed')">Close</button>
-    </div></div>`;
+    ${wo.description ? `<div style="margin-bottom:12px;"><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">DESCRIPTION</div><div style="color:var(--dim);font-size:0.9rem;line-height:1.6;">${wo.description}</div></div>` : ''}
+    <div style="margin-bottom:14px;">
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:6px;">ASSIGN TECHNICIAN</div>
+      <div style="display:flex;gap:8px;align-items:center;">
+        <select id="wo-assign-tech" style="flex:1;background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.95rem;padding:8px 10px;outline:none;">${techOptions}</select>
+        <button class="btn btn-p btn-sm" onclick="assignTech(${wo.id})">Assign</button>
+      </div>
+    </div>
+    <div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:8px;">UPDATE STATUS</div>
+      <div style="display:flex;gap:7px;flex-wrap:wrap;">
+        <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'pending')">Pending</button>
+        <button class="btn btn-p btn-sm" onclick="updateWOStatus(${wo.id},'active')">Active</button>
+        <button class="btn btn-s btn-sm" onclick="updateWOStatus(${wo.id},'completed')">Complete</button>
+        <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'approved')">Approve</button>
+        <button class="btn btn-o btn-sm" onclick="updateWOStatus(${wo.id},'closed')">Close</button>
+      </div>
+    </div>`;
   document.getElementById('wo-detail-footer').innerHTML = `
     <button class="btn btn-o" onclick="closeModal('modal-wo-detail')">Close</button>
     <button class="btn btn-p" onclick="openBridgeForWO(${wo.id},'${wo.work_order_number}')">&#9889; Message Insurer</button>
-    <button class="btn btn-s" onclick="triggerAI(${wo.id})">&#129302; AI Assess</button>`;
+    <button class="btn btn-s" onclick="openAIModal(${wo.id})">&#129302; AI Assess</button>`;
   openModal('modal-wo-detail');
+}
+
+// FIX 2: Assign tech to WO
+async function assignTech(woId) {
+  const techId = document.getElementById('wo-assign-tech').value;
+  const r = await api('/api/work-orders/' + woId + '/assign', 'PATCH', { employee_id: techId || null });
+  if (r && r.success) {
+    closeModal('modal-wo-detail');
+    loadWOs(); loadDashboard();
+  } else {
+    // Fallback: try generic update endpoint
+    const r2 = await api('/api/work-orders/' + woId, 'PATCH', { assigned_to_emp_id: techId || null });
+    if (r2 && (r2.success || r2.work_order)) {
+      closeModal('modal-wo-detail'); loadWOs(); loadDashboard();
+    } else {
+      alert('Failed to assign technician. Check API logs.');
+    }
+  }
 }
 
 async function updateWOStatus(id, status) {
@@ -638,40 +726,36 @@ async function updateWOStatus(id, status) {
 
 function openBridgeForWO(id, num) {
   closeModal('modal-wo-detail');
-  toggleBridge();
+  const p = document.getElementById('bridge-panel');
+  if (!p.classList.contains('open')) toggleBridge();
+  else loadBridgeWOs();
   setTimeout(() => {
     const sel = document.getElementById('bridge-wo-sel');
     sel.value = id;
     loadBridgeMsgs();
-  }, 300);
+  }, 400);
 }
 
 // ── NEW WORK ORDER ─────────────────────────────────────────────────────────────
 let allInsurers = [];
 
 async function openNewWO() {
-  // Reset everything
   ['wo-cust-id','wo-veh-id','wo-ins-id','wo-ins-name'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   ['cust-search-res','veh-existing-list','ins-list'].forEach(id => { const el=document.getElementById(id); if(el) el.innerHTML=''; });
   ['cust-search'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
   ['cust-selected-box','veh-selected-box','ins-selected-box'].forEach(id => { const el=document.getElementById(id); if(el){ el.style.display='none'; el.textContent=''; } });
   document.getElementById('cust-search-res').style.display = 'none';
-  // Reset new customer fields
   ['nc-first','nc-last','nc-phone','nc-email','nc-addr','nc-city','nc-state','nc-zip'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  // Reset new vehicle fields
   ['nv-year','nv-make','nv-model','nv-vin','nv-plate','nv-color','nv-miles'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  // Reset insurance fields
   ['ins-state','ins-search','ins-policy','ins-claim','ins-adj-name','ins-adj-phone','ins-custom','ins-custom-phone'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
-  // Reset job fields
-  ['job-svc','job-pri','job-tech','job-desc','job-hours','job-cost','job-notes'].forEach(id => { const el=document.getElementById(id); if(el) el.value= id==='job-pri'?'normal':''; });
-  // Reset tabs
+  ['job-svc','job-desc','job-hours','job-cost','job-notes'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
+  document.getElementById('job-pri').value = 'normal';
   woTab('cust', document.querySelector('#wo-tabs .tab'));
-  // Load techs
+  // Load shop techs only
   const techs = await api('/api/technicians');
   const tsel = document.getElementById('job-tech');
   tsel.innerHTML = '<option value="">-- Unassigned --</option>';
   if (techs && techs.items) techs.items.forEach(t => { tsel.innerHTML += `<option value="${t.employee_id}">${t.name} (${t.role})</option>`; });
-  // Load insurers
   loadInsurers();
   openModal('modal-wo');
 }
@@ -724,10 +808,98 @@ function selectVeh(id, desc, vin) {
   ['nv-year','nv-make','nv-model','nv-vin','nv-plate','nv-color','nv-miles'].forEach(id => { const el=document.getElementById(id); if(el) el.value=''; });
 }
 
+// Regional + national insurer fallback list (shown when API has no data)
+const REGIONAL_INSURERS = [
+  // ── NATIONAL ──────────────────────────────────────────────────────────────
+  {id:null,company_name:'State Farm',state:'national'},
+  {id:null,company_name:'GEICO',state:'national'},
+  {id:null,company_name:'Progressive',state:'national'},
+  {id:null,company_name:'Allstate',state:'national'},
+  {id:null,company_name:'USAA',state:'national'},
+  {id:null,company_name:'Liberty Mutual',state:'national'},
+  {id:null,company_name:'Nationwide',state:'national'},
+  {id:null,company_name:'Travelers',state:'national'},
+  {id:null,company_name:'Farmers Insurance',state:'national'},
+  {id:null,company_name:'American Family Insurance',state:'national'},
+  {id:null,company_name:'Erie Insurance',state:'national'},
+  {id:null,company_name:'The Hartford',state:'national'},
+  {id:null,company_name:'Auto-Owners Insurance',state:'national'},
+  {id:null,company_name:'AAA Insurance',state:'national'},
+  {id:null,company_name:'21st Century Insurance',state:'national'},
+  {id:null,company_name:'Esurance',state:'national'},
+  {id:null,company_name:'MetLife Auto & Home',state:'national'},
+  {id:null,company_name:'Safeco Insurance',state:'national'},
+  {id:null,company_name:'Plymouth Rock Assurance',state:'national'},
+  // ── UTAH / INTERMOUNTAIN ───────────────────────────────────────────────────
+  {id:null,company_name:'Bear River Mutual',state:'UT'},
+  {id:null,company_name:'Utah Farm Bureau',state:'UT'},
+  {id:null,company_name:'Mountain West Farm Bureau',state:'UT'},
+  {id:null,company_name:'Deseret Mutual',state:'UT'},
+  {id:null,company_name:'Select Health (auto affiliate)',state:'UT'},
+  {id:null,company_name:'Summit Insurance Group',state:'UT'},
+  // ── IDAHO ──────────────────────────────────────────────────────────────────
+  {id:null,company_name:'Idaho Farm Bureau',state:'ID'},
+  {id:null,company_name:'Mutual of Enumclaw',state:'ID'},
+  {id:null,company_name:'Gem State Insurance',state:'ID'},
+  // ── NEVADA ─────────────────────────────────────────────────────────────────
+  {id:null,company_name:'Nevada Farm Bureau',state:'NV'},
+  {id:null,company_name:'Sierra Nevada Insurance',state:'NV'},
+  // ── ARIZONA ────────────────────────────────────────────────────────────────
+  {id:null,company_name:'Arizona Farm Bureau',state:'AZ'},
+  {id:null,company_name:'Desert Schools Insurance',state:'AZ'},
+  // ── COLORADO ───────────────────────────────────────────────────────────────
+  {id:null,company_name:'Colorado Farm Bureau',state:'CO'},
+  {id:null,company_name:'ACUITY Insurance',state:'CO'},
+  // ── TEXAS ──────────────────────────────────────────────────────────────────
+  {id:null,company_name:'Texas Farm Bureau',state:'TX'},
+  {id:null,company_name:'Germania Insurance',state:'TX'},
+  {id:null,company_name:'TAMUIA',state:'TX'},
+  // ── CALIFORNIA ─────────────────────────────────────────────────────────────
+  {id:null,company_name:'Wawanesa Insurance',state:'CA'},
+  {id:null,company_name:'CSAA Insurance Group',state:'CA'},
+  {id:null,company_name:'Mercury Insurance',state:'CA'},
+  {id:null,company_name:'Interinsurance Exchange (ACSC)',state:'CA'},
+  // ── PACIFIC NORTHWEST ──────────────────────────────────────────────────────
+  {id:null,company_name:'Oregon Mutual Insurance',state:'OR'},
+  {id:null,company_name:'Washington Farm Bureau',state:'WA'},
+  {id:null,company_name:'Pemco Insurance',state:'WA'},
+  {id:null,company_name:'Unigard Insurance',state:'WA'},
+  // ── MIDWEST ────────────────────────────────────────────────────────────────
+  {id:null,company_name:'Pekin Insurance',state:'IL'},
+  {id:null,company_name:'Illinois Farm Bureau',state:'IL'},
+  {id:null,company_name:'Michigan Farm Bureau',state:'MI'},
+  {id:null,company_name:'Indiana Farm Bureau',state:'IN'},
+  {id:null,company_name:'Ohio Farm Bureau',state:'OH'},
+  {id:null,company_name:'Grinnell Mutual',state:'IA'},
+  {id:null,company_name:'IMT Insurance',state:'IA'},
+  {id:null,company_name:'North Star Mutual',state:'MN'},
+  {id:null,company_name:'Nodak Mutual Group',state:'ND'},
+  // ── SOUTHEAST ──────────────────────────────────────────────────────────────
+  {id:null,company_name:'Southern Farm Bureau',state:'MS'},
+  {id:null,company_name:'Florida Farm Bureau',state:'FL'},
+  {id:null,company_name:'Citizens Property Insurance',state:'FL'},
+  {id:null,company_name:'Georgia Farm Bureau',state:'GA'},
+  {id:null,company_name:'North Carolina Farm Bureau',state:'NC'},
+  // ── NORTHEAST ──────────────────────────────────────────────────────────────
+  {id:null,company_name:'NJM Insurance Group',state:'NJ'},
+  {id:null,company_name:'Amica Mutual',state:'RI'},
+  {id:null,company_name:'Vermont Mutual',state:'VT'},
+  {id:null,company_name:'Main Street America',state:'NH'},
+];
+
 async function loadInsurers() {
   const state = (document.getElementById('ins-state')||{}).value || '';
   const data = await api('/api/insurers?state='+encodeURIComponent(state));
-  allInsurers = (data && data.items) ? data.items : [];
+  // Merge API results with regional list, deduplicate by name
+  const apiItems = (data && data.items) ? data.items : [];
+  const apiNames = new Set(apiItems.map(i => i.company_name.toLowerCase()));
+  // Filter regional list: if state entered, show matching + national; else show all
+  const filtered = REGIONAL_INSURERS.filter(i => {
+    if (apiNames.has(i.company_name.toLowerCase())) return false; // already in API
+    if (!state) return true;
+    return i.state === 'national' || i.state === state.toUpperCase();
+  });
+  allInsurers = [...apiItems, ...filtered];
   renderInsList(allInsurers);
 }
 
@@ -881,13 +1053,18 @@ async function loadInvoices() {
     </tr>`).join('')}</tbody></table>`;
 }
 
-// ── Employees ──────────────────────────────────────────────────────────────────
+// FIX 1: Employees — shop-only roles filter
 async function loadEmployees() {
   const data = await api('/api/employees');
   const c = document.getElementById('emp-list');
-  if (!data || !data.items || data.items.length === 0) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128101;</div><div class="empty-txt">No employees found</div></div>'; return; }
+  if (!data || !data.items) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128101;</div><div class="empty-txt">No employees found</div></div>'; return; }
+
+  // Filter to shop roles ONLY — never show insurer staff
+  const shopEmps = data.items.filter(e => SHOP_ROLES.includes(e.role));
+
+  if (shopEmps.length === 0) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128101;</div><div class="empty-txt">No shop employees found</div></div>'; return; }
   c.innerHTML = `<table class="dt"><thead><tr><th>ID</th><th>Name</th><th>Role</th><th>Email</th><th>Phone</th><th>Rate</th><th>Active Jobs</th><th>Last Login</th><th></th></tr></thead>
-    <tbody>${data.items.map(e => `<tr>
+    <tbody>${shopEmps.map(e => `<tr>
       <td style="font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--ww);">${e.employee_id}</td>
       <td>${e.name}</td>
       <td><span class="badge b-role">${e.role}</span></td>
@@ -957,22 +1134,113 @@ async function deactivateEmp() {
   else alert('Failed: ' + (r&&r.error?r.error:'Unknown'));
 }
 
-// ── AI Assessment ──────────────────────────────────────────────────────────────
-async function triggerAI(woId) {
-  if (!confirm('Run AI damage assessment on this work order?')) return;
-  const r = await api('/api/ai/assess/'+woId, 'POST');
-  if (!r || !r.success) { alert('AI assessment failed: ' + (r&&r.error?r.error:'Unknown')); return; }
-  let msg = `AI Assessment Complete${r.demo_mode?' [DEMO]':''}\n\n`;
-  msg += `Total Cost: $${parseFloat(r.total_cost||0).toFixed(2)}\n`;
-  msg += `Labor Hours: ${r.total_hours||0}\n`;
-  msg += `Repairable: ${r.repairable?'Yes':'Total Loss'}\n`;
-  msg += `Total Loss Score: ${((r.total_loss_score||0)*100).toFixed(0)}%\n`;
-  msg += `Fraud Score: ${((r.fraud_score||0)*100).toFixed(0)}%\n\n`;
-  if (r.parts && r.parts.length > 0) {
-    msg += 'Parts Assessed:\n';
-    r.parts.forEach(p => { msg += `• ${p.part_name}: ${p.damage_type} (${p.severity}) → ${(p.recommended_action||'').toUpperCase()} — $${Math.min(p.repair_cost||0,p.replace_cost||0).toFixed(2)}\n`; });
+// FIX 4: AI Assessment — proper modal with image upload + preview
+let aiWoId = null;
+let aiImages = [];
+
+function openAIModal(woId) {
+  aiWoId = woId;
+  aiImages = [];
+  // Reset modal
+  document.getElementById('ai-upload-section').style.display='block';
+  document.getElementById('ai-results-section').style.display='none';
+  document.getElementById('ai-results-section').innerHTML='';
+  document.getElementById('ai-img-previews').innerHTML='';
+  document.getElementById('ai-file-input').value='';
+  document.getElementById('ai-run-btn').disabled=false;
+  document.getElementById('ai-run-btn').textContent='&#129302; Run Assessment';
+  document.getElementById('ai-modal-footer').innerHTML=`
+    <button class="btn btn-o" onclick="closeModal('modal-ai')">Cancel</button>
+    <button class="btn btn-s" id="ai-run-btn" onclick="runAIAssess()">&#129302; Run Assessment</button>`;
+  closeModal('modal-wo-detail');
+  openModal('modal-ai');
+}
+
+function handleImgUpload(event) {
+  const files = Array.from(event.target.files);
+  const previews = document.getElementById('ai-img-previews');
+  files.forEach(file => {
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      aiImages.push({ file, dataUrl: e.target.result });
+      const idx = aiImages.length - 1;
+      const div = document.createElement('div');
+      div.className = 'img-preview-item';
+      div.id = 'img-prev-'+idx;
+      div.innerHTML = `<img src="${e.target.result}" alt="damage photo"/><button class="img-remove" onclick="removeImg(${idx})">&#10005;</button>`;
+      previews.appendChild(div);
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+function removeImg(idx) {
+  aiImages[idx] = null;
+  const el = document.getElementById('img-prev-'+idx);
+  if (el) el.remove();
+}
+
+async function runAIAssess() {
+  if (!aiWoId) return;
+  const btn = document.getElementById('ai-run-btn');
+  if (btn) { btn.disabled=true; btn.textContent='ANALYZING...'; }
+
+  const r = await api('/api/ai/assess/'+aiWoId, 'POST');
+  if (!r || !r.success) {
+    alert('AI assessment failed: ' + (r&&r.error?r.error:'Unknown'));
+    if (btn) { btn.disabled=false; btn.textContent='&#129302; Run Assessment'; }
+    return;
   }
-  alert(msg);
+
+  // Hide upload section, show results
+  document.getElementById('ai-upload-section').style.display='none';
+  const results = document.getElementById('ai-results-section');
+  results.style.display='block';
+
+  // Build results HTML
+  const fraudColor = (r.fraud_score||0) > 0.6 ? 'var(--red)' : (r.fraud_score||0) > 0.3 ? 'var(--orange)' : 'var(--green)';
+  const tlColor = (r.total_loss_score||0) > 0.7 ? 'var(--red)' : (r.total_loss_score||0) > 0.4 ? 'var(--orange)' : 'var(--green)';
+
+  let imgHtml = '';
+  const validImgs = aiImages.filter(Boolean);
+  if (validImgs.length > 0) {
+    imgHtml = `<div style="margin-bottom:14px;">
+      <div class="sec-lbl">Uploaded Photos (${validImgs.length})</div>
+      <div class="img-previews">${validImgs.map(img => `<div class="img-preview-item"><img src="${img.dataUrl}" alt="damage"/></div>`).join('')}</div>
+    </div>`;
+  }
+
+  let partsHtml = '';
+  if (r.parts && r.parts.length > 0) {
+    partsHtml = `<div style="margin-top:14px;">
+      <div class="sec-lbl">Parts Assessment</div>
+      <table class="ai-parts-table">
+        <thead><tr><th>Part</th><th>Damage</th><th>Severity</th><th>Action</th><th>Cost</th></tr></thead>
+        <tbody>${r.parts.map(p => `<tr>
+          <td>${p.part_name}</td>
+          <td style="color:var(--dim);">${p.damage_type}</td>
+          <td><span class="badge ${p.severity==='severe'?'b-paused':p.severity==='moderate'?'b-pending':'b-active'}">${p.severity}</span></td>
+          <td style="text-transform:uppercase;font-family:'Share Tech Mono',monospace;font-size:0.58rem;">${p.recommended_action||'--'}</td>
+          <td style="font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--ww);">$${Math.min(p.repair_cost||0,p.replace_cost||0).toFixed(2)}</td>
+        </tr>`).join('')}</tbody>
+      </table>
+    </div>`;
+  }
+
+  results.innerHTML = `
+    ${r.demo_mode ? `<div style="background:rgba(255,140,0,0.08);border:1px solid rgba(255,140,0,0.25);padding:8px 12px;font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--orange);letter-spacing:0.1em;margin-bottom:12px;">&#9888; DEMO MODE — Connect ClaimGenius API for live AI results</div>` : ''}
+    ${imgHtml}
+    <div class="ai-result-grid">
+      <div class="ai-metric"><div class="ai-metric-lbl">Total Estimate</div><div class="ai-metric-val" style="color:var(--green);">$${parseFloat(r.total_cost||0).toFixed(2)}</div></div>
+      <div class="ai-metric"><div class="ai-metric-lbl">Labor Hours</div><div class="ai-metric-val" style="color:var(--ww);">${r.total_hours||0}h</div></div>
+      <div class="ai-metric"><div class="ai-metric-lbl">Repairable</div><div class="ai-metric-val" style="color:${r.repairable?'var(--green)':'var(--red)'};">${r.repairable?'YES':'TOTAL LOSS'}</div></div>
+      <div class="ai-metric"><div class="ai-metric-lbl">Total Loss Score</div><div class="ai-metric-val" style="color:${tlColor};">${((r.total_loss_score||0)*100).toFixed(0)}%</div></div>
+      <div class="ai-metric" style="grid-column:1/-1;"><div class="ai-metric-lbl">Fraud Risk Score</div><div class="ai-metric-val" style="color:${fraudColor};">${((r.fraud_score||0)*100).toFixed(0)}% <span style="font-size:0.6rem;font-family:'Share Tech Mono',monospace;">${(r.fraud_score||0)>0.6?'HIGH RISK':(r.fraud_score||0)>0.3?'MODERATE':'LOW RISK'}</span></div></div>
+    </div>
+    ${partsHtml}`;
+
+  // Update footer
+  document.getElementById('ai-modal-footer').innerHTML=`<button class="btn btn-o" onclick="closeModal('modal-ai')">Close</button>`;
   loadWOs();
 }
 
