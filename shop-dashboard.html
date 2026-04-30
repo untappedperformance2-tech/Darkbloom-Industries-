@@ -177,7 +177,9 @@
     <div class="nav-item" onclick="showView('customers',this)"><span class="icon">&#128100;</span>Customers</div>
     <div class="nav-item" onclick="showView('technicians',this)"><span class="icon">&#128295;</span>Technicians</div>
     <div class="nav-sec">Shop</div>
-    <div class="nav-item" onclick="showView('inventory',this)"><span class="icon">&#128230;</span>Inventory</div>
+    <div class="nav-item" onclick="showView('inventory',this)"><span class="icon">&#128230;</span>Inventory<span class="nbadge" id="badge-low-stock" style="display:none;background:var(--orange);">!</span></div>
+    <div class="nav-item" id="nav-suppliers" onclick="showView('suppliers',this)"><span class="icon">&#128666;</span>Suppliers</div>
+    <div class="nav-item" id="nav-purchase-orders" onclick="showView('purchase-orders',this)"><span class="icon">&#128196;</span>Purchase Orders</div>
     <div class="nav-item" onclick="showView('invoices',this)"><span class="icon">&#128184;</span>Invoices</div>
     <div class="nav-sec">Admin</div>
     <div class="nav-item" id="nav-employees" onclick="showView('employees',this)"><span class="icon">&#128101;</span>Employees</div>
@@ -260,9 +262,71 @@
 
       <!-- INVENTORY -->
       <div class="view" id="view-inventory">
+        <div class="tabs" id="inv-tabs">
+          <div class="tab active" onclick="invTab('stock',this)">Stock</div>
+          <div class="tab" onclick="invTab('wo-parts',this)">WO Parts</div>
+          <div class="tab" onclick="invTab('low-stock',this)">&#9888; Low Stock</div>
+        </div>
+        <div id="inv-tab-stock">
+          <div class="panel">
+            <div class="ph">
+              <span class="pt">&#9654; Parts Inventory</span>
+              <div style="display:flex;gap:8px;align-items:center;">
+                <input id="inv-search" type="text" placeholder="Search parts..." style="background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:5px 10px;outline:none;width:170px;" oninput="loadInventory()"/>
+                <button class="btn btn-p btn-sm" onclick="openPartModal()">+ Add Part</button>
+              </div>
+            </div>
+            <div id="inv-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+        <div id="inv-tab-wo-parts" style="display:none;">
+          <div class="panel">
+            <div class="ph">
+              <span class="pt">&#9654; Parts on Work Orders</span>
+              <div style="display:flex;gap:8px;">
+                <select id="wo-parts-filter" onchange="loadWOParts()" style="background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.85rem;padding:5px 10px;outline:none;">
+                  <option value="">All Active WOs</option>
+                </select>
+                <button class="btn btn-p btn-sm" onclick="openAddPartToWO()">+ Add Part to WO</button>
+              </div>
+            </div>
+            <div id="wo-parts-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+        <div id="inv-tab-low-stock" style="display:none;">
+          <div class="panel">
+            <div class="ph"><span class="pt">&#9888; Low Stock / Reorder Alert</span></div>
+            <div id="low-stock-list"><div class="loading">LOADING...</div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SUPPLIERS -->
+      <div class="view" id="view-suppliers">
         <div class="panel">
-          <div class="ph"><span class="pt">&#9654; Parts Inventory</span></div>
-          <div id="inv-list"><div class="loading">LOADING...</div></div>
+          <div class="ph">
+            <span class="pt">&#9654; Suppliers</span>
+            <button class="btn btn-p btn-sm" onclick="openSupplierModal()">+ New Supplier</button>
+          </div>
+          <div id="supplier-list"><div class="loading">LOADING...</div></div>
+        </div>
+      </div>
+
+      <!-- PURCHASE ORDERS -->
+      <div class="view" id="view-purchase-orders">
+        <div class="tabs" id="po-tabs">
+          <div class="tab active" onclick="filterPO('all',this)">All</div>
+          <div class="tab" onclick="filterPO('draft',this)">Draft</div>
+          <div class="tab" onclick="filterPO('sent',this)">Sent</div>
+          <div class="tab" onclick="filterPO('received',this)">Received</div>
+          <div class="tab" onclick="filterPO('cancelled',this)">Cancelled</div>
+        </div>
+        <div class="panel">
+          <div class="ph">
+            <span class="pt">&#9654; Purchase Orders</span>
+            <button class="btn btn-p btn-sm" onclick="openNewPO()">+ New PO</button>
+          </div>
+          <div id="po-list"><div class="loading">LOADING...</div></div>
         </div>
       </div>
 
@@ -448,6 +512,170 @@
   </div>
 </div>
 
+
+<!-- ═══ PARTS MANAGER MODALS ═══ -->
+
+<!-- ADD/EDIT PART -->
+<div class="overlay" id="modal-part">
+  <div class="modal" style="width:700px;">
+    <div class="mh"><span class="mt" id="pm-modal-title">NEW PART</span><button class="mc" onclick="closeModal('modal-part')">&#10005;</button></div>
+    <div class="mb">
+      <input type="hidden" id="pm-part-id"/>
+      <div class="row2">
+        <div class="fg"><label>Part Number</label><input type="text" id="pm-part-number" placeholder="PN-00123"/></div>
+        <div class="fg"><label>Category</label>
+          <select id="pm-category">
+            <option value="">-- Select --</option>
+            <option>Brakes</option><option>Engine</option><option>Electrical</option>
+            <option>Suspension</option><option>Body</option><option>Glass</option>
+            <option>HVAC</option><option>Transmission</option><option>Exhaust</option>
+            <option>Fluids & Filters</option><option>Hardware</option><option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="fg"><label>Description</label><input type="text" id="pm-description" placeholder="Brake pad set — front axle"/></div>
+      <div class="row2">
+        <div class="fg"><label>Supplier</label><select id="pm-supplier"><option value="">-- No Supplier --</option></select></div>
+        <div class="fg"><label>Bin Location</label><input type="text" id="pm-location" placeholder="A-12-3"/></div>
+      </div>
+      <div class="row2">
+        <div class="fg"><label>Quantity on Hand</label><input type="number" id="pm-qty" placeholder="0" min="0"/></div>
+        <div class="fg"><label>Reorder Point</label><input type="number" id="pm-reorder" placeholder="5" min="0"/></div>
+      </div>
+      <div class="row2">
+        <div class="fg"><label>Cost Price ($)</label><input type="number" id="pm-cost" placeholder="12.50" step="0.01" min="0"/></div>
+        <div class="fg"><label>Selling Price ($)</label><input type="number" id="pm-sell" placeholder="19.99" step="0.01" min="0"/></div>
+      </div>
+      <div class="fg"><label>Notes</label><textarea id="pm-notes" placeholder="OEM spec, cross-references, fitment notes..."></textarea></div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-d btn-sm" id="pm-delete-btn" style="display:none;" onclick="deletePart()">Delete Part</button>
+      <button class="btn btn-o" onclick="closeModal('modal-part')">Cancel</button>
+      <button class="btn btn-p" onclick="savePart()">Save Part</button>
+    </div>
+  </div>
+</div>
+
+<!-- STOCK ADJUSTMENT -->
+<div class="overlay" id="modal-adjust-stock">
+  <div class="modal" style="width:460px;">
+    <div class="mh"><span class="mt">STOCK ADJUSTMENT</span><button class="mc" onclick="closeModal('modal-adjust-stock')">&#10005;</button></div>
+    <div class="mb">
+      <input type="hidden" id="adj-part-id"/>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--ww);margin-bottom:14px;padding:10px 12px;background:rgba(0,200,255,0.06);border:1px solid var(--border);" id="adj-part-label"></div>
+      <div class="row2">
+        <div class="fg"><label>Current Qty</label><div style="font-family:'Orbitron',monospace;font-size:1.4rem;color:var(--green);padding:8px 0;" id="adj-current-qty">0</div></div>
+        <div class="fg"><label>Adjustment (+/-)</label><input type="number" id="adj-qty" placeholder="+10 or -3"/></div>
+      </div>
+      <div class="fg">
+        <label>Reason</label>
+        <select id="adj-reason">
+          <option value="received">Stock Received</option>
+          <option value="used">Used in Repair</option>
+          <option value="damaged">Damaged / Scrapped</option>
+          <option value="returned">Returned to Supplier</option>
+          <option value="cycle_count">Cycle Count Correction</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="closeModal('modal-adjust-stock')">Cancel</button>
+      <button class="btn btn-p" onclick="saveStockAdjust()">Apply Adjustment</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW/EDIT SUPPLIER -->
+<div class="overlay" id="modal-supplier">
+  <div class="modal" style="width:700px;">
+    <div class="mh"><span class="mt" id="sup-modal-title">NEW SUPPLIER</span><button class="mc" onclick="closeModal('modal-supplier')">&#10005;</button></div>
+    <div class="mb">
+      <input type="hidden" id="sup-id"/>
+      <div class="row2">
+        <div class="fg"><label>Supplier Name</label><input type="text" id="sup-name" placeholder="AutoParts Direct LLC"/></div>
+        <div class="fg"><label>Contact Name</label><input type="text" id="sup-contact" placeholder="Mike Johnson"/></div>
+      </div>
+      <div class="row2">
+        <div class="fg"><label>Phone</label><input type="tel" id="sup-phone" placeholder="(800) 555-0100"/></div>
+        <div class="fg"><label>Email</label><input type="email" id="sup-email" placeholder="orders@supplier.com"/></div>
+      </div>
+      <div class="row2">
+        <div class="fg"><label>Website</label><input type="text" id="sup-website" placeholder="https://supplier.com"/></div>
+        <div class="fg"><label>Account Number</label><input type="text" id="sup-account" placeholder="ACC-123456"/></div>
+      </div>
+      <div class="fg"><label>Address</label><input type="text" id="sup-addr" placeholder="123 Industrial Blvd"/></div>
+      <div class="row3">
+        <div class="fg"><label>City</label><input type="text" id="sup-city"/></div>
+        <div class="fg"><label>State</label><input type="text" id="sup-state" maxlength="2" placeholder="UT"/></div>
+        <div class="fg"><label>ZIP</label><input type="text" id="sup-zip" maxlength="10"/></div>
+      </div>
+      <div class="row2">
+        <div class="fg"><label>Lead Time (days)</label><input type="number" id="sup-lead" placeholder="3" min="0"/></div>
+        <div class="fg"><label>Notes / Payment Terms</label><input type="text" id="sup-notes" placeholder="Net 30, will-call available"/></div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-d btn-sm" id="sup-delete-btn" style="display:none;" onclick="deleteSupplier()">Delete</button>
+      <button class="btn btn-o" onclick="closeModal('modal-supplier')">Cancel</button>
+      <button class="btn btn-p" onclick="saveSupplier()">Save Supplier</button>
+    </div>
+  </div>
+</div>
+
+<!-- NEW PURCHASE ORDER -->
+<div class="overlay" id="modal-po">
+  <div class="modal" style="width:780px;">
+    <div class="mh"><span class="mt">NEW PURCHASE ORDER</span><button class="mc" onclick="closeModal('modal-po')">&#10005;</button></div>
+    <div class="mb">
+      <input type="hidden" id="po-edit-id"/>
+      <div class="row2">
+        <div class="fg"><label>Supplier</label><select id="po-supplier-sel"><option value="">-- Select Supplier --</option></select></div>
+        <div class="fg"><label>Expected Delivery Date</label><input type="date" id="po-expected"/></div>
+      </div>
+      <div class="fg"><label>Notes / Instructions</label><input type="text" id="po-notes" placeholder="Special instructions, delivery window, contact at supplier..."/></div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,200,255,0.35);letter-spacing:0.25em;text-transform:uppercase;margin:14px 0 10px;padding-bottom:6px;border-bottom:1px solid rgba(0,200,255,0.08);display:flex;align-items:center;justify-content:space-between;">
+        <span>Line Items</span>
+        <button class="btn btn-p btn-sm" onclick="addPOLine()">+ Add Line</button>
+      </div>
+      <div id="po-lines" style="min-height:60px;"></div>
+      <div style="text-align:right;margin-top:12px;font-family:'Orbitron',monospace;font-size:1rem;color:var(--green);">TOTAL: <span id="po-total-display">$0.00</span></div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="closeModal('modal-po')">Cancel</button>
+      <button class="btn btn-p" onclick="savePO()">Create PO</button>
+    </div>
+  </div>
+</div>
+
+<!-- ADD PART TO WORK ORDER -->
+<div class="overlay" id="modal-add-wo-part">
+  <div class="modal" style="width:560px;">
+    <div class="mh"><span class="mt">ADD PART TO WORK ORDER</span><button class="mc" onclick="closeModal('modal-add-wo-part')">&#10005;</button></div>
+    <div class="mb">
+      <input type="hidden" id="wop-wo-id"/>
+      <div class="fg"><label>Work Order</label>
+        <select id="wop-wo-sel" style="width:100%;background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.95rem;padding:10px 12px;outline:none;">
+          <option value="">-- All WOs --</option>
+        </select>
+      </div>
+      <div class="fg"><label>Search Part</label><input type="text" id="wop-part-search" placeholder="Search by part # or description..." oninput="searchWOParts()"/></div>
+      <div class="search-results" id="wop-part-results"></div>
+      <div class="selected-box" id="wop-selected-box"></div>
+      <input type="hidden" id="wop-part-id"/>
+      <div class="row2">
+        <div class="fg"><label>Quantity</label><input type="number" id="wop-qty" value="1" min="1"/></div>
+        <div class="fg"><label>Unit Price ($)</label><input type="number" id="wop-price" step="0.01" placeholder="0.00"/></div>
+      </div>
+    </div>
+    <div class="mf">
+      <button class="btn btn-o" onclick="closeModal('modal-add-wo-part')">Cancel</button>
+      <button class="btn btn-p" onclick="savePartToWO()">Add to Work Order</button>
+    </div>
+  </div>
+</div>
+
+
 <script>
 const API = 'https://web-production-f13e8.up.railway.app';
 const SB_URL = 'https://bomumxpxuprkxgkyuheh.supabase.co';
@@ -585,8 +813,8 @@ async function sendMsg() {
 }
 
 // ── Views ──────────────────────────────────────────────────────────────────────
-const VIEWS = ['dashboard','workorders','customers','technicians','inventory','invoices','employees'];
-const VIEW_TITLES = {dashboard:'Dashboard',workorders:'Work Orders',customers:'Customers',technicians:'Technicians',inventory:'Inventory',invoices:'Invoices',employees:'Employees'};
+const VIEWS = ['dashboard','workorders','customers','technicians','inventory','suppliers','purchase-orders','invoices','employees'];
+const VIEW_TITLES = {dashboard:'Dashboard',workorders:'Work Orders',customers:'Customers',technicians:'Technicians',inventory:'Parts Inventory',suppliers:'Suppliers',['purchase-orders']:'Purchase Orders',invoices:'Invoices',employees:'Employees'};
 let woFilter = 'all';
 
 function showView(v, el) {
@@ -597,7 +825,7 @@ function showView(v, el) {
   document.getElementById('topbar-title').textContent = VIEW_TITLES[v] || v;
   const loaders = {
     dashboard: loadDashboard, workorders: loadWOs, customers: loadCustomers,
-    technicians: loadTechs, inventory: loadInventory, invoices: loadInvoices, employees: loadEmployees
+    technicians: loadTechs, inventory: loadInventory, suppliers: loadSuppliers, 'purchase-orders': loadPOs, invoices: loadInvoices, employees: loadEmployees
   };
   if (loaders[v]) loaders[v]();
 }
@@ -1023,19 +1251,529 @@ function renderTechTable(containerId, data) {
 }
 
 // ── Inventory ──────────────────────────────────────────────────────────────────
+// ─────────────────────────────────────────────────────────────────────────────
+// PARTS MANAGER SUITE
+// ─────────────────────────────────────────────────────────────────────────────
+const PM_ROLES = ['admin','manager','parts_manager','developer'];
+let currentInvTab = 'stock', currentPOFilter = 'all';
+let editingPartId = null, editingSupplierId = null;
+
+// ── Inventory tab switcher ────────────────────────────────────────────────────
+function invTab(tab, el) {
+  currentInvTab = tab;
+  ['stock','wo-parts','low-stock'].forEach(t => {
+    const el = document.getElementById('inv-tab-'+t);
+    if (el) el.style.display = 'none';
+  });
+  document.querySelectorAll('#inv-tabs .tab').forEach(t => t.classList.remove('active'));
+  const section = document.getElementById('inv-tab-'+tab);
+  if (section) section.style.display = 'block';
+  if (el) el.classList.add('active');
+  if (tab === 'stock') loadInventory();
+  else if (tab === 'wo-parts') { loadWOPartsFilter(); loadWOParts(); }
+  else if (tab === 'low-stock') loadLowStock();
+}
+
+// ── Main inventory list ───────────────────────────────────────────────────────
 async function loadInventory() {
-  const data = await api('/api/inventory');
+  const search = document.getElementById('inv-search')?.value || '';
+  const data = await api('/api/inventory' + (search ? '?search='+encodeURIComponent(search) : ''));
   const c = document.getElementById('inv-list');
-  if (!data || !data.items || data.items.length === 0) { c.innerHTML='<div class="empty"><div class="empty-icon">&#128230;</div><div class="empty-txt">No parts in inventory</div></div>'; return; }
-  c.innerHTML = `<table class="dt"><thead><tr><th>Part #</th><th>Description</th><th>Category</th><th>Qty</th><th>Reorder Pt</th><th>Price</th></tr></thead>
+  if (!data || !data.items || data.items.length === 0) {
+    c.innerHTML='<div class="empty"><div class="empty-icon">&#128230;</div><div class="empty-txt">No parts in inventory</div></div>'; return;
+  }
+  // Low stock badge
+  const lowCount = data.items.filter(p => p.quantity <= (p.reorder_point||5)).length;
+  const badge = document.getElementById('badge-low-stock');
+  if (badge) { badge.style.display = lowCount > 0 ? 'inline-block' : 'none'; badge.textContent = lowCount; }
+
+  const canEdit = PM_ROLES.includes(role);
+  c.innerHTML = `<table class="dt">
+    <thead><tr><th>Part #</th><th>Description</th><th>Category</th><th>Supplier</th><th>Qty</th><th>Reorder Pt</th><th>Cost</th><th>Sell Price</th>${canEdit?'<th></th>':''}</tr></thead>
     <tbody>${data.items.map(p => `<tr>
       <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--ww);">${p.part_number||'--'}</td>
       <td>${p.description||'--'}</td>
       <td style="font-size:0.8rem;color:var(--dim);">${p.category||'--'}</td>
-      <td style="font-family:'Orbitron',monospace;color:${p.quantity<=(p.reorder_point||5)?'var(--red)':'var(--green)'};">${p.quantity}</td>
+      <td style="font-size:0.78rem;color:var(--dim);">${p.supplier_name||'--'}</td>
+      <td style="font-family:'Orbitron',monospace;color:${p.quantity<=(p.reorder_point||5)?'var(--red)':'var(--green)'};">${p.quantity}${p.quantity<=(p.reorder_point||5)?'<span style="font-size:0.5rem;color:var(--orange);margin-left:4px;">LOW</span>':''}</td>
       <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${p.reorder_point||5}</td>
-      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">$${parseFloat(p.selling_price||0).toFixed(2)}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">$${parseFloat(p.cost_price||0).toFixed(2)}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--green);">$${parseFloat(p.selling_price||0).toFixed(2)}</td>
+      ${canEdit?`<td style="display:flex;gap:5px;">
+        <button class="btn btn-o btn-sm" onclick="openPartModal(${JSON.stringify(p)})">Edit</button>
+        <button class="btn btn-o btn-sm" style="color:var(--green);" onclick="adjustStock(${p.id},'${p.part_number||''}','${(p.description||'').replace(/'/g,'')}',${p.quantity})">+/-</button>
+      </td>`:''}
     </tr>`).join('')}</tbody></table>`;
+}
+
+// ── Add/Edit Part modal ───────────────────────────────────────────────────────
+function openPartModal(part) {
+  editingPartId = part ? part.id : null;
+  document.getElementById('pm-modal-title').textContent = part ? 'EDIT PART' : 'NEW PART';
+  document.getElementById('pm-part-id').value = editingPartId || '';
+  document.getElementById('pm-part-number').value = part ? (part.part_number||'') : '';
+  document.getElementById('pm-description').value = part ? (part.description||'') : '';
+  document.getElementById('pm-category').value = part ? (part.category||'') : '';
+  document.getElementById('pm-qty').value = part ? (part.quantity||0) : 0;
+  document.getElementById('pm-reorder').value = part ? (part.reorder_point||5) : 5;
+  document.getElementById('pm-cost').value = part ? (part.cost_price||0) : '';
+  document.getElementById('pm-sell').value = part ? (part.selling_price||0) : '';
+  document.getElementById('pm-location').value = part ? (part.bin_location||'') : '';
+  document.getElementById('pm-notes').value = part ? (part.notes||'') : '';
+  document.getElementById('pm-delete-btn').style.display = editingPartId ? 'inline-block' : 'none';
+  // Load supplier dropdown
+  loadPartSupplierDropdown(part ? part.supplier_id : null);
+  openModal('modal-part');
+}
+
+async function loadPartSupplierDropdown(selectedId) {
+  const data = await api('/api/suppliers');
+  const sel = document.getElementById('pm-supplier');
+  sel.innerHTML = '<option value="">-- No Supplier --</option>';
+  if (data && data.items) {
+    data.items.forEach(s => {
+      sel.innerHTML += `<option value="${s.id}" ${s.id == selectedId ? 'selected' : ''}>${s.name}</option>`;
+    });
+  }
+}
+
+async function savePart() {
+  const body = {
+    part_number: document.getElementById('pm-part-number').value,
+    description: document.getElementById('pm-description').value,
+    category: document.getElementById('pm-category').value,
+    quantity: parseInt(document.getElementById('pm-qty').value) || 0,
+    reorder_point: parseInt(document.getElementById('pm-reorder').value) || 5,
+    cost_price: parseFloat(document.getElementById('pm-cost').value) || 0,
+    selling_price: parseFloat(document.getElementById('pm-sell').value) || 0,
+    bin_location: document.getElementById('pm-location').value,
+    notes: document.getElementById('pm-notes').value,
+    supplier_id: document.getElementById('pm-supplier').value || null,
+  };
+  if (!body.description) { alert('Description is required.'); return; }
+  const path = editingPartId ? '/api/inventory/'+editingPartId : '/api/inventory';
+  const method = editingPartId ? 'PATCH' : 'POST';
+  const r = await api(path, method, body);
+  if (r && (r.success || r.id)) { closeModal('modal-part'); loadInventory(); }
+  else alert('Failed: ' + (r&&r.error?r.error:'Check Railway logs'));
+}
+
+async function deletePart() {
+  if (!editingPartId) return;
+  if (!confirm('Delete this part from inventory? This cannot be undone.')) return;
+  const r = await api('/api/inventory/'+editingPartId, 'DELETE');
+  if (r && r.success) { closeModal('modal-part'); loadInventory(); }
+  else alert('Failed: ' + (r&&r.error?r.error:'Unknown'));
+}
+
+// ── Stock adjustment ──────────────────────────────────────────────────────────
+function adjustStock(id, partNum, desc, currentQty) {
+  document.getElementById('adj-part-id').value = id;
+  document.getElementById('adj-part-label').textContent = partNum + ' — ' + desc;
+  document.getElementById('adj-current-qty').textContent = currentQty;
+  document.getElementById('adj-qty').value = '';
+  document.getElementById('adj-reason').value = '';
+  openModal('modal-adjust-stock');
+}
+
+async function saveStockAdjust() {
+  const id = document.getElementById('adj-part-id').value;
+  const qty = parseInt(document.getElementById('adj-qty').value);
+  const reason = document.getElementById('adj-reason').value;
+  if (isNaN(qty)) { alert('Enter a quantity (positive to add, negative to remove).'); return; }
+  const r = await api('/api/inventory/'+id+'/adjust', 'POST', { adjustment: qty, reason });
+  if (r && (r.success || r.id)) { closeModal('modal-adjust-stock'); loadInventory(); }
+  else {
+    // Fallback: PATCH quantity directly
+    const current = parseInt(document.getElementById('adj-current-qty').textContent) || 0;
+    const r2 = await api('/api/inventory/'+id, 'PATCH', { quantity: current + qty });
+    if (r2 && (r2.success || r2.id)) { closeModal('modal-adjust-stock'); loadInventory(); }
+    else alert('Failed: check Railway logs');
+  }
+}
+
+// ── WO Parts ─────────────────────────────────────────────────────────────────
+async function loadWOPartsFilter() {
+  const data = await api('/api/work-orders?status=active&limit=30');
+  const sel = document.getElementById('wo-parts-filter');
+  sel.innerHTML = '<option value="">All Active WOs</option>';
+  if (data && data.items) {
+    data.items.forEach(wo => {
+      sel.innerHTML += `<option value="${wo.id}">${wo.work_order_number} — ${wo.customer_name||'?'}</option>`;
+    });
+  }
+}
+
+async function loadWOParts() {
+  const woId = document.getElementById('wo-parts-filter')?.value || '';
+  const path = woId ? `/api/work-orders/${woId}/parts` : '/api/wo-parts';
+  const data = await api(path);
+  const c = document.getElementById('wo-parts-list');
+  if (!data || !data.items || data.items.length === 0) {
+    c.innerHTML = '<div class="empty"><div class="empty-icon">&#128295;</div><div class="empty-txt">No parts on work orders</div></div>'; return;
+  }
+  c.innerHTML = `<table class="dt">
+    <thead><tr><th>WO #</th><th>Part #</th><th>Description</th><th>Qty</th><th>Unit Cost</th><th>Total</th><th>Tech</th><th></th></tr></thead>
+    <tbody>${data.items.map(p => `<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--ww);">${p.work_order_number||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">${p.part_number||'--'}</td>
+      <td>${p.description||'--'}</td>
+      <td style="font-family:'Orbitron',monospace;color:var(--ww);">${p.quantity||1}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">$${parseFloat(p.unit_price||0).toFixed(2)}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--green);">$${(parseFloat(p.unit_price||0)*parseInt(p.quantity||1)).toFixed(2)}</td>
+      <td style="font-size:0.8rem;color:var(--dim);">${p.tech_name||'--'}</td>
+      <td><button class="btn btn-d btn-sm" onclick="removePartFromWO(${p.id})">Remove</button></td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+async function removePartFromWO(woPartId) {
+  if (!confirm('Remove this part from the work order?')) return;
+  const r = await api('/api/wo-parts/'+woPartId, 'DELETE');
+  if (r && r.success) loadWOParts();
+  else alert('Failed: ' + (r&&r.error?r.error:'Check logs'));
+}
+
+function openAddPartToWO() {
+  document.getElementById('wop-wo-id').value = document.getElementById('wo-parts-filter')?.value || '';
+  document.getElementById('wop-part-search').value = '';
+  document.getElementById('wop-part-results').innerHTML = '';
+  document.getElementById('wop-part-id').value = '';
+  document.getElementById('wop-selected-box').style.display='none';
+  document.getElementById('wop-qty').value = 1;
+  document.getElementById('wop-price').value = '';
+  openModal('modal-add-wo-part');
+}
+
+async function searchWOParts() {
+  const q = document.getElementById('wop-part-search').value.trim();
+  if (q.length < 2) { document.getElementById('wop-part-results').innerHTML=''; return; }
+  const data = await api('/api/inventory?search='+encodeURIComponent(q));
+  const box = document.getElementById('wop-part-results');
+  if (!data || !data.items || !data.items.length) { box.innerHTML='<div class="search-item" style="color:var(--dim);">No parts found</div>'; return; }
+  box.innerHTML = data.items.map(p => `<div class="search-item" onclick="selectWOPart(${p.id},'${p.part_number||''}','${(p.description||'').replace(/'/g,'')}',${p.selling_price||0})">${p.part_number||'?'} — ${p.description} <span style="float:right;color:var(--green);">$${parseFloat(p.selling_price||0).toFixed(2)}</span></div>`).join('');
+}
+
+function selectWOPart(id, num, desc, price) {
+  document.getElementById('wop-part-id').value = id;
+  document.getElementById('wop-price').value = price;
+  const box = document.getElementById('wop-selected-box');
+  box.textContent = '✓ '+num+' — '+desc;
+  box.style.display='block';
+  document.getElementById('wop-part-results').innerHTML='';
+}
+
+async function savePartToWO() {
+  const woId = document.getElementById('wop-wo-id').value;
+  const partId = document.getElementById('wop-part-id').value;
+  if (!partId) { alert('Select a part first.'); return; }
+  const body = {
+    work_order_id: woId || null,
+    part_id: partId,
+    quantity: parseInt(document.getElementById('wop-qty').value)||1,
+    unit_price: parseFloat(document.getElementById('wop-price').value)||0,
+  };
+  const r = await api('/api/wo-parts', 'POST', body);
+  if (r && (r.success || r.id)) { closeModal('modal-add-wo-part'); loadWOParts(); }
+  else alert('Failed: '+(r&&r.error?r.error:'Check Railway logs'));
+}
+
+// ── Low Stock ─────────────────────────────────────────────────────────────────
+async function loadLowStock() {
+  const data = await api('/api/inventory');
+  const c = document.getElementById('low-stock-list');
+  if (!data || !data.items) { c.innerHTML='<div class="loading">LOADING...</div>'; return; }
+  const low = data.items.filter(p => p.quantity <= (p.reorder_point||5));
+  if (low.length === 0) {
+    c.innerHTML='<div class="empty"><div class="empty-icon">&#9989;</div><div class="empty-txt">All stock levels OK</div></div>'; return;
+  }
+  c.innerHTML = `<table class="dt">
+    <thead><tr><th>Part #</th><th>Description</th><th>Qty</th><th>Reorder Pt</th><th>Supplier</th><th></th></tr></thead>
+    <tbody>${low.map(p => `<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--orange);">${p.part_number||'--'}</td>
+      <td>${p.description||'--'}</td>
+      <td style="font-family:'Orbitron',monospace;color:var(--red);">${p.quantity}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;">${p.reorder_point||5}</td>
+      <td style="font-size:0.82rem;">${p.supplier_name||'No supplier'}</td>
+      <td><button class="btn btn-p btn-sm" onclick="quickPOFromLow(${p.id},'${p.part_number||''}','${(p.description||'').replace(/'/g,'')}',${p.supplier_id||'null'},${p.reorder_point||5})">Create PO</button></td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+// ── Suppliers ─────────────────────────────────────────────────────────────────
+async function loadSuppliers() {
+  const data = await api('/api/suppliers');
+  const c = document.getElementById('supplier-list');
+  if (!data || !data.items || data.items.length === 0) {
+    c.innerHTML='<div class="empty"><div class="empty-icon">&#128666;</div><div class="empty-txt">No suppliers yet</div></div>'; return;
+  }
+  c.innerHTML = `<table class="dt">
+    <thead><tr><th>Name</th><th>Contact</th><th>Phone</th><th>Email</th><th>Address</th><th>Account #</th><th>Lead Time</th><th></th></tr></thead>
+    <tbody>${data.items.map(s => `<tr>
+      <td style="color:var(--ww);font-weight:600;">${s.name}</td>
+      <td style="font-size:0.85rem;">${s.contact_name||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">${s.phone||'--'}</td>
+      <td style="font-size:0.8rem;">${s.email||'--'}</td>
+      <td style="font-size:0.78rem;color:var(--dim);">${[s.address,s.city,s.state].filter(Boolean).join(', ')||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">${s.account_number||'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">${s.lead_time_days?s.lead_time_days+'d':'--'}</td>
+      <td style="display:flex;gap:5px;">
+        <button class="btn btn-o btn-sm" onclick="openSupplierModal(${JSON.stringify(s)})">Edit</button>
+        <button class="btn btn-p btn-sm" onclick="newPOForSupplier(${s.id},'${s.name.replace(/'/g,'')}')">+ PO</button>
+      </td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+function openSupplierModal(supplier) {
+  editingSupplierId = supplier ? supplier.id : null;
+  document.getElementById('sup-modal-title').textContent = supplier ? 'EDIT SUPPLIER' : 'NEW SUPPLIER';
+  document.getElementById('sup-id').value = editingSupplierId || '';
+  document.getElementById('sup-name').value = supplier ? (supplier.name||'') : '';
+  document.getElementById('sup-contact').value = supplier ? (supplier.contact_name||'') : '';
+  document.getElementById('sup-phone').value = supplier ? (supplier.phone||'') : '';
+  document.getElementById('sup-email').value = supplier ? (supplier.email||'') : '';
+  document.getElementById('sup-website').value = supplier ? (supplier.website||'') : '';
+  document.getElementById('sup-account').value = supplier ? (supplier.account_number||'') : '';
+  document.getElementById('sup-addr').value = supplier ? (supplier.address||'') : '';
+  document.getElementById('sup-city').value = supplier ? (supplier.city||'') : '';
+  document.getElementById('sup-state').value = supplier ? (supplier.state||'') : '';
+  document.getElementById('sup-zip').value = supplier ? (supplier.zip||'') : '';
+  document.getElementById('sup-lead').value = supplier ? (supplier.lead_time_days||'') : '';
+  document.getElementById('sup-notes').value = supplier ? (supplier.notes||'') : '';
+  document.getElementById('sup-delete-btn').style.display = editingSupplierId ? 'inline-block' : 'none';
+  openModal('modal-supplier');
+}
+
+async function saveSupplier() {
+  const body = {
+    name: document.getElementById('sup-name').value,
+    contact_name: document.getElementById('sup-contact').value,
+    phone: document.getElementById('sup-phone').value,
+    email: document.getElementById('sup-email').value,
+    website: document.getElementById('sup-website').value,
+    account_number: document.getElementById('sup-account').value,
+    address: document.getElementById('sup-addr').value,
+    city: document.getElementById('sup-city').value,
+    state: document.getElementById('sup-state').value,
+    zip: document.getElementById('sup-zip').value,
+    lead_time_days: parseInt(document.getElementById('sup-lead').value)||null,
+    notes: document.getElementById('sup-notes').value,
+  };
+  if (!body.name) { alert('Supplier name is required.'); return; }
+  const path = editingSupplierId ? '/api/suppliers/'+editingSupplierId : '/api/suppliers';
+  const method = editingSupplierId ? 'PATCH' : 'POST';
+  const r = await api(path, method, body);
+  if (r && (r.success || r.id)) { closeModal('modal-supplier'); loadSuppliers(); }
+  else alert('Failed: '+(r&&r.error?r.error:'Check Railway logs'));
+}
+
+async function deleteSupplier() {
+  if (!editingSupplierId) return;
+  if (!confirm('Delete this supplier?')) return;
+  const r = await api('/api/suppliers/'+editingSupplierId, 'DELETE');
+  if (r && r.success) { closeModal('modal-supplier'); loadSuppliers(); }
+  else alert('Failed: '+(r&&r.error?r.error:'Unknown'));
+}
+
+// ── Purchase Orders ───────────────────────────────────────────────────────────
+let poLineItems = [];
+
+async function loadPOs() {
+  const f = currentPOFilter === 'all' ? '' : '?status='+currentPOFilter;
+  const data = await api('/api/purchase-orders'+f);
+  const c = document.getElementById('po-list');
+  if (!data || !data.items || data.items.length === 0) {
+    c.innerHTML='<div class="empty"><div class="empty-icon">&#128196;</div><div class="empty-txt">No purchase orders</div></div>'; return;
+  }
+  c.innerHTML = `<table class="dt">
+    <thead><tr><th>PO #</th><th>Supplier</th><th>Status</th><th>Items</th><th>Total</th><th>Created</th><th>Expected</th><th></th></tr></thead>
+    <tbody>${data.items.map(po => `<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--ww);">${po.po_number||'--'}</td>
+      <td>${po.supplier_name||'--'}</td>
+      <td><span class="badge b-${po.status==='received'?'completed':po.status==='sent'?'active':po.status==='cancelled'?'closed':'pending'}">${po.status||'draft'}</span></td>
+      <td style="font-family:'Orbitron',monospace;color:var(--ww);">${po.line_item_count||0}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.68rem;color:var(--green);">$${parseFloat(po.total||0).toFixed(2)}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);">${po.created_at?new Date(po.created_at).toLocaleDateString():'--'}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;">${po.expected_date?new Date(po.expected_date).toLocaleDateString():'--'}</td>
+      <td style="display:flex;gap:5px;">
+        <button class="btn btn-o btn-sm" onclick="openPODetail(${po.id})">View</button>
+        ${po.status==='sent'?`<button class="btn btn-s btn-sm" onclick="markPOReceived(${po.id})">Received</button>`:''}
+        ${po.status==='draft'?`<button class="btn btn-p btn-sm" onclick="markPOSent(${po.id})">Send</button>`:''}
+      </td>
+    </tr>`).join('')}</tbody></table>`;
+}
+
+function filterPO(status, el) {
+  currentPOFilter = status;
+  document.querySelectorAll('#po-tabs .tab').forEach(t => t.classList.remove('active'));
+  if (el) el.classList.add('active');
+  loadPOs();
+}
+
+async function markPOSent(id) {
+  const r = await api('/api/purchase-orders/'+id+'/status', 'PATCH', {status:'sent'});
+  if (r && (r.success||r.id)) loadPOs();
+  else alert('Failed');
+}
+
+async function markPOReceived(id) {
+  if (!confirm('Mark this PO as received? This will update inventory quantities for all line items.')) return;
+  const r = await api('/api/purchase-orders/'+id+'/receive', 'POST');
+  if (r && (r.success||r.id)) { loadPOs(); loadInventory(); }
+  else alert('Failed: '+(r&&r.error?r.error:'Check logs'));
+}
+
+function openNewPO(supplierId, supplierName) {
+  poLineItems = [];
+  document.getElementById('po-supplier-id').value = supplierId || '';
+  document.getElementById('po-notes').value = '';
+  document.getElementById('po-expected').value = '';
+  document.getElementById('po-edit-id').value = '';
+  renderPOLines();
+  // Load supplier dropdown
+  loadPOSupplierDropdown(supplierId, supplierName);
+  openModal('modal-po');
+}
+
+function newPOForSupplier(id, name) {
+  showView('purchase-orders', document.querySelector('[onclick*="purchase-orders"]'));
+  setTimeout(() => openNewPO(id, name), 100);
+}
+
+async function loadPOSupplierDropdown(selectedId, selectedName) {
+  const data = await api('/api/suppliers');
+  const sel = document.getElementById('po-supplier-sel');
+  sel.innerHTML = '<option value="">-- Select Supplier --</option>';
+  if (data && data.items) {
+    data.items.forEach(s => {
+      sel.innerHTML += `<option value="${s.id}" ${s.id == selectedId ? 'selected' : ''}>${s.name}</option>`;
+    });
+  }
+}
+
+function addPOLine() {
+  poLineItems.push({ part_id:'', part_number:'', description:'', quantity:1, unit_cost:0 });
+  renderPOLines();
+}
+
+function removePOLine(idx) {
+  poLineItems.splice(idx, 1);
+  renderPOLines();
+}
+
+function renderPOLines() {
+  const box = document.getElementById('po-lines');
+  if (poLineItems.length === 0) {
+    box.innerHTML = '<div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);text-align:center;padding:14px;">No line items — click Add Line</div>';
+    updatePOTotal(); return;
+  }
+  box.innerHTML = poLineItems.map((ln, i) => `
+    <div style="display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:end;">
+      <div class="fg" style="margin:0;"><label>Part / Description</label>
+        <input type="text" value="${ln.description}" placeholder="Search or type..." oninput="searchPOPart(this,${i})" style="background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;width:100%;"/>
+        <div id="po-part-res-${i}" style="position:relative;"></div>
+      </div>
+      <div class="fg" style="margin:0;"><label>Qty</label>
+        <input type="number" value="${ln.quantity}" min="1" onchange="updatePOLine(${i},'quantity',this.value)" style="background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;width:100%;"/>
+      </div>
+      <div class="fg" style="margin:0;"><label>Unit Cost ($)</label>
+        <input type="number" step="0.01" value="${ln.unit_cost}" onchange="updatePOLine(${i},'unit_cost',this.value)" style="background:rgba(0,200,255,0.03);border:1px solid var(--border);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 10px;outline:none;width:100%;"/>
+      </div>
+      <button class="btn btn-d btn-sm" onclick="removePOLine(${i})" style="margin-top:22px;">&#10005;</button>
+    </div>`).join('');
+  updatePOTotal();
+}
+
+async function searchPOPart(input, idx) {
+  const q = input.value.trim();
+  poLineItems[idx].description = q;
+  const box = document.getElementById('po-part-res-'+idx);
+  if (q.length < 2) { box.innerHTML=''; return; }
+  const data = await api('/api/inventory?search='+encodeURIComponent(q));
+  if (!data || !data.items || !data.items.length) { box.innerHTML=''; return; }
+  box.innerHTML = `<div style="position:absolute;top:0;left:0;right:0;z-index:50;background:#050c12;border:1px solid var(--border);max-height:120px;overflow-y:auto;">${data.items.slice(0,6).map(p => `<div class="search-item" onclick="selectPOPart(${idx},${p.id},'${p.part_number||''}','${(p.description||'').replace(/'/g,'')}',${p.cost_price||0})">${p.part_number||'?'} — ${p.description}</div>`).join('')}</div>`;
+}
+
+function selectPOPart(idx, id, num, desc, cost) {
+  poLineItems[idx] = { part_id:id, part_number:num, description:desc, quantity:poLineItems[idx].quantity||1, unit_cost:cost };
+  renderPOLines();
+  const inp = document.querySelectorAll('#po-lines input[type=text]')[idx];
+  if (inp) inp.value = desc;
+}
+
+function updatePOLine(idx, field, val) {
+  poLineItems[idx][field] = field === 'quantity' ? parseInt(val)||1 : parseFloat(val)||0;
+  updatePOTotal();
+}
+
+function updatePOTotal() {
+  const total = poLineItems.reduce((sum, ln) => sum + (ln.quantity * ln.unit_cost), 0);
+  const el = document.getElementById('po-total-display');
+  if (el) el.textContent = '$' + total.toFixed(2);
+}
+
+async function savePO() {
+  const supplierId = document.getElementById('po-supplier-sel').value;
+  if (!supplierId) { alert('Select a supplier.'); return; }
+  if (poLineItems.length === 0) { alert('Add at least one line item.'); return; }
+  const body = {
+    supplier_id: supplierId,
+    expected_date: document.getElementById('po-expected').value || null,
+    notes: document.getElementById('po-notes').value,
+    line_items: poLineItems.map(ln => ({
+      part_id: ln.part_id || null,
+      description: ln.description,
+      quantity: ln.quantity,
+      unit_cost: ln.unit_cost,
+    })),
+  };
+  const r = await api('/api/purchase-orders', 'POST', body);
+  if (r && (r.success || r.id || r.po_number)) {
+    closeModal('modal-po');
+    loadPOs();
+    alert('PO ' + (r.po_number||'') + ' created!');
+  } else {
+    alert('Failed: '+(r&&r.error?r.error:'Check Railway logs'));
+  }
+}
+
+async function openPODetail(id) {
+  const data = await api('/api/purchase-orders/'+id);
+  if (!data) return;
+  const po = data.purchase_order || data;
+  const lines = data.line_items || po.line_items || [];
+  const detail = `
+    <div class="row2" style="margin-bottom:12px;">
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">PO NUMBER</div><div style="font-family:'Orbitron',monospace;color:var(--ww);">${po.po_number||'--'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">SUPPLIER</div><div>${po.supplier_name||'--'}</div></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">STATUS</div><span class="badge b-${po.status==='received'?'completed':po.status==='sent'?'active':'pending'}">${po.status||'draft'}</span></div>
+      <div><div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:4px;">EXPECTED</div><div>${po.expected_date?new Date(po.expected_date).toLocaleDateString():'--'}</div></div>
+    </div>
+    ${po.notes?`<div style="margin-bottom:12px;font-size:0.88rem;color:var(--dim);">${po.notes}</div>`:''}
+    <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,200,255,0.35);letter-spacing:0.25em;text-transform:uppercase;margin-bottom:8px;padding-bottom:6px;border-bottom:1px solid rgba(0,200,255,0.08);">Line Items</div>
+    ${lines.length>0?`<table class="dt"><thead><tr><th>Part #</th><th>Description</th><th>Qty</th><th>Unit Cost</th><th>Total</th></tr></thead>
+    <tbody>${lines.map(ln=>`<tr>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--ww);">${ln.part_number||'--'}</td>
+      <td>${ln.description||'--'}</td>
+      <td style="font-family:'Orbitron',monospace;">${ln.quantity}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;">$${parseFloat(ln.unit_cost||0).toFixed(2)}</td>
+      <td style="font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--green);">$${(parseFloat(ln.unit_cost||0)*parseInt(ln.quantity||1)).toFixed(2)}</td>
+    </tr>`).join('')}</tbody></table>`:'<div style="color:var(--dim);font-size:0.85rem;">No line items</div>'}
+    <div style="margin-top:12px;text-align:right;font-family:'Orbitron',monospace;font-size:1rem;color:var(--green);">TOTAL: $${parseFloat(po.total||lines.reduce((s,l)=>s+(l.unit_cost||0)*(l.quantity||1),0)).toFixed(2)}</div>`;
+  document.getElementById('wo-detail-title').textContent = 'PURCHASE ORDER — '+(po.po_number||'');
+  document.getElementById('wo-detail-body').innerHTML = detail;
+  document.getElementById('wo-detail-footer').innerHTML = `
+    <button class="btn btn-o" onclick="closeModal('modal-wo-detail')">Close</button>
+    ${po.status==='draft'?`<button class="btn btn-p" onclick="markPOSent(${id});closeModal('modal-wo-detail');">Mark Sent</button>`:''}
+    ${po.status==='sent'?`<button class="btn btn-s" onclick="markPOReceived(${id});closeModal('modal-wo-detail');">Mark Received</button>`:''}`;
+  openModal('modal-wo-detail');
+}
+
+function quickPOFromLow(partId, partNum, desc, supplierId, reorderPt) {
+  showView('purchase-orders', null);
+  setTimeout(() => {
+    openNewPO(supplierId||'', '');
+    poLineItems = [{ part_id:partId, part_number:partNum, description:desc, quantity:reorderPt*2||10, unit_cost:0 }];
+    renderPOLines();
+  }, 150);
 }
 
 // ── Invoices ───────────────────────────────────────────────────────────────────
