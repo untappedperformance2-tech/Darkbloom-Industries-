@@ -1662,7 +1662,7 @@ function removePOLine(idx) {
 function renderPOLines() {
   const box = document.getElementById('po-lines');
   if (poLineItems.length === 0) {
-    box.innerHTML = '<div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);text-align:center;padding:14px;">No line items — click Add Line</div>';
+    box.innerHTML = `<div style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);text-align:center;padding:14px;">No line items — click Add Line</div>`;
     updatePOTotal(); return;
   }
   box.innerHTML = poLineItems.map((ln, i) => `
