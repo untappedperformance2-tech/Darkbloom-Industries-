@@ -686,9 +686,9 @@ const role  = sessionStorage.getItem('ww_role')  || sessionStorage.getItem('cs_r
 const uname = sessionStorage.getItem('ww_name')  || sessionStorage.getItem('cs_name');
 
 // FIX 5: Correct insurer role redirect — insurance_admin should go to insurer dashboard
-if (!token) { window.location.href = 'wrenchware.html'; }
+if (!token) { window.location.href = 'wrenchware.html'; throw new Error('redirect'); }
 if (role && ['claims_admin','claims_adjuster','insurance_admin','insurer_admin'].includes(role)) {
-  window.location.href = 'insurer-dashboard.html';
+  window.location.href = 'insurer-dashboard.html'; throw new Error('redirect');
 }
 
 document.getElementById('sb-name').textContent = uname || 'User';
@@ -696,7 +696,8 @@ document.getElementById('sb-role').textContent = role || '';
 
 // Hide employees nav for non-admin/manager roles
 if (!['admin','manager','developer'].includes(role)) {
-  document.getElementById('nav-employees').style.display = 'none';
+  const navEmp = document.getElementById('nav-employees');
+  if (navEmp) navEmp.style.display = 'none';
 }
 
 // ── SHOP-ONLY ROLES for filtering ──────────────────────────────────────────────
@@ -814,13 +815,13 @@ async function sendMsg() {
 
 // ── Views ──────────────────────────────────────────────────────────────────────
 const VIEWS = ['dashboard','workorders','customers','technicians','inventory','suppliers','purchase-orders','invoices','employees'];
-const VIEW_TITLES = {dashboard:'Dashboard',workorders:'Work Orders',customers:'Customers',technicians:'Technicians',inventory:'Parts Inventory',suppliers:'Suppliers',['purchase-orders']:'Purchase Orders',invoices:'Invoices',employees:'Employees'};
+const VIEW_TITLES = {dashboard:'Dashboard',workorders:'Work Orders',customers:'Customers',technicians:'Technicians',inventory:'Parts Inventory',suppliers:'Suppliers','purchase-orders':'Purchase Orders',invoices:'Invoices',employees:'Employees'};
 let woFilter = 'all';
 
 function showView(v, el) {
-  VIEWS.forEach(id => document.getElementById('view-'+id).classList.remove('active'));
+  VIEWS.forEach(id => { const el = document.getElementById('view-'+id); if(el) el.classList.remove('active'); });
   document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
-  document.getElementById('view-'+v).classList.add('active');
+  const vEl = document.getElementById('view-'+v); if(vEl) vEl.classList.add('active');
   if (el) el.classList.add('active');
   document.getElementById('topbar-title').textContent = VIEW_TITLES[v] || v;
   const loaders = {
