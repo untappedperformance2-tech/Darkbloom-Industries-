@@ -686,10 +686,11 @@ const role  = sessionStorage.getItem('ww_role')  || sessionStorage.getItem('cs_r
 const uname = sessionStorage.getItem('ww_name')  || sessionStorage.getItem('cs_name');
 
 // FIX 5: Correct insurer role redirect — insurance_admin should go to insurer dashboard
-if (!token) { window.location.href = 'wrenchware.html'; throw new Error('redirect'); }
-if (role && ['claims_admin','claims_adjuster','insurance_admin','insurer_admin'].includes(role)) {
-  window.location.href = 'insurer-dashboard.html'; throw new Error('redirect');
+if (!token) { window.location.href = 'wrenchware.html'; }
+else if (role && ['claims_admin','claims_adjuster','insurance_admin','insurer_admin'].includes(role)) {
+  window.location.href = 'insurer-dashboard.html';
 }
+else {
 
 document.getElementById('sb-name').textContent = uname || 'User';
 document.getElementById('sb-role').textContent = role || '';
@@ -2004,6 +2005,7 @@ function logout() {
 // ── Init ───────────────────────────────────────────────────────────────────────
 initBridge();
 loadDashboard();
+}
 </script>
 </body>
 </html>
