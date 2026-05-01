@@ -395,7 +395,7 @@
         <div class="tb-stat-label">OPEN GAPS</div>
       </div>
       <div class="tb-divider"></div>
-      <button class="btn-scan" onclick="startScan()">RUN SCAN &#9654;</button>
+      <button class="btn-scan" id="btn-run-scan">RUN SCAN &#9654;</button>
     </div>
   </div>
 
@@ -573,7 +573,7 @@
   const token = sessionStorage.getItem('ac_token');
   const user  = JSON.parse(sessionStorage.getItem('ac_user') || 'null');
   const org   = JSON.parse(sessionStorage.getItem('ac_org')  || 'null');
-  if(!token || !user || !org){ window.location.href='auditcore.html'; }
+  if(!token || !user || !org){ window.location.href='auditcore.html'; throw new Error('Redirecting to login'); }
 
   // ── Populate sidebar (handled in init() below) ───────────
 
@@ -937,7 +937,7 @@
   }
 
   // Start bridge polling every 5 seconds
-  setInterval(pollBridge, 5000);
+  if(org) setInterval(pollBridge, 5000);
 
   // ── Create assessor session ───────────────────────────────
   async function createAssessorSession(){
@@ -1118,6 +1118,11 @@
 
   // ── Start scan ───────────────────────────────────────────
   async function startScan(){
+    // Debug: confirm function fires and org is set
+    if(!org || !org.id){
+      alert('Session error: org is ' + JSON.stringify(org) + '. Please log out and log back in.');
+      return;
+    }
     const overlay = document.getElementById('scan-overlay');
     const bar = document.getElementById('scan-bar');
     const log = document.getElementById('scan-log');
@@ -1196,6 +1201,10 @@
     if(sbName && org) sbName.textContent = org.name || 'Unknown Org';
     if(sbMeta && org) sbMeta.textContent = (org.slug||'') + ' • ' + (org.tier||'').toUpperCase();
     if(sbLic  && org) sbLic.textContent  = 'License: ' + (org.tier||'').toUpperCase();
+
+    // Attach event listeners to buttons
+    const scanBtn = document.getElementById('btn-run-scan');
+    if(scanBtn) scanBtn.addEventListener('click', startScan);
 
     // Load data
     await loadPosture();
