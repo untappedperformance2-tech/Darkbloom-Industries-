@@ -18,11 +18,9 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;overflow:hidden;}
-    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;cursor:pointer;display:flex;}
+    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;display:flex;}
 
     /* CURSOR */
-    #cur{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 6px var(--cyan);}
-    #cur-r{position:fixed;width:28px;height:28px;border:1px solid rgba(0,240,255,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s;}
 
     /* SIDEBAR */
     .sidebar{width:var(--sidebar);min-width:var(--sidebar);height:100vh;background:rgba(7,12,18,0.98);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;}
@@ -256,8 +254,8 @@
   </style>
 </head>
 <body>
-<div id="cur"></div>
-<div id="cur-r"></div>
+
+
 
 <!-- REMEDIATION MODAL -->
 <div id="rem-modal">
@@ -579,15 +577,7 @@
 
   // ── Populate sidebar (handled in init() below) ───────────
 
-  // ── Cursor (initialized in init() after DOM ready) ────────
-  let cur=null,curR=null,mx=0,my=0,rx=0,ry=0;
-  function initCursor(){
-    cur=document.getElementById('cur');
-    curR=document.getElementById('cur-r');
-    if(!cur||!curR) return;
-    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-    (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
-  }
+  // Custom cursor removed
 
   // ── API helper ────────────────────────────────────────────
   async function api(path, opts={}){
@@ -1111,7 +1101,6 @@
 
   // ── Init ──────────────────────────────────────────────────
   async function init() {
-    initCursor();
     // Update sidebar immediately from stored session
     const sbName = document.getElementById('sb-org-name');
     const sbMeta = document.getElementById('sb-org-meta');
