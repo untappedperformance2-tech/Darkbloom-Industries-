@@ -577,12 +577,7 @@
   const org   = JSON.parse(sessionStorage.getItem('ac_org')  || 'null');
   if(!token || !user || !org){ window.location.href='auditcore.html'; }
 
-  // ── Populate sidebar ──────────────────────────────────────
-  if(org){
-    document.getElementById('sb-org-name').textContent = org.name || 'Unknown Org';
-    document.getElementById('sb-org-meta').textContent = `${org.slug||''} • ${(org.tier||'').toUpperCase()}`;
-    document.getElementById('sb-license-info').textContent = `License: ${(org.tier||'').toUpperCase()}`;
-  }
+  // ── Populate sidebar (handled in init() below) ───────────
 
   // ── Cursor ────────────────────────────────────────────────
   const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
@@ -618,7 +613,16 @@
   async function loadPosture(){
     if(!org) return;
     const data = await api(`/orgs/${org.id}/posture`);
-    if(!data) return;
+    if(!data){
+      // API failed — show degraded state instead of hanging
+      const el = document.getElementById('score-display');
+      if(el){ el.textContent='--'; el.style.color='var(--dim)'; }
+      const lbl = document.getElementById('score-label');
+      if(lbl){ lbl.textContent='API UNAVAILABLE'; lbl.style.color='var(--red)'; }
+      const sub = document.getElementById('score-sublabel');
+      if(sub) sub.textContent='Check Railway deployment status';
+      return;
+    }
 
     const score = data.composite_score || 0;
     const sprs  = data.sprs_score ?? '—';
@@ -1097,10 +1101,27 @@
   function signOut(){ sessionStorage.clear(); window.location.href='auditcore.html'; }
 
   // ── Init ──────────────────────────────────────────────────
-  loadPosture();
-  loadFindings();
-  setTimeout(pollBridge, 1000);
-  addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+  async function init() {
+    // Update sidebar immediately from stored session
+    const sbName = document.getElementById('sb-org-name');
+    const sbMeta = document.getElementById('sb-org-meta');
+    const sbLic  = document.getElementById('sb-license-info');
+    if(sbName && org) sbName.textContent = org.name || 'Unknown Org';
+    if(sbMeta && org) sbMeta.textContent = (org.slug||'') + ' • ' + (org.tier||'').toUpperCase();
+    if(sbLic  && org) sbLic.textContent  = 'License: ' + (org.tier||'').toUpperCase();
+
+    // Load data
+    await loadPosture();
+    loadFindings();
+    setTimeout(pollBridge, 1000);
+    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 </script>
 </body>
 </html>
