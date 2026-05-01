@@ -11,7 +11,7 @@
     :root{
       --bg:#04060a;--surface:#070c12;--surface2:#0a1018;
       --cyan:#00f0ff;--green:#00ff88;--amber:#ffb800;--red:#ff3355;
-      --magenta:#ff00aa;--blue:#3a7fff;--purple:#8b5cf6;--orange:#ff8c42;
+      --magenta:#ff00aa;--blue:#3a7fff;--purple:#8b5cf6;
       --border:rgba(0,240,255,0.1);--border2:rgba(0,240,255,0.06);
       --text:rgba(200,228,240,0.85);--dim:rgba(200,228,240,0.35);
       --sidebar:228px;
@@ -53,8 +53,6 @@
     .badge-amber{background:rgba(255,184,0,.12);color:var(--amber);border:1px solid rgba(255,184,0,.25);}
     .badge-green{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.2);}
     .badge-purple{background:rgba(139,92,246,.15);color:var(--purple);border:1px solid rgba(139,92,246,.3);}
-    .badge-blue{background:rgba(58,127,255,.12);color:var(--blue);border:1px solid rgba(58,127,255,.25);}
-    .badge-orange{background:rgba(255,140,66,.12);color:var(--orange);border:1px solid rgba(255,140,66,.25);}
     .sb-footer{padding:12px 16px;border-top:1px solid var(--border2);}
     .sb-footer-txt{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(200,228,240,0.18);letter-spacing:0.08em;line-height:1.8;}
     .sb-footer-txt a{color:rgba(0,240,255,0.3);text-decoration:none;}
@@ -178,54 +176,6 @@
     .bridge-msg-event{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--text);letter-spacing:0.05em;}
     .bridge-msg-time{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);margin-top:1px;}
 
-    /* INTEGRATION CARD */
-    .integration-card{background:var(--surface);border:1px solid var(--border);padding:22px;margin-bottom:16px;position:relative;overflow:hidden;}
-    .integration-card.aws::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--orange),transparent);}
-    .integration-card.m365::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,var(--blue),transparent);}
-    .int-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;}
-    .int-title{font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;letter-spacing:0.08em;}
-    .integration-card.aws .int-title{color:var(--orange);}
-    .integration-card.m365 .int-title{color:var(--blue);}
-    .int-status-badge{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;padding:3px 10px;border:1px solid;display:flex;align-items:center;gap:5px;}
-    .int-status-badge.connected{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.06);}
-    .int-status-badge.disconnected{color:var(--dim);border-color:var(--border);}
-    .int-status-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
-    .int-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
-    .int-form.single{grid-template-columns:1fr;}
-    .form-field{display:flex;flex-direction:column;gap:5px;}
-    .form-field label{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,0.5);letter-spacing:0.2em;}
-    .form-field input,.form-field select{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:9px 12px;outline:none;transition:border-color .25s;width:100%;}
-    .form-field input:focus,.form-field select:focus{border-color:var(--cyan);}
-    .form-field input::placeholder{color:rgba(200,228,240,0.2);}
-    .int-actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
-    .btn-int{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.12em;padding:8px 16px;border:none;cursor:pointer;font-weight:700;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:box-shadow .2s;}
-    .btn-int.save{color:var(--bg);background:var(--cyan);}
-    .btn-int.save:hover{box-shadow:0 0 12px rgba(0,240,255,.4);}
-    .btn-int.test{color:var(--amber);background:transparent;border:1px solid rgba(255,184,0,.4);}
-    .btn-int.test:hover{background:rgba(255,184,0,.08);}
-    .btn-int.scan{color:var(--bg);}
-    .integration-card.aws .btn-int.scan{background:var(--orange);}
-    .integration-card.m365 .btn-int.scan{background:var(--blue);}
-    .btn-int.scan:hover{box-shadow:0 0 12px rgba(255,140,66,.4);}
-    .int-msg{font-family:'Share Tech Mono',monospace;font-size:0.54rem;letter-spacing:0.08em;margin-top:10px;padding:8px 12px;border:1px solid;display:none;}
-    .int-msg.show{display:block;}
-    .int-msg.success{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.05);}
-    .int-msg.error{color:var(--red);border-color:rgba(255,51,85,.3);background:rgba(255,51,85,.05);}
-    .int-msg.info{color:var(--cyan);border-color:rgba(0,240,255,.2);background:rgba(0,240,255,.03);}
-    .int-results{margin-top:14px;padding:12px 14px;background:rgba(0,240,255,0.02);border:1px solid var(--border2);display:none;}
-    .int-results.show{display:block;}
-    .int-results-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:8px;}
-    .int-check{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--border2);font-family:'Share Tech Mono',monospace;font-size:0.52rem;}
-    .int-check:last-child{border-bottom:none;}
-    .int-check-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0;}
-    .int-check-dot.pass{background:var(--green);box-shadow:0 0 4px var(--green);}
-    .int-check-dot.fail{background:var(--red);box-shadow:0 0 4px var(--red);}
-    .int-check-dot.warn{background:var(--amber);box-shadow:0 0 4px var(--amber);}
-    .int-check-name{flex:1;color:var(--text);}
-    .int-check-score{color:var(--dim);}
-    .int-instructions{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);line-height:1.8;margin-bottom:14px;padding:10px 12px;background:rgba(0,240,255,0.02);border:1px solid var(--border2);}
-    .int-instructions a{color:var(--cyan);text-decoration:none;}
-
     /* REMEDIATION MODAL */
     #rem-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(4,6,10,0.95);z-index:600;display:none;align-items:center;justify-content:center;}
     #rem-modal.active{display:flex;}
@@ -233,7 +183,7 @@
     .rem-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
     .rem-header{padding:20px 24px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;}
     .rem-title{font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;letter-spacing:0.08em;}
-    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:pointer;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
+    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:none;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
     .rem-close:hover{color:var(--red);}
     .rem-body{padding:20px 24px;}
     .rem-mode{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;padding:4px 12px;border:1px solid;display:inline-block;margin-bottom:14px;}
@@ -245,10 +195,16 @@
     .rem-step-content{flex:1;}
     .rem-step-action{font-family:'Rajdhani',sans-serif;font-size:0.9rem;color:#fff;font-weight:600;margin-bottom:4px;}
     .rem-step-detail{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--dim);letter-spacing:0.05em;line-height:1.6;margin-bottom:6px;}
-    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:pointer;}
+    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;border-radius:0;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:none;}
+    .rem-command:hover{background:rgba(0,255,136,.1);}
+    .rem-affects{margin-top:14px;padding:10px 14px;background:rgba(0,240,255,.03);border:1px solid var(--border2);}
+    .rem-affects-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:7px;}
+    .rem-ctrl-pill{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--cyan);border:1px solid rgba(0,240,255,.25);padding:2px 8px;display:inline-block;margin:2px;}
     .rem-execute-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;color:var(--bg);background:var(--green);border:none;padding:13px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;margin-top:16px;transition:box-shadow .2s;}
     .rem-execute-btn:hover{box-shadow:0 0 18px var(--green);}
     .rem-execute-btn:disabled{opacity:.5;}
+    .rem-docs{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,.4);text-align:center;margin-top:10px;}
+    .rem-docs a{color:var(--cyan);text-decoration:none;}
 
     /* POAM TABLE */
     .poam-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
@@ -263,6 +219,10 @@
     .assessor-card{background:var(--surface);border:1px solid rgba(139,92,246,.3);padding:22px;margin-bottom:18px;position:relative;overflow:hidden;}
     .assessor-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent);}
     .assessor-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+    .form-field{display:flex;flex-direction:column;gap:5px;}
+    .form-field label{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,0.5);letter-spacing:0.2em;}
+    .form-field input,.form-field select{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:9px 12px;outline:none;transition:border-color .25s;width:100%;}
+    .form-field input:focus,.form-field select:focus{border-color:var(--cyan);}
     .portal-link{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--cyan);background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.25);padding:10px 14px;margin-top:12px;word-break:break-all;line-height:1.6;}
 
     /* REPORTS */
@@ -274,7 +234,7 @@
     .report-icon{font-size:1.3rem;margin-bottom:7px;display:block;}
     .report-name{font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--text);letter-spacing:0.07em;margin-bottom:4px;}
     .report-desc{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.04em;line-height:1.5;}
-    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:pointer;margin-top:9px;display:inline-block;transition:background .2s;}
+    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:none;margin-top:9px;display:inline-block;transition:background .2s;}
     .btn-dl:hover{background:rgba(0,240,255,.06);}
 
     /* SCAN OVERLAY */
@@ -365,17 +325,6 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="9" y2="8"/></svg>
       <span class="nav-label">POA&amp;M</span>
     </div>
-    <div class="sb-section">// Integrations</div>
-    <div class="nav-item" onclick="showPage('aws')">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ff8c42" stroke-width="1.5"><path d="M2 10c0 2 1.5 3 3.5 3s3.5-1 3.5-3V6c0-2-1.5-3-3.5-3S2 4 2 6v4z"/><path d="M9 5.5c.5-.3 1.2-.5 2-.5 2 0 3 1 3 3s-1 3-3 3"/></svg>
-      <span class="nav-label">AWS</span>
-      <span class="nav-badge badge-orange" id="badge-aws">SETUP</span>
-    </div>
-    <div class="nav-item" onclick="showPage('m365')">
-      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#3a7fff" stroke-width="1.5"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg>
-      <span class="nav-label">M365</span>
-      <span class="nav-badge badge-blue" id="badge-m365">SETUP</span>
-    </div>
     <div class="sb-section">// Frameworks</div>
     <div class="nav-item" onclick="showPage('cmmc')">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00ff88" stroke-width="1.5"><polygon points="8,1 15,5 15,11 8,15 1,11 1,5"/></svg>
@@ -397,6 +346,11 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#3a7fff" stroke-width="1.5"><rect x="4" y="1" width="8" height="10" rx="1"/><path d="M6 11v4M10 11v4M4 15h8"/></svg>
       <span class="nav-label">FIPS 140-3</span>
     </div>
+        <div class="nav-item" onclick="showPage('fedramp')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ff6b35" stroke-width="1.5"><polygon points="8,1 15,5 15,11 8,15 1,11 1,5"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+          <span class="nav-label">FEDRAMP</span>
+          <span class="nav-badge" style="background:rgba(255,107,53,.12);color:#ff6b35;border:1px solid rgba(255,107,53,.3);">NEW</span>
+        </div>
     <div class="sb-section">// Actions</div>
     <div class="nav-item" onclick="startScan()">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
@@ -417,7 +371,7 @@
     </div>
   </div>
   <div class="sb-footer">
-    <div class="sb-footer-txt">AuditCore&#8482; v2.0 — Darkbloom Bridge&#8482;<br/>&#169; 2025 <a href="https://darkbloomindustries.com">Darkbloom Industries&#8482;</a><br/><span id="sb-license-info">Loading license...</span></div>
+    <div class="sb-footer-txt">AuditCore&#8482; v2.0 — Darkbloom Bridge&#8482;<br/>&#169; 2025 <a href="https://untappedperformance2-tech.github.io/Darkbloom-Industries-/">Darkbloom Industries&#8482;</a><br/><span id="sb-license-info">Loading license...</span></div>
   </div>
 </nav>
 
@@ -479,7 +433,7 @@
       <div class="bridge-panel">
         <div class="bridge-header">
           <div class="bridge-title"><div class="bridge-title-dot"></div>DARKBLOOM BRIDGE&#8482;</div>
-          <div class="bridge-status" id="bridge-status">INITIALIZING...</div>
+          <div class="bridge-status" id="bridge-status">POLLING...</div>
         </div>
         <div class="bridge-feed" id="bridge-feed">
           <div class="loading">// CONNECTING TO BRIDGE</div>
@@ -505,13 +459,15 @@
     <div id="page-controls" style="display:none;">
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div class="section-title" style="margin-bottom:0;">ALL CONTROLS</div>
-        <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:pointer;">
-          <option value="">ALL STATUSES</option>
-          <option value="fail">FAIL ONLY</option>
-          <option value="partial">PARTIAL ONLY</option>
-          <option value="not_assessed">NOT ASSESSED</option>
-          <option value="pass">PASS ONLY</option>
-        </select>
+        <div style="display:flex;gap:8px;">
+          <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:none;">
+            <option value="">ALL STATUSES</option>
+            <option value="fail">FAIL ONLY</option>
+            <option value="partial">PARTIAL ONLY</option>
+            <option value="not_assessed">NOT ASSESSED</option>
+            <option value="pass">PASS ONLY</option>
+          </select>
+        </div>
       </div>
       <table class="controls-table">
         <thead><tr><th>CONTROL ID</th><th>FW</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>PRIORITY</th><th>REMEDIATE</th></tr></thead>
@@ -540,106 +496,6 @@
         <thead><tr><th>CONTROL</th><th>WEAKNESS</th><th>RISK</th><th>DUE DATE</th><th>STATUS</th><th>AUTO?</th></tr></thead>
         <tbody id="poam-body"><tr><td colspan="6" class="loading">// LOADING POA&M</td></tr></tbody>
       </table>
-    </div>
-
-    <!-- AWS INTEGRATION -->
-    <div id="page-aws" style="display:none;">
-      <div class="section-title">AWS SECURITY INTEGRATION</div>
-      <div class="integration-card aws">
-        <div class="int-header">
-          <div class="int-title">&#9729; AMAZON WEB SERVICES</div>
-          <div class="int-status-badge disconnected" id="aws-status-badge">
-            <div class="int-status-dot"></div>
-            <span id="aws-status-txt">NOT CONNECTED</span>
-          </div>
-        </div>
-        <div class="int-instructions">
-          // TO CONNECT AWS — Create a read-only IAM user with these permissions:<br/>
-          SecurityAudit (AWS managed) + ReadOnlyAccess (AWS managed)<br/>
-          Then generate an access key for that user and paste below.<br/>
-          <a href="https://console.aws.amazon.com/iam/home#/users" target="_blank">&#9654; Open AWS IAM Console</a>
-        </div>
-        <div class="int-form">
-          <div class="form-field">
-            <label>// AWS ACCESS KEY ID</label>
-            <input type="text" id="aws-key-id" placeholder="AKIAIOSFODNN7EXAMPLE" autocomplete="off"/>
-          </div>
-          <div class="form-field">
-            <label>// AWS SECRET ACCESS KEY</label>
-            <input type="password" id="aws-secret-key" placeholder="wJalrXUtnFEMI/K7MDENG/bPxRfiCY..." autocomplete="off"/>
-          </div>
-          <div class="form-field">
-            <label>// AWS REGION</label>
-            <select id="aws-region">
-              <option value="us-east-1">us-east-1 (N. Virginia)</option>
-              <option value="us-east-2">us-east-2 (Ohio)</option>
-              <option value="us-west-1">us-west-1 (N. California)</option>
-              <option value="us-west-2">us-west-2 (Oregon)</option>
-              <option value="eu-west-1">eu-west-1 (Ireland)</option>
-              <option value="eu-central-1">eu-central-1 (Frankfurt)</option>
-              <option value="ap-southeast-1">ap-southeast-1 (Singapore)</option>
-            </select>
-          </div>
-          <div class="form-field" style="align-items:flex-end;justify-content:flex-end;">
-            <div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);line-height:1.6;">Credentials are AES-256 encrypted<br/>before storage. Never stored in plaintext.</div>
-          </div>
-        </div>
-        <div class="int-actions">
-          <button class="btn-int test" onclick="testAWS()">TEST CONNECTION &#9654;</button>
-          <button class="btn-int save" onclick="saveAWS()">SAVE CREDENTIALS &#9654;</button>
-          <button class="btn-int scan" onclick="scanAWS()" id="btn-aws-scan" disabled>RUN AWS SCAN &#9654;</button>
-        </div>
-        <div class="int-msg" id="aws-msg"></div>
-        <div class="int-results" id="aws-results">
-          <div class="int-results-title">// LAST SCAN RESULTS</div>
-          <div id="aws-checks"></div>
-        </div>
-      </div>
-    </div>
-
-    <!-- M365 INTEGRATION -->
-    <div id="page-m365" style="display:none;">
-      <div class="section-title">MICROSOFT 365 INTEGRATION</div>
-      <div class="integration-card m365">
-        <div class="int-header">
-          <div class="int-title">&#9635; MICROSOFT 365</div>
-          <div class="int-status-badge disconnected" id="m365-status-badge">
-            <div class="int-status-dot"></div>
-            <span id="m365-status-txt">NOT CONNECTED</span>
-          </div>
-        </div>
-        <div class="int-instructions">
-          // TO CONNECT M365 — Register an app in Azure AD:<br/>
-          1. Go to <a href="https://portal.azure.com/#blade/Microsoft_AAD_RegisteredApps/ApplicationsListBlade" target="_blank">Azure App Registrations</a><br/>
-          2. New registration → Name it "AuditCore" → Accounts in this org only<br/>
-          3. API Permissions → Add: User.Read.All, AuditLog.Read.All, Policy.Read.All, UserAuthenticationMethod.Read.All, SecurityEvents.Read.All (all Application type)<br/>
-          4. Grant admin consent → Certificates &amp; secrets → New client secret → Copy value below
-        </div>
-        <div class="int-form">
-          <div class="form-field">
-            <label>// TENANT ID (Directory ID)</label>
-            <input type="text" id="m365-tenant-id" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off"/>
-          </div>
-          <div class="form-field">
-            <label>// CLIENT ID (Application ID)</label>
-            <input type="text" id="m365-client-id" placeholder="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx" autocomplete="off"/>
-          </div>
-          <div class="form-field" style="grid-column:1/-1;">
-            <label>// CLIENT SECRET (Value — not Secret ID)</label>
-            <input type="password" id="m365-client-secret" placeholder="Paste client secret value here..." autocomplete="off"/>
-          </div>
-        </div>
-        <div class="int-actions">
-          <button class="btn-int test" onclick="testM365()">TEST CONNECTION &#9654;</button>
-          <button class="btn-int save" onclick="saveM365()">SAVE CREDENTIALS &#9654;</button>
-          <button class="btn-int scan" onclick="scanM365()" id="btn-m365-scan" disabled>RUN M365 SCAN &#9654;</button>
-        </div>
-        <div class="int-msg" id="m365-msg"></div>
-        <div class="int-results" id="m365-results">
-          <div class="int-results-title">// LAST SCAN RESULTS</div>
-          <div id="m365-checks"></div>
-        </div>
-      </div>
     </div>
 
     <!-- ASSESSOR PORTAL -->
@@ -692,7 +548,13 @@
         <div class="report-card" onclick="generateReport('executive')"><span class="report-icon">&#128202;</span><div class="report-name">Executive Summary</div><div class="report-desc">One-page posture overview with SPRS score and top risks for leadership.</div><div class="btn-dl">GENERATE &#9654;</div></div>
         <div class="report-card" onclick="generateReport('fips-audit')"><span class="report-icon">&#128274;</span><div class="report-name">FIPS Crypto Audit</div><div class="report-desc">Cryptographic module inventory with FIPS 140-3 validation status.</div><div class="btn-dl">GENERATE &#9654;</div></div>
         <div class="report-card" onclick="generateReport('owasp')"><span class="report-icon">&#128270;</span><div class="report-name">OWASP Vulnerability</div><div class="report-desc">Web application findings mapped to OWASP Top 10 with remediation guidance.</div><div class="btn-dl">GENERATE &#9654;</div></div>
-        <div class="report-card" onclick="generateReport('soc2-readiness')"><span class="report-icon">&#9989;</span><div class="report-name">SOC 2 Readiness</div><div class="report-desc">Trust service criteria gap analysis and C3PAO evidence checklist.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('soc2-readiness')"><span class="report-icon">&#9989;</span><div class="report-name">SOC 2 Readiness</div>
+        <div class="report-card" onclick="generateReport('fedramp-sar')"><span class="report-icon">&#127963;</span><div class="report-name">FedRAMP SAR</div><div class="report-desc">Security Assessment Report with 800-53 Moderate baseline control results and 3PAO findings.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fedramp-ssp')"><span class="report-icon">&#128220;</span><div class="report-name">FedRAMP SSP</div><div class="report-desc">System Security Plan in FedRAMP format with Moderate baseline control implementation statements.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fedramp-conmon')"><span class="report-icon">&#128200;</span><div class="report-name">ConMon Report</div><div class="report-desc">Monthly continuous monitoring report with vulnerability results and POA&amp;M status for FedRAMP PMO.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('dod-il4')"><span class="report-icon">&#128737;</span><div class="report-name">DoD IL4/IL5 Package</div><div class="report-desc">DoD Authorization package with FedRAMP High + SRG controls, STIG compliance, and eMASS-ready POA&M.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('cjis')"><span class="report-icon">&#128268;</span><div class="report-name">CJIS Compliance</div><div class="report-desc">FBI CJIS Security Policy compliance assessment with all overlay controls evaluated.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('irs-p1075')"><span class="report-icon">&#128196;</span><div class="report-name">IRS Publication 1075</div><div class="report-desc">Federal Tax Information safeguard assessment per IRS Publication 1075 requirements.</div><div class="btn-dl">GENERATE &#9654;</div></div><div class="report-desc">Trust service criteria gap analysis and C3PAO evidence checklist.</div><div class="btn-dl">GENERATE &#9654;</div></div>
       </div>
     </div>
 
@@ -702,6 +564,129 @@
     <div id="page-owasp" style="display:none;"></div>
     <div id="page-soc" style="display:none;"></div>
     <div id="page-fips" style="display:none;"></div>
+
+    <!-- FEDRAMP PAGE -->
+    <div id="page-fedramp" style="display:none;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
+        <div style="background:var(--surface);border:1px solid var(--border);padding:20px;border-top:3px solid #ff6b35;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(255,107,53,0.6);letter-spacing:0.2em;margin-bottom:8px;">// SELECT BASELINE</div>
+          <div style="display:flex;gap:5px;margin-bottom:6px;">
+            <button onclick="setFedRAMPBaseline('low')" id="fr-btn-low" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;flex:1;transition:all .2s;">LOW<br/><span style="font-size:0.4rem;opacity:0.6;">~125</span></button>
+            <button onclick="setFedRAMPBaseline('moderate')" id="fr-btn-moderate" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid #ff6b35;background:rgba(255,107,53,0.1);color:#ff6b35;cursor:pointer;flex:1;transition:all .2s;">MOD<br/><span style="font-size:0.4rem;opacity:0.6;">~325</span></button>
+            <button onclick="setFedRAMPBaseline('high')" id="fr-btn-high" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;flex:1;transition:all .2s;">HIGH<br/><span style="font-size:0.4rem;opacity:0.6;">~421</span></button>
+            <button onclick="setFedRAMPBaseline('il4')" id="fr-btn-il4" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;flex:1;transition:all .2s;">DoD IL4<br/><span style="font-size:0.4rem;opacity:0.6;">HIGH+</span></button>
+            <button onclick="setFedRAMPBaseline('il5')" id="fr-btn-il5" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;flex:1;transition:all .2s;">DoD IL5<br/><span style="font-size:0.4rem;opacity:0.6;">IL4+</span></button>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(255,107,53,0.5);letter-spacing:0.1em;margin-bottom:5px;">// AGENCY OVERLAYS</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;">
+            <button onclick="toggleOverlay('dod')" id="ov-btn-dod" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">DoD</button>
+            <button onclick="toggleOverlay('irs')" id="ov-btn-irs" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">IRS 1075</button>
+            <button onclick="toggleOverlay('cjis')" id="ov-btn-cjis" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">CJIS</button>
+            <button onclick="toggleOverlay('hipaa')" id="ov-btn-hipaa" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">HIPAA</button>
+            <button onclick="toggleOverlay('dea')" id="ov-btn-dea" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">DEA</button>
+            <button onclick="toggleOverlay('ic')" id="ov-btn-ic" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">IC</button>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);margin-top:8px;" id="fr-baseline-label">FedRAMP Moderate &#8212; Currently selected</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:20px;border-top:3px solid var(--amber);">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(255,184,0,0.6);letter-spacing:0.2em;margin-bottom:6px;">ATO STATUS</div>
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:var(--amber);" id="ato-status-display">IN PROGRESS</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);margin-top:4px;">Authorization to Operate</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:20px;border-top:3px solid var(--cyan);">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,240,255,0.6);letter-spacing:0.2em;margin-bottom:6px;">CONMON STATUS</div>
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:var(--cyan);">ACTIVE</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);margin-top:4px;">Monthly reporting cycle</div>
+        </div>
+      </div>
+
+      <!-- DoD IL Level + Agency Overlays Row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+        <div style="background:var(--surface);border:1px solid rgba(255,107,53,0.25);padding:18px;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:#ff6b35;margin-bottom:10px;letter-spacing:0.1em;">&#9632; DOD IMPACT LEVEL</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button onclick="setDoDIL('il2')" id="dod-btn-il2"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:7px 10px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;flex:1;">
+              IL2<br/><span style="font-size:0.42rem;opacity:0.7;">FedRAMP Mod</span>
+            </button>
+            <button onclick="setDoDIL('il4')" id="dod-btn-il4"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:7px 10px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;flex:1;">
+              IL4<br/><span style="font-size:0.42rem;opacity:0.7;">CUI/Sensitive</span>
+            </button>
+            <button onclick="setDoDIL('il5')" id="dod-btn-il5"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:7px 10px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;flex:1;">
+              IL5<br/><span style="font-size:0.42rem;opacity:0.7;">NSS/Classified</span>
+            </button>
+            <button onclick="setDoDIL(null)" id="dod-btn-none"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:7px 10px;border:1px solid #ff6b35;background:rgba(255,107,53,0.1);color:#ff6b35;cursor:pointer;transition:all .2s;flex:1;">
+              NONE<br/><span style="font-size:0.42rem;opacity:0.7;">No DoD req</span>
+            </button>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;color:var(--dim);margin-top:8px;" id="dod-il-label">No DoD Impact Level selected</div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid rgba(255,107,53,0.25);padding:18px;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:#ff6b35;margin-bottom:10px;letter-spacing:0.1em;">&#9632; AGENCY OVERLAYS</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button onclick="toggleOverlay('dod')" id="ov-btn-dod"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              DoD SRG
+            </button>
+            <button onclick="toggleOverlay('ic')" id="ov-btn-ic"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              IC/ICD503
+            </button>
+            <button onclick="toggleOverlay('cjis')" id="ov-btn-cjis"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              CJIS
+            </button>
+            <button onclick="toggleOverlay('irs')" id="ov-btn-irs"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              IRS P1075
+            </button>
+            <button onclick="toggleOverlay('dea')" id="ov-btn-dea"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              DEA
+            </button>
+            <button onclick="toggleOverlay('hipaa')" id="ov-btn-hipaa"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              HIPAA
+            </button>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;color:var(--dim);margin-top:8px;" id="ov-active-label">No overlays active &#8212; click to add</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+        <div style="background:var(--surface);border:1px solid rgba(255,107,53,0.25);padding:20px;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:#ff6b35;margin-bottom:12px;letter-spacing:0.1em;">&#9632; AUTHORIZATION PATH</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);line-height:2.4;">
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; FIPS 199 Categorization</span><span style="color:var(--green);">COMPLETE</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; System Security Plan (SSP)</span><span style="color:var(--amber);">IN PROGRESS</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; 3PAO Security Assessment</span><span style="color:var(--dim);">PENDING</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Security Assessment Report</span><span style="color:var(--dim);">PENDING</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; POA&amp;M Submission</span><span style="color:var(--dim);">PENDING</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; ATO / P-ATO Granted</span><span style="color:var(--dim);">PENDING</span></div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid rgba(255,107,53,0.25);padding:20px;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:#ff6b35;margin-bottom:12px;letter-spacing:0.1em;">&#9632; CONMON REQUIREMENTS</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);line-height:2.4;">
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Monthly Vulnerability Scans</span><span style="color:var(--amber);">DUE IN 5 DAYS</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Monthly POA&amp;M Update</span><span style="color:var(--amber);">DUE IN 5 DAYS</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Annual Penetration Test</span><span style="color:var(--green);">COMPLETE</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Annual 3PAO Assessment</span><span style="color:var(--dim);">8 MONTHS</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; US-CERT Incident Reporting</span><span style="color:var(--green);">CONFIGURED</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Component Inventory</span><span style="color:var(--green);">CURRENT</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title" style="color:#ff6b35;">NIST SP 800-53 REV 5 &#8212; MODERATE BASELINE</div>
+      <div id="fedramp-controls-container" style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);padding:20px;text-align:center;">
+        Loading controls...
+      </div>
+    </div>
 
   </div>
 </div>
@@ -773,7 +758,7 @@
 
     document.getElementById('score-label').textContent=label;
     document.getElementById('score-label').style.color=color;
-    document.getElementById('score-sublabel').textContent=`LAST SCAN: ${data.last_calculated?new Date(data.last_calculated).toLocaleString():'Never'}`;
+    document.getElementById('score-sublabel').textContent=`LAST SCAN: ${new Date(data.last_calculated).toLocaleString()}`;
     document.getElementById('tb-score').textContent=score+'%';
     document.getElementById('tb-score').style.color=color;
     document.getElementById('tb-gaps').textContent=data.open_gaps||0;
@@ -815,7 +800,7 @@
     }).join('');
   }
 
-  // ── Load controls ─────────────────────────────────────────
+  // ── Load controls with remediation buttons ─────────────────
   async function loadControls(framework){
     const statusFilter = document.getElementById('status-filter')?.value || '';
     let url = `/orgs/${org.id}/controls`;
@@ -855,7 +840,7 @@
     </tr>`).join('');
   }
 
-  // ── Load findings ─────────────────────────────────────────
+  // ── Load findings with remediation ────────────────────────
   async function loadFindings(){
     const data = await api(`/orgs/${org.id}/findings?status=open`);
     if(!data) return;
@@ -877,6 +862,7 @@
           ${f.remediation_guide_available ?
             `<button class="btn-fix guide" onclick="executeRemediation('${f.id}','${f.remediation_type}',false)">GUIDE &#9654;</button>` : ''}
           ${f.control_id ? `<span class="finding-tag">${f.control_id}</span>` : ''}
+          <span class="finding-tag">${f.severity.toUpperCase()} RISK</span>
         </div>
       </div>`).join('');
   }
@@ -892,7 +878,7 @@
     }
     const riskMap={high:'<span class="risk-badge risk-high">HIGH</span>',moderate:'<span class="risk-badge risk-mod">MOD</span>',low:'<span class="risk-badge risk-low">LOW</span>'};
     tbody.innerHTML=data.poam.map(p=>`<tr>
-      <td><span class="ctrl-id">${p.control_id||'—'}</span></td>
+      <td><span class="ctrl-id">${p.control_id||'—'}</span><br/><span style="color:var(--dim);font-size:.46rem;">${p.control_definitions?.family||''}</span></td>
       <td style="max-width:220px;line-height:1.4;">${p.weakness?.slice(0,100)}${p.weakness?.length>100?'...':''}</td>
       <td>${riskMap[p.risk_rating]||'—'}</td>
       <td>${p.scheduled_completion ? new Date(p.scheduled_completion).toLocaleDateString() : '—'}</td>
@@ -906,12 +892,16 @@
     const data = await api(`/orgs/${org.id}/poam/generate`, { method: 'POST' });
     if(data) {
       addBridgeMessage('green', `POA&M: Generated ${data.generated} entries from open findings`, 'POAM');
-      showPage('poam');
+      if(document.getElementById('page-poam').style.display!=='none') loadPOAM();
+      if(document.getElementById('page-findings').style.display!=='none') {
+        setTimeout(()=>showPage('poam'),500);
+      }
     }
   }
 
   // ── Show remediation for a control ───────────────────────
   async function showRemediationForControl(controlId){
+    // Find remediation type from registry
     const data = await api(`/remediations`);
     if(!data) return;
     const match = data.remediations?.find(r => r.controlIds?.includes(controlId));
@@ -927,7 +917,8 @@
       if(result){
         if(result.success){
           addBridgeMessage('green', `AUTO-FIX SUCCESS: ${result.actions?.join('; ')}`, 'REMEDIATION');
-          loadFindings(); loadPosture();
+          loadFindings();
+          loadPosture();
         } else {
           showRemediationModal(findingId, remType, result.guide);
         }
@@ -938,11 +929,13 @@
     }
   }
 
+  // ── Show remediation modal ────────────────────────────────
   function showRemediationModal(findingId, remType, guide){
     if(!guide) return;
     document.getElementById('rem-title').textContent = guide.title || 'REMEDIATION GUIDE';
     const modeClass = guide.canAutoFix ? 'auto' : 'guided';
     const modeText  = guide.canAutoFix ? '&#9679; AUTO-REMEDIABLE' : '&#9650; MANUAL REMEDIATION REQUIRED';
+
     const stepsHtml = guide.guidance?.steps?.map(s=>`
       <div class="rem-step">
         <div class="rem-step-num">${s.step}</div>
@@ -952,12 +945,21 @@
           ${s.command ? `<div class="rem-command" onclick="copyCommand(this)">${s.command}</div>` : ''}
         </div>
       </div>`).join('') || '';
+
+    const affectsHtml = guide.affectedControls?.length ?
+      `<div class="rem-affects">
+        <div class="rem-affects-title">// ALSO FIXES THESE CONTROLS</div>
+        ${guide.affectedControls.map(c=>`<span class="rem-ctrl-pill">${c}</span>`).join('')}
+      </div>` : '';
+
     document.getElementById('rem-body').innerHTML = `
       <div class="rem-mode ${modeClass}">${modeText}</div>
       ${guide.canAutoFix && findingId ?
         `<button class="rem-execute-btn" onclick="executeAutoFix('${findingId}')">&#9654; EXECUTE AUTO-FIX NOW</button>` : ''}
       <div class="rem-summary">${guide.guidance?.summary||''}</div>
       ${stepsHtml}
+      ${affectsHtml}
+      ${guide.guidance?.docsUrl ? `<div class="rem-docs">Official Documentation: <a href="${guide.guidance.docsUrl}" target="_blank">${guide.guidance.docsUrl}</a></div>` : ''}
     `;
     document.getElementById('rem-modal').classList.add('active');
   }
@@ -971,7 +973,8 @@
     if(result?.success){
       closeRemediation();
       addBridgeMessage('green', `AUTO-FIX COMPLETE: ${result.actions?.join('; ')}`, 'REMEDIATION');
-      loadFindings(); loadPosture();
+      loadFindings();
+      loadPosture();
     } else {
       if(btn){ btn.disabled=false; btn.textContent='RETRY AUTO-FIX'; }
     }
@@ -985,22 +988,14 @@
     });
   }
 
-  // ── ═══════════════════════════════════════════════════════
-  //    DARKBLOOM BRIDGE™ — FIXED: polls AND ensures channel exists
-  // ═══════════════════════════════════════════════════════ ──
+  // ── Darkbloom Bridge™ polling ─────────────────────────────
   let bridgeSince = 0;
-  let bridgeChannelId = null;
   const bridgeColors = {
-    'scan.started':'#00f0ff','scan.completed':'#00ff88','scan.failed':'#ff3355',
-    'scan.progress':'#00f0ff','remediation.success':'#00ff88','remediation.failed':'#ff3355',
-    'remediation.guided':'#ffb800','finding.created':'#ff3355','finding.resolved':'#00ff88',
-    'control.updated':'#00f0ff','control.auto_passed':'#00ff88','assessor.connected':'#8b5cf6',
-    'score.changed':'#ffb800',
-    // Bridge message event types from bridge.js
-    'scan_started':'#00f0ff','scan_completed':'#00ff88','scan_failed':'#ff3355',
-    'scan_progress':'#00f0ff','remediation_success':'#00ff88','remediation_failed':'#ff3355',
-    'finding_created':'#ff3355','finding_resolved':'#00ff88','control_updated':'#00f0ff',
-    'score_changed':'#ffb800','assessor_connected':'#8b5cf6','system':'rgba(200,228,240,0.3)',
+    'scan.started': '#00f0ff', 'scan.completed': '#00ff88', 'scan.failed': '#ff3355',
+    'scan.progress': '#00f0ff', 'remediation.success': '#00ff88', 'remediation.failed': '#ff3355',
+    'remediation.guided': '#ffb800', 'finding.created': '#ff3355', 'finding.resolved': '#00ff88',
+    'control.updated': '#00f0ff', 'control.auto_passed': '#00ff88', 'assessor.connected': '#8b5cf6',
+    'score.changed': '#ffb800',
   };
 
   function addBridgeMessage(colorKey, text, tag){
@@ -1018,111 +1013,21 @@
         </div>`;
       feed.appendChild(item);
       feed.scrollTop = feed.scrollHeight;
-      while(feed.children.length > 80) feed.removeChild(feed.firstChild);
+      // Keep max 50 messages
+      while(feed.children.length > 50) feed.removeChild(feed.firstChild);
     });
   }
 
-  // ── Ensure Bridge™ channel exists for this org ─────────────
-  // Without this, scan events never reach the feed because
-  // broadcastToRef() requires at least one channel to exist
-  async function ensureBridgeChannel(){
-    if(bridgeChannelId) return bridgeChannelId;
-    try {
-      const data = await api(`/bridge/channels?ref_id=${org.id}`);
-      if(data?.channels?.length){
-        bridgeChannelId = data.channels[0].id;
-      } else {
-        // Create a channel so Bridge™ events have somewhere to go
-        const created = await api(`/bridge/channels`, {
-          method:'POST',
-          body: JSON.stringify({ ref_id: org.id, channel_type: 'compliance' })
-        });
-        if(created?.channel?.id) bridgeChannelId = created.channel.id;
-      }
-    } catch(e){ /* silent fail */ }
-    return bridgeChannelId;
-  }
-
   async function pollBridge(){
-    // Use the bridge channel message history for accurate event log
-    const channelId = await ensureBridgeChannel();
-
-    if(channelId){
-      // Poll channel messages — this is where scan events actually land
-      try {
-        const res = await fetch(`${API_URL}/bridge/channels/${channelId}/messages?limit=20`, {
-          headers:{ 'Authorization':`Bearer ${token}` }
-        });
-        const data = await res.json();
-        if(data?.messages?.length){
-          const newMessages = data.messages.filter(m => new Date(m.created_at).getTime() > bridgeSince);
-          newMessages.forEach(msg => {
-            const payload = msg.payload || {};
-            const text = formatBridgeEventFromMsg(msg);
-            const color = bridgeColors[msg.event_type] || '#00f0ff';
-            const tag = msg.event_type?.replace(/_/g,' ').toUpperCase() || 'EVENT';
-            // Add to feed directly with timestamp
-            const feeds = ['bridge-feed','bridge-feed-full'].map(id=>document.getElementById(id)).filter(Boolean);
-            feeds.forEach(feed=>{
-              if(feed.querySelector('.loading')) feed.innerHTML='';
-              const item = document.createElement('div');
-              item.className='bridge-msg';
-              item.innerHTML=`
-                <div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
-                <div class="bridge-msg-content">
-                  <div class="bridge-msg-event">${text}</div>
-                  <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleTimeString()} • ${tag}</div>
-                </div>`;
-              feed.appendChild(item);
-              feed.scrollTop = feed.scrollHeight;
-              while(feed.children.length > 80) feed.removeChild(feed.firstChild);
-            });
-            bridgeSince = Math.max(bridgeSince, new Date(msg.created_at).getTime());
-          });
-          if(newMessages.length) {
-            document.getElementById('bridge-status').textContent = `LAST: ${new Date().toLocaleTimeString()}`;
-            const fullStatus = document.getElementById('bridge-status-full');
-            if(fullStatus) fullStatus.textContent = 'LIVE';
-          }
-        }
-      } catch(e){ /* silent */ }
-    } else {
-      // Fallback: poll the legacy /bridge endpoint
-      const data = await api(`/orgs/${org.id}/bridge?since=${bridgeSince}`);
-      if(data?.messages?.length){
-        data.messages.forEach(msg=>{
-          const payload = msg.payload || {};
-          const text = formatBridgeEvent(msg.event_type, payload);
-          addBridgeMessage(msg.event_type, text, msg.event_type.split('.')[0].toUpperCase());
-          bridgeSince = Math.max(bridgeSince, new Date(msg.created_at).getTime());
-        });
-        document.getElementById('bridge-status').textContent=`LAST: ${new Date().toLocaleTimeString()}`;
-      }
-    }
-  }
-
-  function formatBridgeEventFromMsg(msg){
-    const payload = msg.payload || {};
-    const type = msg.event_type;
-    // Handle bridge.js BRIDGE_EVENTS format
-    switch(type){
-      case 'scan_started':    return `&#9654; Scan started for ${payload.domain||'domain'}`;
-      case 'scan_completed':  return `&#9679; Scan complete — Score: ${payload.score||'—'}%`;
-      case 'scan_failed':     return `&#9650; Scan failed: ${payload.error||'unknown error'}`;
-      case 'scan_progress':   return `// Scanning: ${payload.message||''} (${payload.pct||0}%)`;
-      case 'remediation_success': return `&#9679; Auto-fixed: ${payload.title||'issue resolved'}`;
-      case 'remediation_failed':  return `&#9650; Auto-fix failed: ${payload.error||''}`;
-      case 'finding_created': return `&#9650; New finding: ${payload.title||''}`;
-      case 'finding_resolved':return `&#9679; Finding resolved`;
-      case 'control_updated': return `// Control ${payload.control_id||''} → ${payload.status||''}`;
-      case 'score_changed':   return `// Score: ${payload.old_score}% → ${payload.new_score}%`;
-      case 'system':          return `// ${payload.text||'System event'}`;
-      case 'presence_join':   return `// ${payload.joiner_name||'Party'} joined the channel`;
-      case 'message':         return `&#9656; ${payload.text||''}`;
-      // Legacy dot-notation format
-      case 'scan.started':    return `&#9654; Scan started for ${payload.domain||'domain'}`;
-      case 'scan.completed':  return `&#9679; Scan complete — Score: ${payload.score||'—'}%`;
-      default: return `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
+    const data = await api(`/orgs/${org.id}/bridge?since=${bridgeSince}`);
+    if(data?.messages?.length){
+      data.messages.forEach(msg=>{
+        const payload = msg.payload || {};
+        const text = formatBridgeEvent(msg.event_type, payload);
+        addBridgeMessage(msg.event_type, text, msg.event_type.split('.')[0].toUpperCase());
+        bridgeSince = Math.max(bridgeSince, new Date(msg.created_at).getTime());
+      });
+      document.getElementById('bridge-status').textContent=`LAST: ${new Date().toLocaleTimeString()}`;
     }
   }
 
@@ -1133,194 +1038,20 @@
       case 'scan.failed':     return `&#9650; Scan failed: ${payload.error||'unknown error'}`;
       case 'scan.progress':   return `// Scanning: ${payload.message||''} (${payload.pct||0}%)`;
       case 'remediation.success': return `&#9679; Auto-fixed: ${payload.result?.actions?.[0]||'issue resolved'}`;
+      case 'remediation.failed':  return `&#9650; Auto-fix failed: ${payload.result?.error||''}`;
+      case 'remediation.guided':  return `&#9650; Guided remediation sent for finding`;
       case 'finding.created': return `&#9650; New finding: ${payload.title||''}`;
-      case 'finding.resolved':return `&#9679; Finding resolved`;
+      case 'finding.resolved':return `&#9679; Finding resolved by ${payload.resolvedBy||'system'}`;
       case 'control.updated': return `// Control ${payload.controlId||''} → ${payload.status||''}`;
+      case 'control.auto_passed': return `&#9679; Auto-passed: ${payload.controlId||''}`;
+      case 'assessor.connected': return `// C3PAO connected: ${payload.assessor_email||'assessor'}`;
       case 'score.changed':   return `// Score changed: ${payload.oldScore}% → ${payload.newScore}%`;
       default: return `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
     }
   }
 
-  // Initialize Bridge™ channel on load
-  ensureBridgeChannel().then(id => {
-    if(id) addBridgeMessage('system', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
-  });
-  setInterval(pollBridge, 4000);
-
-  // ── AWS Integration ───────────────────────────────────────
-  function showIntMsg(id, type, text){
-    const el = document.getElementById(id);
-    el.className = `int-msg ${type} show`;
-    el.textContent = `> ${text}`;
-    setTimeout(() => el.className = 'int-msg', 6000);
-  }
-
-  async function testAWS(){
-    const keyId = document.getElementById('aws-key-id').value.trim();
-    const secret = document.getElementById('aws-secret-key').value.trim();
-    const region = document.getElementById('aws-region').value;
-    if(!keyId || !secret){ showIntMsg('aws-msg','error','Enter Access Key ID and Secret Access Key first'); return; }
-    showIntMsg('aws-msg','info','Testing AWS connection...');
-    const data = await api(`/orgs/${org.id}/integrations/aws/test`, {
-      method:'POST',
-      body: JSON.stringify({ access_key_id: keyId, secret_access_key: secret, region })
-    });
-    if(data?.success){
-      showIntMsg('aws-msg','success',`Connected! Account: ${data.account_id} | ARN: ${data.arn?.split('/').pop()}`);
-      document.getElementById('aws-status-badge').className='int-status-badge connected';
-      document.getElementById('aws-status-txt').textContent='CONNECTED';
-      document.getElementById('btn-aws-scan').disabled = false;
-    } else {
-      showIntMsg('aws-msg','error', data?.error || 'Connection failed. Check credentials.');
-    }
-  }
-
-  async function saveAWS(){
-    const keyId = document.getElementById('aws-key-id').value.trim();
-    const secret = document.getElementById('aws-secret-key').value.trim();
-    const region = document.getElementById('aws-region').value;
-    if(!keyId || !secret){ showIntMsg('aws-msg','error','Enter both credentials before saving'); return; }
-    showIntMsg('aws-msg','info','Saving credentials...');
-    const data = await api(`/orgs/${org.id}/integrations/aws`, {
-      method:'POST',
-      body: JSON.stringify({ access_key_id: keyId, secret_access_key: secret, region })
-    });
-    if(data?.integration_id || data?.message){
-      showIntMsg('aws-msg','success','AWS credentials saved and encrypted successfully');
-      document.getElementById('aws-key-id').value = '';
-      document.getElementById('aws-secret-key').value = keyId.slice(0,4)+'...';
-      document.getElementById('aws-status-badge').className='int-status-badge connected';
-      document.getElementById('aws-status-txt').textContent='CONFIGURED';
-      document.getElementById('btn-aws-scan').disabled = false;
-      document.getElementById('badge-aws').textContent='ON';
-      document.getElementById('badge-aws').className='nav-badge badge-green';
-    } else {
-      showIntMsg('aws-msg','error', data?.error || 'Save failed');
-    }
-  }
-
-  async function scanAWS(){
-    const btn = document.getElementById('btn-aws-scan');
-    btn.disabled = true; btn.textContent = 'SCANNING...';
-    showIntMsg('aws-msg','info','AWS security scan running — this takes 30-60 seconds...');
-    addBridgeMessage('scan_started', 'AWS Security scan initiated', 'AWS');
-    const data = await api(`/orgs/${org.id}/scan/aws`, { method:'POST' });
-    btn.disabled = false; btn.textContent = 'RUN AWS SCAN ▶';
-    if(data?.score !== undefined){
-      showIntMsg('aws-msg','success',`AWS scan complete — Score: ${data.score}% | ${data.checksRun} checks | ${data.findingsCreated} findings`);
-      addBridgeMessage('scan_completed', `AWS scan complete — Score: ${data.score}%`, 'AWS');
-      renderIntResults('aws-checks', data.results);
-      document.getElementById('aws-results').classList.add('show');
-      loadPosture(); loadFindings();
-    } else {
-      showIntMsg('aws-msg','error', data?.error || 'Scan failed');
-      addBridgeMessage('scan_failed', 'AWS scan failed', 'AWS');
-    }
-  }
-
-  // ── M365 Integration ──────────────────────────────────────
-  async function testM365(){
-    const tenantId = document.getElementById('m365-tenant-id').value.trim();
-    const clientId = document.getElementById('m365-client-id').value.trim();
-    const clientSecret = document.getElementById('m365-client-secret').value.trim();
-    if(!tenantId || !clientId || !clientSecret){ showIntMsg('m365-msg','error','Enter all three credentials first'); return; }
-    showIntMsg('m365-msg','info','Testing Microsoft 365 connection...');
-    const data = await api(`/orgs/${org.id}/integrations/m365/test`, {
-      method:'POST',
-      body: JSON.stringify({ tenant_id: tenantId, client_id: clientId, client_secret: clientSecret })
-    });
-    if(data?.success){
-      showIntMsg('m365-msg','success',`Connected to: ${data.tenant_name}`);
-      document.getElementById('m365-status-badge').className='int-status-badge connected';
-      document.getElementById('m365-status-txt').textContent='CONNECTED';
-      document.getElementById('btn-m365-scan').disabled = false;
-    } else {
-      showIntMsg('m365-msg','error', data?.error || 'Connection failed. Check credentials and API permissions.');
-    }
-  }
-
-  async function saveM365(){
-    const tenantId = document.getElementById('m365-tenant-id').value.trim();
-    const clientId = document.getElementById('m365-client-id').value.trim();
-    const clientSecret = document.getElementById('m365-client-secret').value.trim();
-    if(!tenantId || !clientId || !clientSecret){ showIntMsg('m365-msg','error','Enter all three credentials before saving'); return; }
-    showIntMsg('m365-msg','info','Saving credentials...');
-    const data = await api(`/orgs/${org.id}/integrations/m365`, {
-      method:'POST',
-      body: JSON.stringify({ tenant_id: tenantId, client_id: clientId, client_secret: clientSecret })
-    });
-    if(data?.integration_id || data?.message){
-      showIntMsg('m365-msg','success','M365 credentials saved and encrypted successfully');
-      document.getElementById('m365-client-secret').value = '••••••••••••••••';
-      document.getElementById('m365-status-badge').className='int-status-badge connected';
-      document.getElementById('m365-status-txt').textContent='CONFIGURED';
-      document.getElementById('btn-m365-scan').disabled = false;
-      document.getElementById('badge-m365').textContent='ON';
-      document.getElementById('badge-m365').className='nav-badge badge-green';
-    } else {
-      showIntMsg('m365-msg','error', data?.error || 'Save failed');
-    }
-  }
-
-  async function scanM365(){
-    const btn = document.getElementById('btn-m365-scan');
-    btn.disabled = true; btn.textContent = 'SCANNING...';
-    showIntMsg('m365-msg','info','Microsoft 365 scan running...');
-    addBridgeMessage('scan_started', 'Microsoft 365 scan initiated', 'M365');
-    const data = await api(`/orgs/${org.id}/scan/m365`, { method:'POST' });
-    btn.disabled = false; btn.textContent = 'RUN M365 SCAN ▶';
-    if(data?.score !== undefined){
-      showIntMsg('m365-msg','success',`M365 scan complete — Score: ${data.score}% | ${data.checksRun} checks | ${data.findingsCreated} findings`);
-      addBridgeMessage('scan_completed', `M365 scan complete — Score: ${data.score}%`, 'M365');
-      renderIntResults('m365-checks', data.results);
-      document.getElementById('m365-results').classList.add('show');
-      loadPosture(); loadFindings();
-    } else {
-      showIntMsg('m365-msg','error', data?.error || 'Scan failed');
-      addBridgeMessage('scan_failed', 'M365 scan failed', 'M365');
-    }
-  }
-
-  function renderIntResults(containerId, results){
-    if(!results) return;
-    const container = document.getElementById(containerId);
-    const scoreColor = s => s>=80?'var(--green)':s>=50?'var(--amber)':'var(--red)';
-    const statusDot = s => s==='pass'?'pass':s==='fail'?'fail':'warn';
-    container.innerHTML = Object.entries(results).filter(([,v])=>v&&v.status&&v.status!=='not_assessed').map(([key, r])=>`
-      <div class="int-check">
-        <div class="int-check-dot ${statusDot(r.status)}"></div>
-        <div class="int-check-name">${r.name||key.replace(/_/g,' ').toUpperCase()}</div>
-        <div class="int-check-score" style="color:${scoreColor(r.score||0)}">${r.score||0}%</div>
-      </div>`).join('');
-  }
-
-  // ── Load integrations status on init ─────────────────────
-  async function loadIntegrationsStatus(){
-    const data = await api(`/orgs/${org.id}/integrations`);
-    if(!data?.integrations) return;
-    for(const int of data.integrations){
-      if(int.provider === 'aws'){
-        document.getElementById('aws-status-badge').className='int-status-badge connected';
-        document.getElementById('aws-status-txt').textContent='CONFIGURED';
-        document.getElementById('btn-aws-scan').disabled = false;
-        document.getElementById('aws-key-id').value = int.client_id||'';
-        document.getElementById('aws-secret-key').value = '••••••••••••••••';
-        if(int.tenant_id) document.getElementById('aws-region').value = int.tenant_id;
-        document.getElementById('badge-aws').textContent='ON';
-        document.getElementById('badge-aws').className='nav-badge badge-green';
-      }
-      if(int.provider === 'microsoft365'){
-        document.getElementById('m365-status-badge').className='int-status-badge connected';
-        document.getElementById('m365-status-txt').textContent='CONFIGURED';
-        document.getElementById('btn-m365-scan').disabled = false;
-        document.getElementById('m365-tenant-id').value = int.tenant_id||'';
-        document.getElementById('m365-client-id').value = int.client_id||'';
-        document.getElementById('m365-client-secret').value = '••••••••••••••••';
-        document.getElementById('badge-m365').textContent='ON';
-        document.getElementById('badge-m365').className='nav-badge badge-green';
-      }
-    }
-  }
+  // Start bridge polling every 5 seconds
+  setInterval(pollBridge, 5000);
 
   // ── Create assessor session ───────────────────────────────
   async function createAssessorSession(){
@@ -1348,14 +1079,13 @@
         <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">&#9679; PORTAL LINK GENERATED — SHARE WITH ASSESSOR</div>
         <div style="color:var(--cyan);word-break:break-all;">${data.portal_url}</div>
         <div style="color:var(--dim);margin-top:6px;font-size:0.48rem;">Expires: ${new Date(data.session.expires_at).toLocaleString()} • Read-only access only</div>`;
-      addBridgeMessage('assessor_connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
+      addBridgeMessage('assessor.connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
     }
   }
 
   // ── Framework detail ──────────────────────────────────────
   async function loadFrameworkDetail(pageId, framework, color, name){
     const el = document.getElementById(pageId);
-    el.innerHTML='<div class="loading">// LOADING '+name+'...</div>';
     const data = await api(`/orgs/${org.id}/controls?framework=${framework}`);
     if(!data){ el.innerHTML='<div class="loading">// FAILED TO LOAD</div>'; return; }
 
@@ -1400,56 +1130,264 @@
   async function generateReport(type){
     const data = await api(`/orgs/${org.id}/reports/${type}`);
     if(!data) return;
-    const reportHTML = buildReportHTML(type, data);
-    const blob = new Blob([reportHTML], {type:'text/html'});
-    const url = URL.createObjectURL(blob);
+    const html = buildReportHTML(type, data);
+    const blob = new Blob([html], {type:'text/html'});
+    const url  = URL.createObjectURL(blob);
     window.open(url, '_blank');
-    setTimeout(()=>URL.revokeObjectURL(url), 15000);
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
     addBridgeMessage('control.updated', `Report generated: ${type.toUpperCase()}`, 'REPORTS');
   }
 
   function buildReportHTML(type, data) {
-    const orgData = data.org || {};
+    const org = data.org || {};
     const controls = data.controls || [];
     const findings = data.open_findings || [];
     const poam = data.poam_entries || [];
     const now = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
-    const fwFilter = {'ssp':['NIST','CMMC'],'poam':['NIST','CMMC'],'fips-audit':['FIPS'],'owasp':['OWASP'],'soc2-readiness':['SOC2']}[type] || null;
-    const fc = fwFilter ? controls.filter(c=>fwFilter.includes(c.control_definitions?.framework||c.framework||'')) : controls;
-    const pass = fc.filter(c=>c.status==='pass').length;
-    const fail = fc.filter(c=>c.status==='fail').length;
-    const pct = fc.length ? Math.round(pass/fc.length*100) : 0;
-    return `<!DOCTYPE html><html><head><meta charset="UTF-8"/><title>AuditCore™ Report</title>
-<style>body{font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f0f2f5;margin:0;padding:24px;}
-.page{max-width:1100px;margin:0 auto;background:#fff;padding:44px;box-shadow:0 2px 16px rgba(0,0,0,.12);}
-.hdr{border-bottom:3px solid #0d1b2a;padding-bottom:20px;margin-bottom:28px;display:flex;justify-content:space-between;}
-h1{font-size:22px;color:#0d1b2a;} .meta{text-align:right;font-size:12px;color:#555;line-height:1.9;}
-.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-bottom:28px;}
-.card{background:#f8f9fa;border-radius:6px;padding:18px;text-align:center;border-top:4px solid #0d1b2a;}
-.card .n{font-size:34px;font-weight:700;} .card .l{font-size:11px;color:#666;text-transform:uppercase;}
-table{width:100%;border-collapse:collapse;margin-bottom:24px;} th{background:#0d1b2a;color:#fff;padding:9px 12px;text-align:left;font-size:12px;}
-td{padding:9px 12px;border-bottom:1px solid #e8e8e8;font-size:13px;} tr:nth-child(even) td{background:#fafafa;}
-.ftr{margin-top:40px;padding-top:14px;border-top:1px solid #e0e0e0;text-align:center;font-size:11px;color:#aaa;}
-.pbtn{position:fixed;bottom:24px;right:24px;background:#0d1b2a;color:#fff;border:none;padding:13px 22px;border-radius:6px;font-size:14px;cursor:pointer;}
-</style></head><body>
+    const score = (() => {
+      const fw = {};
+      for (const c of controls) {
+        const f = c.control_definitions?.framework || c.framework;
+        if (!f) continue;
+        if (!fw[f]) fw[f] = {pass:0,total:0};
+        fw[f].total++;
+        if (c.status === 'pass') fw[f].pass++;
+      }
+      const scores = Object.entries(fw).map(([f,s]) => `${f}: ${s.total>0?Math.round(s.pass/s.total*100):0}%`);
+      return scores.join(' &nbsp;|&nbsp; ');
+    })();
+
+    const titleMap = {
+      'ssp': 'System Security Plan (SSP)',
+      'poam': 'Plan of Action & Milestones (POA&M)',
+      'executive': 'Executive Summary',
+      'fips-audit': 'FIPS 140-3 Cryptographic Audit',
+      'owasp': 'OWASP Top 10 Vulnerability Report',
+      'soc2-readiness': 'SOC 2 Type II Readiness Assessment',
+    };
+    const title = titleMap[type] || type.toUpperCase();
+
+    const statusBadge = (s) => {
+      const colors = {pass:'#00c853',fail:'#d32f2f',partial:'#f57c00',not_assessed:'#757575',not_applicable:'#9e9e9e'};
+      const labels = {pass:'PASS',fail:'FAIL',partial:'PARTIAL',not_assessed:'NOT ASSESSED',not_applicable:'N/A'};
+      const c = colors[s]||'#757575';
+      return `<span style="background:${c};color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">${labels[s]||s.toUpperCase()}</span>`;
+    };
+
+    const sevBadge = (s) => {
+      const colors = {critical:'#d32f2f',warning:'#f57c00',info:'#1565c0'};
+      const c = colors[s]||'#757575';
+      return `<span style="background:${c};color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">${s.toUpperCase()}</span>`;
+    };
+
+    // Build controls table rows based on type
+    let frameworkFilter = null;
+    if (type === 'ssp' || type === 'poam') frameworkFilter = ['NIST','CMMC'];
+    if (type === 'fips-audit') frameworkFilter = ['FIPS'];
+    if (type === 'owasp') frameworkFilter = ['OWASP'];
+    if (type === 'soc2-readiness') frameworkFilter = ['SOC2'];
+
+    const filteredControls = frameworkFilter
+      ? controls.filter(c => frameworkFilter.includes(c.control_definitions?.framework || c.framework))
+      : controls;
+
+    const passCount = filteredControls.filter(c=>c.status==='pass').length;
+    const failCount = filteredControls.filter(c=>c.status==='fail').length;
+    const totalCount = filteredControls.length;
+    const pct = totalCount > 0 ? Math.round(passCount/totalCount*100) : 0;
+
+    const controlRows = filteredControls.map(c => {
+      const def = c.control_definitions || c;
+      return `<tr>
+        <td style="font-weight:600;white-space:nowrap;">${def.id||c.control_id||''}</td>
+        <td>${def.family||''}</td>
+        <td>${def.title||def.description||''}</td>
+        <td style="text-align:center;">${statusBadge(c.status||'not_assessed')}</td>
+        <td style="font-size:12px;color:#555;">${c.notes||''}</td>
+      </tr>`;
+    }).join('');
+
+    const findingRows = findings.map(f => `<tr>
+      <td>${sevBadge(f.severity)}</td>
+      <td style="font-weight:600;">${f.title||''}</td>
+      <td>${f.control_id||''}</td>
+      <td style="font-size:12px;">${f.description?.slice(0,120)||''}</td>
+      <td>${f.remediation?.slice(0,80)||''}</td>
+    </tr>`).join('');
+
+    const poamRows = poam.map(p => `<tr>
+      <td style="font-weight:600;">${p.control_id||''}</td>
+      <td>${p.weakness?.slice(0,100)||''}</td>
+      <td><span style="background:${p.risk_rating==='high'?'#d32f2f':p.risk_rating==='moderate'?'#f57c00':'#388e3c'};color:#fff;padding:2px 7px;border-radius:3px;font-size:11px;">${(p.risk_rating||'').toUpperCase()}</span></td>
+      <td>${p.scheduled_completion?new Date(p.scheduled_completion).toLocaleDateString():''}</td>
+      <td><span style="background:${p.status==='open'?'#d32f2f':'#388e3c'};color:#fff;padding:2px 7px;border-radius:3px;font-size:11px;">${(p.status||'').toUpperCase()}</span></td>
+    </tr>`).join('');
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AuditCore™ — ${title}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f5f5f5;}
+  @media print{body{background:#fff;}.no-print{display:none;}}
+  .page{max-width:1100px;margin:0 auto;background:#fff;padding:40px;box-shadow:0 2px 12px rgba(0,0,0,0.1);}
+  .header{border-bottom:3px solid #0d1b2a;padding-bottom:20px;margin-bottom:28px;}
+  .header-top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .logo-area h1{font-size:22px;color:#0d1b2a;font-weight:700;letter-spacing:0.05em;}
+  .logo-area h2{font-size:14px;color:#444;font-weight:400;margin-top:4px;}
+  .header-meta{text-align:right;font-size:12px;color:#666;line-height:1.8;}
+  .header-meta strong{color:#0d1b2a;}
+  .watermark{font-size:10px;color:#aaa;margin-top:6px;letter-spacing:0.1em;}
+  .score-bar{display:flex;gap:16px;margin:20px 0;padding:16px;background:#f0f4f8;border-left:4px solid #0d1b2a;}
+  .score-item{text-align:center;}
+  .score-num{font-size:28px;font-weight:700;color:#0d1b2a;line-height:1;}
+  .score-label{font-size:11px;color:#666;margin-top:3px;text-transform:uppercase;letter-spacing:0.08em;}
+  .score-good{color:#00c853;}
+  .score-warn{color:#f57c00;}
+  .score-bad{color:#d32f2f;}
+  .section{margin-bottom:32px;}
+  .section-header{font-size:16px;font-weight:700;color:#0d1b2a;padding:8px 0;border-bottom:2px solid #e0e0e0;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .section-header .icon{font-size:18px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{background:#0d1b2a;color:#fff;padding:9px 12px;text-align:left;font-weight:600;font-size:12px;letter-spacing:0.05em;}
+  td{padding:8px 12px;border-bottom:1px solid #e8e8e8;vertical-align:top;}
+  tr:nth-child(even) td{background:#fafafa;}
+  tr:hover td{background:#f0f4f8;}
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px;}
+  .summary-card{background:#f0f4f8;border-radius:6px;padding:16px;text-align:center;border-top:3px solid #0d1b2a;}
+  .summary-card.green{border-top-color:#00c853;}
+  .summary-card.red{border-top-color:#d32f2f;}
+  .summary-card.amber{border-top-color:#f57c00;}
+  .summary-card .big{font-size:32px;font-weight:700;}
+  .summary-card .lbl{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
+  .print-btn{position:fixed;bottom:24px;right:24px;background:#0d1b2a;color:#fff;border:none;padding:12px 22px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,0.3);}
+  .print-btn:hover{background:#1a3a5c;}
+  .no-data{color:#888;font-style:italic;padding:16px;text-align:center;}
+  .tag{display:inline-block;background:#e8edf2;color:#0d1b2a;padding:1px 7px;border-radius:3px;font-size:11px;margin:1px;}
+  .sprs-box{background:#0d1b2a;color:#fff;padding:14px 20px;border-radius:6px;display:inline-block;margin-bottom:16px;}
+  .sprs-box .num{font-size:36px;font-weight:700;}
+  .sprs-box .lbl{font-size:11px;opacity:0.7;letter-spacing:0.1em;}
+</style>
+</head>
+<body>
 <div class="page">
-<div class="hdr"><div><h1>AuditCore™ — ${type.toUpperCase()} Report</h1></div>
-<div class="meta"><div><strong>Org:</strong> ${orgData.name||'—'}</div><div><strong>Date:</strong> ${now}</div><div>CONFIDENTIAL • DARKBLOOM INDUSTRIES™</div></div></div>
-<div class="cards">
-<div class="card"><div class="n" style="color:${pct>=80?'#00873d':pct>=50?'#c96a00':'#c0392b'}">${pct}%</div><div class="l">Score</div></div>
-<div class="card"><div class="n" style="color:#00873d">${pass}</div><div class="l">Passing</div></div>
-<div class="card"><div class="n" style="color:#c0392b">${fail}</div><div class="l">Failing</div></div>
-<div class="card"><div class="n" style="color:#c96a00">${findings.length}</div><div class="l">Findings</div></div>
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-area">
+        <h1>AuditCore™</h1>
+        <h2>${title}</h2>
+      </div>
+      <div class="header-meta">
+        <div><strong>Organization:</strong> ${org.name||'—'}</div>
+        <div><strong>Generated:</strong> ${now}</div>
+        <div><strong>Generated By:</strong> ${data.generated_by||'—'}</div>
+        <div><strong>Framework:</strong> ${type.toUpperCase()}</div>
+        <div class="watermark">AUDITCORE™ • DARKBLOOM INDUSTRIES™ • CONFIDENTIAL</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORE SUMMARY -->
+  <div class="summary-grid">
+    <div class="summary-card ${pct>=80?'green':pct>=50?'amber':'red'}">
+      <div class="big ${pct>=80?'score-good':pct>=50?'score-warn':'score-bad'}">${pct}%</div>
+      <div class="lbl">Compliance Score</div>
+    </div>
+    <div class="summary-card green">
+      <div class="big score-good">${passCount}</div>
+      <div class="lbl">Controls Passing</div>
+    </div>
+    <div class="summary-card red">
+      <div class="big score-bad">${failCount}</div>
+      <div class="lbl">Gaps / Failures</div>
+    </div>
+    <div class="summary-card amber">
+      <div class="big score-warn">${findings.length}</div>
+      <div class="lbl">Open Findings</div>
+    </div>
+    <div class="summary-card">
+      <div class="big">${totalCount}</div>
+      <div class="lbl">Total Controls</div>
+    </div>
+    ${data.org?.sprs_score!=null?`<div class="summary-card">
+      <div class="big">${data.org.sprs_score}</div>
+      <div class="lbl">DoD SPRS Score</div>
+    </div>`:''}
+  </div>
+
+  ${type==='executive' ? `
+  <!-- EXECUTIVE SUMMARY TEXT -->
+  <div class="section">
+    <div class="section-header"><span class="icon">&#128202;</span> Executive Summary</div>
+    <p style="line-height:1.8;color:#333;margin-bottom:12px;">
+      <strong>${org.name||'Your organization'}</strong> has completed a compliance assessment using AuditCore™. 
+      The overall compliance posture stands at <strong>${pct}%</strong> across ${totalCount} assessed controls.
+      ${failCount > 0 ? `There are <strong style="color:#d32f2f">${failCount} control gaps</strong> requiring remediation.` : 'All assessed controls are currently passing.'}
+      ${findings.length > 0 ? `<strong style="color:#f57c00">${findings.length} open finding${findings.length===1?'':'s'}</strong> require attention.` : ''}
+    </p>
+    <p style="line-height:1.8;color:#333;">
+      Framework scores: ${score||'Pending assessment'}.
+      ${data.org?.sprs_score!=null?`The DoD SPRS score is <strong>${data.org.sprs_score}</strong> (target: 110 points).`:''}
+    </p>
+  </div>
+  ` : ''}
+
+  <!-- CONTROLS TABLE -->
+  ${filteredControls.length > 0 ? `
+  <div class="section">
+    <div class="section-header"><span class="icon">&#9989;</span> Control Assessments (${filteredControls.length} controls)</div>
+    <table>
+      <thead>
+        <tr><th>Control ID</th><th>Family</th><th>Description</th><th style="text-align:center;">Status</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        ${controlRows||'<tr><td colspan="5" class="no-data">No controls found</td></tr>'}
+      </tbody>
+    </table>
+  </div>` : ''}
+
+  <!-- OPEN FINDINGS -->
+  ${findings.length > 0 ? `
+  <div class="section">
+    <div class="section-header"><span class="icon">&#9888;</span> Open Findings (${findings.length})</div>
+    <table>
+      <thead>
+        <tr><th>Severity</th><th>Title</th><th>Control</th><th>Description</th><th>Remediation</th></tr>
+      </thead>
+      <tbody>${findingRows}</tbody>
+    </table>
+  </div>` : ''}
+
+  <!-- POA&M -->
+  ${(type==='poam'||type==='ssp') && poam.length > 0 ? `
+  <div class="section">
+    <div class="section-header"><span class="icon">&#128203;</span> Plan of Action & Milestones (${poam.length} entries)</div>
+    <table>
+      <thead>
+        <tr><th>Control</th><th>Weakness</th><th>Risk</th><th>Target Date</th><th>Status</th></tr>
+      </thead>
+      <tbody>${poamRows}</tbody>
+    </table>
+  </div>` : ''}
+
+  <!-- FOOTER -->
+  <div style="margin-top:40px;padding-top:16px;border-top:1px solid #e0e0e0;text-align:center;font-size:11px;color:#aaa;">
+    Generated by AuditCore™ v2.0 &bull; Darkbloom Industries™ &bull; ${now} &bull; CONFIDENTIAL &mdash; DO NOT DISTRIBUTE WITHOUT AUTHORIZATION
+  </div>
+
 </div>
-${fc.length?`<table><thead><tr><th>Control ID</th><th>Description</th><th>Status</th></tr></thead><tbody>${fc.map(c=>`<tr><td>${c.control_definitions?.id||c.control_id||''}</td><td>${c.control_definitions?.title||''}</td><td>${c.status||'not_assessed'}</td></tr>`).join('')}</tbody></table>`:''}
-${findings.length?`<h3>Open Findings</h3><table><thead><tr><th>Severity</th><th>Title</th><th>Description</th></tr></thead><tbody>${findings.map(f=>`<tr><td>${f.severity}</td><td>${f.title}</td><td>${(f.description||'').slice(0,100)}</td></tr>`).join('')}</tbody></table>`:''}
-<div class="ftr">AuditCore™ v2.0 • Darkbloom Industries™ • ${now} • CONFIDENTIAL</div>
-</div><button class="pbtn" onclick="window.print()">Print / Save PDF</button></body></html>`;
+<button class="print-btn no-print" onclick="window.print()">&#128424; Print / Save PDF</button>
+</body>
+</html>`;
   }
 
   // ── Scan ──────────────────────────────────────────────────
-  const scanLines=['> Initializing Darkbloom Bridge™...','> Connecting to scan engine...','> Loading framework definitions [CMMC/NIST/OWASP/SOC2/FIPS]','> Checking SSL/TLS configuration...','> Scanning HTTP security headers...','> Checking DNS/SPF/DMARC records...','> Verifying HTTPS redirect enforcement...','> Checking clickjacking protection...','> Scanning FIPS cryptographic compliance...','> Cross-referencing findings to NIST controls...','> Applying cross-framework mappings...','> Checking for auto-remediable issues...','> Updating POA&M entries...','> ✓ Scan complete. Results publishing via Darkbloom Bridge™...'];
-
+  const scanLines=['> Initializing Darkbloom Bridge™...','> Connecting to scan engine...','> Loading framework definitions [CMMC/NIST/OWASP/SOC2/FIPS]','> Checking SSL/TLS configuration...','> Scanning HTTP security headers...','> Checking DNS/SPF/DMARC records...','> Verifying HTTPS redirect enforcement...','> Checking clickjacking protection...','> Scanning FIPS cryptographic compliance...','> Cross-referencing findings to NIST controls...','> Applying cross-framework mappings...','> Checking for auto-remediable issues...','> Updating POA&M entries...','> ✓ Scan complete. Results publishing via Bridge™...'];
   function startScan(){
     const overlay=document.getElementById('scan-overlay');
     const bar=document.getElementById('scan-bar');
@@ -1472,8 +1410,8 @@ ${findings.length?`<h3>Open Findings</h3><table><thead><tr><th>Severity</th><th>
   }
 
   // ── Navigation ────────────────────────────────────────────
-  const pages=['overview','bridge','controls','findings','poam','reports','assessor','cmmc','nist','owasp','soc','fips','aws','m365'];
-  const titles={overview:'COMPLIANCE OVERVIEW',bridge:'DARKBLOOM BRIDGE™',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',poam:'PLAN OF ACTION & MILESTONES',reports:'GENERATE REPORTS',assessor:'C3PAO ASSESSOR PORTAL',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3',aws:'AWS SECURITY INTEGRATION',m365:'MICROSOFT 365 INTEGRATION'};
+  const pages=['overview','bridge','controls','findings','poam','reports','assessor','cmmc','nist','owasp','soc','fips'];
+  const titles={overview:'COMPLIANCE OVERVIEW',bridge:'DARKBLOOM BRIDGE™',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',poam:'PLAN OF ACTION & MILESTONES',reports:'GENERATE REPORTS',assessor:'C3PAO ASSESSOR PORTAL',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
 
   async function showPage(name){
     pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});
@@ -1490,41 +1428,28 @@ ${findings.length?`<h3>Open Findings</h3><table><thead><tr><th>Severity</th><th>
     if(name==='owasp') await loadFrameworkDetail('page-owasp','OWASP','var(--amber)','OWASP TOP 10');
     if(name==='soc') await loadFrameworkDetail('page-soc','SOC2','var(--magenta)','SOC 2 TYPE II');
     if(name==='fips') await loadFrameworkDetail('page-fips','FIPS','var(--blue)','FIPS 140-3');
+    if(name==='fedramp') await loadFedRAMPControls();
     if(name==='bridge') loadBridgeFull();
   }
 
   async function loadBridgeFull(){
-    const channelId = await ensureBridgeChannel();
+    const data = await api(`/orgs/${org.id}/bridge?since=0`);
     const feed = document.getElementById('bridge-feed-full');
-    feed.innerHTML='<div class="loading">// LOADING BRIDGE EVENTS...</div>';
-
-    if(channelId){
-      try {
-        const res = await fetch(`${API_URL}/bridge/channels/${channelId}/messages?limit=100`, {
-          headers:{ 'Authorization':`Bearer ${token}` }
-        });
-        const data = await res.json();
-        if(!data?.messages?.length){
-          feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px;text-align:center;">No bridge events yet. Run a scan to populate.</div>';
-          return;
-        }
-        feed.innerHTML='';
-        data.messages.forEach(msg=>{
-          const color = bridgeColors[msg.event_type]||'#00f0ff';
-          const text = formatBridgeEventFromMsg(msg);
-          const item = document.createElement('div');
-          item.className='bridge-msg';
-          item.innerHTML=`<div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
-            <div class="bridge-msg-content"><div class="bridge-msg-event">${text}</div>
-            <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleString()} • ${msg.event_type?.toUpperCase()}</div></div>`;
-          feed.appendChild(item);
-        });
-      } catch(e) {
-        feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--red);padding:20px;">Error loading bridge events.</div>';
-      }
-    } else {
-      feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px;text-align:center;">No bridge channel yet. Run a scan to create one.</div>';
+    if(!data?.messages?.length){
+      feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px;text-align:center;">No bridge events yet. Run a scan to populate.</div>';
+      return;
     }
+    feed.innerHTML='';
+    data.messages.forEach(msg=>{
+      const color = bridgeColors[msg.event_type]||'#00f0ff';
+      const text = formatBridgeEvent(msg.event_type, msg.payload||{});
+      const item = document.createElement('div');
+      item.className='bridge-msg';
+      item.innerHTML=`<div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
+        <div class="bridge-msg-content"><div class="bridge-msg-event">${text}</div>
+        <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleString()}</div></div>`;
+      feed.appendChild(item);
+    });
   }
 
   function signOut(){ sessionStorage.clear(); window.location.href='auditcore.html'; }
@@ -1532,8 +1457,1596 @@ ${findings.length?`<h3>Open Findings</h3><table><thead><tr><th>Severity</th><th>
   // ── Init ──────────────────────────────────────────────────
   loadPosture();
   loadFindings();
-  loadIntegrationsStatus();
-  setTimeout(pollBridge, 2000);
+  setTimeout(pollBridge, 1000);
+  addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+</script>
+</body>
+</html>  let _fedRAMPBaseline = 'moderate';
+  let _activeOverlays = new Set();
+
+  const FR_BASELINES = {
+    low:      { label:'FedRAMP Low — ~125 controls',      field:'fedramp_low' },
+    moderate: { label:'FedRAMP Moderate — ~325 controls', field:'fedramp_moderate' },
+    high:     { label:'FedRAMP High — ~421 controls',     field:'fedramp_high' },
+    il4:      { label:'DoD IL4 — FedRAMP High + DoD CC SRG', field:'dod_il4' },
+    il5:      { label:'DoD IL5 — IL4 + NSS requirements', field:'dod_il5' },
+  };
+  const FR_OVERLAYS = {
+    dod:   { label:'DoD Overlay',  field:'overlay_dod' },
+    irs:   { label:'IRS 1075',     field:'overlay_irs' },
+    cjis:  { label:'CJIS',         field:'overlay_cjis' },
+    hipaa: { label:'HIPAA',        field:'overlay_hipaa' },
+    dea:   { label:'DEA',          field:'overlay_dea' },
+    ic:    { label:'IC Overlay',   field:'overlay_ic' },
+  };
+
+  function setFedRAMPBaseline(level) {
+    _fedRAMPBaseline = level;
+    const baselineIds = ['low','moderate','high','il4','il5'];
+    for (const id of baselineIds) {
+      const btn = document.getElementById('fr-btn-'+id);
+      if (!btn) continue;
+      if (id === level) {
+        btn.style.border = '1px solid #ff6b35';
+        btn.style.background = 'rgba(255,107,53,0.1)';
+        btn.style.color = '#ff6b35';
+      } else {
+        btn.style.border = '1px solid rgba(255,107,53,0.3)';
+        btn.style.background = 'transparent';
+        btn.style.color = 'rgba(255,107,53,0.5)';
+      }
+    }
+    updateBaselineLabel();
+    loadFedRAMPControls();
+  }
+
+  function toggleOverlay(key) {
+    if (_activeOverlays.has(key)) {
+      _activeOverlays.delete(key);
+    } else {
+      _activeOverlays.add(key);
+    }
+    const btn = document.getElementById('ov-btn-'+key);
+    if (btn) {
+      if (_activeOverlays.has(key)) {
+        btn.style.border = '1px solid #ff6b35';
+        btn.style.background = 'rgba(255,107,53,0.12)';
+        btn.style.color = '#ff6b35';
+      } else {
+        btn.style.border = '1px solid rgba(255,107,53,0.2)';
+        btn.style.background = 'transparent';
+        btn.style.color = 'rgba(255,107,53,0.4)';
+      }
+    }
+    updateBaselineLabel();
+    loadFedRAMPControls();
+  }
+
+  function updateBaselineLabel() {
+    const lbl = document.getElementById('fr-baseline-label');
+    if (!lbl) return;
+    const base = FR_BASELINES[_fedRAMPBaseline]?.label || _fedRAMPBaseline;
+    const overlays = Array.from(_activeOverlays).map(k => FR_OVERLAYS[k]?.label || k);
+    lbl.textContent = base + (overlays.length ? ' + ' + overlays.join(', ') : '');
+  }
+
+    async function loadFedRAMPControls() {
+    const container = document.getElementById('fedramp-controls-container');
+    if (!container) return;
+    const baseline = _fedRAMPBaseline || 'moderate';
+    container.innerHTML = '<div style="color:var(--cyan);padding:16px;text-align:center;">&#9679; Loading ' + baseline.toUpperCase() + ' baseline controls...</div>';
+    const result = await api(`/orgs/${org.id}/controls?framework=FEDRAMP`);
+    if (!result?.controls?.length) {
+      container.innerHTML = '<div style="color:var(--amber);padding:20px;text-align:center;">Run fedramp_migration.sql in Supabase to load 800-53 controls.</div>';
+      return;
+    }
+    // Filter by selected baseline + active overlays
+    const fieldMap = { low:'fedramp_low', moderate:'fedramp_moderate', high:'fedramp_high', il4:'dod_il4', il5:'dod_il5' };
+    const overlayFieldMap = { dod:'overlay_dod', irs:'overlay_irs', cjis:'overlay_cjis', hipaa:'overlay_hipaa', dea:'overlay_dea', ic:'overlay_ic' };
+    const filtered = result.controls.filter(c => {
+      const baselineField = fieldMap[baseline];
+      const inBaseline = baselineField ? !!c[baselineField] : false;
+      const inOverlay = _activeOverlays.size > 0 && Array.from(_activeOverlays).some(k => c[overlayFieldMap[k]]);
+      return inBaseline || inOverlay;
+    });
+    const baselineCounts = {low:'~125 controls',moderate:'~325 controls',high:'~421 controls',il4:'HIGH + DoD CC SRG',il5:'IL4 + NSS requirements'};
+    const sb = s => ({
+      pass:         '<span style="color:#00ff88;font-size:0.52rem;font-weight:700;">PASS</span>',
+      fail:         '<span style="color:#ff3355;font-size:0.52rem;font-weight:700;">FAIL</span>',
+      partial:      '<span style="color:#ffb800;font-size:0.52rem;font-weight:700;">PARTIAL</span>',
+      not_assessed: '<span style="color:rgba(200,228,240,0.25);font-size:0.52rem;">UNASSESSED</span>',
+      not_applicable:'<span style="color:rgba(200,228,240,0.15);font-size:0.52rem;">N/A</span>',
+    })[s] || '<span style="color:rgba(200,228,240,0.25);font-size:0.52rem;">UNASSESSED</span>';
+    const passed  = filtered.filter(c=>c.assessment?.status==='pass').length;
+    const failed  = filtered.filter(c=>c.assessment?.status==='fail').length;
+    const pct = filtered.length ? Math.round(passed/filtered.length*100) : 0;
+    const pctColor = pct>=80?'var(--green)':pct>=50?'var(--amber)':'var(--red)';
+    let html = `<div style="display:flex;gap:16px;margin-bottom:16px;padding:14px;background:rgba(255,107,53,0.05);border:1px solid rgba(255,107,53,0.15);">
+      <div style="text-align:center;min-width:60px;"><div style="font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:700;color:${pctColor};">${pct}%</div><div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);">COMPLIANCE</div></div>
+      <div style="text-align:center;min-width:60px;"><div style="font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:700;color:var(--green);">${passed}</div><div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);">PASSING</div></div>
+      <div style="text-align:center;min-width:60px;"><div style="font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:700;color:var(--red);">${failed}</div><div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);">FAILING</div></div>
+      <div style="text-align:center;min-width:60px;"><div style="font-family:'Orbitron',monospace;font-size:1.4rem;font-weight:700;color:#ff6b35;">${filtered.length}</div><div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);">TOTAL</div></div>
+      <div style="margin-left:auto;text-align:right;font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);line-height:1.8;">
+        NIST SP 800-53 Rev 5<br/>FedRAMP ${baseline.toUpperCase()} Baseline<br/>${baselineCounts[baseline]||''}
+      </div>
+    </div>`;
+    html += '<table class="controls-table"><thead><tr><th>CONTROL ID</th><th>FAMILY</th><th>TITLE</th><th style="text-align:center;">STATUS</th><th>INCL. IN</th></tr></thead><tbody>';
+    for (const c of filtered) {
+      let incl;
+      if (c.id?.startsWith('DOD-')) incl = '<span style="color:#ff6b35;font-size:0.46rem;">DoD IL4/5</span>';
+      else if (c.id?.startsWith('IC-')) incl = '<span style="color:#a78bfa;font-size:0.46rem;">IC Overlay</span>';
+      else if (c.id?.startsWith('CJIS-')) incl = '<span style="color:#60a5fa;font-size:0.46rem;">CJIS</span>';
+      else if (c.id?.startsWith('IRS-')) incl = '<span style="color:#34d399;font-size:0.46rem;">IRS P1075</span>';
+      else if (c.id?.startsWith('DEA-')) incl = '<span style="color:#f87171;font-size:0.46rem;">DEA</span>';
+      else if (c.id?.startsWith('HIPAA-')) incl = '<span style="color:#fb923c;font-size:0.46rem;">HIPAA</span>';
+      else incl = c.fedramp_high ? '<span style="color:#ff6b35;font-size:0.48rem;">L/M/H</span>' : c.fedramp_moderate ? '<span style="color:var(--amber);font-size:0.48rem;">L/M</span>' : '<span style="color:var(--cyan);font-size:0.48rem;">L</span>';
+      html += `<tr><td><span style="font-family:'Orbitron',monospace;font-size:0.58rem;color:#ff6b35;font-weight:700;">${c.id}</span></td><td style="font-size:0.55rem;">${c.family}</td><td style="max-width:280px;line-height:1.4;">${c.title}</td><td style="text-align:center;">${sb(c.assessment?.status)}</td><td style="text-align:center;">${incl}</td></tr>`;
+    }
+    html += '</tbody></table>';
+    container.innerHTML = html;
+  }
+
+!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta http-equiv="X-Frame-Options" content="DENY"/>
+  <meta http-equiv="X-Content-Type-Options" content="nosniff"/>
+  <title>AuditCore&#8482; v2.0 — Darkbloom Industries&#8482;</title>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root{
+      --bg:#04060a;--surface:#070c12;--surface2:#0a1018;
+      --cyan:#00f0ff;--green:#00ff88;--amber:#ffb800;--red:#ff3355;
+      --magenta:#ff00aa;--blue:#3a7fff;--purple:#8b5cf6;
+      --border:rgba(0,240,255,0.1);--border2:rgba(0,240,255,0.06);
+      --text:rgba(200,228,240,0.85);--dim:rgba(200,228,240,0.35);
+      --sidebar:228px;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+    html,body{height:100%;overflow:hidden;}
+    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;cursor:none;display:flex;}
+
+    /* CURSOR */
+    #cur{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 6px var(--cyan);}
+    #cur-r{position:fixed;width:28px;height:28px;border:1px solid rgba(0,240,255,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s;}
+
+    /* SIDEBAR */
+    .sidebar{width:var(--sidebar);min-width:var(--sidebar);height:100vh;background:rgba(7,12,18,0.98);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;}
+    .sb-logo{padding:20px 16px;border-bottom:1px solid var(--border2);}
+    .sb-logo-row{display:flex;align-items:center;gap:9px;margin-bottom:2px;}
+    .sb-logo-row svg{width:20px;height:20px;}
+    .sb-logo-name{font-family:'Orbitron',monospace;font-weight:900;font-size:0.85rem;color:var(--cyan);letter-spacing:0.12em;text-shadow:0 0 12px rgba(0,240,255,0.4);}
+    .sb-logo-name sup{font-size:0.38em;color:var(--magenta);}
+    .sb-logo-sub{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.16em;}
+    .sb-bridge{padding:8px 16px;border-bottom:1px solid var(--border2);background:rgba(0,255,136,0.03);display:flex;align-items:center;gap:7px;}
+    .sb-bridge-dot{width:5px;height:5px;background:var(--green);border-radius:50%;box-shadow:0 0 5px var(--green);animation:pulse-g 2s infinite;flex-shrink:0;}
+    .sb-bridge-txt{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--green);letter-spacing:0.12em;}
+    .sb-org{padding:10px 16px;border-bottom:1px solid var(--border2);background:rgba(0,240,255,0.02);}
+    .sb-org-label{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.18em;margin-bottom:2px;}
+    .sb-org-name{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--text);letter-spacing:0.07em;}
+    .sb-org-meta{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);margin-top:1px;}
+    .sb-nav{flex:1;padding:12px 0;overflow-y:auto;}
+    .sb-section{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.22em;padding:9px 16px 4px;}
+    .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;transition:background .2s;border-left:2px solid transparent;}
+    .nav-item:hover,.nav-item.active{background:rgba(0,240,255,0.05);border-left-color:var(--cyan);}
+    .nav-item.active .nav-label{color:var(--cyan);}
+    .nav-icon{width:14px;height:14px;opacity:.5;flex-shrink:0;}
+    .nav-item.active .nav-icon,.nav-item:hover .nav-icon{opacity:1;}
+    .nav-label{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);letter-spacing:0.08em;transition:color .2s;flex:1;}
+    .nav-item:hover .nav-label{color:var(--text);}
+    .nav-badge{font-family:'Share Tech Mono',monospace;font-size:0.46rem;padding:2px 6px;border-radius:2px;}
+    .badge-red{background:rgba(255,51,85,.15);color:var(--red);border:1px solid rgba(255,51,85,.3);}
+    .badge-amber{background:rgba(255,184,0,.12);color:var(--amber);border:1px solid rgba(255,184,0,.25);}
+    .badge-green{background:rgba(0,255,136,.1);color:var(--green);border:1px solid rgba(0,255,136,.2);}
+    .badge-purple{background:rgba(139,92,246,.15);color:var(--purple);border:1px solid rgba(139,92,246,.3);}
+    .sb-footer{padding:12px 16px;border-top:1px solid var(--border2);}
+    .sb-footer-txt{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(200,228,240,0.18);letter-spacing:0.08em;line-height:1.8;}
+    .sb-footer-txt a{color:rgba(0,240,255,0.3);text-decoration:none;}
+
+    /* MAIN */
+    .main{flex:1;height:100vh;display:flex;flex-direction:column;overflow:hidden;}
+    .topbar{padding:12px 26px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center;background:rgba(4,6,10,0.9);backdrop-filter:blur(6px);flex-shrink:0;}
+    .page-title{font-family:'Orbitron',monospace;font-weight:700;font-size:0.82rem;color:#fff;letter-spacing:0.1em;}
+    .breadcrumb{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.08em;margin-top:1px;}
+    .topbar-right{display:flex;align-items:center;gap:14px;}
+    .tb-stat{text-align:center;}
+    .tb-stat-val{font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;}
+    .tb-stat-label{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);letter-spacing:0.08em;}
+    .tb-divider{width:1px;height:26px;background:var(--border);}
+    .btn-scan{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:7px 16px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
+    .btn-scan:hover{box-shadow:0 0 16px rgba(0,240,255,0.4);}
+    .content{flex:1;overflow-y:auto;padding:22px 26px;}
+    .content::-webkit-scrollbar{width:3px;}
+    .content::-webkit-scrollbar-thumb{background:rgba(0,240,255,0.2);}
+
+    /* SCORE SECTION */
+    .score-section{display:grid;grid-template-columns:240px 1fr;gap:14px;margin-bottom:14px;}
+    .score-card{background:var(--surface);border:1px solid var(--border);padding:20px;display:flex;flex-direction:column;align-items:center;position:relative;overflow:hidden;}
+    .score-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+    .score-ring-wrap{position:relative;width:140px;height:140px;margin:4px 0 12px;}
+    .score-ring-wrap canvas{position:absolute;top:0;left:0;}
+    .score-center{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);text-align:center;}
+    .score-num{font-family:'Orbitron',monospace;font-size:2.2rem;font-weight:900;color:#fff;line-height:1;}
+    .score-pct{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);letter-spacing:0.18em;}
+    .sprs-score{font-family:'Orbitron',monospace;font-size:0.65rem;color:var(--amber);letter-spacing:0.1em;margin-top:4px;}
+    .sprs-label{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.12em;}
+    .score-label{font-family:'Orbitron',monospace;font-size:0.62rem;letter-spacing:0.1em;margin-bottom:2px;}
+    .score-sublabel{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.1em;}
+    .score-breakdown{display:flex;flex-direction:column;gap:6px;width:100%;margin-top:12px;}
+    .sb-row{display:flex;align-items:center;gap:7px;}
+    .sb-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;}
+    .sb-name{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);flex:1;}
+    .sb-val{font-family:'Orbitron',monospace;font-size:0.6rem;font-weight:700;}
+    .fw-grid{display:grid;grid-template-columns:1fr;gap:9px;}
+    .fw-card{background:var(--surface);border:1px solid var(--border);padding:14px 18px;position:relative;overflow:hidden;transition:border-color .25s;}
+    .fw-card:hover{border-color:rgba(0,240,255,0.22);}
+    .fw-card::before{content:'';position:absolute;left:0;top:0;width:3px;height:100%;}
+    .fw-card.cmmc::before{background:var(--green);}
+    .fw-card.nist::before{background:var(--cyan);}
+    .fw-card.owasp::before{background:var(--amber);}
+    .fw-card.soc::before{background:var(--magenta);}
+    .fw-card.fips::before{background:var(--blue);}
+    .fw-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:9px;}
+    .fw-name{font-family:'Orbitron',monospace;font-size:0.64rem;font-weight:700;letter-spacing:0.08em;}
+    .fw-card.cmmc .fw-name{color:var(--green);}
+    .fw-card.nist .fw-name{color:var(--cyan);}
+    .fw-card.owasp .fw-name{color:var(--amber);}
+    .fw-card.soc .fw-name{color:var(--magenta);}
+    .fw-card.fips .fw-name{color:var(--blue);}
+    .fw-scope{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.07em;}
+    .fw-status{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:2px 8px;border:1px solid;}
+    .fw-status.pass{color:var(--green);border-color:rgba(0,255,136,.3);background:rgba(0,255,136,.06);}
+    .fw-status.warn{color:var(--amber);border-color:rgba(255,184,0,.3);background:rgba(255,184,0,.06);}
+    .fw-bar-wrap{display:flex;align-items:center;gap:9px;}
+    .fw-bar-bg{flex:1;height:4px;background:rgba(255,255,255,0.06);overflow:hidden;}
+    .fw-bar-fill{height:100%;transition:width 1s ease;}
+    .fw-pct{font-family:'Orbitron',monospace;font-size:0.6rem;font-weight:700;min-width:32px;text-align:right;}
+    .fw-stats{display:flex;gap:14px;margin-top:7px;}
+    .fw-stat{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);}
+    .fw-stat span{color:var(--text);font-size:0.58rem;}
+
+    /* SECTION TITLE */
+    .section-title{font-family:'Orbitron',monospace;font-size:0.72rem;font-weight:700;color:#fff;letter-spacing:0.1em;margin-bottom:12px;display:flex;align-items:center;gap:9px;}
+    .section-title::after{content:'';flex:1;height:1px;background:var(--border);}
+
+    /* CONTROLS TABLE */
+    .controls-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
+    .controls-table th{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.14em;padding:6px 11px;border-bottom:1px solid var(--border);text-align:left;background:rgba(0,240,255,0.02);}
+    .controls-table td{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--text);padding:8px 11px;border-bottom:1px solid var(--border2);vertical-align:middle;}
+    .controls-table tr:hover td{background:rgba(0,240,255,0.02);}
+    .ctrl-id{font-family:'Orbitron',monospace;font-size:0.56rem;color:var(--cyan);font-weight:700;}
+    .ctrl-status{display:inline-flex;align-items:center;gap:4px;font-size:0.5rem;letter-spacing:0.07em;padding:2px 7px;border:1px solid;}
+    .ctrl-status.pass{color:var(--green);border-color:rgba(0,255,136,.25);background:rgba(0,255,136,.05);}
+    .ctrl-status.fail{color:var(--red);border-color:rgba(255,51,85,.25);background:rgba(255,51,85,.05);}
+    .ctrl-status.warn{color:var(--amber);border-color:rgba(255,184,0,.25);background:rgba(255,184,0,.05);}
+    .ctrl-status.na{color:var(--dim);border-color:rgba(200,228,240,.1);}
+    .priority{font-size:0.48rem;padding:2px 6px;border:1px solid;}
+    .pri-crit{color:var(--magenta);border-color:rgba(255,0,170,.3);}
+    .pri-high{color:var(--red);border-color:rgba(255,51,85,.3);}
+    .pri-med{color:var(--amber);border-color:rgba(255,184,0,.3);}
+    .pri-low{color:var(--dim);border-color:rgba(200,228,240,.15);}
+    .btn-fix{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.1em;padding:3px 9px;border:none;cursor:none;font-weight:700;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:box-shadow .2s;}
+    .btn-fix.auto{color:var(--bg);background:var(--green);}
+    .btn-fix.auto:hover{box-shadow:0 0 10px var(--green);}
+    .btn-fix.guide{color:var(--amber);background:transparent;border:1px solid rgba(255,184,0,.4);}
+    .btn-fix.guide:hover{background:rgba(255,184,0,.08);}
+
+    /* FINDINGS */
+    .findings-grid{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:18px;}
+    .finding-card{background:var(--surface);border:1px solid var(--border);padding:14px 16px;position:relative;}
+    .finding-card.critical{border-left:3px solid var(--red);}
+    .finding-card.warning{border-left:3px solid var(--amber);}
+    .finding-card.info{border-left:3px solid var(--cyan);}
+    .finding-type{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.14em;margin-bottom:6px;}
+    .finding-card.critical .finding-type{color:var(--red);}
+    .finding-card.warning .finding-type{color:var(--amber);}
+    .finding-card.info .finding-type{color:var(--cyan);}
+    .finding-title{font-family:'Rajdhani',sans-serif;font-size:0.85rem;font-weight:600;color:#fff;margin-bottom:4px;}
+    .finding-desc{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.04em;line-height:1.6;}
+    .finding-actions{display:flex;gap:7px;margin-top:10px;flex-wrap:wrap;}
+    .finding-tag{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.07em;padding:2px 6px;border:1px solid var(--border);}
+    .auto-fix-badge{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--green);border:1px solid rgba(0,255,136,.3);padding:2px 7px;background:rgba(0,255,136,.05);}
+
+    /* DARKBLOOM BRIDGE™ */
+    .bridge-panel{background:var(--surface);border:1px solid rgba(0,255,136,0.2);margin-bottom:18px;position:relative;overflow:hidden;}
+    .bridge-panel::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent);}
+    .bridge-header{padding:12px 16px;border-bottom:1px solid var(--border2);display:flex;align-items:center;justify-content:space-between;}
+    .bridge-title{font-family:'Orbitron',monospace;font-size:0.68rem;color:var(--green);letter-spacing:0.1em;display:flex;align-items:center;gap:8px;}
+    .bridge-title-dot{width:6px;height:6px;background:var(--green);border-radius:50%;box-shadow:0 0 6px var(--green);animation:pulse-g 1.5s infinite;}
+    .bridge-status{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.1em;}
+    .bridge-feed{padding:12px 16px;max-height:200px;overflow-y:auto;display:flex;flex-direction:column;gap:4px;}
+    .bridge-msg{display:flex;align-items:flex-start;gap:10px;padding:6px 0;border-bottom:1px solid var(--border2);}
+    .bridge-msg:last-child{border-bottom:none;}
+    .bridge-msg-dot{width:5px;height:5px;border-radius:50%;flex-shrink:0;margin-top:4px;}
+    .bridge-msg-content{flex:1;}
+    .bridge-msg-event{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--text);letter-spacing:0.05em;}
+    .bridge-msg-time{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);margin-top:1px;}
+
+    /* REMEDIATION MODAL */
+    #rem-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(4,6,10,0.95);z-index:600;display:none;align-items:center;justify-content:center;}
+    #rem-modal.active{display:flex;}
+    .rem-box{background:var(--surface);border:1px solid var(--border);width:680px;max-height:85vh;overflow-y:auto;position:relative;}
+    .rem-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+    .rem-header{padding:20px 24px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;}
+    .rem-title{font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;letter-spacing:0.08em;}
+    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:none;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
+    .rem-close:hover{color:var(--red);}
+    .rem-body{padding:20px 24px;}
+    .rem-mode{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;padding:4px 12px;border:1px solid;display:inline-block;margin-bottom:14px;}
+    .rem-mode.auto{color:var(--green);border-color:rgba(0,255,136,.35);background:rgba(0,255,136,.06);}
+    .rem-mode.guided{color:var(--amber);border-color:rgba(255,184,0,.35);background:rgba(255,184,0,.06);}
+    .rem-summary{font-family:'Rajdhani',sans-serif;font-size:0.9rem;color:var(--text);line-height:1.6;margin-bottom:16px;}
+    .rem-step{display:flex;gap:12px;margin-bottom:14px;padding:12px 14px;background:rgba(0,240,255,0.03);border:1px solid var(--border2);}
+    .rem-step-num{font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--cyan);font-weight:700;min-width:24px;}
+    .rem-step-content{flex:1;}
+    .rem-step-action{font-family:'Rajdhani',sans-serif;font-size:0.9rem;color:#fff;font-weight:600;margin-bottom:4px;}
+    .rem-step-detail{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--dim);letter-spacing:0.05em;line-height:1.6;margin-bottom:6px;}
+    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;border-radius:0;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:none;}
+    .rem-command:hover{background:rgba(0,255,136,.1);}
+    .rem-affects{margin-top:14px;padding:10px 14px;background:rgba(0,240,255,.03);border:1px solid var(--border2);}
+    .rem-affects-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:7px;}
+    .rem-ctrl-pill{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--cyan);border:1px solid rgba(0,240,255,.25);padding:2px 8px;display:inline-block;margin:2px;}
+    .rem-execute-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;color:var(--bg);background:var(--green);border:none;padding:13px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;margin-top:16px;transition:box-shadow .2s;}
+    .rem-execute-btn:hover{box-shadow:0 0 18px var(--green);}
+    .rem-execute-btn:disabled{opacity:.5;}
+    .rem-docs{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,.4);text-align:center;margin-top:10px;}
+    .rem-docs a{color:var(--cyan);text-decoration:none;}
+
+    /* POAM TABLE */
+    .poam-table{width:100%;border-collapse:collapse;margin-bottom:18px;}
+    .poam-table th{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.14em;padding:6px 11px;border-bottom:1px solid var(--border);text-align:left;background:rgba(0,240,255,0.02);}
+    .poam-table td{font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--text);padding:8px 11px;border-bottom:1px solid var(--border2);vertical-align:middle;}
+    .risk-badge{font-size:0.48rem;padding:2px 7px;border:1px solid;}
+    .risk-high{color:var(--red);border-color:rgba(255,51,85,.3);}
+    .risk-mod{color:var(--amber);border-color:rgba(255,184,0,.3);}
+    .risk-low{color:var(--green);border-color:rgba(0,255,136,.25);}
+
+    /* ASSESSOR PORTAL */
+    .assessor-card{background:var(--surface);border:1px solid rgba(139,92,246,.3);padding:22px;margin-bottom:18px;position:relative;overflow:hidden;}
+    .assessor-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent);}
+    .assessor-form{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px;}
+    .form-field{display:flex;flex-direction:column;gap:5px;}
+    .form-field label{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,0.5);letter-spacing:0.2em;}
+    .form-field input,.form-field select{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:9px 12px;outline:none;transition:border-color .25s;width:100%;}
+    .form-field input:focus,.form-field select:focus{border-color:var(--cyan);}
+    .portal-link{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--cyan);background:rgba(0,240,255,.05);border:1px solid rgba(0,240,255,.25);padding:10px 14px;margin-top:12px;word-break:break-all;line-height:1.6;}
+
+    /* REPORTS */
+    .report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px;}
+    .report-card{background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
+    .report-card:hover{border-color:rgba(0,240,255,.28);background:rgba(0,240,255,.025);}
+    .report-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;opacity:0;transition:opacity .2s;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+    .report-card:hover::before{opacity:1;}
+    .report-icon{font-size:1.3rem;margin-bottom:7px;display:block;}
+    .report-name{font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--text);letter-spacing:0.07em;margin-bottom:4px;}
+    .report-desc{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.04em;line-height:1.5;}
+    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:none;margin-top:9px;display:inline-block;transition:background .2s;}
+    .btn-dl:hover{background:rgba(0,240,255,.06);}
+
+    /* SCAN OVERLAY */
+    #scan-overlay{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(4,6,10,0.97);z-index:500;display:none;flex-direction:column;align-items:center;justify-content:center;text-align:center;}
+    #scan-overlay.active{display:flex;}
+    .scan-title{font-family:'Orbitron',monospace;font-size:1.2rem;font-weight:900;color:var(--cyan);text-shadow:0 0 18px rgba(0,240,255,0.5);margin-bottom:5px;letter-spacing:0.1em;}
+    .scan-sub{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);letter-spacing:0.16em;margin-bottom:32px;}
+    .scan-bar-wrap{width:360px;height:2px;background:rgba(0,240,255,0.1);margin-bottom:18px;overflow:hidden;}
+    .scan-bar{height:100%;background:var(--cyan);box-shadow:0 0 8px var(--cyan);width:0;transition:width .1s;}
+    .scan-log{font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:rgba(0,240,255,0.6);letter-spacing:0.07em;height:140px;display:flex;flex-direction:column;justify-content:flex-end;gap:3px;width:400px;text-align:left;}
+
+    .loading{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);letter-spacing:0.12em;text-align:center;padding:36px;animation:pulse-g 1.5s infinite;}
+    @keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.3}}
+    .btn-action{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:8px 18px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
+    .btn-action:hover{box-shadow:0 0 14px rgba(0,240,255,.4);}
+    .btn-action.green{background:var(--green);}
+    .btn-action.green:hover{box-shadow:0 0 14px var(--green);}
+    .btn-action.purple{background:var(--purple);}
+  </style>
+</head>
+<body>
+<div id="cur"></div>
+<div id="cur-r"></div>
+
+<!-- REMEDIATION MODAL -->
+<div id="rem-modal">
+  <div class="rem-box">
+    <div class="rem-header">
+      <div class="rem-title" id="rem-title">REMEDIATION GUIDE</div>
+      <div class="rem-close" onclick="closeRemediation()">✕ CLOSE</div>
+    </div>
+    <div class="rem-body" id="rem-body"></div>
+  </div>
+</div>
+
+<!-- SCAN OVERLAY -->
+<div id="scan-overlay">
+  <div class="scan-title">SCANNING — DARKBLOOM BRIDGE™ ACTIVE</div>
+  <div class="scan-sub">// REAL-TIME COMPLIANCE SCAN IN PROGRESS</div>
+  <div class="scan-bar-wrap"><div class="scan-bar" id="scan-bar"></div></div>
+  <div class="scan-log" id="scan-log"></div>
+</div>
+
+<nav class="sidebar">
+  <div class="sb-logo">
+    <div class="sb-logo-row">
+      <svg viewBox="0 0 22 22" fill="none" stroke="#00f0ff" stroke-width="1.4">
+        <polygon points="11,2 20,7 20,15 11,20 2,15 2,7"/>
+        <line x1="11" y1="2" x2="11" y2="20"/>
+        <line x1="2" y1="7" x2="20" y2="7"/>
+        <line x1="2" y1="15" x2="20" y2="15"/>
+      </svg>
+      <div class="sb-logo-name">AuditCore<sup>&#8482;</sup></div>
+    </div>
+    <div class="sb-logo-sub">DARKBLOOM INDUSTRIES&#8482; v2.0</div>
+  </div>
+  <div class="sb-bridge">
+    <div class="sb-bridge-dot"></div>
+    <div class="sb-bridge-txt">DARKBLOOM BRIDGE&#8482; ACTIVE</div>
+  </div>
+  <div class="sb-org">
+    <div class="sb-org-label">LICENSED ORGANIZATION</div>
+    <div class="sb-org-name" id="sb-org-name">Loading...</div>
+    <div class="sb-org-meta" id="sb-org-meta">Authenticating...</div>
+  </div>
+  <div class="sb-nav">
+    <div class="sb-section">// Overview</div>
+    <div class="nav-item active" onclick="showPage('overview')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="1" y="1" width="6" height="6"/><rect x="9" y="1" width="6" height="6"/><rect x="1" y="9" width="6" height="6"/><rect x="9" y="9" width="6" height="6"/></svg>
+      <span class="nav-label">DASHBOARD</span>
+    </div>
+    <div class="nav-item" onclick="showPage('bridge')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00ff88" stroke-width="1.5"><path d="M1 8h4M11 8h4M5 4l-2 4 2 4M11 4l2 4-2 4"/></svg>
+      <span class="nav-label">BRIDGE&#8482;</span>
+      <span class="nav-badge badge-green" id="badge-bridge">LIVE</span>
+    </div>
+    <div class="nav-item" onclick="showPage('controls')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 4h12M2 8h8M2 12h10"/></svg>
+      <span class="nav-label">CONTROLS</span>
+      <span class="nav-badge badge-red" id="badge-gaps">—</span>
+    </div>
+    <div class="nav-item" onclick="showPage('findings')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><line x1="8" y1="5" x2="8" y2="8"/><circle cx="8" cy="11" r=".5" fill="currentColor"/></svg>
+      <span class="nav-label">FINDINGS</span>
+      <span class="nav-badge badge-amber" id="badge-findings">—</span>
+    </div>
+    <div class="nav-item" onclick="showPage('poam')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="9" y2="8"/></svg>
+      <span class="nav-label">POA&amp;M</span>
+    </div>
+    <div class="sb-section">// Frameworks</div>
+    <div class="nav-item" onclick="showPage('cmmc')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00ff88" stroke-width="1.5"><polygon points="8,1 15,5 15,11 8,15 1,11 1,5"/></svg>
+      <span class="nav-label">CMMC LVL 2</span>
+    </div>
+    <div class="nav-item" onclick="showPage('nist')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#00f0ff" stroke-width="1.5"><rect x="2" y="2" width="12" height="12"/><line x1="2" y1="8" x2="14" y2="8"/><line x1="8" y1="2" x2="8" y2="14"/></svg>
+      <span class="nav-label">NIST 800-171</span>
+    </div>
+    <div class="nav-item" onclick="showPage('owasp')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ffb800" stroke-width="1.5"><path d="M8 2L14 6v4L8 14 2 10V6z"/></svg>
+      <span class="nav-label">OWASP TOP 10</span>
+    </div>
+    <div class="nav-item" onclick="showPage('soc')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ff00aa" stroke-width="1.5"><circle cx="8" cy="8" r="6"/><path d="M5 8l2 2 4-4"/></svg>
+      <span class="nav-label">SOC 2 TYPE II</span>
+    </div>
+    <div class="nav-item" onclick="showPage('fips')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#3a7fff" stroke-width="1.5"><rect x="4" y="1" width="8" height="10" rx="1"/><path d="M6 11v4M10 11v4M4 15h8"/></svg>
+      <span class="nav-label">FIPS 140-3</span>
+    </div>
+        <div class="nav-item" onclick="showPage('fedramp')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ff6b35" stroke-width="1.5"><polygon points="8,1 15,5 15,11 8,15 1,11 1,5"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+          <span class="nav-label">FEDRAMP</span>
+          <span class="nav-badge" style="background:rgba(255,107,53,.12);color:#ff6b35;border:1px solid rgba(255,107,53,.3);">NEW</span>
+        </div>
+    <div class="sb-section">// Actions</div>
+    <div class="nav-item" onclick="startScan()">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
+      <span class="nav-label">RUN SCAN</span>
+    </div>
+    <div class="nav-item" onclick="showPage('assessor')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#8b5cf6" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3 2.7-5 6-5s6 2 6 5"/></svg>
+      <span class="nav-label">C3PAO PORTAL</span>
+      <span class="nav-badge badge-purple">NEW</span>
+    </div>
+    <div class="nav-item" onclick="showPage('reports')">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg>
+      <span class="nav-label">REPORTS</span>
+    </div>
+    <div class="nav-item" onclick="signOut()">
+      <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2H3v12h7M11 5l3 3-3 3M6 8h8"/></svg>
+      <span class="nav-label">SIGN OUT</span>
+    </div>
+  </div>
+  <div class="sb-footer">
+    <div class="sb-footer-txt">AuditCore&#8482; v2.0 — Darkbloom Bridge&#8482;<br/>&#169; 2025 <a href="https://untappedperformance2-tech.github.io/Darkbloom-Industries-/">Darkbloom Industries&#8482;</a><br/><span id="sb-license-info">Loading license...</span></div>
+  </div>
+</nav>
+
+<div class="main">
+  <div class="topbar">
+    <div>
+      <div class="page-title" id="page-title">COMPLIANCE OVERVIEW</div>
+      <div class="breadcrumb" id="breadcrumb">AuditCore&#8482; v2.0 // Dashboard // Overview</div>
+    </div>
+    <div class="topbar-right">
+      <div class="tb-stat">
+        <div class="tb-stat-val" id="tb-score" style="color:var(--green);">—</div>
+        <div class="tb-stat-label">OVERALL SCORE</div>
+      </div>
+      <div class="tb-divider"></div>
+      <div class="tb-stat">
+        <div class="tb-stat-val" id="tb-sprs" style="color:var(--amber);">—</div>
+        <div class="tb-stat-label">SPRS SCORE</div>
+      </div>
+      <div class="tb-divider"></div>
+      <div class="tb-stat">
+        <div class="tb-stat-val" id="tb-gaps" style="color:var(--red);">—</div>
+        <div class="tb-stat-label">OPEN GAPS</div>
+      </div>
+      <div class="tb-divider"></div>
+      <button class="btn-scan" onclick="startScan()">RUN SCAN &#9654;</button>
+    </div>
+  </div>
+
+  <div class="content" id="main-content">
+
+    <!-- OVERVIEW -->
+    <div id="page-overview">
+      <div class="score-section">
+        <div class="score-card">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.16em;margin-bottom:2px;">COMPOSITE POSTURE</div>
+          <div class="score-ring-wrap">
+            <canvas id="ring-canvas" width="140" height="140"></canvas>
+            <div class="score-center">
+              <div class="score-num" id="score-display">—</div>
+              <div class="score-pct">/ 100</div>
+            </div>
+          </div>
+          <div class="score-label" id="score-label" style="color:var(--cyan);">LOADING...</div>
+          <div class="score-sublabel" id="score-sublabel">CONNECTING TO API</div>
+          <div style="margin-top:8px;text-align:center;">
+            <div class="sprs-score" id="sprs-display">— pts</div>
+            <div class="sprs-label">DoD SPRS SCORE</div>
+          </div>
+          <div class="score-breakdown" id="score-breakdown">
+            <div class="loading">// LOADING</div>
+          </div>
+        </div>
+        <div class="fw-grid" id="fw-grid">
+          <div class="loading">// CONNECTING TO AUDITCORE&#8482; API</div>
+        </div>
+      </div>
+      <div class="section-title">DARKBLOOM BRIDGE&#8482; — LIVE EVENTS</div>
+      <div class="bridge-panel">
+        <div class="bridge-header">
+          <div class="bridge-title"><div class="bridge-title-dot"></div>DARKBLOOM BRIDGE&#8482;</div>
+          <div class="bridge-status" id="bridge-status">POLLING...</div>
+        </div>
+        <div class="bridge-feed" id="bridge-feed">
+          <div class="loading">// CONNECTING TO BRIDGE</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- BRIDGE PAGE -->
+    <div id="page-bridge" style="display:none;">
+      <div class="section-title">DARKBLOOM BRIDGE&#8482; — FULL EVENT LOG</div>
+      <div class="bridge-panel">
+        <div class="bridge-header">
+          <div class="bridge-title"><div class="bridge-title-dot"></div>REAL-TIME EVENT STREAM</div>
+          <div class="bridge-status" id="bridge-status-full">LIVE</div>
+        </div>
+        <div class="bridge-feed" id="bridge-feed-full" style="max-height:500px;">
+          <div class="loading">// LOADING BRIDGE EVENTS</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONTROLS -->
+    <div id="page-controls" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:0;">ALL CONTROLS</div>
+        <div style="display:flex;gap:8px;">
+          <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:none;">
+            <option value="">ALL STATUSES</option>
+            <option value="fail">FAIL ONLY</option>
+            <option value="partial">PARTIAL ONLY</option>
+            <option value="not_assessed">NOT ASSESSED</option>
+            <option value="pass">PASS ONLY</option>
+          </select>
+        </div>
+      </div>
+      <table class="controls-table">
+        <thead><tr><th>CONTROL ID</th><th>FW</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>PRIORITY</th><th>REMEDIATE</th></tr></thead>
+        <tbody id="controls-body"><tr><td colspan="7" class="loading">// LOADING CONTROLS</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- FINDINGS -->
+    <div id="page-findings" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:0;">OPEN FINDINGS &amp; GAPS</div>
+        <button class="btn-action" onclick="generatePOAM()">AUTO-GENERATE POA&amp;M &#9654;</button>
+      </div>
+      <div class="findings-grid" id="findings-grid">
+        <div class="loading">// LOADING FINDINGS</div>
+      </div>
+    </div>
+
+    <!-- POA&M -->
+    <div id="page-poam" style="display:none;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <div class="section-title" style="margin-bottom:0;">PLAN OF ACTION &amp; MILESTONES</div>
+        <button class="btn-action green" onclick="generatePOAM()">GENERATE FROM FINDINGS &#9654;</button>
+      </div>
+      <table class="poam-table">
+        <thead><tr><th>CONTROL</th><th>WEAKNESS</th><th>RISK</th><th>DUE DATE</th><th>STATUS</th><th>AUTO?</th></tr></thead>
+        <tbody id="poam-body"><tr><td colspan="6" class="loading">// LOADING POA&M</td></tr></tbody>
+      </table>
+    </div>
+
+    <!-- ASSESSOR PORTAL -->
+    <div id="page-assessor" style="display:none;">
+      <div class="section-title">C3PAO ASSESSOR PORTAL — DARKBLOOM BRIDGE&#8482;</div>
+      <div class="assessor-card">
+        <div style="font-family:'Orbitron',monospace;font-size:0.72rem;color:var(--purple);letter-spacing:0.1em;margin-bottom:8px;">CREATE ASSESSOR SESSION</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.56rem;color:var(--dim);letter-spacing:0.07em;line-height:1.7;margin-bottom:14px;">
+          Generate a time-limited read-only portal link for your C3PAO assessor. They can view all controls, evidence, and compliance status without a login account. Every access is logged in the Darkbloom Bridge&#8482; audit trail.
+        </div>
+        <div class="assessor-form">
+          <div class="form-field">
+            <label>// ASSESSOR EMAIL</label>
+            <input type="email" id="assessor-email" placeholder="assessor@c3pao.com"/>
+          </div>
+          <div class="form-field">
+            <label>// ASSESSOR ORGANIZATION</label>
+            <input type="text" id="assessor-org" placeholder="CMMC C3PAO Name"/>
+          </div>
+          <div class="form-field">
+            <label>// FRAMEWORKS TO EXPOSE</label>
+            <select id="assessor-framework">
+              <option value="">ALL FRAMEWORKS</option>
+              <option value="CMMC">CMMC ONLY</option>
+              <option value="NIST">NIST 800-171 ONLY</option>
+              <option value="SOC2">SOC 2 ONLY</option>
+            </select>
+          </div>
+          <div class="form-field">
+            <label>// SESSION DURATION</label>
+            <select id="assessor-expires">
+              <option value="24">24 HOURS</option>
+              <option value="48">48 HOURS</option>
+              <option value="72">72 HOURS</option>
+              <option value="168">7 DAYS</option>
+            </select>
+          </div>
+        </div>
+        <button class="btn-action purple" onclick="createAssessorSession()" style="margin-top:14px;">GENERATE PORTAL LINK &#9654;</button>
+        <div id="portal-link-result" style="display:none;" class="portal-link"></div>
+      </div>
+    </div>
+
+    <!-- REPORTS -->
+    <div id="page-reports" style="display:none;">
+      <div class="section-title">GENERATE REPORTS</div>
+      <div class="report-grid">
+        <div class="report-card" onclick="generateReport('ssp')"><span class="report-icon">&#128196;</span><div class="report-name">CMMC Level 2 SSP</div><div class="report-desc">System Security Plan with all 110 practices mapped and evidence referenced.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('poam')"><span class="report-icon">&#128203;</span><div class="report-name">NIST 800-171 POA&amp;M</div><div class="report-desc">Plan of Action &amp; Milestones with remediation timelines and milestones.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('executive')"><span class="report-icon">&#128202;</span><div class="report-name">Executive Summary</div><div class="report-desc">One-page posture overview with SPRS score and top risks for leadership.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fips-audit')"><span class="report-icon">&#128274;</span><div class="report-name">FIPS Crypto Audit</div><div class="report-desc">Cryptographic module inventory with FIPS 140-3 validation status.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('owasp')"><span class="report-icon">&#128270;</span><div class="report-name">OWASP Vulnerability</div><div class="report-desc">Web application findings mapped to OWASP Top 10 with remediation guidance.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('soc2-readiness')"><span class="report-icon">&#9989;</span><div class="report-name">SOC 2 Readiness</div>
+        <div class="report-card" onclick="generateReport('fedramp-sar')"><span class="report-icon">&#127963;</span><div class="report-name">FedRAMP SAR</div><div class="report-desc">Security Assessment Report with 800-53 Moderate baseline control results and 3PAO findings.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fedramp-ssp')"><span class="report-icon">&#128220;</span><div class="report-name">FedRAMP SSP</div><div class="report-desc">System Security Plan in FedRAMP format with Moderate baseline control implementation statements.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fedramp-conmon')"><span class="report-icon">&#128200;</span><div class="report-name">ConMon Report</div><div class="report-desc">Monthly continuous monitoring report with vulnerability results and POA&amp;M status for FedRAMP PMO.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('dod-il4')"><span class="report-icon">&#128737;</span><div class="report-name">DoD IL4/IL5 Package</div><div class="report-desc">DoD Authorization package with FedRAMP High + SRG controls, STIG compliance, and eMASS-ready POA&M.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('cjis')"><span class="report-icon">&#128268;</span><div class="report-name">CJIS Compliance</div><div class="report-desc">FBI CJIS Security Policy compliance assessment with all overlay controls evaluated.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('irs-p1075')"><span class="report-icon">&#128196;</span><div class="report-name">IRS Publication 1075</div><div class="report-desc">Federal Tax Information safeguard assessment per IRS Publication 1075 requirements.</div><div class="btn-dl">GENERATE &#9654;</div></div><div class="report-desc">Trust service criteria gap analysis and C3PAO evidence checklist.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+      </div>
+    </div>
+
+    <!-- FW DETAIL PAGES -->
+    <div id="page-cmmc" style="display:none;"></div>
+    <div id="page-nist" style="display:none;"></div>
+    <div id="page-owasp" style="display:none;"></div>
+    <div id="page-soc" style="display:none;"></div>
+    <div id="page-fips" style="display:none;"></div>
+
+    <!-- FEDRAMP PAGE -->
+    <div id="page-fedramp" style="display:none;">
+      <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px;">
+        <div style="background:var(--surface);border:1px solid var(--border);padding:20px;border-top:3px solid #ff6b35;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(255,107,53,0.6);letter-spacing:0.2em;margin-bottom:8px;">// SELECT BASELINE</div>
+          <div style="display:flex;gap:5px;margin-bottom:6px;">
+            <button onclick="setFedRAMPBaseline('low')" id="fr-btn-low" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;flex:1;transition:all .2s;">LOW<br/><span style="font-size:0.4rem;opacity:0.6;">~125</span></button>
+            <button onclick="setFedRAMPBaseline('moderate')" id="fr-btn-moderate" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid #ff6b35;background:rgba(255,107,53,0.1);color:#ff6b35;cursor:pointer;flex:1;transition:all .2s;">MOD<br/><span style="font-size:0.4rem;opacity:0.6;">~325</span></button>
+            <button onclick="setFedRAMPBaseline('high')" id="fr-btn-high" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;flex:1;transition:all .2s;">HIGH<br/><span style="font-size:0.4rem;opacity:0.6;">~421</span></button>
+            <button onclick="setFedRAMPBaseline('il4')" id="fr-btn-il4" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;flex:1;transition:all .2s;">DoD IL4<br/><span style="font-size:0.4rem;opacity:0.6;">HIGH+</span></button>
+            <button onclick="setFedRAMPBaseline('il5')" id="fr-btn-il5" style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:6px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;flex:1;transition:all .2s;">DoD IL5<br/><span style="font-size:0.4rem;opacity:0.6;">IL4+</span></button>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(255,107,53,0.5);letter-spacing:0.1em;margin-bottom:5px;">// AGENCY OVERLAYS</div>
+          <div style="display:flex;gap:4px;flex-wrap:wrap;">
+            <button onclick="toggleOverlay('dod')" id="ov-btn-dod" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">DoD</button>
+            <button onclick="toggleOverlay('irs')" id="ov-btn-irs" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">IRS 1075</button>
+            <button onclick="toggleOverlay('cjis')" id="ov-btn-cjis" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">CJIS</button>
+            <button onclick="toggleOverlay('hipaa')" id="ov-btn-hipaa" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">HIPAA</button>
+            <button onclick="toggleOverlay('dea')" id="ov-btn-dea" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">DEA</button>
+            <button onclick="toggleOverlay('ic')" id="ov-btn-ic" style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;letter-spacing:0.06em;padding:4px 7px;border:1px solid rgba(255,107,53,0.2);background:transparent;color:rgba(255,107,53,0.4);cursor:pointer;transition:all .2s;">IC</button>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);margin-top:8px;" id="fr-baseline-label">FedRAMP Moderate &#8212; Currently selected</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:20px;border-top:3px solid var(--amber);">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(255,184,0,0.6);letter-spacing:0.2em;margin-bottom:6px;">ATO STATUS</div>
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:var(--amber);" id="ato-status-display">IN PROGRESS</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);margin-top:4px;">Authorization to Operate</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:20px;border-top:3px solid var(--cyan);">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:rgba(0,240,255,0.6);letter-spacing:0.2em;margin-bottom:6px;">CONMON STATUS</div>
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;color:var(--cyan);">ACTIVE</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);margin-top:4px;">Monthly reporting cycle</div>
+        </div>
+      </div>
+
+      <!-- DoD IL Level + Agency Overlays Row -->
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+        <div style="background:var(--surface);border:1px solid rgba(255,107,53,0.25);padding:18px;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:#ff6b35;margin-bottom:10px;letter-spacing:0.1em;">&#9632; DOD IMPACT LEVEL</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;">
+            <button onclick="setDoDIL('il2')" id="dod-btn-il2"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:7px 10px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;flex:1;">
+              IL2<br/><span style="font-size:0.42rem;opacity:0.7;">FedRAMP Mod</span>
+            </button>
+            <button onclick="setDoDIL('il4')" id="dod-btn-il4"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:7px 10px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;flex:1;">
+              IL4<br/><span style="font-size:0.42rem;opacity:0.7;">CUI/Sensitive</span>
+            </button>
+            <button onclick="setDoDIL('il5')" id="dod-btn-il5"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:7px 10px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;flex:1;">
+              IL5<br/><span style="font-size:0.42rem;opacity:0.7;">NSS/Classified</span>
+            </button>
+            <button onclick="setDoDIL(null)" id="dod-btn-none"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;letter-spacing:0.1em;padding:7px 10px;border:1px solid #ff6b35;background:rgba(255,107,53,0.1);color:#ff6b35;cursor:pointer;transition:all .2s;flex:1;">
+              NONE<br/><span style="font-size:0.42rem;opacity:0.7;">No DoD req</span>
+            </button>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;color:var(--dim);margin-top:8px;" id="dod-il-label">No DoD Impact Level selected</div>
+        </div>
+
+        <div style="background:var(--surface);border:1px solid rgba(255,107,53,0.25);padding:18px;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.65rem;color:#ff6b35;margin-bottom:10px;letter-spacing:0.1em;">&#9632; AGENCY OVERLAYS</div>
+          <div style="display:flex;gap:5px;flex-wrap:wrap;">
+            <button onclick="toggleOverlay('dod')" id="ov-btn-dod"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              DoD SRG
+            </button>
+            <button onclick="toggleOverlay('ic')" id="ov-btn-ic"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              IC/ICD503
+            </button>
+            <button onclick="toggleOverlay('cjis')" id="ov-btn-cjis"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              CJIS
+            </button>
+            <button onclick="toggleOverlay('irs')" id="ov-btn-irs"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              IRS P1075
+            </button>
+            <button onclick="toggleOverlay('dea')" id="ov-btn-dea"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              DEA
+            </button>
+            <button onclick="toggleOverlay('hipaa')" id="ov-btn-hipaa"
+              style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.08em;padding:5px 8px;border:1px solid rgba(255,107,53,0.3);background:transparent;color:rgba(255,107,53,0.5);cursor:pointer;transition:all .2s;">
+              HIPAA
+            </button>
+          </div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.45rem;color:var(--dim);margin-top:8px;" id="ov-active-label">No overlays active &#8212; click to add</div>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px;">
+        <div style="background:var(--surface);border:1px solid rgba(255,107,53,0.25);padding:20px;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:#ff6b35;margin-bottom:12px;letter-spacing:0.1em;">&#9632; AUTHORIZATION PATH</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);line-height:2.4;">
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; FIPS 199 Categorization</span><span style="color:var(--green);">COMPLETE</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; System Security Plan (SSP)</span><span style="color:var(--amber);">IN PROGRESS</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; 3PAO Security Assessment</span><span style="color:var(--dim);">PENDING</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Security Assessment Report</span><span style="color:var(--dim);">PENDING</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; POA&amp;M Submission</span><span style="color:var(--dim);">PENDING</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; ATO / P-ATO Granted</span><span style="color:var(--dim);">PENDING</span></div>
+          </div>
+        </div>
+        <div style="background:var(--surface);border:1px solid rgba(255,107,53,0.25);padding:20px;">
+          <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:#ff6b35;margin-bottom:12px;letter-spacing:0.1em;">&#9632; CONMON REQUIREMENTS</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);line-height:2.4;">
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Monthly Vulnerability Scans</span><span style="color:var(--amber);">DUE IN 5 DAYS</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Monthly POA&amp;M Update</span><span style="color:var(--amber);">DUE IN 5 DAYS</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Annual Penetration Test</span><span style="color:var(--green);">COMPLETE</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Annual 3PAO Assessment</span><span style="color:var(--dim);">8 MONTHS</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; US-CERT Incident Reporting</span><span style="color:var(--green);">CONFIGURED</span></div>
+            <div style="display:flex;justify-content:space-between;"><span>&#9679; Component Inventory</span><span style="color:var(--green);">CURRENT</span></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="section-title" style="color:#ff6b35;">NIST SP 800-53 REV 5 &#8212; MODERATE BASELINE</div>
+      <div id="fedramp-controls-container" style="font-family:'Share Tech Mono',monospace;font-size:0.58rem;color:var(--dim);padding:20px;text-align:center;">
+        Loading controls...
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  const API_URL = 'https://auditcore-api-production.up.railway.app';
+
+  // ── Auth check ────────────────────────────────────────────
+  const token = sessionStorage.getItem('ac_token');
+  const user  = JSON.parse(sessionStorage.getItem('ac_user') || 'null');
+  const org   = JSON.parse(sessionStorage.getItem('ac_org')  || 'null');
+  if(!token || !user || !org){ window.location.href='auditcore.html'; }
+
+  // ── Populate sidebar ──────────────────────────────────────
+  if(org){
+    document.getElementById('sb-org-name').textContent = org.name || 'Unknown Org';
+    document.getElementById('sb-org-meta').textContent = `${org.slug||''} • ${(org.tier||'').toUpperCase()}`;
+    document.getElementById('sb-license-info').textContent = `License: ${(org.tier||'').toUpperCase()}`;
+  }
+
+  // ── Cursor ────────────────────────────────────────────────
+  const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
+  let mx=0,my=0,rx=0,ry=0;
+  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+  (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+
+  // ── API helper ────────────────────────────────────────────
+  async function api(path, opts={}){
+    const res = await fetch(`${API_URL}${path}`, {
+      ...opts,
+      headers:{ 'Authorization':`Bearer ${token}`, 'Content-Type':'application/json', ...(opts.headers||{}) },
+    });
+    if(res.status===401){ signOut(); return null; }
+    return res.json();
+  }
+
+  // ── Score ring ────────────────────────────────────────────
+  function drawRing(score){
+    const c=document.getElementById('ring-canvas');
+    if(!c) return;
+    const x=c.getContext('2d'),cx=70,cy=70,r=60,lw=6;
+    x.clearRect(0,0,140,140);
+    x.beginPath();x.arc(cx,cy,r,-Math.PI/2,Math.PI*1.5);
+    x.strokeStyle='rgba(0,240,255,0.1)';x.lineWidth=lw;x.stroke();
+    const color=score>=90?'#00ff88':score>=70?'#00f0ff':score>=50?'#ffb800':'#ff3355';
+    x.beginPath();x.arc(cx,cy,r,-Math.PI/2,-Math.PI/2+(Math.PI*2*(score/100)));
+    x.strokeStyle=color;x.lineWidth=lw;x.shadowBlur=10;x.shadowColor=color;x.stroke();
+    x.shadowBlur=0;
+  }
+
+  // ── Load posture ──────────────────────────────────────────
+  async function loadPosture(){
+    if(!org) return;
+    const data = await api(`/orgs/${org.id}/posture`);
+    if(!data) return;
+
+    const score = data.composite_score || 0;
+    const sprs  = data.sprs_score ?? '—';
+    const color = score>=90?'var(--green)':score>=70?'var(--cyan)':score>=50?'var(--amber)':'var(--red)';
+    const label = score>=90?'AUDIT-READY':score>=70?'IN PROGRESS':score>=50?'NEEDS WORK':'AT RISK';
+
+    let curr=0;
+    const iv=setInterval(()=>{
+      curr+=2;if(curr>=score){curr=score;clearInterval(iv);}
+      document.getElementById('score-display').textContent=curr;
+      document.getElementById('score-display').style.color=color;
+      drawRing(curr);
+    },18);
+
+    document.getElementById('score-label').textContent=label;
+    document.getElementById('score-label').style.color=color;
+    document.getElementById('score-sublabel').textContent=`LAST SCAN: ${new Date(data.last_calculated).toLocaleString()}`;
+    document.getElementById('tb-score').textContent=score+'%';
+    document.getElementById('tb-score').style.color=color;
+    document.getElementById('tb-gaps').textContent=data.open_gaps||0;
+    document.getElementById('tb-sprs').textContent=sprs;
+    document.getElementById('sprs-display').textContent=`${sprs} pts`;
+    document.getElementById('badge-gaps').textContent=data.open_gaps||0;
+
+    const fw=data.framework_scores||{};
+    const fwColors={NIST:'var(--cyan)',CMMC:'var(--green)',OWASP:'var(--amber)',SOC2:'var(--magenta)',FIPS:'var(--blue)'};
+    const fwLabels={NIST:'NIST 800-171',CMMC:'CMMC LVL 2',OWASP:'OWASP TOP 10',SOC2:'SOC 2 TYPE II',FIPS:'FIPS 140-3'};
+
+    document.getElementById('score-breakdown').innerHTML=Object.entries(fw).filter(([,v])=>v!==null).map(([k,v])=>`
+      <div class="sb-row">
+        <div class="sb-dot" style="background:${fwColors[k]};"></div>
+        <div class="sb-name">${fwLabels[k]||k}</div>
+        <div class="sb-val" style="color:${fwColors[k]};">${v}%</div>
+      </div>`).join('');
+
+    const fwData=[
+      {cls:'cmmc',key:'CMMC',name:'CMMC LEVEL 2',scope:'Cybersecurity Maturity Model — 110 Practices'},
+      {cls:'nist',key:'NIST',name:'NIST SP 800-171',scope:'CUI Protection — 110 Controls'},
+      {cls:'owasp',key:'OWASP',name:'OWASP TOP 10',scope:'Web Application Security — 2021'},
+      {cls:'soc',key:'SOC2',name:'SOC 2 TYPE II',scope:'Trust Service Criteria'},
+      {cls:'fips',key:'FIPS',name:'FIPS 140-3',scope:'Cryptographic Validation'},
+    ];
+    document.getElementById('fw-grid').innerHTML=fwData.map(f=>{
+      const pct=fw[f.key]??0;
+      const c=fwColors[f.key];
+      const st=pct>=90?`<span class="fw-status pass">&#9679; COMPLIANT</span>`:
+               pct>=70?`<span class="fw-status warn">&#9650; IN PROGRESS</span>`:
+               `<span class="fw-status warn">&#9650; NEEDS WORK</span>`;
+      return `<div class="fw-card ${f.cls}">
+        <div class="fw-header"><div><div class="fw-name">${f.name}</div><div class="fw-scope">${f.scope}</div></div>${st}</div>
+        <div class="fw-bar-wrap">
+          <div class="fw-bar-bg"><div class="fw-bar-fill" style="width:${pct}%;background:${c};"></div></div>
+          <div class="fw-pct" style="color:${c};">${pct}%</div>
+        </div>
+      </div>`;
+    }).join('');
+  }
+
+  // ── Load controls with remediation buttons ─────────────────
+  async function loadControls(framework){
+    const statusFilter = document.getElementById('status-filter')?.value || '';
+    let url = `/orgs/${org.id}/controls`;
+    const params = [];
+    if(framework) params.push(`framework=${framework}`);
+    if(statusFilter) params.push(`status=${statusFilter}`);
+    if(params.length) url += '?' + params.join('&');
+
+    const data = await api(url);
+    if(!data) return;
+
+    const sm={
+      pass:'<span class="ctrl-status pass">&#9679; PASS</span>',
+      fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',
+      partial:'<span class="ctrl-status warn">&#9650; PARTIAL</span>',
+      not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',
+      not_applicable:'<span class="ctrl-status na">N/A</span>'
+    };
+    const pm={critical:'<span class="priority pri-crit">CRITICAL</span>',high:'<span class="priority pri-high">HIGH</span>',medium:'<span class="priority pri-med">MED</span>',low:'<span class="priority pri-low">LOW</span>'};
+
+    const tbody=document.getElementById('controls-body');
+    if(!data.controls?.length){
+      tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--green);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px;">&#9679; All controls passing</td></tr>';
+      return;
+    }
+    tbody.innerHTML=data.controls.map(c=>`<tr>
+      <td><span class="ctrl-id">${c.id}</span></td>
+      <td style="color:var(--dim)">${c.framework}</td>
+      <td>${c.family}</td>
+      <td style="max-width:260px;line-height:1.4;">${c.title}</td>
+      <td>${sm[c.assessment?.status||'not_assessed']||sm.not_assessed}</td>
+      <td>${pm[c.priority]||pm.medium}</td>
+      <td>${c.remediation_available ?
+        `<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE &#9654;</button>` :
+        '<span style="color:var(--dim);font-family:Share Tech Mono,monospace;font-size:.48rem;">MANUAL</span>'
+      }</td>
+    </tr>`).join('');
+  }
+
+  // ── Load findings with remediation ────────────────────────
+  async function loadFindings(){
+    const data = await api(`/orgs/${org.id}/findings?status=open`);
+    if(!data) return;
+    document.getElementById('badge-findings').textContent=data.total||0;
+    const grid=document.getElementById('findings-grid');
+    if(!data.findings?.length){
+      grid.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--green);padding:30px;text-align:center;border:1px solid var(--border);">&#9679; NO OPEN FINDINGS — EXCELLENT POSTURE</div>';
+      return;
+    }
+    grid.innerHTML=data.findings.map(f=>`
+      <div class="finding-card ${f.severity}">
+        <div class="finding-type">&#9650; ${f.severity.toUpperCase()}</div>
+        <div class="finding-title">${f.title}</div>
+        <div class="finding-desc">${f.description}</div>
+        <div class="finding-actions">
+          ${f.auto_fix_available ?
+            `<span class="auto-fix-badge">&#9679; AUTO-FIX AVAILABLE</span>
+             <button class="btn-fix auto" onclick="executeRemediation('${f.id}','${f.remediation_type}',true)">AUTO-FIX &#9654;</button>` : ''}
+          ${f.remediation_guide_available ?
+            `<button class="btn-fix guide" onclick="executeRemediation('${f.id}','${f.remediation_type}',false)">GUIDE &#9654;</button>` : ''}
+          ${f.control_id ? `<span class="finding-tag">${f.control_id}</span>` : ''}
+          <span class="finding-tag">${f.severity.toUpperCase()} RISK</span>
+        </div>
+      </div>`).join('');
+  }
+
+  // ── Load POA&M ────────────────────────────────────────────
+  async function loadPOAM(){
+    const data = await api(`/orgs/${org.id}/poam`);
+    if(!data) return;
+    const tbody = document.getElementById('poam-body');
+    if(!data.poam?.length){
+      tbody.innerHTML='<tr><td colspan="6" style="text-align:center;color:var(--dim);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px;">No POA&M entries. Click "Generate from Findings" to create.</td></tr>';
+      return;
+    }
+    const riskMap={high:'<span class="risk-badge risk-high">HIGH</span>',moderate:'<span class="risk-badge risk-mod">MOD</span>',low:'<span class="risk-badge risk-low">LOW</span>'};
+    tbody.innerHTML=data.poam.map(p=>`<tr>
+      <td><span class="ctrl-id">${p.control_id||'—'}</span><br/><span style="color:var(--dim);font-size:.46rem;">${p.control_definitions?.family||''}</span></td>
+      <td style="max-width:220px;line-height:1.4;">${p.weakness?.slice(0,100)}${p.weakness?.length>100?'...':''}</td>
+      <td>${riskMap[p.risk_rating]||'—'}</td>
+      <td>${p.scheduled_completion ? new Date(p.scheduled_completion).toLocaleDateString() : '—'}</td>
+      <td><span class="ctrl-status ${p.status==='completed'?'pass':p.status==='in_progress'?'warn':'fail'}">${p.status?.toUpperCase().replace('_',' ')}</span></td>
+      <td style="color:${p.auto_generated?'var(--cyan)':'var(--dim)'};">${p.auto_generated?'AUTO':'MANUAL'}</td>
+    </tr>`).join('');
+  }
+
+  // ── Generate POA&M ────────────────────────────────────────
+  async function generatePOAM(){
+    const data = await api(`/orgs/${org.id}/poam/generate`, { method: 'POST' });
+    if(data) {
+      addBridgeMessage('green', `POA&M: Generated ${data.generated} entries from open findings`, 'POAM');
+      if(document.getElementById('page-poam').style.display!=='none') loadPOAM();
+      if(document.getElementById('page-findings').style.display!=='none') {
+        setTimeout(()=>showPage('poam'),500);
+      }
+    }
+  }
+
+  // ── Show remediation for a control ───────────────────────
+  async function showRemediationForControl(controlId){
+    // Find remediation type from registry
+    const data = await api(`/remediations`);
+    if(!data) return;
+    const match = data.remediations?.find(r => r.controlIds?.includes(controlId));
+    if(!match) return;
+    const guide = await api(`/remediation/${match.key}`);
+    if(guide) showRemediationModal(null, match.key, guide);
+  }
+
+  // ── Execute or show remediation ───────────────────────────
+  async function executeRemediation(findingId, remType, autoFix){
+    if(autoFix){
+      const result = await api(`/orgs/${org.id}/findings/${findingId}/remediate`, { method: 'POST', body: JSON.stringify({}) });
+      if(result){
+        if(result.success){
+          addBridgeMessage('green', `AUTO-FIX SUCCESS: ${result.actions?.join('; ')}`, 'REMEDIATION');
+          loadFindings();
+          loadPosture();
+        } else {
+          showRemediationModal(findingId, remType, result.guide);
+        }
+      }
+    } else {
+      const result = await api(`/orgs/${org.id}/findings/${findingId}/remediate`, { method: 'POST', body: JSON.stringify({}) });
+      if(result?.guide) showRemediationModal(findingId, remType, result.guide);
+    }
+  }
+
+  // ── Show remediation modal ────────────────────────────────
+  function showRemediationModal(findingId, remType, guide){
+    if(!guide) return;
+    document.getElementById('rem-title').textContent = guide.title || 'REMEDIATION GUIDE';
+    const modeClass = guide.canAutoFix ? 'auto' : 'guided';
+    const modeText  = guide.canAutoFix ? '&#9679; AUTO-REMEDIABLE' : '&#9650; MANUAL REMEDIATION REQUIRED';
+
+    const stepsHtml = guide.guidance?.steps?.map(s=>`
+      <div class="rem-step">
+        <div class="rem-step-num">${s.step}</div>
+        <div class="rem-step-content">
+          <div class="rem-step-action">${s.action}</div>
+          <div class="rem-step-detail">${s.detail}</div>
+          ${s.command ? `<div class="rem-command" onclick="copyCommand(this)">${s.command}</div>` : ''}
+        </div>
+      </div>`).join('') || '';
+
+    const affectsHtml = guide.affectedControls?.length ?
+      `<div class="rem-affects">
+        <div class="rem-affects-title">// ALSO FIXES THESE CONTROLS</div>
+        ${guide.affectedControls.map(c=>`<span class="rem-ctrl-pill">${c}</span>`).join('')}
+      </div>` : '';
+
+    document.getElementById('rem-body').innerHTML = `
+      <div class="rem-mode ${modeClass}">${modeText}</div>
+      ${guide.canAutoFix && findingId ?
+        `<button class="rem-execute-btn" onclick="executeAutoFix('${findingId}')">&#9654; EXECUTE AUTO-FIX NOW</button>` : ''}
+      <div class="rem-summary">${guide.guidance?.summary||''}</div>
+      ${stepsHtml}
+      ${affectsHtml}
+      ${guide.guidance?.docsUrl ? `<div class="rem-docs">Official Documentation: <a href="${guide.guidance.docsUrl}" target="_blank">${guide.guidance.docsUrl}</a></div>` : ''}
+    `;
+    document.getElementById('rem-modal').classList.add('active');
+  }
+
+  function closeRemediation(){ document.getElementById('rem-modal').classList.remove('active'); }
+
+  async function executeAutoFix(findingId){
+    const btn = document.querySelector('.rem-execute-btn');
+    if(btn){ btn.disabled=true; btn.textContent='EXECUTING...'; }
+    const result = await api(`/orgs/${org.id}/findings/${findingId}/remediate`, { method:'POST', body: JSON.stringify({}) });
+    if(result?.success){
+      closeRemediation();
+      addBridgeMessage('green', `AUTO-FIX COMPLETE: ${result.actions?.join('; ')}`, 'REMEDIATION');
+      loadFindings();
+      loadPosture();
+    } else {
+      if(btn){ btn.disabled=false; btn.textContent='RETRY AUTO-FIX'; }
+    }
+  }
+
+  function copyCommand(el){
+    navigator.clipboard.writeText(el.textContent).then(()=>{
+      const orig = el.style.background;
+      el.style.background='rgba(0,255,136,.2)';
+      setTimeout(()=>el.style.background=orig, 800);
+    });
+  }
+
+  // ── Darkbloom Bridge™ polling ─────────────────────────────
+  let bridgeSince = 0;
+  const bridgeColors = {
+    'scan.started': '#00f0ff', 'scan.completed': '#00ff88', 'scan.failed': '#ff3355',
+    'scan.progress': '#00f0ff', 'remediation.success': '#00ff88', 'remediation.failed': '#ff3355',
+    'remediation.guided': '#ffb800', 'finding.created': '#ff3355', 'finding.resolved': '#00ff88',
+    'control.updated': '#00f0ff', 'control.auto_passed': '#00ff88', 'assessor.connected': '#8b5cf6',
+    'score.changed': '#ffb800',
+  };
+
+  function addBridgeMessage(colorKey, text, tag){
+    const color = bridgeColors[colorKey] || '#00f0ff';
+    const feeds = ['bridge-feed','bridge-feed-full'].map(id=>document.getElementById(id)).filter(Boolean);
+    feeds.forEach(feed=>{
+      if(feed.querySelector('.loading')) feed.innerHTML='';
+      const item = document.createElement('div');
+      item.className='bridge-msg';
+      item.innerHTML=`
+        <div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
+        <div class="bridge-msg-content">
+          <div class="bridge-msg-event">${text}</div>
+          <div class="bridge-msg-time">${new Date().toLocaleTimeString()}${tag?' • '+tag:''}</div>
+        </div>`;
+      feed.appendChild(item);
+      feed.scrollTop = feed.scrollHeight;
+      // Keep max 50 messages
+      while(feed.children.length > 50) feed.removeChild(feed.firstChild);
+    });
+  }
+
+  async function pollBridge(){
+    const data = await api(`/orgs/${org.id}/bridge?since=${bridgeSince}`);
+    if(data?.messages?.length){
+      data.messages.forEach(msg=>{
+        const payload = msg.payload || {};
+        const text = formatBridgeEvent(msg.event_type, payload);
+        addBridgeMessage(msg.event_type, text, msg.event_type.split('.')[0].toUpperCase());
+        bridgeSince = Math.max(bridgeSince, new Date(msg.created_at).getTime());
+      });
+      document.getElementById('bridge-status').textContent=`LAST: ${new Date().toLocaleTimeString()}`;
+    }
+  }
+
+  function formatBridgeEvent(type, payload){
+    switch(type){
+      case 'scan.started':    return `&#9654; Scan started for ${payload.domain||'domain'}`;
+      case 'scan.completed':  return `&#9679; Scan complete — Score: ${payload.score||'—'}%`;
+      case 'scan.failed':     return `&#9650; Scan failed: ${payload.error||'unknown error'}`;
+      case 'scan.progress':   return `// Scanning: ${payload.message||''} (${payload.pct||0}%)`;
+      case 'remediation.success': return `&#9679; Auto-fixed: ${payload.result?.actions?.[0]||'issue resolved'}`;
+      case 'remediation.failed':  return `&#9650; Auto-fix failed: ${payload.result?.error||''}`;
+      case 'remediation.guided':  return `&#9650; Guided remediation sent for finding`;
+      case 'finding.created': return `&#9650; New finding: ${payload.title||''}`;
+      case 'finding.resolved':return `&#9679; Finding resolved by ${payload.resolvedBy||'system'}`;
+      case 'control.updated': return `// Control ${payload.controlId||''} → ${payload.status||''}`;
+      case 'control.auto_passed': return `&#9679; Auto-passed: ${payload.controlId||''}`;
+      case 'assessor.connected': return `// C3PAO connected: ${payload.assessor_email||'assessor'}`;
+      case 'score.changed':   return `// Score changed: ${payload.oldScore}% → ${payload.newScore}%`;
+      default: return `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
+    }
+  }
+
+  // Start bridge polling every 5 seconds
+  setInterval(pollBridge, 5000);
+
+  // ── Create assessor session ───────────────────────────────
+  async function createAssessorSession(){
+    const email = document.getElementById('assessor-email').value.trim();
+    const orgName = document.getElementById('assessor-org').value.trim();
+    const framework = document.getElementById('assessor-framework').value;
+    const expires = parseInt(document.getElementById('assessor-expires').value);
+
+    if(!email){ alert('Enter assessor email'); return; }
+
+    const data = await api(`/orgs/${org.id}/assessor-sessions`, {
+      method: 'POST',
+      body: JSON.stringify({
+        assessor_email: email,
+        assessor_org: orgName || undefined,
+        frameworks: framework ? [framework] : undefined,
+        expires_hours: expires,
+      }),
+    });
+
+    if(data?.portal_url){
+      const result = document.getElementById('portal-link-result');
+      result.style.display='block';
+      result.innerHTML=`
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">&#9679; PORTAL LINK GENERATED — SHARE WITH ASSESSOR</div>
+        <div style="color:var(--cyan);word-break:break-all;">${data.portal_url}</div>
+        <div style="color:var(--dim);margin-top:6px;font-size:0.48rem;">Expires: ${new Date(data.session.expires_at).toLocaleString()} • Read-only access only</div>`;
+      addBridgeMessage('assessor.connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
+    }
+  }
+
+  // ── Framework detail ──────────────────────────────────────
+  async function loadFrameworkDetail(pageId, framework, color, name){
+    const el = document.getElementById(pageId);
+    const data = await api(`/orgs/${org.id}/controls?framework=${framework}`);
+    if(!data){ el.innerHTML='<div class="loading">// FAILED TO LOAD</div>'; return; }
+
+    const pass = data.controls.filter(c=>c.assessment?.status==='pass').length;
+    const fail = data.controls.filter(c=>c.assessment?.status==='fail'||c.assessment?.status==='partial').length;
+    const total = data.controls.length;
+    const pct = total > 0 ? Math.round((pass/total)*100) : 0;
+
+    const sm={pass:'<span class="ctrl-status pass">&#9679; PASS</span>',fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',partial:'<span class="ctrl-status warn">&#9650; PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
+    const pm={critical:'<span class="priority pri-crit">CRIT</span>',high:'<span class="priority pri-high">HIGH</span>',medium:'<span class="priority pri-med">MED</span>',low:'<span class="priority pri-low">LOW</span>'};
+
+    el.innerHTML=`
+      <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:${color};">${pct}%</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">COMPLIANCE SCORE</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--green);">${pass}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">CONTROLS PASSED</div>
+        </div>
+        <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--red);">${fail}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">GAPS / PARTIALS</div>
+        </div>
+      </div>
+      <div class="section-title" style="color:${color};">${name} — CONTROL DETAIL</div>
+      <table class="controls-table">
+        <thead><tr><th>CONTROL ID</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>PRIORITY</th><th>REMEDIATE</th></tr></thead>
+        <tbody>${data.controls.map(c=>`<tr>
+          <td><span class="ctrl-id" style="color:${color}">${c.id}</span></td>
+          <td>${c.family}</td>
+          <td>${c.title}</td>
+          <td>${sm[c.assessment?.status||'not_assessed']||sm.not_assessed}</td>
+          <td>${pm[c.priority]||pm.medium}</td>
+          <td>${c.remediation_available?`<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE &#9654;</button>`:'—'}</td>
+        </tr>`).join('')}</tbody>
+      </table>`;
+  }
+
+  // ── Report generation ─────────────────────────────────────
+  async function generateReport(type){
+    const data = await api(`/orgs/${org.id}/reports/${type}`);
+    if(!data) return;
+    const html = buildReportHTML(type, data);
+    const blob = new Blob([html], {type:'text/html'});
+    const url  = URL.createObjectURL(blob);
+    window.open(url, '_blank');
+    setTimeout(() => URL.revokeObjectURL(url), 10000);
+    addBridgeMessage('control.updated', `Report generated: ${type.toUpperCase()}`, 'REPORTS');
+  }
+
+  function buildReportHTML(type, data) {
+    const org = data.org || {};
+    const controls = data.controls || [];
+    const findings = data.open_findings || [];
+    const poam = data.poam_entries || [];
+    const now = new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+    const score = (() => {
+      const fw = {};
+      for (const c of controls) {
+        const f = c.control_definitions?.framework || c.framework;
+        if (!f) continue;
+        if (!fw[f]) fw[f] = {pass:0,total:0};
+        fw[f].total++;
+        if (c.status === 'pass') fw[f].pass++;
+      }
+      const scores = Object.entries(fw).map(([f,s]) => `${f}: ${s.total>0?Math.round(s.pass/s.total*100):0}%`);
+      return scores.join(' &nbsp;|&nbsp; ');
+    })();
+
+    const titleMap = {
+      'ssp': 'System Security Plan (SSP)',
+      'poam': 'Plan of Action & Milestones (POA&M)',
+      'executive': 'Executive Summary',
+      'fips-audit': 'FIPS 140-3 Cryptographic Audit',
+      'owasp': 'OWASP Top 10 Vulnerability Report',
+      'soc2-readiness': 'SOC 2 Type II Readiness Assessment',
+    };
+    const title = titleMap[type] || type.toUpperCase();
+
+    const statusBadge = (s) => {
+      const colors = {pass:'#00c853',fail:'#d32f2f',partial:'#f57c00',not_assessed:'#757575',not_applicable:'#9e9e9e'};
+      const labels = {pass:'PASS',fail:'FAIL',partial:'PARTIAL',not_assessed:'NOT ASSESSED',not_applicable:'N/A'};
+      const c = colors[s]||'#757575';
+      return `<span style="background:${c};color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">${labels[s]||s.toUpperCase()}</span>`;
+    };
+
+    const sevBadge = (s) => {
+      const colors = {critical:'#d32f2f',warning:'#f57c00',info:'#1565c0'};
+      const c = colors[s]||'#757575';
+      return `<span style="background:${c};color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">${s.toUpperCase()}</span>`;
+    };
+
+    // Build controls table rows based on type
+    let frameworkFilter = null;
+    if (type === 'ssp' || type === 'poam') frameworkFilter = ['NIST','CMMC'];
+    if (type === 'fips-audit') frameworkFilter = ['FIPS'];
+    if (type === 'owasp') frameworkFilter = ['OWASP'];
+    if (type === 'soc2-readiness') frameworkFilter = ['SOC2'];
+
+    const filteredControls = frameworkFilter
+      ? controls.filter(c => frameworkFilter.includes(c.control_definitions?.framework || c.framework))
+      : controls;
+
+    const passCount = filteredControls.filter(c=>c.status==='pass').length;
+    const failCount = filteredControls.filter(c=>c.status==='fail').length;
+    const totalCount = filteredControls.length;
+    const pct = totalCount > 0 ? Math.round(passCount/totalCount*100) : 0;
+
+    const controlRows = filteredControls.map(c => {
+      const def = c.control_definitions || c;
+      return `<tr>
+        <td style="font-weight:600;white-space:nowrap;">${def.id||c.control_id||''}</td>
+        <td>${def.family||''}</td>
+        <td>${def.title||def.description||''}</td>
+        <td style="text-align:center;">${statusBadge(c.status||'not_assessed')}</td>
+        <td style="font-size:12px;color:#555;">${c.notes||''}</td>
+      </tr>`;
+    }).join('');
+
+    const findingRows = findings.map(f => `<tr>
+      <td>${sevBadge(f.severity)}</td>
+      <td style="font-weight:600;">${f.title||''}</td>
+      <td>${f.control_id||''}</td>
+      <td style="font-size:12px;">${f.description?.slice(0,120)||''}</td>
+      <td>${f.remediation?.slice(0,80)||''}</td>
+    </tr>`).join('');
+
+    const poamRows = poam.map(p => `<tr>
+      <td style="font-weight:600;">${p.control_id||''}</td>
+      <td>${p.weakness?.slice(0,100)||''}</td>
+      <td><span style="background:${p.risk_rating==='high'?'#d32f2f':p.risk_rating==='moderate'?'#f57c00':'#388e3c'};color:#fff;padding:2px 7px;border-radius:3px;font-size:11px;">${(p.risk_rating||'').toUpperCase()}</span></td>
+      <td>${p.scheduled_completion?new Date(p.scheduled_completion).toLocaleDateString():''}</td>
+      <td><span style="background:${p.status==='open'?'#d32f2f':'#388e3c'};color:#fff;padding:2px 7px;border-radius:3px;font-size:11px;">${(p.status||'').toUpperCase()}</span></td>
+    </tr>`).join('');
+
+    return `<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>AuditCore™ — ${title}</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'Segoe UI',Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f5f5f5;}
+  @media print{body{background:#fff;}.no-print{display:none;}}
+  .page{max-width:1100px;margin:0 auto;background:#fff;padding:40px;box-shadow:0 2px 12px rgba(0,0,0,0.1);}
+  .header{border-bottom:3px solid #0d1b2a;padding-bottom:20px;margin-bottom:28px;}
+  .header-top{display:flex;justify-content:space-between;align-items:flex-start;}
+  .logo-area h1{font-size:22px;color:#0d1b2a;font-weight:700;letter-spacing:0.05em;}
+  .logo-area h2{font-size:14px;color:#444;font-weight:400;margin-top:4px;}
+  .header-meta{text-align:right;font-size:12px;color:#666;line-height:1.8;}
+  .header-meta strong{color:#0d1b2a;}
+  .watermark{font-size:10px;color:#aaa;margin-top:6px;letter-spacing:0.1em;}
+  .score-bar{display:flex;gap:16px;margin:20px 0;padding:16px;background:#f0f4f8;border-left:4px solid #0d1b2a;}
+  .score-item{text-align:center;}
+  .score-num{font-size:28px;font-weight:700;color:#0d1b2a;line-height:1;}
+  .score-label{font-size:11px;color:#666;margin-top:3px;text-transform:uppercase;letter-spacing:0.08em;}
+  .score-good{color:#00c853;}
+  .score-warn{color:#f57c00;}
+  .score-bad{color:#d32f2f;}
+  .section{margin-bottom:32px;}
+  .section-header{font-size:16px;font-weight:700;color:#0d1b2a;padding:8px 0;border-bottom:2px solid #e0e0e0;margin-bottom:14px;display:flex;align-items:center;gap:8px;}
+  .section-header .icon{font-size:18px;}
+  table{width:100%;border-collapse:collapse;font-size:13px;}
+  th{background:#0d1b2a;color:#fff;padding:9px 12px;text-align:left;font-weight:600;font-size:12px;letter-spacing:0.05em;}
+  td{padding:8px 12px;border-bottom:1px solid #e8e8e8;vertical-align:top;}
+  tr:nth-child(even) td{background:#fafafa;}
+  tr:hover td{background:#f0f4f8;}
+  .summary-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px;margin-bottom:24px;}
+  .summary-card{background:#f0f4f8;border-radius:6px;padding:16px;text-align:center;border-top:3px solid #0d1b2a;}
+  .summary-card.green{border-top-color:#00c853;}
+  .summary-card.red{border-top-color:#d32f2f;}
+  .summary-card.amber{border-top-color:#f57c00;}
+  .summary-card .big{font-size:32px;font-weight:700;}
+  .summary-card .lbl{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:0.08em;margin-top:4px;}
+  .print-btn{position:fixed;bottom:24px;right:24px;background:#0d1b2a;color:#fff;border:none;padding:12px 22px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer;box-shadow:0 3px 10px rgba(0,0,0,0.3);}
+  .print-btn:hover{background:#1a3a5c;}
+  .no-data{color:#888;font-style:italic;padding:16px;text-align:center;}
+  .tag{display:inline-block;background:#e8edf2;color:#0d1b2a;padding:1px 7px;border-radius:3px;font-size:11px;margin:1px;}
+  .sprs-box{background:#0d1b2a;color:#fff;padding:14px 20px;border-radius:6px;display:inline-block;margin-bottom:16px;}
+  .sprs-box .num{font-size:36px;font-weight:700;}
+  .sprs-box .lbl{font-size:11px;opacity:0.7;letter-spacing:0.1em;}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-top">
+      <div class="logo-area">
+        <h1>AuditCore™</h1>
+        <h2>${title}</h2>
+      </div>
+      <div class="header-meta">
+        <div><strong>Organization:</strong> ${org.name||'—'}</div>
+        <div><strong>Generated:</strong> ${now}</div>
+        <div><strong>Generated By:</strong> ${data.generated_by||'—'}</div>
+        <div><strong>Framework:</strong> ${type.toUpperCase()}</div>
+        <div class="watermark">AUDITCORE™ • DARKBLOOM INDUSTRIES™ • CONFIDENTIAL</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SCORE SUMMARY -->
+  <div class="summary-grid">
+    <div class="summary-card ${pct>=80?'green':pct>=50?'amber':'red'}">
+      <div class="big ${pct>=80?'score-good':pct>=50?'score-warn':'score-bad'}">${pct}%</div>
+      <div class="lbl">Compliance Score</div>
+    </div>
+    <div class="summary-card green">
+      <div class="big score-good">${passCount}</div>
+      <div class="lbl">Controls Passing</div>
+    </div>
+    <div class="summary-card red">
+      <div class="big score-bad">${failCount}</div>
+      <div class="lbl">Gaps / Failures</div>
+    </div>
+    <div class="summary-card amber">
+      <div class="big score-warn">${findings.length}</div>
+      <div class="lbl">Open Findings</div>
+    </div>
+    <div class="summary-card">
+      <div class="big">${totalCount}</div>
+      <div class="lbl">Total Controls</div>
+    </div>
+    ${data.org?.sprs_score!=null?`<div class="summary-card">
+      <div class="big">${data.org.sprs_score}</div>
+      <div class="lbl">DoD SPRS Score</div>
+    </div>`:''}
+  </div>
+
+  ${type==='executive' ? `
+  <!-- EXECUTIVE SUMMARY TEXT -->
+  <div class="section">
+    <div class="section-header"><span class="icon">&#128202;</span> Executive Summary</div>
+    <p style="line-height:1.8;color:#333;margin-bottom:12px;">
+      <strong>${org.name||'Your organization'}</strong> has completed a compliance assessment using AuditCore™. 
+      The overall compliance posture stands at <strong>${pct}%</strong> across ${totalCount} assessed controls.
+      ${failCount > 0 ? `There are <strong style="color:#d32f2f">${failCount} control gaps</strong> requiring remediation.` : 'All assessed controls are currently passing.'}
+      ${findings.length > 0 ? `<strong style="color:#f57c00">${findings.length} open finding${findings.length===1?'':'s'}</strong> require attention.` : ''}
+    </p>
+    <p style="line-height:1.8;color:#333;">
+      Framework scores: ${score||'Pending assessment'}.
+      ${data.org?.sprs_score!=null?`The DoD SPRS score is <strong>${data.org.sprs_score}</strong> (target: 110 points).`:''}
+    </p>
+  </div>
+  ` : ''}
+
+  <!-- CONTROLS TABLE -->
+  ${filteredControls.length > 0 ? `
+  <div class="section">
+    <div class="section-header"><span class="icon">&#9989;</span> Control Assessments (${filteredControls.length} controls)</div>
+    <table>
+      <thead>
+        <tr><th>Control ID</th><th>Family</th><th>Description</th><th style="text-align:center;">Status</th><th>Notes</th></tr>
+      </thead>
+      <tbody>
+        ${controlRows||'<tr><td colspan="5" class="no-data">No controls found</td></tr>'}
+      </tbody>
+    </table>
+  </div>` : ''}
+
+  <!-- OPEN FINDINGS -->
+  ${findings.length > 0 ? `
+  <div class="section">
+    <div class="section-header"><span class="icon">&#9888;</span> Open Findings (${findings.length})</div>
+    <table>
+      <thead>
+        <tr><th>Severity</th><th>Title</th><th>Control</th><th>Description</th><th>Remediation</th></tr>
+      </thead>
+      <tbody>${findingRows}</tbody>
+    </table>
+  </div>` : ''}
+
+  <!-- POA&M -->
+  ${(type==='poam'||type==='ssp') && poam.length > 0 ? `
+  <div class="section">
+    <div class="section-header"><span class="icon">&#128203;</span> Plan of Action & Milestones (${poam.length} entries)</div>
+    <table>
+      <thead>
+        <tr><th>Control</th><th>Weakness</th><th>Risk</th><th>Target Date</th><th>Status</th></tr>
+      </thead>
+      <tbody>${poamRows}</tbody>
+    </table>
+  </div>` : ''}
+
+  <!-- FOOTER -->
+  <div style="margin-top:40px;padding-top:16px;border-top:1px solid #e0e0e0;text-align:center;font-size:11px;color:#aaa;">
+    Generated by AuditCore™ v2.0 &bull; Darkbloom Industries™ &bull; ${now} &bull; CONFIDENTIAL &mdash; DO NOT DISTRIBUTE WITHOUT AUTHORIZATION
+  </div>
+
+</div>
+<button class="print-btn no-print" onclick="window.print()">&#128424; Print / Save PDF</button>
+</body>
+</html>`;
+  }
+
+  // ── Scan ──────────────────────────────────────────────────
+  const scanLines=['> Initializing Darkbloom Bridge™...','> Connecting to scan engine...','> Loading framework definitions [CMMC/NIST/OWASP/SOC2/FIPS]','> Checking SSL/TLS configuration...','> Scanning HTTP security headers...','> Checking DNS/SPF/DMARC records...','> Verifying HTTPS redirect enforcement...','> Checking clickjacking protection...','> Scanning FIPS cryptographic compliance...','> Cross-referencing findings to NIST controls...','> Applying cross-framework mappings...','> Checking for auto-remediable issues...','> Updating POA&M entries...','> ✓ Scan complete. Results publishing via Bridge™...'];
+  function startScan(){
+    const overlay=document.getElementById('scan-overlay');
+    const bar=document.getElementById('scan-bar');
+    const log=document.getElementById('scan-log');
+    overlay.classList.add('active');
+    bar.style.width='0';log.innerHTML='';
+    api(`/orgs/${org.id}/scan`,{method:'POST'});
+    let i=0;
+    function nextLog(){
+      if(i<scanLines.length){
+        const d=document.createElement('div');d.textContent=scanLines[i];d.style.opacity='0';d.style.transition='opacity .3s';
+        log.appendChild(d);requestAnimationFrame(()=>d.style.opacity='1');
+        bar.style.width=((i+1)/scanLines.length*100)+'%';i++;
+        setTimeout(nextLog,300+Math.random()*200);
+      } else {
+        setTimeout(()=>{overlay.classList.remove('active');loadPosture();loadFindings();},700);
+      }
+    }
+    nextLog();
+  }
+
+  // ── Navigation ────────────────────────────────────────────
+  const pages=['overview','bridge','controls','findings','poam','reports','assessor','cmmc','nist','owasp','soc','fips'];
+  const titles={overview:'COMPLIANCE OVERVIEW',bridge:'DARKBLOOM BRIDGE™',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',poam:'PLAN OF ACTION & MILESTONES',reports:'GENERATE REPORTS',assessor:'C3PAO ASSESSOR PORTAL',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
+
+  async function showPage(name){
+    pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});
+    const target=document.getElementById('page-'+name);
+    if(target) target.style.display='';
+    document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
+    document.getElementById('page-title').textContent=titles[name]||name.toUpperCase();
+    document.getElementById('breadcrumb').textContent=`AuditCore™ v2.0 // ${titles[name]||name}`;
+    if(name==='controls') await loadControls();
+    if(name==='findings') await loadFindings();
+    if(name==='poam') await loadPOAM();
+    if(name==='cmmc') await loadFrameworkDetail('page-cmmc','CMMC','var(--green)','CMMC LEVEL 2');
+    if(name==='nist') await loadFrameworkDetail('page-nist','NIST','var(--cyan)','NIST SP 800-171');
+    if(name==='owasp') await loadFrameworkDetail('page-owasp','OWASP','var(--amber)','OWASP TOP 10');
+    if(name==='soc') await loadFrameworkDetail('page-soc','SOC2','var(--magenta)','SOC 2 TYPE II');
+    if(name==='fips') await loadFrameworkDetail('page-fips','FIPS','var(--blue)','FIPS 140-3');
+    if(name==='fedramp') await loadFedRAMPControls();
+    if(name==='bridge') loadBridgeFull();
+  }
+
+  async function loadBridgeFull(){
+    const data = await api(`/orgs/${org.id}/bridge?since=0`);
+    const feed = document.getElementById('bridge-feed-full');
+    if(!data?.messages?.length){
+      feed.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.6rem;color:var(--dim);padding:20px;text-align:center;">No bridge events yet. Run a scan to populate.</div>';
+      return;
+    }
+    feed.innerHTML='';
+    data.messages.forEach(msg=>{
+      const color = bridgeColors[msg.event_type]||'#00f0ff';
+      const text = formatBridgeEvent(msg.event_type, msg.payload||{});
+      const item = document.createElement('div');
+      item.className='bridge-msg';
+      item.innerHTML=`<div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
+        <div class="bridge-msg-content"><div class="bridge-msg-event">${text}</div>
+        <div class="bridge-msg-time">${new Date(msg.created_at).toLocaleString()}</div></div>`;
+      feed.appendChild(item);
+    });
+  }
+
+  function signOut(){ sessionStorage.clear(); window.location.href='auditcore.html'; }
+
+  // ── Init ──────────────────────────────────────────────────
+  loadPosture();
+  loadFindings();
+  setTimeout(pollBridge, 1000);
+  addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
 </script>
 </body>
 </html>
