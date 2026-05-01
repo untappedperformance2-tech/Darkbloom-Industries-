@@ -18,7 +18,7 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;overflow:hidden;}
-    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;cursor:none;display:flex;}
+    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;cursor:pointer;display:flex;}
 
     /* CURSOR */
     #cur{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 6px var(--cyan);}
@@ -139,7 +139,7 @@
     .pri-high{color:var(--red);border-color:rgba(255,51,85,.3);}
     .pri-med{color:var(--amber);border-color:rgba(255,184,0,.3);}
     .pri-low{color:var(--dim);border-color:rgba(200,228,240,.15);}
-    .btn-fix{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.1em;padding:3px 9px;border:none;cursor:none;font-weight:700;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:box-shadow .2s;}
+    .btn-fix{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.1em;padding:3px 9px;border:none;cursor:pointer;font-weight:700;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:box-shadow .2s;}
     .btn-fix.auto{color:var(--bg);background:var(--green);}
     .btn-fix.auto:hover{box-shadow:0 0 10px var(--green);}
     .btn-fix.guide{color:var(--amber);background:transparent;border:1px solid rgba(255,184,0,.4);}
@@ -183,7 +183,7 @@
     .rem-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
     .rem-header{padding:20px 24px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;}
     .rem-title{font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;letter-spacing:0.08em;}
-    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:none;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
+    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:pointer;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
     .rem-close:hover{color:var(--red);}
     .rem-body{padding:20px 24px;}
     .rem-mode{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;padding:4px 12px;border:1px solid;display:inline-block;margin-bottom:14px;}
@@ -195,7 +195,7 @@
     .rem-step-content{flex:1;}
     .rem-step-action{font-family:'Rajdhani',sans-serif;font-size:0.9rem;color:#fff;font-weight:600;margin-bottom:4px;}
     .rem-step-detail{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--dim);letter-spacing:0.05em;line-height:1.6;margin-bottom:6px;}
-    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;border-radius:0;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:none;}
+    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;border-radius:0;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:pointer;}
     .rem-command:hover{background:rgba(0,255,136,.1);}
     .rem-affects{margin-top:14px;padding:10px 14px;background:rgba(0,240,255,.03);border:1px solid var(--border2);}
     .rem-affects-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:7px;}
@@ -234,7 +234,7 @@
     .report-icon{font-size:1.3rem;margin-bottom:7px;display:block;}
     .report-name{font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--text);letter-spacing:0.07em;margin-bottom:4px;}
     .report-desc{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.04em;line-height:1.5;}
-    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:none;margin-top:9px;display:inline-block;transition:background .2s;}
+    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:pointer;margin-top:9px;display:inline-block;transition:background .2s;}
     .btn-dl:hover{background:rgba(0,240,255,.06);}
 
     /* SCAN OVERLAY */
@@ -460,7 +460,7 @@
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div class="section-title" style="margin-bottom:0;">ALL CONTROLS</div>
         <div style="display:flex;gap:8px;">
-          <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:none;">
+          <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:pointer;">
             <option value="">ALL STATUSES</option>
             <option value="fail">FAIL ONLY</option>
             <option value="partial">PARTIAL ONLY</option>
@@ -927,7 +927,12 @@
       case 'control.auto_passed': return `&#9679; Auto-passed: ${payload.controlId||''}`;
       case 'assessor.connected': return `// C3PAO connected: ${payload.assessor_email||'assessor'}`;
       case 'score.changed':   return `// Score changed: ${payload.oldScore}% → ${payload.newScore}%`;
-      default: return `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
+      case 'system':          return `// ${payload.text||'System event'}`;
+      case 'presence_join':   return `// ${payload.joiner_name||'User'} joined the channel`;
+      case 'assessor_viewing':return `// Assessor viewed compliance data at ${new Date(payload.viewed_at||Date.now()).toLocaleTimeString()}`;
+      case 'channel.opened':  return `// Bridge channel opened — waiting for assessor`;
+      case 'PRESENCE_JOIN':   return `// ${payload.text||payload.joiner_name||'User'} joined`;
+      default: return payload.text ? `// ${payload.text}` : `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
     }
   }
 
