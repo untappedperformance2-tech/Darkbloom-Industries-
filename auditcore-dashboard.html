@@ -18,11 +18,9 @@
     }
     *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
     html,body{height:100%;overflow:hidden;}
-    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;cursor:none;display:flex;}
+    body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;display:flex;}
 
     /* CURSOR */
-    #cur{position:fixed;width:8px;height:8px;background:var(--cyan);border-radius:50%;pointer-events:none;z-index:9999;transform:translate(-50%,-50%);box-shadow:0 0 6px var(--cyan);}
-    #cur-r{position:fixed;width:28px;height:28px;border:1px solid rgba(0,240,255,0.45);border-radius:50%;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .15s,height .15s;}
 
     /* SIDEBAR */
     .sidebar{width:var(--sidebar);min-width:var(--sidebar);height:100vh;background:rgba(7,12,18,0.98);border-right:1px solid var(--border);display:flex;flex-direction:column;z-index:10;}
@@ -41,7 +39,7 @@
     .sb-org-meta{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);margin-top:1px;}
     .sb-nav{flex:1;padding:12px 0;overflow-y:auto;}
     .sb-section{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.22em;padding:9px 16px 4px;}
-    .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:none;transition:background .2s;border-left:2px solid transparent;}
+    .nav-item{display:flex;align-items:center;gap:9px;padding:8px 16px;cursor:pointer;transition:background .2s;border-left:2px solid transparent;touch-action:manipulation;-webkit-tap-highlight-color:rgba(0,240,255,0.1);user-select:none;}
     .nav-item:hover,.nav-item.active{background:rgba(0,240,255,0.05);border-left-color:var(--cyan);}
     .nav-item.active .nav-label{color:var(--cyan);}
     .nav-icon{width:14px;height:14px;opacity:.5;flex-shrink:0;}
@@ -67,7 +65,7 @@
     .tb-stat-val{font-family:'Orbitron',monospace;font-size:0.78rem;font-weight:700;}
     .tb-stat-label{font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:var(--dim);letter-spacing:0.08em;}
     .tb-divider{width:1px;height:26px;background:var(--border);}
-    .btn-scan{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:7px 16px;cursor:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
+    .btn-scan{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:7px 16px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;touch-action:manipulation;}
     .btn-scan:hover{box-shadow:0 0 16px rgba(0,240,255,0.4);}
     .content{flex:1;overflow-y:auto;padding:22px 26px;}
     .content::-webkit-scrollbar{width:3px;}
@@ -139,7 +137,7 @@
     .pri-high{color:var(--red);border-color:rgba(255,51,85,.3);}
     .pri-med{color:var(--amber);border-color:rgba(255,184,0,.3);}
     .pri-low{color:var(--dim);border-color:rgba(200,228,240,.15);}
-    .btn-fix{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.1em;padding:3px 9px;border:none;cursor:none;font-weight:700;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:box-shadow .2s;}
+    .btn-fix{font-family:'Share Tech Mono',monospace;font-size:0.48rem;letter-spacing:0.1em;padding:3px 9px;border:none;cursor:pointer;font-weight:700;clip-path:polygon(4px 0%,100% 0%,calc(100% - 4px) 100%,0% 100%);transition:box-shadow .2s;}
     .btn-fix.auto{color:var(--bg);background:var(--green);}
     .btn-fix.auto:hover{box-shadow:0 0 10px var(--green);}
     .btn-fix.guide{color:var(--amber);background:transparent;border:1px solid rgba(255,184,0,.4);}
@@ -183,7 +181,7 @@
     .rem-box::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
     .rem-header{padding:20px 24px;border-bottom:1px solid var(--border2);display:flex;justify-content:space-between;align-items:center;}
     .rem-title{font-family:'Orbitron',monospace;font-size:0.85rem;color:#fff;letter-spacing:0.08em;}
-    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:none;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
+    .rem-close{font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--dim);cursor:pointer;padding:4px 10px;border:1px solid var(--border);transition:color .2s;}
     .rem-close:hover{color:var(--red);}
     .rem-body{padding:20px 24px;}
     .rem-mode{font-family:'Share Tech Mono',monospace;font-size:0.58rem;letter-spacing:0.15em;padding:4px 12px;border:1px solid;display:inline-block;margin-bottom:14px;}
@@ -195,12 +193,12 @@
     .rem-step-content{flex:1;}
     .rem-step-action{font-family:'Rajdhani',sans-serif;font-size:0.9rem;color:#fff;font-weight:600;margin-bottom:4px;}
     .rem-step-detail{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--dim);letter-spacing:0.05em;line-height:1.6;margin-bottom:6px;}
-    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;border-radius:0;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:none;}
+    .rem-command{font-family:'Share Tech Mono',monospace;font-size:0.54rem;color:var(--green);background:rgba(0,255,136,.05);border:1px solid rgba(0,255,136,.2);padding:8px 12px;border-radius:0;margin-top:6px;word-break:break-all;white-space:pre-wrap;cursor:pointer;}
     .rem-command:hover{background:rgba(0,255,136,.1);}
     .rem-affects{margin-top:14px;padding:10px 14px;background:rgba(0,240,255,.03);border:1px solid var(--border2);}
     .rem-affects-title{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.15em;margin-bottom:7px;}
     .rem-ctrl-pill{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--cyan);border:1px solid rgba(0,240,255,.25);padding:2px 8px;display:inline-block;margin:2px;}
-    .rem-execute-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;color:var(--bg);background:var(--green);border:none;padding:13px;cursor:none;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;margin-top:16px;transition:box-shadow .2s;}
+    .rem-execute-btn{width:100%;font-family:'Share Tech Mono',monospace;font-size:0.7rem;letter-spacing:0.18em;color:var(--bg);background:var(--green);border:none;padding:13px;cursor:pointer;clip-path:polygon(6px 0%,100% 0%,calc(100% - 6px) 100%,0% 100%);font-weight:700;margin-top:16px;transition:box-shadow .2s;}
     .rem-execute-btn:hover{box-shadow:0 0 18px var(--green);}
     .rem-execute-btn:disabled{opacity:.5;}
     .rem-docs{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:rgba(0,240,255,.4);text-align:center;margin-top:10px;}
@@ -227,14 +225,14 @@
 
     /* REPORTS */
     .report-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:18px;}
-    .report-card{background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;cursor:none;transition:border-color .2s,background .2s;position:relative;overflow:hidden;}
+    .report-card{background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;cursor:pointer;transition:border-color .2s,background .2s;position:relative;overflow:hidden;touch-action:manipulation;-webkit-tap-highlight-color:rgba(0,240,255,0.1);}
     .report-card:hover{border-color:rgba(0,240,255,.28);background:rgba(0,240,255,.025);}
     .report-card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;opacity:0;transition:opacity .2s;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
     .report-card:hover::before{opacity:1;}
     .report-icon{font-size:1.3rem;margin-bottom:7px;display:block;}
     .report-name{font-family:'Orbitron',monospace;font-size:0.6rem;color:var(--text);letter-spacing:0.07em;margin-bottom:4px;}
     .report-desc{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.04em;line-height:1.5;}
-    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:none;margin-top:9px;display:inline-block;transition:background .2s;}
+    .btn-dl{font-family:'Share Tech Mono',monospace;font-size:0.5rem;letter-spacing:0.1em;color:var(--cyan);border:1px solid rgba(0,240,255,.22);padding:4px 12px;cursor:pointer;margin-top:9px;display:inline-block;transition:background .2s;}
     .btn-dl:hover{background:rgba(0,240,255,.06);}
 
     /* SCAN OVERLAY */
@@ -248,7 +246,7 @@
 
     .loading{font-family:'Share Tech Mono',monospace;font-size:0.62rem;color:var(--dim);letter-spacing:0.12em;text-align:center;padding:36px;animation:pulse-g 1.5s infinite;}
     @keyframes pulse-g{0%,100%{opacity:1}50%{opacity:.3}}
-    .btn-action{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:8px 18px;cursor:none;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;}
+    .btn-action{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:var(--bg);background:var(--cyan);border:none;padding:8px 18px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;transition:box-shadow .2s;touch-action:manipulation;}
     .btn-action:hover{box-shadow:0 0 14px rgba(0,240,255,.4);}
     .btn-action.green{background:var(--green);}
     .btn-action.green:hover{box-shadow:0 0 14px var(--green);}
@@ -256,11 +254,11 @@
   </style>
 </head>
 <body>
-<div id="cur"></div>
-<div id="cur-r"></div>
+
+
 
 <!-- REMEDIATION MODAL -->
-<div id="rem-modal">
+<div id="rem-modal" style="display:none;">
   <div class="rem-box">
     <div class="rem-header">
       <div class="rem-title" id="rem-title">REMEDIATION GUIDE</div>
@@ -271,7 +269,7 @@
 </div>
 
 <!-- SCAN OVERLAY -->
-<div id="scan-overlay">
+<div id="scan-overlay" style="display:none;">
   <div class="scan-title">SCANNING — DARKBLOOM BRIDGE™ ACTIVE</div>
   <div class="scan-sub">// REAL-TIME COMPLIANCE SCAN IN PROGRESS</div>
   <div class="scan-bar-wrap"><div class="scan-bar" id="scan-bar"></div></div>
@@ -346,6 +344,11 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#3a7fff" stroke-width="1.5"><rect x="4" y="1" width="8" height="10" rx="1"/><path d="M6 11v4M10 11v4M4 15h8"/></svg>
       <span class="nav-label">FIPS 140-3</span>
     </div>
+        <div class="nav-item" onclick="showPage('fedramp')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ff6b35" stroke-width="1.5"><polygon points="8,1 15,5 15,11 8,15 1,11 1,5"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
+          <span class="nav-label">FEDRAMP</span>
+          <span class="nav-badge" style="background:rgba(255,107,53,.12);color:#ff6b35;border:1px solid rgba(255,107,53,.3);">NEW</span>
+        </div>
     <div class="sb-section">// Actions</div>
     <div class="nav-item" onclick="startScan()">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="8" cy="8" r="3"/><path d="M8 1v2M8 13v2M1 8h2M13 8h2"/></svg>
@@ -455,7 +458,7 @@
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;">
         <div class="section-title" style="margin-bottom:0;">ALL CONTROLS</div>
         <div style="display:flex;gap:8px;">
-          <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:none;">
+          <select id="status-filter" onchange="loadControls()" style="font-family:'Share Tech Mono',monospace;font-size:0.55rem;background:var(--surface);border:1px solid var(--border);color:var(--text);padding:5px 10px;cursor:pointer;">
             <option value="">ALL STATUSES</option>
             <option value="fail">FAIL ONLY</option>
             <option value="partial">PARTIAL ONLY</option>
@@ -544,6 +547,11 @@
         <div class="report-card" onclick="generateReport('fips-audit')"><span class="report-icon">&#128274;</span><div class="report-name">FIPS Crypto Audit</div><div class="report-desc">Cryptographic module inventory with FIPS 140-3 validation status.</div><div class="btn-dl">GENERATE &#9654;</div></div>
         <div class="report-card" onclick="generateReport('owasp')"><span class="report-icon">&#128270;</span><div class="report-name">OWASP Vulnerability</div><div class="report-desc">Web application findings mapped to OWASP Top 10 with remediation guidance.</div><div class="btn-dl">GENERATE &#9654;</div></div>
         <div class="report-card" onclick="generateReport('soc2-readiness')"><span class="report-icon">&#9989;</span><div class="report-name">SOC 2 Readiness</div><div class="report-desc">Trust service criteria gap analysis and C3PAO evidence checklist.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fedramp-sar')"><span class="report-icon">&#127963;</span><div class="report-name">FedRAMP SAR</div><div class="report-desc">Security Assessment Report — 800-53 Moderate baseline with 3PAO findings.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fedramp-ssp')"><span class="report-icon">&#128220;</span><div class="report-name">FedRAMP SSP</div><div class="report-desc">System Security Plan in FedRAMP format with Moderate baseline statements.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('fedramp-conmon')"><span class="report-icon">&#128200;</span><div class="report-name">ConMon Report</div><div class="report-desc">Monthly continuous monitoring report with vulnerability and POA&amp;M status.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('dod-il4')"><span class="report-icon">&#128737;</span><div class="report-name">DoD IL4/IL5</div><div class="report-desc">Authorization package with SRG controls and eMASS-ready POA&amp;M.</div><div class="btn-dl">GENERATE &#9654;</div></div>
+        <div class="report-card" onclick="generateReport('cjis')"><span class="report-icon">&#128268;</span><div class="report-name">CJIS Compliance</div><div class="report-desc">FBI CJIS Security Policy compliance assessment.</div><div class="btn-dl">GENERATE &#9654;</div></div>
       </div>
     </div>
 
@@ -553,6 +561,7 @@
     <div id="page-owasp" style="display:none;"></div>
     <div id="page-soc" style="display:none;"></div>
     <div id="page-fips" style="display:none;"></div>
+    <div id="page-fedramp" style="display:none;"></div>
 
   </div>
 </div>
@@ -566,18 +575,9 @@
   const org   = JSON.parse(sessionStorage.getItem('ac_org')  || 'null');
   if(!token || !user || !org){ window.location.href='auditcore.html'; }
 
-  // ── Populate sidebar ──────────────────────────────────────
-  if(org){
-    document.getElementById('sb-org-name').textContent = org.name || 'Unknown Org';
-    document.getElementById('sb-org-meta').textContent = `${org.slug||''} • ${(org.tier||'').toUpperCase()}`;
-    document.getElementById('sb-license-info').textContent = `License: ${(org.tier||'').toUpperCase()}`;
-  }
+  // ── Populate sidebar (handled in init() below) ───────────
 
-  // ── Cursor ────────────────────────────────────────────────
-  const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-  (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+  // Custom cursor removed
 
   // ── API helper ────────────────────────────────────────────
   async function api(path, opts={}){
@@ -607,7 +607,16 @@
   async function loadPosture(){
     if(!org) return;
     const data = await api(`/orgs/${org.id}/posture`);
-    if(!data) return;
+    if(!data){
+      // API failed — show degraded state instead of hanging
+      const el = document.getElementById('score-display');
+      if(el){ el.textContent='--'; el.style.color='var(--dim)'; }
+      const lbl = document.getElementById('score-label');
+      if(lbl){ lbl.textContent='API UNAVAILABLE'; lbl.style.color='var(--red)'; }
+      const sub = document.getElementById('score-sublabel');
+      if(sub) sub.textContent='Check Railway deployment status';
+      return;
+    }
 
     const score = data.composite_score || 0;
     const sprs  = data.sprs_score ?? '—';
@@ -912,7 +921,12 @@
       case 'control.auto_passed': return `&#9679; Auto-passed: ${payload.controlId||''}`;
       case 'assessor.connected': return `// C3PAO connected: ${payload.assessor_email||'assessor'}`;
       case 'score.changed':   return `// Score changed: ${payload.oldScore}% → ${payload.newScore}%`;
-      default: return `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
+      case 'system':          return `// ${payload.text||'System event'}`;
+      case 'presence_join':   return `// ${payload.joiner_name||'User'} joined the channel`;
+      case 'assessor_viewing':return `// Assessor viewed compliance data at ${new Date(payload.viewed_at||Date.now()).toLocaleTimeString()}`;
+      case 'channel.opened':  return `// Bridge channel opened — waiting for assessor`;
+      case 'PRESENCE_JOIN':   return `// ${payload.text||payload.joiner_name||'User'} joined`;
+      default: return payload.text ? `// ${payload.text}` : `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
     }
   }
 
@@ -996,40 +1010,64 @@
   async function generateReport(type){
     const data = await api(`/orgs/${org.id}/reports/${type}`);
     if(!data) return;
-    const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
-    const url  = URL.createObjectURL(blob);
-    const a    = document.createElement('a');
-    a.href=url; a.download=`auditcore-${type}-${new Date().toISOString().slice(0,10)}.json`;
-    a.click(); URL.revokeObjectURL(url);
-    addBridgeMessage('control.updated', `Report generated: ${type.toUpperCase()}`, 'REPORTS');
+    const o=data.org||{}, ct=data.controls||[], fn=data.open_findings||[], pm=data.poam_entries||[];
+    const now=new Date().toLocaleDateString('en-US',{year:'numeric',month:'long',day:'numeric'});
+    const nm={ssp:'System Security Plan','poam':'Plan of Action & Milestones','executive':'Executive Summary',
+      'fips-audit':'FIPS 140-3 Audit','owasp':'OWASP Top 10','soc2-readiness':'SOC 2 Readiness',
+      'fedramp-sar':'FedRAMP SAR','fedramp-ssp':'FedRAMP SSP','fedramp-conmon':'FedRAMP ConMon',
+      'dod-il4':'DoD IL4/IL5 Package','cjis':'CJIS Compliance','irs-p1075':'IRS P1075'};
+    const title=nm[type]||type.toUpperCase();
+    const pass=ct.filter(c=>c.status==='pass').length, fail=ct.filter(c=>c.status==='fail').length;
+    const pct=ct.length?Math.round(pass/ct.length*100):0;
+    const pc=pct>=80?'#00873d':pct>=50?'#c96a00':'#c0392b';
+    const sb=s=>{
+      const bg={pass:'#00873d',fail:'#c0392b',partial:'#c96a00',not_assessed:'#555',not_applicable:'#888'};
+      const lb={pass:'PASS',fail:'FAIL',partial:'PARTIAL',not_assessed:'NOT ASSESSED',not_applicable:'N/A'};
+      return '<span style="background:'+(bg[s]||'#555')+';color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">'+(lb[s]||'UNASSESSED')+'</span>';
+    };
+    const rb=s=>'<span style="background:'+(s==='critical'?'#c0392b':s==='warning'?'#c96a00':'#1a6bbd')+';color:#fff;padding:2px 8px;border-radius:3px;font-size:11px;font-weight:600;">'+(s||'').toUpperCase()+'</span>';
+    const cr=ct.map(c=>{const d=c.control_definitions||{};return '<tr><td style="font-weight:600;font-size:12px;white-space:nowrap">'+(d.id||c.control_id||'')+'</td><td style="font-size:12px">'+(d.family||'')+'</td><td>'+(d.title||'')+'</td><td style="text-align:center">'+sb(c.status||'not_assessed')+'</td><td style="font-size:12px;color:#555">'+(c.notes||'').slice(0,80)+'</td></tr>';}).join('');
+    const fr=fn.map(f=>'<tr><td>'+rb(f.severity)+'</td><td style="font-weight:600">'+(f.title||'')+'</td><td style="font-size:12px">'+(f.control_id||'')+'</td><td style="font-size:12px">'+(f.description||'').slice(0,120)+'</td></tr>').join('');
+    const pr=pm.map(p=>'<tr><td style="font-weight:600;font-size:12px">'+(p.control_id||'')+'</td><td style="font-size:12px">'+(p.weakness||'').slice(0,100)+'</td><td><span style="background:'+(p.risk_rating==='high'?'#c0392b':'#c96a00')+';color:#fff;padding:2px 6px;border-radius:3px;font-size:11px">'+(p.risk_rating||'').toUpperCase()+'</span></td><td style="font-size:12px">'+(p.scheduled_completion?new Date(p.scheduled_completion).toLocaleDateString():'')+'</td></tr>').join('');
+
+    const w=window.open('','_blank');
+    const d=w.document;
+    d.open();
+    d.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">');
+    d.write('<title>AuditCore&#8482; &#8212; '+title+'</title>');
+    d.write('<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f0f2f5}@media print{.np{display:none}body{background:#fff}}.pg{max-width:1100px;margin:24px auto;background:#fff;padding:44px;box-shadow:0 2px 16px rgba(0,0,0,.12);border-radius:4px}.hd{border-bottom:3px solid #0d1b2a;padding-bottom:20px;margin-bottom:28px;display:flex;justify-content:space-between}.hd h1{font-size:22px;color:#0d1b2a;font-weight:700}.hd h2{font-size:15px;color:#444;margin-top:5px}.mt{text-align:right;font-size:12px;color:#555;line-height:2}.mt strong{color:#0d1b2a}.wm{font-size:10px;color:#bbb;margin-top:4px}.cs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:28px}.cd{background:#f8f9fa;border-radius:6px;padding:18px;text-align:center;border-top:4px solid #0d1b2a}.cg{border-top-color:#00873d}.cr{border-top-color:#c0392b}.ca{border-top-color:#c96a00}.cn{font-size:32px;font-weight:700;line-height:1}.cl{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}.sc{margin-bottom:32px}.sh{font-size:16px;font-weight:700;color:#0d1b2a;padding:8px 0;border-bottom:2px solid #e0e0e0;margin-bottom:14px}table{width:100%;border-collapse:collapse}th{background:#0d1b2a;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:600}td{padding:8px 12px;border-bottom:1px solid #e8e8e8;vertical-align:top;line-height:1.4}tr:nth-child(even) td{background:#fafafa}.ft{margin-top:36px;padding-top:12px;border-top:1px solid #e0e0e0;text-align:center;font-size:11px;color:#aaa}.pb{position:fixed;bottom:20px;right:20px;background:#0d1b2a;color:#fff;border:none;padding:12px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer}</style>');
+    d.write('</head><body><div class="pg">');
+    d.write('<div class="hd"><div><h1>AuditCore&#8482;</h1><h2>'+title+'</h2></div>');
+    d.write('<div class="mt"><div><strong>Organization:</strong> '+(o.name||'&#8212;')+'</div><div><strong>Date:</strong> '+now+'</div><div><strong>By:</strong> '+(data.generated_by||'AuditCore&#8482; v2.0')+'</div><div class="wm">AUDITCORE&#8482; &#8226; DARKBLOOM INDUSTRIES&#8482; &#8226; CONFIDENTIAL</div></div></div>');
+    d.write('<div class="cs">');
+    d.write('<div class="cd '+(pct>=80?'cg':pct>=50?'ca':'cr')+'"><div class="cn" style="color:'+pc+'">'+pct+'%</div><div class="cl">Compliance</div></div>');
+    d.write('<div class="cd cg"><div class="cn" style="color:#00873d">'+pass+'</div><div class="cl">Passing</div></div>');
+    d.write('<div class="cd cr"><div class="cn" style="color:#c0392b">'+fail+'</div><div class="cl">Failing</div></div>');
+    d.write('<div class="cd ca"><div class="cn" style="color:#c96a00">'+fn.length+'</div><div class="cl">Findings</div></div>');
+    d.write('<div class="cd"><div class="cn">'+ct.length+'</div><div class="cl">Controls</div></div>');
+    if(pm.length) d.write('<div class="cd"><div class="cn">'+pm.length+'</div><div class="cl">POA&amp;M</div></div>');
+    d.write('</div>');
+    if(ct.length) d.write('<div class="sc"><div class="sh">Control Assessments ('+ct.length+')</div><table><thead><tr><th>ID</th><th>Family</th><th>Title</th><th>Status</th><th>Notes</th></tr></thead><tbody>'+cr+'</tbody></table></div>');
+    if(fn.length) d.write('<div class="sc"><div class="sh">Open Findings ('+fn.length+')</div><table><thead><tr><th>Severity</th><th>Title</th><th>Control</th><th>Description</th></tr></thead><tbody>'+fr+'</tbody></table></div>');
+    if(pm.length) d.write('<div class="sc"><div class="sh">Plan of Action &amp; Milestones</div><table><thead><tr><th>Control</th><th>Weakness</th><th>Risk</th><th>Target Date</th></tr></thead><tbody>'+pr+'</tbody></table></div>');
+    d.write('<div class="ft">AuditCore&#8482; v2.0 &#8226; Darkbloom Industries&#8482; &#8226; '+now+' &#8226; CONFIDENTIAL</div></div>');
+    d.write('<button class="pb np" onclick="window.print()">Print / Save PDF</button>');
+    d.write('</body></html>');
+    d.close();
+    addBridgeMessage('control.updated', 'Report generated: '+type.toUpperCase(), 'REPORTS');
   }
 
-  // ── Scan ──────────────────────────────────────────────────
-  const scanLines=['> Initializing Darkbloom Bridge™...','> Connecting to scan engine...','> Loading framework definitions [CMMC/NIST/OWASP/SOC2/FIPS]','> Checking SSL/TLS configuration...','> Scanning HTTP security headers...','> Checking DNS/SPF/DMARC records...','> Verifying HTTPS redirect enforcement...','> Checking clickjacking protection...','> Scanning FIPS cryptographic compliance...','> Cross-referencing findings to NIST controls...','> Applying cross-framework mappings...','> Checking for auto-remediable issues...','> Updating POA&M entries...','> ✓ Scan complete. Results publishing via Bridge™...'];
-  function startScan(){
-    const overlay=document.getElementById('scan-overlay');
-    const bar=document.getElementById('scan-bar');
-    const log=document.getElementById('scan-log');
-    overlay.classList.add('active');
-    bar.style.width='0';log.innerHTML='';
-    api(`/orgs/${org.id}/scan`,{method:'POST'});
-    let i=0;
-    function nextLog(){
-      if(i<scanLines.length){
-        const d=document.createElement('div');d.textContent=scanLines[i];d.style.opacity='0';d.style.transition='opacity .3s';
-        log.appendChild(d);requestAnimationFrame(()=>d.style.opacity='1');
-        bar.style.width=((i+1)/scanLines.length*100)+'%';i++;
-        setTimeout(nextLog,300+Math.random()*200);
-      } else {
-        setTimeout(()=>{overlay.classList.remove('active');loadPosture();loadFindings();},700);
-      }
-    }
-    nextLog();
-  }
 
-  // ── Navigation ────────────────────────────────────────────
-  const pages=['overview','bridge','controls','findings','poam','reports','assessor','cmmc','nist','owasp','soc','fips'];
-  const titles={overview:'COMPLIANCE OVERVIEW',bridge:'DARKBLOOM BRIDGE™',controls:'ALL CONTROLS',findings:'OPEN FINDINGS',poam:'PLAN OF ACTION & MILESTONES',reports:'GENERATE REPORTS',assessor:'C3PAO ASSESSOR PORTAL',cmmc:'CMMC LEVEL 2',nist:'NIST SP 800-171',owasp:'OWASP TOP 10',soc:'SOC 2 TYPE II',fips:'FIPS 140-3'};
+  const pages=['overview','bridge','controls','findings','poam','assessor','reports','cmmc','nist','owasp','soc','fips','fedramp'];
+  const titles={
+    overview:'COMPLIANCE OVERVIEW', bridge:'DARKBLOOM BRIDGE™ LIVE',
+    controls:'ALL CONTROLS', findings:'OPEN FINDINGS',
+    poam:'PLAN OF ACTION & MILESTONES', assessor:'C3PAO ASSESSOR PORTAL',
+    reports:'GENERATE REPORTS', cmmc:'CMMC LEVEL 2 DETAIL',
+    nist:'NIST SP 800-171 DETAIL', owasp:'OWASP TOP 10 DETAIL',
+    soc:'SOC 2 TYPE II DETAIL', fips:'FIPS 140-3 DETAIL',
+    fedramp:'FEDRAMP / NIST SP 800-53 REV 5'
+  };
 
   async function showPage(name){
     pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});
@@ -1046,6 +1084,7 @@
     if(name==='owasp') await loadFrameworkDetail('page-owasp','OWASP','var(--amber)','OWASP TOP 10');
     if(name==='soc') await loadFrameworkDetail('page-soc','SOC2','var(--magenta)','SOC 2 TYPE II');
     if(name==='fips') await loadFrameworkDetail('page-fips','FIPS','var(--blue)','FIPS 140-3');
+    if(name==='fedramp') await loadFrameworkDetail('page-fedramp','FEDRAMP','#ff6b35','FEDRAMP');
     if(name==='bridge') loadBridgeFull();
   }
 
@@ -1072,10 +1111,27 @@
   function signOut(){ sessionStorage.clear(); window.location.href='auditcore.html'; }
 
   // ── Init ──────────────────────────────────────────────────
-  loadPosture();
-  loadFindings();
-  setTimeout(pollBridge, 1000);
-  addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+  async function init() {
+    // Update sidebar immediately from stored session
+    const sbName = document.getElementById('sb-org-name');
+    const sbMeta = document.getElementById('sb-org-meta');
+    const sbLic  = document.getElementById('sb-license-info');
+    if(sbName && org) sbName.textContent = org.name || 'Unknown Org';
+    if(sbMeta && org) sbMeta.textContent = (org.slug||'') + ' • ' + (org.tier||'').toUpperCase();
+    if(sbLic  && org) sbLic.textContent  = 'License: ' + (org.tier||'').toUpperCase();
+
+    // Load data
+    await loadPosture();
+    loadFindings();
+    setTimeout(pollBridge, 1000);
+    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
 </script>
 </body>
 </html>
