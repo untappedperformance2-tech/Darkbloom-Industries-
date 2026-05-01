@@ -573,11 +573,8 @@
   const token = sessionStorage.getItem('ac_token');
   const user  = JSON.parse(sessionStorage.getItem('ac_user') || 'null');
   const org   = JSON.parse(sessionStorage.getItem('ac_org')  || 'null');
-  if(!token || !user || !org){ window.location.href='auditcore.html'; throw new Error('Redirecting to login'); }
-
-  // ── Populate sidebar (handled in init() below) ───────────
-
-  // Custom cursor removed
+  if(!token || !user || !org){ window.location.href='auditcore.html'; }
+  else {
 
   // ── API helper ────────────────────────────────────────────
   async function api(path, opts={}){
@@ -1218,6 +1215,8 @@
   } else {
     init();
   }
+
+  } // end else (authenticated)
 </script>
 </body>
 </html>
