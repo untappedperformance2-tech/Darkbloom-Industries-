@@ -579,11 +579,15 @@
 
   // ── Populate sidebar (handled in init() below) ───────────
 
-  // ── Cursor ────────────────────────────────────────────────
-  const cur=document.getElementById('cur'),curR=document.getElementById('cur-r');
-  let mx=0,my=0,rx=0,ry=0;
-  document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
-  (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+  // ── Cursor (initialized in init() after DOM ready) ────────
+  let cur=null,curR=null,mx=0,my=0,rx=0,ry=0;
+  function initCursor(){
+    cur=document.getElementById('cur');
+    curR=document.getElementById('cur-r');
+    if(!cur||!curR) return;
+    document.addEventListener('mousemove',e=>{mx=e.clientX;my=e.clientY;cur.style.left=mx+'px';cur.style.top=my+'px';});
+    (function loop(){rx+=(mx-rx)*.13;ry+=(my-ry)*.13;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(loop);})();
+  }
 
   // ── API helper ────────────────────────────────────────────
   async function api(path, opts={}){
@@ -1107,6 +1111,7 @@
 
   // ── Init ──────────────────────────────────────────────────
   async function init() {
+    initCursor();
     // Update sidebar immediately from stored session
     const sbName = document.getElementById('sb-org-name');
     const sbMeta = document.getElementById('sb-org-meta');
