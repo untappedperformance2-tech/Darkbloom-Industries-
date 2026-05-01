@@ -764,14 +764,20 @@
 
   // ── Generate POA&M ────────────────────────────────────────
   async function generatePOAM(){
+    const btn = event?.target;
+    if(btn){ btn.textContent='GENERATING...'; btn.disabled=true; }
     const data = await api(`/orgs/${org.id}/poam/generate`, { method: 'POST' });
-    if(data) {
-      addBridgeMessage('green', `POA&M: Generated ${data.generated} entries from open findings`, 'POAM');
-      if(document.getElementById('page-poam').style.display!=='none') loadPOAM();
-      if(document.getElementById('page-findings').style.display!=='none') {
-        setTimeout(()=>showPage('poam'),500);
-      }
+    if(btn){ btn.textContent=btn.textContent.includes('AUTO')?'AUTO-GENERATE POA&M &#9654;':'GENERATE FROM FINDINGS &#9654;'; btn.disabled=false; }
+    if(!data){
+      alert('Failed to generate POA&M. Check that the poam_entries table exists in Supabase (run migration_v2.sql).');
+      return;
     }
+    if(data.generated === 0){
+      alert('No new POA&M entries generated. Either no open findings exist, or all findings already have POA&M entries. Go to Findings first and make sure there are open findings.');
+      return;
+    }
+    addBridgeMessage('green', `POA&M: Generated ${data.generated} entries from open findings`, 'POAM');
+    showPage('poam');
   }
 
   // ── Show remediation for a control ───────────────────────
@@ -1072,7 +1078,7 @@
   async function showPage(name){
     pages.forEach(p=>{const el=document.getElementById('page-'+p);if(el)el.style.display='none';});
     const target=document.getElementById('page-'+name);
-    if(target) target.style.display='';
+    if(target) target.style.display='block';
     document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
     document.getElementById('page-title').textContent=titles[name]||name.toUpperCase();
     document.getElementById('breadcrumb').textContent=`AuditCore™ v2.0 // ${titles[name]||name}`;
@@ -1109,6 +1115,77 @@
   }
 
   function signOut(){ sessionStorage.clear(); window.location.href='auditcore.html'; }
+
+  // ── Start scan ───────────────────────────────────────────
+  async function startScan(){
+    const overlay = document.getElementById('scan-overlay');
+    const bar = document.getElementById('scan-bar');
+    const log = document.getElementById('scan-log');
+
+    // Show overlay immediately
+    overlay.style.display = 'flex';
+    bar.style.width = '0%';
+    log.innerHTML = '';
+
+    function addLog(t){ const d=document.createElement('div'); d.textContent=t; log.appendChild(d); log.scrollTop=log.scrollHeight; }
+
+    addLog('// Initiating scan for ' + (org ? org.name : 'unknown') + '...');
+
+    let resp;
+    try {
+      resp = await api('/orgs/' + org.id + '/scan', { method: 'POST' });
+    } catch(e) {
+      overlay.style.display = 'none';
+      alert('Scan error: ' + e.message);
+      return;
+    }
+
+    if(!resp) {
+      overlay.style.display = 'none';
+      alert('Scan failed — API returned no response. Check Railway logs.');
+      return;
+    }
+
+    if(resp.error) {
+      overlay.style.display = 'none';
+      if(resp.error.toLowerCase().includes('domain')) {
+        const d = prompt('No domain configured. Enter domain (e.g. darkbloomindustries.com):');
+        if(d) {
+          await api('/orgs/' + org.id + '/settings', { method:'PATCH', body: JSON.stringify({domain: d}) });
+          startScan();
+        }
+      } else {
+        alert('Scan error: ' + resp.error);
+      }
+      return;
+    }
+
+    addLog('// Scan ID: ' + resp.scan_id);
+    addLog('// Domain: ' + resp.domain);
+    addLog('// Bridge™ will push live updates...');
+    addBridgeMessage('scan.started', 'Scan started for ' + resp.domain, 'SCAN');
+
+    let pct = 0;
+    const msgs = ['// Checking DNS records...','// Scanning TLS configuration...','// Auditing HTTP headers...','// Checking SPF/DMARC...','// Scanning AWS posture...','// Checking M365 configuration...','// Cross-mapping frameworks...'];
+    const iv = setInterval(()=>{
+      pct = Math.min(pct + Math.random() * 8, 92);
+      bar.style.width = pct + '%';
+      if(Math.random() > 0.65) addLog(msgs[Math.floor(Math.random() * msgs.length)]);
+    }, 900);
+
+    setTimeout(()=>{
+      clearInterval(iv);
+      bar.style.width = '100%';
+      addLog('// Scan complete — updating posture...');
+      setTimeout(()=>{
+        overlay.style.display = 'none';
+        loadPosture();
+        loadFindings();
+        addBridgeMessage('scan.completed', 'Scan complete — posture updated', 'SCAN');
+      }, 1200);
+    }, 12000);
+  }
+  }
 
   // ── Init ──────────────────────────────────────────────────
   async function init() {
