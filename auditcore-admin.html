@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>AuditCore™ Admin Portal — Darkbloom Industries™</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&family=Rajdhani:wght@300;400;600;700&display=swap" rel="stylesheet"/>
+<style>
+:root{--bg:#04060a;--surface:#070c12;--cyan:#00f0ff;--green:#00ff88;--amber:#ffb800;--red:#ff3355;--purple:#8b5cf6;--border:rgba(0,240,255,0.1);--text:rgba(200,228,240,0.85);--dim:rgba(200,228,240,0.35);}
+*{box-sizing:border-box;margin:0;padding:0;}
+body{background:var(--bg);color:var(--text);font-family:'Rajdhani',sans-serif;min-height:100vh;padding:32px;}
+.header{text-align:center;margin-bottom:40px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+.header h1{font-family:'Orbitron',monospace;font-size:1.4rem;color:var(--cyan);letter-spacing:0.15em;}
+.header p{font-family:'Share Tech Mono',monospace;font-size:0.55rem;color:var(--dim);letter-spacing:0.2em;margin-top:6px;}
+.admin-check{background:var(--surface);border:1px solid rgba(255,0,170,0.3);padding:24px;max-width:400px;margin:0 auto 32px;text-align:center;}
+.admin-check label{font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(255,0,170,0.6);letter-spacing:0.18em;display:block;margin-bottom:8px;}
+.admin-check input{width:100%;background:rgba(255,0,170,0.04);border:1px solid rgba(255,0,170,0.2);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:1rem;padding:10px 14px;outline:none;margin-bottom:12px;}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1100px;margin:0 auto;}
+.card{background:var(--surface);border:1px solid var(--border);padding:24px;position:relative;}
+.card::before{content:'';position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent);}
+.card-title{font-family:'Orbitron',monospace;font-size:0.75rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:16px;}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+.form-field{display:flex;flex-direction:column;gap:4px;}
+.form-field.full{grid-column:1/-1;}
+.form-field label{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:rgba(0,240,255,0.5);letter-spacing:0.18em;}
+.form-field input,.form-field select{background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 12px;outline:none;width:100%;}
+.form-field input:focus,.form-field select:focus{border-color:var(--cyan);}
+.btn{font-family:'Share Tech Mono',monospace;font-size:0.6rem;letter-spacing:0.14em;color:#04060a;background:var(--cyan);border:none;padding:10px 20px;cursor:pointer;clip-path:polygon(5px 0%,100% 0%,calc(100% - 5px) 100%,0% 100%);font-weight:700;margin-top:12px;width:100%;}
+.btn.green{background:var(--green);}
+.btn.purple{background:var(--purple);color:#fff;}
+.result-box{margin-top:14px;padding:14px;background:rgba(0,255,136,0.05);border:1px solid rgba(0,255,136,0.2);display:none;font-family:'Share Tech Mono',monospace;font-size:0.56rem;line-height:1.8;}
+.result-box.error{background:rgba(255,51,85,0.05);border-color:rgba(255,51,85,0.2);color:var(--red);}
+.key-box{background:rgba(0,240,255,0.08);border:1px solid rgba(0,240,255,0.3);padding:10px;margin-top:8px;font-family:'Share Tech Mono',monospace;font-size:0.65rem;color:var(--cyan);word-break:break-all;cursor:pointer;}
+.clients-table{width:100%;border-collapse:collapse;margin-top:14px;}
+.clients-table th{font-family:'Share Tech Mono',monospace;font-size:0.48rem;color:var(--dim);letter-spacing:0.14em;padding:6px 10px;border-bottom:1px solid var(--border);text-align:left;}
+.clients-table td{font-family:'Share Tech Mono',monospace;font-size:0.54rem;padding:8px 10px;border-bottom:1px solid rgba(0,240,255,0.05);}
+.status-active{color:var(--green);}
+.status-expired{color:var(--red);}
+.section-full{grid-column:1/-1;}
+.loading{font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);text-align:center;padding:20px;}
+.stat-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:20px;max-width:1100px;margin-left:auto;margin-right:auto;}
+.stat-card{background:var(--surface);border:1px solid var(--border);padding:14px;text-align:center;}
+.stat-num{font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:700;}
+.stat-label{font-family:'Share Tech Mono',monospace;font-size:0.46rem;color:var(--dim);letter-spacing:0.1em;margin-top:3px;}
+.warn{font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--amber);padding:8px;background:rgba(255,184,0,0.06);border:1px solid rgba(255,184,0,0.2);margin-top:8px;}
+</style>
+</head>
+<body>
+<div class="header">
+  <h1>AuditCore™ ADMIN PORTAL</h1>
+  <p>DARKBLOOM INDUSTRIES™ — INTERNAL USE ONLY — AUTHORIZED ACCESS REQUIRED</p>
+</div>
+
+<div class="admin-check" id="auth-gate">
+  <label>// ADMIN SECRET KEY</label>
+  <input type="password" id="admin-secret-input" placeholder="Enter admin secret..." onkeydown="if(event.key==='Enter')verifyAdmin()"/>
+  <button class="btn" onclick="verifyAdmin()">AUTHENTICATE ▶</button>
+  <div id="auth-error" style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--red);margin-top:8px;display:none;"></div>
+</div>
+
+<div id="admin-panel" style="display:none;">
+  <div class="stat-grid">
+    <div class="stat-card"><div class="stat-num" id="stat-total" style="color:var(--cyan);">0</div><div class="stat-label">TOTAL CLIENTS</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-active" style="color:var(--green);">0</div><div class="stat-label">ACTIVE</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-expired" style="color:var(--red);">0</div><div class="stat-label">EXPIRED</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-mrr" style="color:var(--amber);">$0</div><div class="stat-label">EST. MRR</div></div>
+  </div>
+
+  <div class="grid">
+    <div class="card">
+      <div class="card-title">■ ONBOARD NEW CLIENT</div>
+      <div class="form-row">
+        <div class="form-field"><label>// ORGANIZATION NAME</label><input type="text" id="new-org-name" placeholder="Acme Defense LLC"/></div>
+        <div class="form-field"><label>// CONTACT EMAIL</label><input type="email" id="new-email" placeholder="admin@acme.com"/></div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>// DOMAIN TO SCAN</label><input type="text" id="new-domain" placeholder="acme.com"/></div>
+        <div class="form-field"><label>// LICENSE TIER</label>
+          <select id="new-tier"><option value="basic">BASIC — $299/mo</option><option value="pro" selected>PRO — $599/mo</option><option value="enterprise">ENTERPRISE — $1,299/mo</option></select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-field"><label>// LICENSE DURATION</label>
+          <select id="new-expires"><option value="30">30 DAYS (TRIAL)</option><option value="90">90 DAYS</option><option value="365" selected>1 YEAR</option><option value="730">2 YEARS</option></select>
+        </div>
+        <div class="form-field"><label>// TEMP PASSWORD</label><input type="password" id="new-password" placeholder="Temporary password"/></div>
+      </div>
+      <button class="btn green" onclick="createClient()">CREATE CLIENT + LICENSE ▶</button>
+      <div class="result-box" id="create-result"><div id="create-result-content"></div></div>
+    </div>
+
+    <div class="card">
+      <div class="card-title">■ QUICK ACTIONS</div>
+      <div style="margin-bottom:18px;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,240,255,0.5);letter-spacing:0.15em;margin-bottom:8px;">// LOOKUP CLIENT</div>
+        <div class="form-field" style="margin-bottom:8px;"><label>// ORG SLUG</label><input type="text" id="lookup-query" placeholder="acme-defense"/></div>
+        <button class="btn" onclick="lookupClient()" style="width:auto;padding:8px 18px;margin-top:0;">LOOKUP ▶</button>
+        <div class="result-box" id="lookup-result"><div id="lookup-result-content"></div></div>
+      </div>
+      <div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:rgba(0,240,255,0.5);letter-spacing:0.15em;margin-bottom:8px;">// EXTEND LICENSE</div>
+        <div class="form-row">
+          <div class="form-field"><label>// ORG SLUG</label><input type="text" id="extend-slug" placeholder="acme-defense"/></div>
+          <div class="form-field"><label>// DAYS TO ADD</label><input type="number" id="extend-days" value="365"/></div>
+        </div>
+        <button class="btn purple" onclick="extendLicense()" style="width:auto;padding:8px 18px;margin-top:4px;">EXTEND ▶</button>
+        <div class="result-box" id="extend-result"><div id="extend-result-content"></div></div>
+      </div>
+    </div>
+
+    <div class="card section-full">
+      <div class="card-title" style="display:flex;justify-content:space-between;align-items:center;">
+        <span>■ ALL CLIENTS</span>
+        <button class="btn" style="width:auto;padding:6px 14px;margin:0;font-size:0.5rem;" onclick="loadClients()">REFRESH ▶</button>
+      </div>
+      <div id="clients-container"><div class="loading">// LOADING CLIENTS...</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const API='https://auditcore-api-production.up.railway.app';
+let adminSecret='';
+
+async function adminApi(path,method='GET',body=null){
+  const opts={method,headers:{'Content-Type':'application/json','x-admin-secret':adminSecret}};
+  if(body) opts.body=JSON.stringify(body);
+  const r=await fetch(API+path,opts);
+  return r.json();
+}
+
+async function verifyAdmin(){
+  const s=document.getElementById('admin-secret-input').value.trim();
+  if(!s) return;
+  adminSecret=s;
+  try{
+    const t=await fetch(API+'/health').then(r=>r.json());
+    if(t.status!=='operational') throw new Error('API offline');
+    document.getElementById('auth-gate').style.display='none';
+    document.getElementById('admin-panel').style.display='block';
+    loadClients(); loadStats();
+  }catch(e){
+    const err=document.getElementById('auth-error');
+    err.style.display='block'; err.textContent='> '+e.message;
+  }
+}
+
+async function createClient(){
+  const orgName=document.getElementById('new-org-name').value.trim();
+  const email=document.getElementById('new-email').value.trim();
+  const domain=document.getElementById('new-domain').value.trim();
+  const tier=document.getElementById('new-tier').value;
+  const expires=parseInt(document.getElementById('new-expires').value);
+  const password=document.getElementById('new-password').value.trim();
+  if(!orgName||!email||!password){alert('Name, email and password required');return;}
+  const btn=document.querySelector('[onclick="createClient()"]');
+  btn.textContent='CREATING...';btn.disabled=true;
+  try{
+    const org=await adminApi('/admin/licenses','POST',{org_name:orgName,contact_email:email,tier,expires_days:expires,domain:domain||undefined});
+    if(org.error) throw new Error(org.error);
+    const user=await adminApi('/admin/users','POST',{org_id:org.org.id,email,password,role:'admin'});
+    const box=document.getElementById('create-result');
+    box.style.display='block'; box.className='result-box';
+    document.getElementById('create-result-content').innerHTML=
+      '<div style="color:var(--green)">● '+orgName+' created</div>'+
+      '<div><b>Slug:</b> '+org.org.slug+'</div>'+
+      '<div><b>Tier:</b> '+tier.toUpperCase()+'</div>'+
+      '<div><b>Expires:</b> '+new Date(org.org.license_expires).toLocaleDateString()+'</div>'+
+      '<div style="margin-top:8px;color:var(--amber);">▲ SEND TO CLIENT:</div>'+
+      '<div><b>Login URL:</b> https://darkbloomindustries.com/auditcore.html</div>'+
+      '<div><b>Org ID:</b> '+org.org.slug+'</div>'+
+      '<div><b>Email:</b> '+email+'</div>'+
+      '<div><b>Password:</b> '+password+'</div>'+
+      '<div class="warn">▲ LICENSE KEY (one-time):</div>'+
+      '<div class="key-box" onclick="navigator.clipboard.writeText(''+org.license_key+'');this.style.background='rgba(0,255,136,0.15)'">'+org.license_key+' <span style="color:var(--dim);font-size:0.46rem;">(click to copy)</span></div>'+
+      (user?.error?'<div style="color:var(--amber);margin-top:6px;">▲ User: '+user.error+' — add manually in Supabase</div>':'<div style="color:var(--green);margin-top:6px;">● User account created</div>');
+    loadClients(); loadStats();
+  }catch(e){
+    const box=document.getElementById('create-result');
+    box.style.display='block'; box.className='result-box error';
+    document.getElementById('create-result-content').textContent='> '+e.message;
+  }finally{btn.textContent='CREATE CLIENT + LICENSE ▶';btn.disabled=false;}
+}
+
+async function lookupClient(){
+  const q=document.getElementById('lookup-query').value.trim();
+  if(!q) return;
+  const r=await adminApi('/admin/orgs?q='+encodeURIComponent(q));
+  const box=document.getElementById('lookup-result');
+  box.style.display='block';
+  if(r.error||!r.org){box.className='result-box error';document.getElementById('lookup-result-content').textContent=r.error||'Not found';return;}
+  box.className='result-box';
+  const o=r.org;
+  document.getElementById('lookup-result-content').innerHTML=
+    '<div><b>Name:</b> '+o.name+'</div><div><b>Slug:</b> '+o.slug+'</div><div><b>Tier:</b> '+(o.license_tier||'').toUpperCase()+'</div><div><b>Domain:</b> '+(o.domain||'—')+'</div><div><b>Expires:</b> '+new Date(o.license_expires).toLocaleDateString()+'</div><div><b>Status:</b> <span class="'+(o.is_active?'status-active':'status-expired')+'">'+(o.is_active?'ACTIVE':'INACTIVE')+'</span></div>';
+}
+
+async function extendLicense(){
+  const slug=document.getElementById('extend-slug').value.trim();
+  const days=parseInt(document.getElementById('extend-days').value);
+  if(!slug||!days) return;
+  const r=await adminApi('/admin/extend-license','POST',{slug,days});
+  const box=document.getElementById('extend-result');
+  box.style.display='block';
+  if(r.error){box.className='result-box error';document.getElementById('extend-result-content').textContent=r.error;}
+  else{box.className='result-box';document.getElementById('extend-result-content').textContent='Extended '+slug+' by '+days+' days. New expiry: '+new Date(r.expires_at).toLocaleDateString();loadClients();}
+}
+
+async function loadClients(){
+  const c=document.getElementById('clients-container');
+  c.innerHTML='<div class="loading">// LOADING...</div>';
+  const r=await adminApi('/admin/orgs');
+  if(r.error||!r.orgs){c.innerHTML='<div class="loading" style="color:var(--red);">// '+(r.error||'Failed')+'</div>';return;}
+  if(!r.orgs.length){c.innerHTML='<div class="loading">// No clients yet</div>';return;}
+  c.innerHTML='<table class="clients-table"><thead><tr><th>NAME</th><th>SLUG</th><th>TIER</th><th>DOMAIN</th><th>EXPIRES</th><th>STATUS</th><th>LAST SCAN</th></tr></thead><tbody>'+
+    r.orgs.map(o=>'<tr><td>'+o.name+'</td><td style="color:var(--cyan)">'+o.slug+'</td><td>'+(o.license_tier||'').toUpperCase()+'</td><td>'+(o.domain||'—')+'</td><td>'+new Date(o.license_expires).toLocaleDateString()+'</td><td class="'+(new Date(o.license_expires)>new Date()&&o.is_active?'status-active':'status-expired')+'">'+(new Date(o.license_expires)>new Date()&&o.is_active?'ACTIVE':'EXPIRED')+'</td><td>'+(o.last_scan_at?new Date(o.last_scan_at).toLocaleDateString():'Never')+'</td></tr>').join('')+
+    '</tbody></table>';
+}
+
+async function loadStats(){
+  const r=await adminApi('/admin/orgs');
+  if(!r.orgs) return;
+  const active=r.orgs.filter(o=>new Date(o.license_expires)>new Date()&&o.is_active).length;
+  const mrrMap={basic:299,pro:599,enterprise:1299};
+  const mrr=r.orgs.filter(o=>new Date(o.license_expires)>new Date()).reduce((s,o)=>s+(mrrMap[o.license_tier]||0),0);
+  document.getElementById('stat-total').textContent=r.orgs.length;
+  document.getElementById('stat-active').textContent=active;
+  document.getElementById('stat-expired').textContent=r.orgs.length-active;
+  document.getElementById('stat-mrr').textContent='$'+mrr.toLocaleString();
+}
+
+if(location.hash.startsWith('#admin=')){document.getElementById('admin-secret-input').value=location.hash.slice(7);verifyAdmin();}
+</script>
+</body>
+</html>

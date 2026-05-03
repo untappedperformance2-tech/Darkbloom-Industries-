@@ -344,6 +344,14 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#3a7fff" stroke-width="1.5"><rect x="4" y="1" width="8" height="10" rx="1"/><path d="M6 11v4M10 11v4M4 15h8"/></svg>
       <span class="nav-label">FIPS 140-3</span>
     </div>
+        <div class="nav-item" onclick="showPage('aws')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ff9900" stroke-width="1.5"><path d="M2 11c0 0 2 1 6 1s6-1 6-1M2 8c0 0 2 1 6 1s6-1 6-1M2 5c0 2 2 3 6 3s6-1 6-3-2-3-6-3-6 1-6 3z"/></svg>
+          <span class="nav-label">AWS SCAN</span>
+        </div>
+        <div class="nav-item" onclick="showPage('m365')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#0078d4" stroke-width="1.5"><rect x="2" y="2" width="5" height="5"/><rect x="9" y="2" width="5" height="5"/><rect x="2" y="9" width="5" height="5"/><rect x="9" y="9" width="5" height="5"/></svg>
+          <span class="nav-label">M365 SCAN</span>
+        </div>
         <div class="nav-item" onclick="showPage('fedramp')">
           <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#ff6b35" stroke-width="1.5"><polygon points="8,1 15,5 15,11 8,15 1,11 1,5"/><line x1="8" y1="5" x2="8" y2="11"/><line x1="5" y1="8" x2="11" y2="8"/></svg>
           <span class="nav-label">FEDRAMP</span>
@@ -561,6 +569,8 @@
     <div id="page-owasp" style="display:none;"></div>
     <div id="page-soc" style="display:none;"></div>
     <div id="page-fips" style="display:none;"></div>
+    <div id="page-aws" style="display:none;"></div>
+    <div id="page-m365" style="display:none;"></div>
     <div id="page-fedramp" style="display:none;"></div>
 
   </div>
@@ -1088,6 +1098,8 @@
     if(name==='soc') await loadFrameworkDetail('page-soc','SOC2','var(--magenta)','SOC 2 TYPE II');
     if(name==='fips') await loadFrameworkDetail('page-fips','FIPS','var(--blue)','FIPS 140-3');
     if(name==='fedramp') await loadFrameworkDetail('page-fedramp','FEDRAMP','#ff6b35','FEDRAMP');
+    if(name==='aws') loadCloudPosture('page-aws','aws','#ff9900','AWS');
+    if(name==='m365') loadCloudPosture('page-m365','m365','#0078d4','Microsoft 365');
     if(name==='bridge') loadBridgeFull();
   }
 
@@ -1187,6 +1199,28 @@
       }, 1200);
     }, 12000);
   }
+  function loadCloudPosture(pageId, provider, color, name){
+    const el = document.getElementById(pageId);
+    if(!el) return;
+    el.innerHTML = `<div style="padding:24px;background:var(--surface);border:1px solid var(--border);">
+      <div style="font-family:'Orbitron',monospace;font-size:0.8rem;color:${color};letter-spacing:0.1em;margin-bottom:14px;">&#9632; ${name} SECURITY POSTURE</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);line-height:2.2;">
+        <div>&#9679; Connect your ${name} account to enable live scanning</div>
+        <div style="margin-top:12px;color:var(--amber);">// TO CONFIGURE:</div>
+        ${provider==='aws' ? `
+        <div>1. Create an IAM role with SecurityAudit policy</div>
+        <div>2. Add your AWS credentials in Org Settings → Integrations</div>
+        <div>3. Run a scan to check S3, CloudTrail, GuardDuty, IAM, EBS</div>` : `
+        <div>1. Register an Azure AD application with read permissions</div>
+        <div>2. Add your M365 tenant ID and client credentials in Org Settings</div>
+        <div>3. Run a scan to check MFA, audit logging, inactive accounts</div>`}
+        <div style="margin-top:14px;">
+          <button class="btn-action" onclick="showPage('assessor')" style="font-size:0.55rem;padding:6px 14px;">CONFIGURE INTEGRATIONS &#9654;</button>
+        </div>
+      </div>
+    </div>`;
+  }
+
   // ── Init ──────────────────────────────────────────────────
   async function init() {
     // Update sidebar immediately from stored session
