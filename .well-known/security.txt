@@ -1,3 +1,6 @@
-Contact: mailto:DarkbloomIndustries@outlook.com
-Expires: 2027-01-01T00:00:00.000Z
+Contact: mailto:Aaron@darkbloomindustries.com
+Expires: 2026-12-31T23:59:59.000Z
 Preferred-Languages: en
+Canonical: https://darkbloomindustries.com/.well-known/security.txt
+Policy: https://darkbloomindustries.com/security-policy
+Hiring: https://darkbloomindustries.com/careers
