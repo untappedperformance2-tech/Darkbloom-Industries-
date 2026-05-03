@@ -371,6 +371,10 @@
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="1" width="12" height="14" rx="1"/><line x1="5" y1="5" x2="11" y2="5"/><line x1="5" y1="8" x2="11" y2="8"/><line x1="5" y1="11" x2="8" y2="11"/></svg>
       <span class="nav-label">REPORTS</span>
     </div>
+    <div class="nav-item" onclick="showPage('profile')">
+          <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="#8b5cf6" stroke-width="1.5"><circle cx="8" cy="5" r="3"/><path d="M2 14c0-3 2.7-5 6-5s6 2 6 5"/></svg>
+          <span class="nav-label">MY PROFILE</span>
+        </div>
     <div class="nav-item" onclick="signOut()">
       <svg class="nav-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M10 2H3v12h7M11 5l3 3-3 3M6 8h8"/></svg>
       <span class="nav-label">SIGN OUT</span>
@@ -572,6 +576,7 @@
     <div id="page-aws" style="display:none;"></div>
     <div id="page-m365" style="display:none;"></div>
     <div id="page-fedramp" style="display:none;"></div>
+    <div id="page-profile" style="display:none;"></div>
 
   </div>
 </div>
@@ -1099,6 +1104,7 @@
     if(name==='fips') await loadFrameworkDetail('page-fips','FIPS','var(--blue)','FIPS 140-3');
     if(name==='fedramp') await loadFrameworkDetail('page-fedramp','FEDRAMP','#ff6b35','FEDRAMP');
     if(name==='aws') loadCloudPosture('page-aws','aws','#ff9900','AWS');
+    if(name==='profile') loadProfile();
     if(name==='m365') loadCloudPosture('page-m365','m365','#0078d4','Microsoft 365');
     if(name==='bridge') loadBridgeFull();
   }
@@ -1219,6 +1225,168 @@
         </div>
       </div>
     </div>`;
+  }
+
+
+  async function loadProfile(){
+    const el=document.getElementById('page-profile');
+    if(!el) return;
+    const tier=org.tier||'pro';
+    const tc={basic:'var(--green)',pro:'var(--amber)',enterprise:'var(--cyan)',custom:'var(--purple)'}[tier]||'var(--cyan)';
+    el.innerHTML='<div class="loading">// LOADING PROFILE...</div>';
+    const pd=await api('/orgs/'+org.id+'/profile');
+    const renewal=pd?new Date(pd.license_expires):null;
+    const days=renewal?Math.ceil((renewal-new Date())/(864e5)):0;
+    const dc=days<=30?'var(--red)':days<=90?'var(--amber)':'var(--green)';
+    el.innerHTML=`
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
+      <div style="background:var(--surface);border:1px solid var(--border);padding:22px;position:relative;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent)"></div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--purple);letter-spacing:0.1em;margin-bottom:14px;">&#9642; ACCOUNT</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.54rem;line-height:2.2;">
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border2);padding-bottom:6px;"><span style="color:var(--dim)">ORGANIZATION</span><span style="color:var(--text);font-weight:600">${org.name}</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border2);padding:6px 0;"><span style="color:var(--dim)">EMAIL</span><span style="color:var(--text)">${user.email}</span></div>
+          <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border2);padding:6px 0;"><span style="color:var(--dim)">ROLE</span><span style="color:var(--cyan)">${(user.role||'').toUpperCase()}</span></div>
+          <div style="display:flex;justify-content:space-between;padding-top:6px;"><span style="color:var(--dim)">ORG ID</span><span style="color:var(--dim);font-size:0.46rem">${org.slug}</span></div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);padding:22px;position:relative;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,${tc},transparent)"></div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:${tc};letter-spacing:0.1em;margin-bottom:14px;">&#9642; LICENSE</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;text-align:center;">
+          <div style="padding:12px;background:rgba(0,240,255,0.03);border:1px solid var(--border);">
+            <div style="font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:${tc}">${tier.toUpperCase()}</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">TIER</div>
+          </div>
+          <div style="padding:12px;background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);">
+            <div style="font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:var(--green)">${pd?.monthly_price?'
+  async function init() {
+    // Update sidebar immediately from stored session
+    const sbName = document.getElementById('sb-org-name');
+    const sbMeta = document.getElementById('sb-org-meta');
+    const sbLic  = document.getElementById('sb-license-info');
+    if(sbName && org) sbName.textContent = org.name || 'Unknown Org';
+    if(sbMeta && org) sbMeta.textContent = (org.slug||'') + ' • ' + (org.tier||'').toUpperCase();
+    if(sbLic  && org) sbLic.textContent  = 'License: ' + (org.tier||'').toUpperCase();
+
+    // Attach event listeners to buttons
+    const scanBtn = document.getElementById('btn-run-scan');
+    if(scanBtn) scanBtn.addEventListener('click', startScan);
+
+    // Load data
+    await loadPosture();
+    loadFindings();
+    setTimeout(pollBridge, 1000);
+    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+  }
+
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+</script>
+</body>
+</html>
++parseFloat(pd.monthly_price).toLocaleString():'—'}</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">PER MONTH</div>
+          </div>
+          <div style="padding:12px;background:rgba(0,240,255,0.03);border:1px solid var(--border);">
+            <div style="font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:${dc}">${days>0?days:'EXP'}</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">DAYS LEFT</div>
+          </div>
+        </div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;line-height:2.2;">
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">START DATE</span><span>${pd?.license_start?new Date(pd.license_start).toLocaleDateString():'—'}</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">RENEWAL DATE</span><span style="color:var(--amber)">${renewal?renewal.toLocaleDateString():'—'}</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">BILLING</span><span>${(pd?.billing_cycle||'monthly').toUpperCase()}</span></div>
+        </div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
+      <div style="background:var(--surface);border:1px solid var(--border);padding:22px;position:relative;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)"></div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:14px;">&#9642; CHANGE PASSWORD</div>
+        <div style="display:flex;flex-direction:column;gap:9px;">
+          <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(0,240,255,0.5);letter-spacing:0.16em">// NEW PASSWORD</label><input type="password" id="pw-new" placeholder="New password (min 8 chars)" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 12px;outline:none"/></div>
+          <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(0,240,255,0.5);letter-spacing:0.16em">// CONFIRM PASSWORD</label><input type="password" id="pw-confirm" placeholder="Confirm new password" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 12px;outline:none"/></div>
+          <button class="btn-action" onclick="changePassword()" style="margin-top:4px">UPDATE PASSWORD &#9654;</button>
+          <div id="pw-result" style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;display:none;padding:8px"></div>
+        </div>
+      </div>
+      <div style="background:var(--surface);border:1px solid var(--border);padding:22px;position:relative;">
+        <div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)"></div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--green);letter-spacing:0.1em;margin-bottom:14px;">&#9642; MULTI-FACTOR AUTHENTICATION</div>
+        <div id="mfa-status" style="font-family:'Share Tech Mono',monospace;font-size:0.56rem;padding:10px;background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.2);color:var(--amber);margin-bottom:12px">&#9650; MFA: NOT ENABLED</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);line-height:1.8;margin-bottom:12px">Protect your account with a TOTP authenticator app (Google Authenticator, Authy, 1Password).</div>
+        <button class="btn-action green" id="mfa-btn" onclick="toggleMFA()">ENABLE MFA &#9654;</button>
+        <div id="mfa-totp-area" style="display:none;margin-top:14px;text-align:center;">
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);margin-bottom:8px">Scan with authenticator app or enter secret:</div>
+          <div id="mfa-secret" style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--cyan);background:rgba(0,240,255,0.05);border:1px solid rgba(0,240,255,0.2);padding:10px;word-break:break-all;margin-bottom:10px"></div>
+          <input type="text" id="mfa-code" placeholder="000000" maxlength="6" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:'Orbitron',monospace;font-size:1.2rem;padding:10px;outline:none;width:130px;text-align:center;letter-spacing:0.2em"/>
+          <button class="btn-action" onclick="verifyMFA()" style="margin-left:8px">VERIFY &#9654;</button>
+        </div>
+        <div id="mfa-result" style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;display:none;padding:8px;margin-top:8px"></div>
+      </div>
+    </div>`;
+    checkMFAStatus();
+  }
+
+  async function changePassword(){
+    const np=document.getElementById('pw-new')?.value;
+    const cp=document.getElementById('pw-confirm')?.value;
+    const res=document.getElementById('pw-result');
+    if(!res) return;
+    res.style.display='block';
+    if(!np){res.style.color='var(--red)';res.textContent='> Enter new password';return;}
+    if(np!==cp){res.style.color='var(--red)';res.textContent='> Passwords do not match';return;}
+    if(np.length<8){res.style.color='var(--red)';res.textContent='> Minimum 8 characters';return;}
+    res.style.color='var(--dim)';res.textContent='> Updating...';
+    const r=await api('/auth/update-password',{method:'POST',body:JSON.stringify({password:np})});
+    if(r&&!r.error){res.style.color='var(--green)';res.textContent='> Password updated. Logging out...';setTimeout(signOut,2000);}
+    else{res.style.color='var(--red)';res.textContent='> '+(r?.error||'Failed');}
+  }
+
+  async function checkMFAStatus(){
+    const s=document.getElementById('mfa-status');
+    const b=document.getElementById('mfa-btn');
+    if(!s) return;
+    const r=await api('/auth/mfa-status');
+    if(r?.enrolled){
+      s.style.color='var(--green)';s.style.borderColor='rgba(0,255,136,0.2)';s.style.background='rgba(0,255,136,0.05)';
+      s.textContent='&#9679; MFA: ENABLED — Account protected';
+      if(b){b.textContent='DISABLE MFA';b.onclick=disableMFA;}
+    }
+  }
+
+  async function toggleMFA(){
+    const r=await api('/auth/mfa-enroll',{method:'POST',body:'{}'});
+    if(r?.error){const res=document.getElementById('mfa-result');if(res){res.style.display='block';res.style.color='var(--red)';res.textContent='> '+r.error;}return;}
+    window._mfaFactorId=r.factor_id;
+    const area=document.getElementById('mfa-totp-area');
+    const secret=document.getElementById('mfa-secret');
+    if(area)area.style.display='block';
+    if(secret)secret.textContent=r.totp_uri||r.secret||'Check authenticator setup';
+  }
+
+  async function verifyMFA(){
+    const code=document.getElementById('mfa-code')?.value?.trim();
+    const res=document.getElementById('mfa-result');
+    if(!code||code.length!==6){if(res){res.style.display='block';res.style.color='var(--red)';res.textContent='> Enter 6-digit code';}return;}
+    const r=await api('/auth/mfa-verify',{method:'POST',body:JSON.stringify({code,factor_id:window._mfaFactorId})});
+    if(res)res.style.display='block';
+    if(r&&!r.error){res.style.color='var(--green)';res.textContent='> MFA enabled!';document.getElementById('mfa-totp-area').style.display='none';checkMFAStatus();}
+    else{res.style.color='var(--red)';res.textContent='> '+(r?.error||'Invalid code');}
+  }
+
+  async function disableMFA(){
+    if(!confirm('Disable MFA? This reduces account security.')) return;
+    const r=await api('/auth/mfa-disable',{method:'POST',body:'{}'});
+    const res=document.getElementById('mfa-result');
+    if(res)res.style.display='block';
+    if(r&&!r.error){res.style.color='var(--amber)';res.textContent='> MFA disabled';checkMFAStatus();}
+    else if(res){res.style.color='var(--red)';res.textContent='> '+(r?.error||'Failed');}
   }
 
   // ── Init ──────────────────────────────────────────────────
