@@ -328,9 +328,9 @@
         btn.disabled=false;btn.textContent='INITIALIZE SESSION ▶';
         return;
       }
-      sessionStorage.setItem('ac_token', data.token);
-      sessionStorage.setItem('ac_user', JSON.stringify(data.user));
-      sessionStorage.setItem('ac_org', JSON.stringify(data.org));
+      localStorage.setItem('ac_token', data.token);
+      localStorage.setItem('ac_user', JSON.stringify(data.user));
+      localStorage.setItem('ac_org', JSON.stringify(data.org));
       btn.textContent='ACCESS GRANTED ✓';
       btn.style.background='var(--green)';
       btn.style.color='#04060a';
