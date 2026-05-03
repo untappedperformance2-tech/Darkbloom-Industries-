@@ -574,7 +574,7 @@
   const user  = JSON.parse(localStorage.getItem('ac_user') || 'null');
   const org   = JSON.parse(localStorage.getItem('ac_org')  || 'null');
   if(!token || !user || !org){ window.location.href='auditcore.html'; }
-  else {
+
 
   // ── API helper ────────────────────────────────────────────
   async function api(path, opts={}){
@@ -1187,8 +1187,6 @@
       }, 1200);
     }, 12000);
   }
-  }
-
   // ── Init ──────────────────────────────────────────────────
   async function init() {
     // Update sidebar immediately from stored session
@@ -1216,7 +1214,6 @@
     init();
   }
 
-  } // end else (authenticated)
 </script>
 </body>
 </html>
