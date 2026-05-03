@@ -763,7 +763,7 @@
   async function generatePOAM(){
     const btn = event?.target;
     if(btn){ btn.textContent='GENERATING...'; btn.disabled=true; }
-    const data = await api(`/orgs/${org.id}/poam/generate`, { method: 'POST' });
+    const data = await api(`/orgs/${org.id}/poam/generate`, { method: 'POST', body: '{}' });
     if(btn){ btn.textContent=btn.textContent.includes('AUTO')?'AUTO-GENERATE POA&M &#9654;':'GENERATE FROM FINDINGS &#9654;'; btn.disabled=false; }
     if(!data){
       alert('Failed to generate POA&M. Check that the poam_entries table exists in Supabase (run migration_v2.sql).');
@@ -1135,7 +1135,7 @@
 
     let resp;
     try {
-      resp = await api('/orgs/' + org.id + '/scan', { method: 'POST' });
+      resp = await api('/orgs/' + org.id + '/scan', { method: 'POST', body: '{}' });
     } catch(e) {
       overlay.style.display = 'none';
       alert('Scan error: ' + e.message);
