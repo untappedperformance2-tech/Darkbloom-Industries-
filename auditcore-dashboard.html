@@ -570,9 +570,9 @@
   const API_URL = 'https://auditcore-api-production.up.railway.app';
 
   // ── Auth check ────────────────────────────────────────────
-  const token = sessionStorage.getItem('ac_token');
-  const user  = JSON.parse(sessionStorage.getItem('ac_user') || 'null');
-  const org   = JSON.parse(sessionStorage.getItem('ac_org')  || 'null');
+  const token = localStorage.getItem('ac_token');
+  const user  = JSON.parse(localStorage.getItem('ac_user') || 'null');
+  const org   = JSON.parse(localStorage.getItem('ac_org')  || 'null');
   if(!token || !user || !org){ window.location.href='auditcore.html'; }
   else {
 
@@ -1111,7 +1111,7 @@
     });
   }
 
-  function signOut(){ sessionStorage.clear(); window.location.href='auditcore.html'; }
+  function signOut(){ localStorage.removeItem('ac_token'); localStorage.removeItem('ac_user'); localStorage.removeItem('ac_org'); window.location.href='auditcore.html'; }
 
   // ── Start scan ───────────────────────────────────────────
   async function startScan(){
