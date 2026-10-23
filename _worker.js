@@ -16,13 +16,9 @@ export default {
     if (url.pathname.startsWith('/api/')) {
       const isWrenchWare = referer.includes('shop-dashboard') || referer.includes('insurer-dashboard') || referer.includes('wrenchware') || referer.includes('claimsync');
 
-      let backendUrl;
-      if (isWrenchWare) {
-        backendUrl = 'https://web-production-f13e8.up.railway.app' + url.pathname + url.search;
-      } else {
-        const RAILWAY_URL = env.RAILWAY_URL || 'https://auditcore-api-production.up.railway.app';
-        backendUrl = RAILWAY_URL + url.pathname + url.search;
-      }
+      const backendUrl = isWrenchWare
+        ? 'https://web-production-f13e8.up.railway.app' + url.pathname + url.search
+        : 'https://auditcore-api-production.up.railway.app' + url.pathname + url.search;
 
       try {
         let bodyData = undefined;
@@ -32,7 +28,7 @@ export default {
 
         const forwardHeaders = new Headers();
         request.headers.forEach((value, key) => {
-          if (!['host', 'cf-connecting-ip', 'cf-ray', 'cf-visitor'].includes(key.toLowerCase())) {
+          if (!['host','cf-connecting-ip','cf-ray','cf-visitor','cf-ipcountry','cf-ew-via','cdn-loop'].includes(key.toLowerCase())) {
             forwardHeaders.set(key, value);
           }
         });
@@ -59,6 +55,6 @@ export default {
       }
     }
 
-    return fetch(request);
+    return env.ASSETS.fetch(request);
   },
 };
