@@ -585,14 +585,14 @@
 <script>
   const API_URL = '/api'; // Proxied via Cloudflare Pages Worker
 
-  // ── Auth check ────────────────────────────────────────────
+  // -- Auth check --------------------------------------------
   const token = localStorage.getItem('ac_token');
   const user  = JSON.parse(localStorage.getItem('ac_user') || 'null');
   const org   = JSON.parse(localStorage.getItem('ac_org')  || 'null');
   if(!token || !user || !org){ window.location.href='auditcore.html'; }
 
 
-  // ── API helper ────────────────────────────────────────────
+  // -- API helper --------------------------------------------
   async function api(path, opts={}){
     const res = await fetch(`${API_URL}${path}`, {
       ...opts,
@@ -602,7 +602,7 @@
     return res.json();
   }
 
-  // ── Score ring ────────────────────────────────────────────
+  // -- Score ring --------------------------------------------
   function drawRing(score){
     const c=document.getElementById('ring-canvas');
     if(!c) return;
@@ -616,12 +616,12 @@
     x.shadowBlur=0;
   }
 
-  // ── Load posture ──────────────────────────────────────────
+  // -- Load posture ------------------------------------------
   async function loadPosture(){
     if(!org) return;
     const data = await api(`/orgs/${org.id}/posture`);
     if(!data){
-      // API failed — show degraded state instead of hanging
+      // API failed - show degraded state instead of hanging
       const el = document.getElementById('score-display');
       if(el){ el.textContent='--'; el.style.color='var(--dim)'; }
       const lbl = document.getElementById('score-label');
@@ -632,7 +632,7 @@
     }
 
     const score = data.composite_score || 0;
-    const sprs  = data.sprs_score ?? '—';
+    const sprs  = data.sprs_score ?? '-';
     const color = score>=90?'var(--green)':score>=70?'var(--cyan)':score>=50?'var(--amber)':'var(--red)';
     const label = score>=90?'AUDIT-READY':score>=70?'IN PROGRESS':score>=50?'NEEDS WORK':'AT RISK';
 
@@ -666,9 +666,9 @@
       </div>`).join('');
 
     const fwData=[
-      {cls:'cmmc',key:'CMMC',name:'CMMC LEVEL 2',scope:'Cybersecurity Maturity Model — 110 Practices'},
-      {cls:'nist',key:'NIST',name:'NIST SP 800-171',scope:'CUI Protection — 110 Controls'},
-      {cls:'owasp',key:'OWASP',name:'OWASP TOP 10',scope:'Web Application Security — 2021'},
+      {cls:'cmmc',key:'CMMC',name:'CMMC LEVEL 2',scope:'Cybersecurity Maturity Model - 110 Practices'},
+      {cls:'nist',key:'NIST',name:'NIST SP 800-171',scope:'CUI Protection - 110 Controls'},
+      {cls:'owasp',key:'OWASP',name:'OWASP TOP 10',scope:'Web Application Security - 2021'},
       {cls:'soc',key:'SOC2',name:'SOC 2 TYPE II',scope:'Trust Service Criteria'},
       {cls:'fips',key:'FIPS',name:'FIPS 140-3',scope:'Cryptographic Validation'},
     ];
@@ -688,7 +688,7 @@
     }).join('');
   }
 
-  // ── Load controls with remediation buttons ─────────────────
+  // -- Load controls with remediation buttons -----------------
   async function loadControls(framework){
     const statusFilter = document.getElementById('status-filter')?.value || '';
     let url = `/orgs/${org.id}/controls`;
@@ -728,14 +728,14 @@
     </tr>`).join('');
   }
 
-  // ── Load findings with remediation ────────────────────────
+  // -- Load findings with remediation ------------------------
   async function loadFindings(){
     const data = await api(`/orgs/${org.id}/findings?status=open`);
     if(!data) return;
     document.getElementById('badge-findings').textContent=data.total||0;
     const grid=document.getElementById('findings-grid');
     if(!data.findings?.length){
-      grid.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--green);padding:30px;text-align:center;border:1px solid var(--border);">&#9679; NO OPEN FINDINGS — EXCELLENT POSTURE</div>';
+      grid.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--green);padding:30px;text-align:center;border:1px solid var(--border);">&#9679; NO OPEN FINDINGS - EXCELLENT POSTURE</div>';
       return;
     }
     grid.innerHTML=data.findings.map(f=>`
@@ -755,7 +755,7 @@
       </div>`).join('');
   }
 
-  // ── Load POA&M ────────────────────────────────────────────
+  // -- Load POA&M --------------------------------------------
   async function loadPOAM(){
     const data = await api(`/orgs/${org.id}/poam`);
     if(!data) return;
@@ -766,16 +766,16 @@
     }
     const riskMap={high:'<span class="risk-badge risk-high">HIGH</span>',moderate:'<span class="risk-badge risk-mod">MOD</span>',low:'<span class="risk-badge risk-low">LOW</span>'};
     tbody.innerHTML=data.poam.map(p=>`<tr>
-      <td><span class="ctrl-id">${p.control_id||'—'}</span><br/><span style="color:var(--dim);font-size:.46rem;">${p.control_definitions?.family||''}</span></td>
+      <td><span class="ctrl-id">${p.control_id||'-'}</span><br/><span style="color:var(--dim);font-size:.46rem;">${p.control_definitions?.family||''}</span></td>
       <td style="max-width:220px;line-height:1.4;">${p.weakness?.slice(0,100)}${p.weakness?.length>100?'...':''}</td>
-      <td>${riskMap[p.risk_rating]||'—'}</td>
-      <td>${p.scheduled_completion ? new Date(p.scheduled_completion).toLocaleDateString() : '—'}</td>
+      <td>${riskMap[p.risk_rating]||'-'}</td>
+      <td>${p.scheduled_completion ? new Date(p.scheduled_completion).toLocaleDateString() : '-'}</td>
       <td><span class="ctrl-status ${p.status==='completed'?'pass':p.status==='in_progress'?'warn':'fail'}">${p.status?.toUpperCase().replace('_',' ')}</span></td>
       <td style="color:${p.auto_generated?'var(--cyan)':'var(--dim)'};">${p.auto_generated?'AUTO':'MANUAL'}</td>
     </tr>`).join('');
   }
 
-  // ── Generate POA&M ────────────────────────────────────────
+  // -- Generate POA&M ----------------------------------------
   async function generatePOAM(){
     const btn = event?.target;
     if(btn){ btn.textContent='GENERATING...'; btn.disabled=true; }
@@ -793,7 +793,7 @@
     showPage('poam');
   }
 
-  // ── Show remediation for a control ───────────────────────
+  // -- Show remediation for a control -----------------------
   async function showRemediationForControl(controlId){
     // Find remediation type from registry
     const data = await api(`/remediations`);
@@ -804,7 +804,7 @@
     if(guide) showRemediationModal(null, match.key, guide);
   }
 
-  // ── Execute or show remediation ───────────────────────────
+  // -- Execute or show remediation ---------------------------
   async function executeRemediation(findingId, remType, autoFix){
     if(autoFix){
       const result = await api(`/orgs/${org.id}/findings/${findingId}/remediate`, { method: 'POST', body: JSON.stringify({}) });
@@ -823,7 +823,7 @@
     }
   }
 
-  // ── Show remediation modal ────────────────────────────────
+  // -- Show remediation modal --------------------------------
   function showRemediationModal(findingId, remType, guide){
     if(!guide) return;
     document.getElementById('rem-title').textContent = guide.title || 'REMEDIATION GUIDE';
@@ -882,7 +882,7 @@
     });
   }
 
-  // ── Darkbloom Bridge™ polling ─────────────────────────────
+  // -- Darkbloom Bridge™ polling -----------------------------
   let bridgeSince = 0;
   const bridgeColors = {
     'scan.started': '#00f0ff', 'scan.completed': '#00ff88', 'scan.failed': '#ff3355',
@@ -928,7 +928,7 @@
   function formatBridgeEvent(type, payload){
     switch(type){
       case 'scan.started':    return `&#9654; Scan started for ${payload.domain||'domain'}`;
-      case 'scan.completed':  return `&#9679; Scan complete — Score: ${payload.score||'—'}%`;
+      case 'scan.completed':  return `&#9679; Scan complete - Score: ${payload.score||'-'}%`;
       case 'scan.failed':     return `&#9650; Scan failed: ${payload.error||'unknown error'}`;
       case 'scan.progress':   return `// Scanning: ${payload.message||''} (${payload.pct||0}%)`;
       case 'remediation.success': return `&#9679; Auto-fixed: ${payload.result?.actions?.[0]||'issue resolved'}`;
@@ -943,7 +943,7 @@
       case 'system':          return `// ${payload.text||'System event'}`;
       case 'presence_join':   return `// ${payload.joiner_name||'User'} joined the channel`;
       case 'assessor_viewing':return `// Assessor viewed compliance data at ${new Date(payload.viewed_at||Date.now()).toLocaleTimeString()}`;
-      case 'channel.opened':  return `// Bridge channel opened — waiting for assessor`;
+      case 'channel.opened':  return `// Bridge channel opened - waiting for assessor`;
       case 'PRESENCE_JOIN':   return `// ${payload.text||payload.joiner_name||'User'} joined`;
       default: return payload.text ? `// ${payload.text}` : `// ${type}: ${JSON.stringify(payload).slice(0,60)}`;
     }
@@ -952,7 +952,7 @@
   // Start bridge polling every 5 seconds
   if(org) setInterval(pollBridge, 5000);
 
-  // ── Create assessor session ───────────────────────────────
+  // -- Create assessor session -------------------------------
   async function createAssessorSession(){
     const email = document.getElementById('assessor-email').value.trim();
     const orgName = document.getElementById('assessor-org').value.trim();
@@ -975,14 +975,14 @@
       const result = document.getElementById('portal-link-result');
       result.style.display='block';
       result.innerHTML=`
-        <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">&#9679; PORTAL LINK GENERATED — SHARE WITH ASSESSOR</div>
+        <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">&#9679; PORTAL LINK GENERATED - SHARE WITH ASSESSOR</div>
         <div style="color:var(--cyan);word-break:break-all;">${data.portal_url}</div>
         <div style="color:var(--dim);margin-top:6px;font-size:0.48rem;">Expires: ${new Date(data.session.expires_at).toLocaleString()} • Read-only access only</div>`;
       addBridgeMessage('assessor.connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
     }
   }
 
-  // ── Framework detail ──────────────────────────────────────
+  // -- Framework detail --------------------------------------
   async function loadFrameworkDetail(pageId, framework, color, name){
     const el = document.getElementById(pageId);
     const data = await api(`/orgs/${org.id}/controls?framework=${framework}`);
@@ -1011,7 +1011,7 @@
           <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">GAPS / PARTIALS</div>
         </div>
       </div>
-      <div class="section-title" style="color:${color};">${name} — CONTROL DETAIL</div>
+      <div class="section-title" style="color:${color};">${name} - CONTROL DETAIL</div>
       <table class="controls-table">
         <thead><tr><th>CONTROL ID</th><th>FAMILY</th><th>DESCRIPTION</th><th>STATUS</th><th>PRIORITY</th><th>REMEDIATE</th></tr></thead>
         <tbody>${data.controls.map(c=>`<tr>
@@ -1020,12 +1020,12 @@
           <td>${c.title}</td>
           <td>${sm[c.assessment?.status||'not_assessed']||sm.not_assessed}</td>
           <td>${pm[c.priority]||pm.medium}</td>
-          <td>${c.remediation_available?`<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE &#9654;</button>`:'—'}</td>
+          <td>${c.remediation_available?`<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE &#9654;</button>`:'-'}</td>
         </tr>`).join('')}</tbody>
       </table>`;
   }
 
-  // ── Report generation ─────────────────────────────────────
+  // -- Report generation -------------------------------------
   async function generateReport(type){
     const data = await api(`/orgs/${org.id}/reports/${type}`);
     if(!data) return;
@@ -1132,7 +1132,7 @@
 
   function signOut(){ localStorage.removeItem('ac_token'); localStorage.removeItem('ac_user'); localStorage.removeItem('ac_org'); window.location.href='auditcore.html'; }
 
-  // ── Start scan ───────────────────────────────────────────
+  // -- Start scan -------------------------------------------
   async function startScan(){
     // Debug: confirm function fires and org is set
     if(!org || !org.id){
@@ -1163,7 +1163,7 @@
 
     if(!resp) {
       overlay.style.display = 'none';
-      alert('Scan failed — API returned no response. Check Railway logs.');
+      alert('Scan failed - API returned no response. Check Railway logs.');
       return;
     }
 
@@ -1197,12 +1197,12 @@
     setTimeout(()=>{
       clearInterval(iv);
       bar.style.width = '100%';
-      addLog('// Scan complete — updating posture...');
+      addLog('// Scan complete - updating posture...');
       setTimeout(()=>{
         overlay.style.display = 'none';
         loadPosture();
         loadFindings();
-        addBridgeMessage('scan.completed', 'Scan complete — posture updated', 'SCAN');
+        addBridgeMessage('scan.completed', 'Scan complete - posture updated', 'SCAN');
       }, 1200);
     }, 12000);
   }
@@ -1278,7 +1278,7 @@
     await loadPosture();
     loadFindings();
     setTimeout(pollBridge, 1000);
-    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized - AuditCore v2.0', 'SYSTEM');
   }
 
   if(document.readyState === 'loading'){
@@ -1288,7 +1288,7 @@
   }
 
 
-+parseFloat(pd.monthly_price).toLocaleString():'—'}</div>
++parseFloat(pd.monthly_price).toLocaleString():'-'}</div>
             <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">PER MONTH</div>
           </div>
           <div style="padding:12px;background:rgba(0,240,255,0.03);border:1px solid var(--border);">
@@ -1297,8 +1297,8 @@
           </div>
         </div>
         <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.52rem;line-height:2.2;">
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">START DATE</span><span>${pd?.license_start?new Date(pd.license_start).toLocaleDateString():'—'}</span></div>
-          <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">RENEWAL DATE</span><span style="color:var(--amber)">${renewal?renewal.toLocaleDateString():'—'}</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">START DATE</span><span>${pd?.license_start?new Date(pd.license_start).toLocaleDateString():'-'}</span></div>
+          <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">RENEWAL DATE</span><span style="color:var(--amber)">${renewal?renewal.toLocaleDateString():'-'}</span></div>
           <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">BILLING</span><span>${(pd?.billing_cycle||'monthly').toUpperCase()}</span></div>
         </div>
       </div>
@@ -1354,7 +1354,7 @@
     const r=await api('/auth/mfa-status');
     if(r?.enrolled){
       s.style.color='var(--green)';s.style.borderColor='rgba(0,255,136,0.2)';s.style.background='rgba(0,255,136,0.05)';
-      s.textContent='&#9679; MFA: ENABLED — Account protected';
+      s.textContent='&#9679; MFA: ENABLED - Account protected';
       if(b){b.textContent='DISABLE MFA';b.onclick=disableMFA;}
     }
   }
@@ -1388,7 +1388,7 @@
     else if(res){res.style.color='var(--red)';res.textContent='> '+(r?.error||'Failed');}
   }
 
-  // ── Init ──────────────────────────────────────────────────
+  // -- Init --------------------------------------------------
   async function init() {
     // Update sidebar immediately from stored session
     const sbName = document.getElementById('sb-org-name');
@@ -1406,7 +1406,7 @@
     await loadPosture();
     loadFindings();
     setTimeout(pollBridge, 1000);
-    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized — AuditCore v2.0', 'SYSTEM');
+    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized - AuditCore v2.0', 'SYSTEM');
   }
 
   if(document.readyState === 'loading'){
