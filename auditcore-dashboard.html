@@ -675,9 +675,9 @@
     document.getElementById('fw-grid').innerHTML=fwData.map(f=>{
       const pct=fw[f.key]??0;
       const c=fwColors[f.key];
-      const st=pct>=90?`<span class="fw-status pass">&#9679; COMPLIANT</span>`:
-               pct>=70?`<span class="fw-status warn">&#9650; IN PROGRESS</span>`:
-               `<span class="fw-status warn">&#9650; NEEDS WORK</span>`;
+      const st=pct>=90?`<span class="fw-status pass">● COMPLIANT</span>`:
+               pct>=70?`<span class="fw-status warn">▲ IN PROGRESS</span>`:
+               `<span class="fw-status warn">▲ NEEDS WORK</span>`;
       return `<div class="fw-card ${f.cls}">
         <div class="fw-header"><div><div class="fw-name">${f.name}</div><div class="fw-scope">${f.scope}</div></div>${st}</div>
         <div class="fw-bar-wrap">
@@ -701,9 +701,9 @@
     if(!data) return;
 
     const sm={
-      pass:'<span class="ctrl-status pass">&#9679; PASS</span>',
-      fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',
-      partial:'<span class="ctrl-status warn">&#9650; PARTIAL</span>',
+      pass:'<span class="ctrl-status pass">● PASS</span>',
+      fail:'<span class="ctrl-status fail">▲ FAIL</span>',
+      partial:'<span class="ctrl-status warn">▲ PARTIAL</span>',
       not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',
       not_applicable:'<span class="ctrl-status na">N/A</span>'
     };
@@ -711,7 +711,7 @@
 
     const tbody=document.getElementById('controls-body');
     if(!data.controls?.length){
-      tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--green);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px;">&#9679; All controls passing</td></tr>';
+      tbody.innerHTML='<tr><td colspan="7" style="text-align:center;color:var(--green);font-family:Share Tech Mono,monospace;font-size:.6rem;padding:20px;">● All controls passing</td></tr>';
       return;
     }
     tbody.innerHTML=data.controls.map(c=>`<tr>
@@ -722,7 +722,7 @@
       <td>${sm[c.assessment?.status||'not_assessed']||sm.not_assessed}</td>
       <td>${pm[c.priority]||pm.medium}</td>
       <td>${c.remediation_available ?
-        `<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE &#9654;</button>` :
+        `<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE ▶</button>` :
         '<span style="color:var(--dim);font-family:Share Tech Mono,monospace;font-size:.48rem;">MANUAL</span>'
       }</td>
     </tr>`).join('');
@@ -735,20 +735,20 @@
     document.getElementById('badge-findings').textContent=data.total||0;
     const grid=document.getElementById('findings-grid');
     if(!data.findings?.length){
-      grid.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--green);padding:30px;text-align:center;border:1px solid var(--border);">&#9679; NO OPEN FINDINGS - EXCELLENT POSTURE</div>';
+      grid.innerHTML='<div style="font-family:Share Tech Mono,monospace;font-size:.65rem;color:var(--green);padding:30px;text-align:center;border:1px solid var(--border);">● NO OPEN FINDINGS - EXCELLENT POSTURE</div>';
       return;
     }
     grid.innerHTML=data.findings.map(f=>`
       <div class="finding-card ${f.severity}">
-        <div class="finding-type">&#9650; ${f.severity.toUpperCase()}</div>
+        <div class="finding-type">▲ ${f.severity.toUpperCase()}</div>
         <div class="finding-title">${f.title}</div>
         <div class="finding-desc">${f.description}</div>
         <div class="finding-actions">
           ${f.auto_fix_available ?
-            `<span class="auto-fix-badge">&#9679; AUTO-FIX AVAILABLE</span>
-             <button class="btn-fix auto" onclick="executeRemediation('${f.id}','${f.remediation_type}',true)">AUTO-FIX &#9654;</button>` : ''}
+            `<span class="auto-fix-badge">● AUTO-FIX AVAILABLE</span>
+             <button class="btn-fix auto" onclick="executeRemediation('${f.id}','${f.remediation_type}',true)">AUTO-FIX ▶</button>` : ''}
           ${f.remediation_guide_available ?
-            `<button class="btn-fix guide" onclick="executeRemediation('${f.id}','${f.remediation_type}',false)">GUIDE &#9654;</button>` : ''}
+            `<button class="btn-fix guide" onclick="executeRemediation('${f.id}','${f.remediation_type}',false)">GUIDE ▶</button>` : ''}
           ${f.control_id ? `<span class="finding-tag">${f.control_id}</span>` : ''}
           <span class="finding-tag">${f.severity.toUpperCase()} RISK</span>
         </div>
@@ -780,7 +780,7 @@
     const btn = event?.target;
     if(btn){ btn.textContent='GENERATING...'; btn.disabled=true; }
     const data = await api(`/orgs/${org.id}/poam/generate`, { method: 'POST', body: '{}' });
-    if(btn){ btn.textContent=btn.textContent.includes('AUTO')?'AUTO-GENERATE POA&M &#9654;':'GENERATE FROM FINDINGS &#9654;'; btn.disabled=false; }
+    if(btn){ btn.textContent=btn.textContent.includes('AUTO')?'AUTO-GENERATE POA&M ▶':'GENERATE FROM FINDINGS ▶'; btn.disabled=false; }
     if(!data){
       alert('Failed to generate POA&M. Check that the poam_entries table exists in Supabase (run migration_v2.sql).');
       return;
@@ -828,7 +828,7 @@
     if(!guide) return;
     document.getElementById('rem-title').textContent = guide.title || 'REMEDIATION GUIDE';
     const modeClass = guide.canAutoFix ? 'auto' : 'guided';
-    const modeText  = guide.canAutoFix ? '&#9679; AUTO-REMEDIABLE' : '&#9650; MANUAL REMEDIATION REQUIRED';
+    const modeText  = guide.canAutoFix ? '● AUTO-REMEDIABLE' : '▲ MANUAL REMEDIATION REQUIRED';
 
     const stepsHtml = guide.guidance?.steps?.map(s=>`
       <div class="rem-step">
@@ -849,7 +849,7 @@
     document.getElementById('rem-body').innerHTML = `
       <div class="rem-mode ${modeClass}">${modeText}</div>
       ${guide.canAutoFix && findingId ?
-        `<button class="rem-execute-btn" onclick="executeAutoFix('${findingId}')">&#9654; EXECUTE AUTO-FIX NOW</button>` : ''}
+        `<button class="rem-execute-btn" onclick="executeAutoFix('${findingId}')">▶ EXECUTE AUTO-FIX NOW</button>` : ''}
       <div class="rem-summary">${guide.guidance?.summary||''}</div>
       ${stepsHtml}
       ${affectsHtml}
@@ -927,17 +927,17 @@
 
   function formatBridgeEvent(type, payload){
     switch(type){
-      case 'scan.started':    return `&#9654; Scan started for ${payload.domain||'domain'}`;
-      case 'scan.completed':  return `&#9679; Scan complete - Score: ${payload.score||'-'}%`;
-      case 'scan.failed':     return `&#9650; Scan failed: ${payload.error||'unknown error'}`;
+      case 'scan.started':    return `▶ Scan started for ${payload.domain||'domain'}`;
+      case 'scan.completed':  return `● Scan complete - Score: ${payload.score||'-'}%`;
+      case 'scan.failed':     return `▲ Scan failed: ${payload.error||'unknown error'}`;
       case 'scan.progress':   return `// Scanning: ${payload.message||''} (${payload.pct||0}%)`;
-      case 'remediation.success': return `&#9679; Auto-fixed: ${payload.result?.actions?.[0]||'issue resolved'}`;
-      case 'remediation.failed':  return `&#9650; Auto-fix failed: ${payload.result?.error||''}`;
-      case 'remediation.guided':  return `&#9650; Guided remediation sent for finding`;
-      case 'finding.created': return `&#9650; New finding: ${payload.title||''}`;
-      case 'finding.resolved':return `&#9679; Finding resolved by ${payload.resolvedBy||'system'}`;
+      case 'remediation.success': return `● Auto-fixed: ${payload.result?.actions?.[0]||'issue resolved'}`;
+      case 'remediation.failed':  return `▲ Auto-fix failed: ${payload.result?.error||''}`;
+      case 'remediation.guided':  return `▲ Guided remediation sent for finding`;
+      case 'finding.created': return `▲ New finding: ${payload.title||''}`;
+      case 'finding.resolved':return `● Finding resolved by ${payload.resolvedBy||'system'}`;
       case 'control.updated': return `// Control ${payload.controlId||''} -> ${payload.status||''}`;
-      case 'control.auto_passed': return `&#9679; Auto-passed: ${payload.controlId||''}`;
+      case 'control.auto_passed': return `● Auto-passed: ${payload.controlId||''}`;
       case 'assessor.connected': return `// C3PAO connected: ${payload.assessor_email||'assessor'}`;
       case 'score.changed':   return `// Score changed: ${payload.oldScore}% -> ${payload.newScore}%`;
       case 'system':          return `// ${payload.text||'System event'}`;
@@ -975,7 +975,7 @@
       const result = document.getElementById('portal-link-result');
       result.style.display='block';
       result.innerHTML=`
-        <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">&#9679; PORTAL LINK GENERATED - SHARE WITH ASSESSOR</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">● PORTAL LINK GENERATED - SHARE WITH ASSESSOR</div>
         <div style="color:var(--cyan);word-break:break-all;">${data.portal_url}</div>
         <div style="color:var(--dim);margin-top:6px;font-size:0.48rem;">Expires: ${new Date(data.session.expires_at).toLocaleString()} * Read-only access only</div>`;
       addBridgeMessage('assessor.connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
@@ -993,22 +993,22 @@
     const total = data.controls.length;
     const pct = total > 0 ? Math.round((pass/total)*100) : 0;
 
-    const sm={pass:'<span class="ctrl-status pass">&#9679; PASS</span>',fail:'<span class="ctrl-status fail">&#9650; FAIL</span>',partial:'<span class="ctrl-status warn">&#9650; PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
+    const sm={pass:'<span class="ctrl-status pass">● PASS</span>',fail:'<span class="ctrl-status fail">▲ FAIL</span>',partial:'<span class="ctrl-status warn">▲ PARTIAL</span>',not_assessed:'<span class="ctrl-status na">NOT ASSESSED</span>',not_applicable:'<span class="ctrl-status na">N/A</span>'};
     const pm={critical:'<span class="priority pri-crit">CRIT</span>',high:'<span class="priority pri-high">HIGH</span>',medium:'<span class="priority pri-med">MED</span>',low:'<span class="priority pri-low">LOW</span>'};
 
     el.innerHTML=`
       <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:16px;">
         <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
-          <div style="font-family:\'Orbitron\',monospace;font-size:1.6rem;font-weight:900;color:${color};">${pct}%</div>
-          <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">COMPLIANCE SCORE</div>
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:${color};">${pct}%</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">COMPLIANCE SCORE</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
-          <div style="font-family:\'Orbitron\',monospace;font-size:1.6rem;font-weight:900;color:var(--green);">${pass}</div>
-          <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">CONTROLS PASSED</div>
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--green);">${pass}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">CONTROLS PASSED</div>
         </div>
         <div style="background:var(--surface);border:1px solid var(--border);padding:16px;text-align:center;">
-          <div style="font-family:\'Orbitron\',monospace;font-size:1.6rem;font-weight:900;color:var(--red);">${fail}</div>
-          <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">GAPS / PARTIALS</div>
+          <div style="font-family:'Orbitron',monospace;font-size:1.6rem;font-weight:900;color:var(--red);">${fail}</div>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);letter-spacing:0.12em;margin-top:3px;">GAPS / PARTIALS</div>
         </div>
       </div>
       <div class="section-title" style="color:${color};">${name} - CONTROL DETAIL</div>
@@ -1020,7 +1020,7 @@
           <td>${c.title}</td>
           <td>${sm[c.assessment?.status||'not_assessed']||sm.not_assessed}</td>
           <td>${pm[c.priority]||pm.medium}</td>
-          <td>${c.remediation_available?`<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE &#9654;</button>`:'-'}</td>
+          <td>${c.remediation_available?`<button class="btn-fix guide" onclick="showRemediationForControl('${c.id}')">GUIDE ▶</button>`:'-'}</td>
         </tr>`).join('')}</tbody>
       </table>`;
   }
@@ -1053,23 +1053,23 @@
     const d=w.document;
     d.open();
     d.write('<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">');
-    d.write('<title>AuditCore&#8482; &#8212; '+title+'</title>');
+    d.write('<title>AuditCore™ — '+title+'</title>');
     d.write('<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:Segoe UI,Arial,sans-serif;font-size:14px;color:#1a1a1a;background:#f0f2f5}@media print{.np{display:none}body{background:#fff}}.pg{max-width:1100px;margin:24px auto;background:#fff;padding:44px;box-shadow:0 2px 16px rgba(0,0,0,.12);border-radius:4px}.hd{border-bottom:3px solid #0d1b2a;padding-bottom:20px;margin-bottom:28px;display:flex;justify-content:space-between}.hd h1{font-size:22px;color:#0d1b2a;font-weight:700}.hd h2{font-size:15px;color:#444;margin-top:5px}.mt{text-align:right;font-size:12px;color:#555;line-height:2}.mt strong{color:#0d1b2a}.wm{font-size:10px;color:#bbb;margin-top:4px}.cs{display:grid;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));gap:14px;margin-bottom:28px}.cd{background:#f8f9fa;border-radius:6px;padding:18px;text-align:center;border-top:4px solid #0d1b2a}.cg{border-top-color:#00873d}.cr{border-top-color:#c0392b}.ca{border-top-color:#c96a00}.cn{font-size:32px;font-weight:700;line-height:1}.cl{font-size:11px;color:#666;text-transform:uppercase;letter-spacing:.08em;margin-top:4px}.sc{margin-bottom:32px}.sh{font-size:16px;font-weight:700;color:#0d1b2a;padding:8px 0;border-bottom:2px solid #e0e0e0;margin-bottom:14px}table{width:100%;border-collapse:collapse}th{background:#0d1b2a;color:#fff;padding:9px 12px;text-align:left;font-size:12px;font-weight:600}td{padding:8px 12px;border-bottom:1px solid #e8e8e8;vertical-align:top;line-height:1.4}tr:nth-child(even) td{background:#fafafa}.ft{margin-top:36px;padding-top:12px;border-top:1px solid #e0e0e0;text-align:center;font-size:11px;color:#aaa}.pb{position:fixed;bottom:20px;right:20px;background:#0d1b2a;color:#fff;border:none;padding:12px 20px;border-radius:6px;font-size:14px;font-weight:600;cursor:pointer}</style>');
     d.write('</head><body><div class="pg">');
-    d.write('<div class="hd"><div><h1 style="display:inline-block;vertical-align:middle">AuditCore&#8482;</h1><h2>'+title+'</h2></div>');
-    d.write('<div class="mt"><div><strong>Organization:</strong> '+(o.name||'&#8212;')+'</div><div><strong>Date:</strong> '+now+'</div><div><strong>By:</strong> '+(data.generated_by||'AuditCore&#8482; v2.0')+'</div><div class="wm">AUDITCORE&#8482; &#8226; DARKBLOOM INDUSTRIES&#8482; &#8226; CONFIDENTIAL</div></div></div>');
+    d.write('<div class="hd"><div><h1 style="display:inline-block;vertical-align:middle">AuditCore™</h1><h2>'+title+'</h2></div>');
+    d.write('<div class="mt"><div><strong>Organization:</strong> '+(o.name||'—')+'</div><div><strong>Date:</strong> '+now+'</div><div><strong>By:</strong> '+(data.generated_by||'AuditCore™ v2.0')+'</div><div class="wm">AUDITCORE™ • DARKBLOOM INDUSTRIES™ • CONFIDENTIAL</div></div></div>');
     d.write('<div class="cs">');
     d.write('<div class="cd '+(pct>=80?'cg':pct>=50?'ca':'cr')+'"><div class="cn" style="color:'+pc+'">'+pct+'%</div><div class="cl">Compliance</div></div>');
     d.write('<div class="cd cg"><div class="cn" style="color:#00873d">'+pass+'</div><div class="cl">Passing</div></div>');
     d.write('<div class="cd cr"><div class="cn" style="color:#c0392b">'+fail+'</div><div class="cl">Failing</div></div>');
     d.write('<div class="cd ca"><div class="cn" style="color:#c96a00">'+fn.length+'</div><div class="cl">Findings</div></div>');
     d.write('<div class="cd"><div class="cn">'+ct.length+'</div><div class="cl">Controls</div></div>');
-    if(pm.length) d.write('<div class="cd"><div class="cn">'+pm.length+'</div><div class="cl">POA&amp;M</div></div>');
+    if(pm.length) d.write('<div class="cd"><div class="cn">'+pm.length+'</div><div class="cl">POA&M</div></div>');
     d.write('</div>');
     if(ct.length) d.write('<div class="sc"><div class="sh">Control Assessments ('+ct.length+')</div><table><thead><tr><th>ID</th><th>Family</th><th>Title</th><th>Status</th><th>Notes</th></tr></thead><tbody>'+cr+'</tbody></table></div>');
     if(fn.length) d.write('<div class="sc"><div class="sh">Open Findings ('+fn.length+')</div><table><thead><tr><th>Severity</th><th>Title</th><th>Control</th><th>Description</th></tr></thead><tbody>'+fr+'</tbody></table></div>');
-    if(pm.length) d.write('<div class="sc"><div class="sh">Plan of Action &amp; Milestones</div><table><thead><tr><th>Control</th><th>Weakness</th><th>Risk</th><th>Target Date</th></tr></thead><tbody>'+pr+'</tbody></table></div>');
-    d.write('<div class="ft">AuditCore&#8482; v2.0 &#8226; Darkbloom Industries&#8482; &#8226; '+now+' &#8226; CONFIDENTIAL</div></div>');
+    if(pm.length) d.write('<div class="sc"><div class="sh">Plan of Action & Milestones</div><table><thead><tr><th>Control</th><th>Weakness</th><th>Risk</th><th>Target Date</th></tr></thead><tbody>'+pr+'</tbody></table></div>');
+    d.write('<div class="ft">AuditCore™ v2.0 • Darkbloom Industries™ • '+now+' • CONFIDENTIAL</div></div>');
     d.write('<button class="pb np" onclick="window.print()">Print / Save PDF</button>');
     d.write('</body></html>');
     d.close();
@@ -1210,9 +1210,9 @@
     const el = document.getElementById(pageId);
     if(!el) return;
     el.innerHTML = `<div style="padding:24px;background:var(--surface);border:1px solid var(--border);">
-      <div style="font-family:\'Orbitron\',monospace;font-size:0.8rem;color:${color};letter-spacing:0.1em;margin-bottom:14px;">&#9632; ${name} SECURITY POSTURE</div>
-      <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.6rem;color:var(--dim);line-height:2.2;">
-        <div>&#9679; Connect your ${name} account to enable live scanning</div>
+      <div style="font-family:'Orbitron',monospace;font-size:0.8rem;color:${color};letter-spacing:0.1em;margin-bottom:14px;">■ ${name} SECURITY POSTURE</div>
+      <div style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--dim);line-height:2.2;">
+        <div>● Connect your ${name} account to enable live scanning</div>
         <div style="margin-top:12px;color:var(--amber);">// TO CONFIGURE:</div>
         ${provider==='aws' ? `
         <div>1. Create an IAM role with SecurityAudit policy</div>
@@ -1222,7 +1222,7 @@
         <div>2. Add your M365 tenant ID and client credentials in Org Settings</div>
         <div>3. Run a scan to check MFA, audit logging, inactive accounts</div>`}
         <div style="margin-top:14px;">
-          <button class="btn-action" onclick="showPage('assessor')" style="font-size:0.55rem;padding:6px 14px;">CONFIGURE INTEGRATIONS &#9654;</button>
+          <button class="btn-action" onclick="showPage('assessor')" style="font-size:0.55rem;padding:6px 14px;">CONFIGURE INTEGRATIONS ▶</button>
         </div>
       </div>
     </div>`;
@@ -1243,8 +1243,8 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;">
       <div style="background:var(--surface);border:1px solid var(--border);padding:22px;position:relative;">
         <div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--purple),transparent)"></div>
-        <div style="font-family:\'Orbitron\',monospace;font-size:0.7rem;color:var(--purple);letter-spacing:0.1em;margin-bottom:14px;">&#9642; ACCOUNT</div>
-        <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.54rem;line-height:2.2;">
+        <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--purple);letter-spacing:0.1em;margin-bottom:14px;">▪ ACCOUNT</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.54rem;line-height:2.2;">
           <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border2);padding-bottom:6px;"><span style="color:var(--dim)">ORGANIZATION</span><span style="color:var(--text);font-weight:600">${org.name}</span></div>
           <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border2);padding:6px 0;"><span style="color:var(--dim)">EMAIL</span><span style="color:var(--text)">${user.email}</span></div>
           <div style="display:flex;justify-content:space-between;border-bottom:1px solid var(--border2);padding:6px 0;"><span style="color:var(--dim)">ROLE</span><span style="color:var(--cyan)">${(user.role||'').toUpperCase()}</span></div>
@@ -1253,14 +1253,14 @@
       </div>
       <div style="background:var(--surface);border:1px solid var(--border);padding:22px;position:relative;">
         <div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,${tc},transparent)"></div>
-        <div style="font-family:\'Orbitron\',monospace;font-size:0.7rem;color:${tc};letter-spacing:0.1em;margin-bottom:14px;">&#9642; LICENSE</div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:${tc};letter-spacing:0.1em;margin-bottom:14px;">▪ LICENSE</div>
         <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:14px;text-align:center;">
           <div style="padding:12px;background:rgba(0,240,255,0.03);border:1px solid var(--border);">
-            <div style="font-family:\'Orbitron\',monospace;font-size:1.1rem;font-weight:700;color:${tc}">${tier.toUpperCase()}</div>
-            <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">TIER</div>
+            <div style="font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:${tc}">${tier.toUpperCase()}</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">TIER</div>
           </div>
           <div style="padding:12px;background:rgba(0,255,136,0.03);border:1px solid rgba(0,255,136,0.1);">
-            <div style="font-family:\'Orbitron\',monospace;font-size:1.1rem;font-weight:700;color:var(--green)">${pd?.monthly_price?'
+            <div style="font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:var(--green)">${pd?.monthly_price?'
   async function init() {
     // Update sidebar immediately from stored session
     const sbName = document.getElementById('sb-org-name');
@@ -1289,14 +1289,14 @@
 
 
 +parseFloat(pd.monthly_price).toLocaleString():'-'}</div>
-            <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">PER MONTH</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">PER MONTH</div>
           </div>
           <div style="padding:12px;background:rgba(0,240,255,0.03);border:1px solid var(--border);">
-            <div style="font-family:\'Orbitron\',monospace;font-size:1.1rem;font-weight:700;color:${dc}">${days>0?days:'EXP'}</div>
-            <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">DAYS LEFT</div>
+            <div style="font-family:'Orbitron',monospace;font-size:1.1rem;font-weight:700;color:${dc}">${days>0?days:'EXP'}</div>
+            <div style="font-family:'Share Tech Mono',monospace;font-size:0.42rem;color:var(--dim);margin-top:2px">DAYS LEFT</div>
           </div>
         </div>
-        <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.52rem;line-height:2.2;">
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;line-height:2.2;">
           <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">START DATE</span><span>${pd?.license_start?new Date(pd.license_start).toLocaleDateString():'-'}</span></div>
           <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">RENEWAL DATE</span><span style="color:var(--amber)">${renewal?renewal.toLocaleDateString():'-'}</span></div>
           <div style="display:flex;justify-content:space-between;"><span style="color:var(--dim)">BILLING</span><span>${(pd?.billing_cycle||'monthly').toUpperCase()}</span></div>
@@ -1306,27 +1306,27 @@
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:18px;">
       <div style="background:var(--surface);border:1px solid var(--border);padding:22px;position:relative;">
         <div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--cyan),transparent)"></div>
-        <div style="font-family:\'Orbitron\',monospace;font-size:0.7rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:14px;">&#9642; CHANGE PASSWORD</div>
+        <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--cyan);letter-spacing:0.1em;margin-bottom:14px;">▪ CHANGE PASSWORD</div>
         <div style="display:flex;flex-direction:column;gap:9px;">
-          <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-family:\'Share Tech Mono\',monospace;font-size:0.44rem;color:rgba(0,240,255,0.5);letter-spacing:0.16em">// NEW PASSWORD</label><input type="password" id="pw-new" placeholder="New password (min 8 chars)" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:\'Rajdhani\',sans-serif;font-size:0.9rem;padding:8px 12px;outline:none"/></div>
-          <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-family:\'Share Tech Mono\',monospace;font-size:0.44rem;color:rgba(0,240,255,0.5);letter-spacing:0.16em">// CONFIRM PASSWORD</label><input type="password" id="pw-confirm" placeholder="Confirm new password" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:\'Rajdhani\',sans-serif;font-size:0.9rem;padding:8px 12px;outline:none"/></div>
-          <button class="btn-action" onclick="changePassword()" style="margin-top:4px">UPDATE PASSWORD &#9654;</button>
-          <div id="pw-result" style="font-family:\'Share Tech Mono\',monospace;font-size:0.52rem;display:none;padding:8px"></div>
+          <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(0,240,255,0.5);letter-spacing:0.16em">// NEW PASSWORD</label><input type="password" id="pw-new" placeholder="New password (min 8 chars)" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 12px;outline:none"/></div>
+          <div style="display:flex;flex-direction:column;gap:3px;"><label style="font-family:'Share Tech Mono',monospace;font-size:0.44rem;color:rgba(0,240,255,0.5);letter-spacing:0.16em">// CONFIRM PASSWORD</label><input type="password" id="pw-confirm" placeholder="Confirm new password" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:'Rajdhani',sans-serif;font-size:0.9rem;padding:8px 12px;outline:none"/></div>
+          <button class="btn-action" onclick="changePassword()" style="margin-top:4px">UPDATE PASSWORD ▶</button>
+          <div id="pw-result" style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;display:none;padding:8px"></div>
         </div>
       </div>
       <div style="background:var(--surface);border:1px solid var(--border);padding:22px;position:relative;">
         <div style="position:absolute;top:0;left:0;width:100%;height:2px;background:linear-gradient(90deg,transparent,var(--green),transparent)"></div>
-        <div style="font-family:\'Orbitron\',monospace;font-size:0.7rem;color:var(--green);letter-spacing:0.1em;margin-bottom:14px;">&#9642; MULTI-FACTOR AUTHENTICATION</div>
-        <div id="mfa-status" style="font-family:\'Share Tech Mono\',monospace;font-size:0.56rem;padding:10px;background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.2);color:var(--amber);margin-bottom:12px">&#9650; MFA: NOT ENABLED</div>
-        <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.52rem;color:var(--dim);line-height:1.8;margin-bottom:12px">Protect your account with a TOTP authenticator app (Google Authenticator, Authy, 1Password).</div>
-        <button class="btn-action green" id="mfa-btn" onclick="toggleMFA()">ENABLE MFA &#9654;</button>
+        <div style="font-family:'Orbitron',monospace;font-size:0.7rem;color:var(--green);letter-spacing:0.1em;margin-bottom:14px;">▪ MULTI-FACTOR AUTHENTICATION</div>
+        <div id="mfa-status" style="font-family:'Share Tech Mono',monospace;font-size:0.56rem;padding:10px;background:rgba(255,184,0,0.05);border:1px solid rgba(255,184,0,0.2);color:var(--amber);margin-bottom:12px">▲ MFA: NOT ENABLED</div>
+        <div style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;color:var(--dim);line-height:1.8;margin-bottom:12px">Protect your account with a TOTP authenticator app (Google Authenticator, Authy, 1Password).</div>
+        <button class="btn-action green" id="mfa-btn" onclick="toggleMFA()">ENABLE MFA ▶</button>
         <div id="mfa-totp-area" style="display:none;margin-top:14px;text-align:center;">
-          <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--dim);margin-bottom:8px">Scan with authenticator app or enter secret:</div>
-          <div id="mfa-secret" style="font-family:\'Share Tech Mono\',monospace;font-size:0.6rem;color:var(--cyan);background:rgba(0,240,255,0.05);border:1px solid rgba(0,240,255,0.2);padding:10px;word-break:break-all;margin-bottom:10px"></div>
-          <input type="text" id="mfa-code" placeholder="000000" maxlength="6" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:\'Orbitron\',monospace;font-size:1.2rem;padding:10px;outline:none;width:130px;text-align:center;letter-spacing:0.2em"/>
-          <button class="btn-action" onclick="verifyMFA()" style="margin-left:8px">VERIFY &#9654;</button>
+          <div style="font-family:'Share Tech Mono',monospace;font-size:0.5rem;color:var(--dim);margin-bottom:8px">Scan with authenticator app or enter secret:</div>
+          <div id="mfa-secret" style="font-family:'Share Tech Mono',monospace;font-size:0.6rem;color:var(--cyan);background:rgba(0,240,255,0.05);border:1px solid rgba(0,240,255,0.2);padding:10px;word-break:break-all;margin-bottom:10px"></div>
+          <input type="text" id="mfa-code" placeholder="000000" maxlength="6" style="background:rgba(0,240,255,0.03);border:1px solid rgba(0,240,255,0.15);color:var(--text);font-family:'Orbitron',monospace;font-size:1.2rem;padding:10px;outline:none;width:130px;text-align:center;letter-spacing:0.2em"/>
+          <button class="btn-action" onclick="verifyMFA()" style="margin-left:8px">VERIFY ▶</button>
         </div>
-        <div id="mfa-result" style="font-family:\'Share Tech Mono\',monospace;font-size:0.52rem;display:none;padding:8px;margin-top:8px"></div>
+        <div id="mfa-result" style="font-family:'Share Tech Mono',monospace;font-size:0.52rem;display:none;padding:8px;margin-top:8px"></div>
       </div>
     </div>`;
     checkMFAStatus();
@@ -1354,7 +1354,7 @@
     const r=await api('/auth/mfa-status');
     if(r?.enrolled){
       s.style.color='var(--green)';s.style.borderColor='rgba(0,255,136,0.2)';s.style.background='rgba(0,255,136,0.05)';
-      s.textContent='&#9679; MFA: ENABLED - Account protected';
+      s.textContent='● MFA: ENABLED - Account protected';
       if(b){b.textContent='DISABLE MFA';b.onclick=disableMFA;}
     }
   }
