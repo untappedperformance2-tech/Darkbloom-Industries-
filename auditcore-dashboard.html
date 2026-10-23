@@ -882,7 +882,7 @@
     });
   }
 
-  // -- Darkbloom Bridge™ polling -----------------------------
+  // -- Darkbloom BridgeTM polling -----------------------------
   let bridgeSince = 0;
   const bridgeColors = {
     'scan.started': '#00f0ff', 'scan.completed': '#00ff88', 'scan.failed': '#ff3355',
@@ -903,7 +903,7 @@
         <div class="bridge-msg-dot" style="background:${color};box-shadow:0 0 5px ${color};"></div>
         <div class="bridge-msg-content">
           <div class="bridge-msg-event">${text}</div>
-          <div class="bridge-msg-time">${new Date().toLocaleTimeString()}${tag?' • '+tag:''}</div>
+          <div class="bridge-msg-time">${new Date().toLocaleTimeString()}${tag?' * '+tag:''}</div>
         </div>`;
       feed.appendChild(item);
       feed.scrollTop = feed.scrollHeight;
@@ -936,10 +936,10 @@
       case 'remediation.guided':  return `&#9650; Guided remediation sent for finding`;
       case 'finding.created': return `&#9650; New finding: ${payload.title||''}`;
       case 'finding.resolved':return `&#9679; Finding resolved by ${payload.resolvedBy||'system'}`;
-      case 'control.updated': return `// Control ${payload.controlId||''} → ${payload.status||''}`;
+      case 'control.updated': return `// Control ${payload.controlId||''} -> ${payload.status||''}`;
       case 'control.auto_passed': return `&#9679; Auto-passed: ${payload.controlId||''}`;
       case 'assessor.connected': return `// C3PAO connected: ${payload.assessor_email||'assessor'}`;
-      case 'score.changed':   return `// Score changed: ${payload.oldScore}% → ${payload.newScore}%`;
+      case 'score.changed':   return `// Score changed: ${payload.oldScore}% -> ${payload.newScore}%`;
       case 'system':          return `// ${payload.text||'System event'}`;
       case 'presence_join':   return `// ${payload.joiner_name||'User'} joined the channel`;
       case 'assessor_viewing':return `// Assessor viewed compliance data at ${new Date(payload.viewed_at||Date.now()).toLocaleTimeString()}`;
@@ -977,7 +977,7 @@
       result.innerHTML=`
         <div style="font-family:\'Share Tech Mono\',monospace;font-size:0.5rem;color:var(--green);letter-spacing:0.15em;margin-bottom:6px;">&#9679; PORTAL LINK GENERATED - SHARE WITH ASSESSOR</div>
         <div style="color:var(--cyan);word-break:break-all;">${data.portal_url}</div>
-        <div style="color:var(--dim);margin-top:6px;font-size:0.48rem;">Expires: ${new Date(data.session.expires_at).toLocaleString()} • Read-only access only</div>`;
+        <div style="color:var(--dim);margin-top:6px;font-size:0.48rem;">Expires: ${new Date(data.session.expires_at).toLocaleString()} * Read-only access only</div>`;
       addBridgeMessage('assessor.connected', `C3PAO portal created for ${email}`, 'ASSESSOR');
     }
   }
@@ -1079,7 +1079,7 @@
 
   const pages=['overview','bridge','controls','findings','poam','assessor','reports','cmmc','nist','owasp','soc','fips','fedramp'];
   const titles={
-    overview:'COMPLIANCE OVERVIEW', bridge:'DARKBLOOM BRIDGE™ LIVE',
+    overview:'COMPLIANCE OVERVIEW', bridge:'DARKBLOOM BRIDGETM LIVE',
     controls:'ALL CONTROLS', findings:'OPEN FINDINGS',
     poam:'PLAN OF ACTION & MILESTONES', assessor:'C3PAO ASSESSOR PORTAL',
     reports:'GENERATE REPORTS', cmmc:'CMMC LEVEL 2 DETAIL',
@@ -1094,7 +1094,7 @@
     if(target) target.style.display='block';
     document.querySelectorAll('.nav-item').forEach(el=>el.classList.remove('active'));
     document.getElementById('page-title').textContent=titles[name]||name.toUpperCase();
-    document.getElementById('breadcrumb').textContent=`AuditCore™ v2.0 // ${titles[name]||name}`;
+    document.getElementById('breadcrumb').textContent=`AuditCoreTM v2.0 // ${titles[name]||name}`;
     if(name==='controls') await loadControls();
     if(name==='findings') await loadFindings();
     if(name==='poam') await loadPOAM();
@@ -1183,7 +1183,7 @@
 
     addLog('// Scan ID: ' + resp.scan_id);
     addLog('// Domain: ' + resp.domain);
-    addLog('// Bridge™ will push live updates...');
+    addLog('// BridgeTM will push live updates...');
     addBridgeMessage('scan.started', 'Scan started for ' + resp.domain, 'SCAN');
 
     let pct = 0;
@@ -1216,7 +1216,7 @@
         <div style="margin-top:12px;color:var(--amber);">// TO CONFIGURE:</div>
         ${provider==='aws' ? `
         <div>1. Create an IAM role with SecurityAudit policy</div>
-        <div>2. Add your AWS credentials in Org Settings → Integrations</div>
+        <div>2. Add your AWS credentials in Org Settings -> Integrations</div>
         <div>3. Run a scan to check S3, CloudTrail, GuardDuty, IAM, EBS</div>` : `
         <div>1. Register an Azure AD application with read permissions</div>
         <div>2. Add your M365 tenant ID and client credentials in Org Settings</div>
@@ -1267,7 +1267,7 @@
     const sbMeta = document.getElementById('sb-org-meta');
     const sbLic  = document.getElementById('sb-license-info');
     if(sbName && org) sbName.textContent = org.name || 'Unknown Org';
-    if(sbMeta && org) sbMeta.textContent = (org.slug||'') + ' • ' + (org.tier||'').toUpperCase();
+    if(sbMeta && org) sbMeta.textContent = (org.slug||'') + ' * ' + (org.tier||'').toUpperCase();
     if(sbLic  && org) sbLic.textContent  = 'License: ' + (org.tier||'').toUpperCase();
 
     // Attach event listeners to buttons
@@ -1278,7 +1278,7 @@
     await loadPosture();
     loadFindings();
     setTimeout(pollBridge, 1000);
-    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized - AuditCore v2.0', 'SYSTEM');
+    addBridgeMessage('scan.started', 'Darkbloom BridgeTM initialized - AuditCore v2.0', 'SYSTEM');
   }
 
   if(document.readyState === 'loading'){
@@ -1395,7 +1395,7 @@
     const sbMeta = document.getElementById('sb-org-meta');
     const sbLic  = document.getElementById('sb-license-info');
     if(sbName && org) sbName.textContent = org.name || 'Unknown Org';
-    if(sbMeta && org) sbMeta.textContent = (org.slug||'') + ' • ' + (org.tier||'').toUpperCase();
+    if(sbMeta && org) sbMeta.textContent = (org.slug||'') + ' * ' + (org.tier||'').toUpperCase();
     if(sbLic  && org) sbLic.textContent  = 'License: ' + (org.tier||'').toUpperCase();
 
     // Attach event listeners to buttons
@@ -1406,7 +1406,7 @@
     await loadPosture();
     loadFindings();
     setTimeout(pollBridge, 1000);
-    addBridgeMessage('scan.started', 'Darkbloom Bridge™ initialized - AuditCore v2.0', 'SYSTEM');
+    addBridgeMessage('scan.started', 'Darkbloom BridgeTM initialized - AuditCore v2.0', 'SYSTEM');
   }
 
   if(document.readyState === 'loading'){
